@@ -17,8 +17,17 @@ function formatVariantText(variant: Variant): string {
 const STATUS_MESSAGES: Record<string, string> = {
   queued: "Queued for generation...",
   generating: "AI is crafting your posts...",
-  scoring: "Evaluating quality...",
-  ranking: "Ranking variants...",
+  scoring: "Evaluating quality & engagement...",
+  ranking: "Ranking best variants...",
+  submitting: "Submitting...",
+}
+
+const STATUS_HEADERS: Record<string, string> = {
+  queued: "Preparing generation",
+  generating: "Generating variants",
+  scoring: "Scoring variants",
+  ranking: "Ranking variants",
+  submitting: "Submitting",
 }
 
 interface PostVariantsCarouselProps {
@@ -45,7 +54,7 @@ function PostVariantsCarousel({ variants, status, error, onRetry }: PostVariants
         <div className="mb-2 flex items-center justify-between">
           <h2 className="flex items-center gap-2 text-lg font-semibold">
             <IconLoader2 className="h-5 w-5 animate-spin text-primary" />
-            Generating variants
+            {STATUS_HEADERS[status] ?? "Processing"}
           </h2>
         </div>
         <div className="flex gap-4 overflow-hidden px-px py-5">

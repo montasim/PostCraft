@@ -25,7 +25,7 @@ const TOPIC_MAX_LENGTH = 500
 const TOPIC_WARNING_THRESHOLD = 450
 
 const DEFAULT_TOPIC =
-  "How AI is changing software hiring in 2025 — and why most companies are still stuck using the same broken interview process."
+  "How AI is changing software hiring in 2026 — and why most companies are still stuck using the same broken interview process."
 
 interface PostCreationFormProps {
   onGenerate: (data: {
