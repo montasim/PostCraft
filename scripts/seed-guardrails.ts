@@ -1,3 +1,4 @@
+import "dotenv/config"
 import mongoose from "mongoose"
 import { GuardrailModel } from "../modules/guardrail/guardrail.model"
 
