@@ -94,3 +94,70 @@ export interface TopPerformingPost {
   style: string
   date: string
 }
+
+export interface WorkspaceProfile {
+  name: string
+  description: string
+  industry: string
+  linkedInUrl: string
+}
+
+export interface BrandPersona {
+  targetAudiences: string[]
+  preferredTones: string[]
+  language: string
+}
+
+export interface LinkedInConnection {
+  connected: boolean
+  profileUrl: string
+  connectedAt: string
+  profileName: string
+}
+
+export interface UserProfile {
+  fullName: string
+  email: string
+  bio: string
+  location: string
+  title: string
+  company: string
+  website: string
+  twitterHandle: string
+  linkedInSlug: string
+  avatarUrl: string
+  joinedDate: string
+}
+
+export interface ProfileStats {
+  postsGenerated: number
+  currentStreak: number
+  longestStreak: number
+  avgScore: number
+  topPercentile: number
+}
+
+export interface NotificationSettings {
+  emailGenerationComplete: boolean
+  emailWeeklyDigest: boolean
+  emailProductUpdates: boolean
+  pushPostReminder: boolean
+}
+
+export interface PrivacySettings {
+  profileVisibility: "public" | "private"
+  showActivityStatus: boolean
+  shareUsageAnalytics: boolean
+}
+
+export interface AppearanceSettings {
+  theme: "system" | "dark" | "light"
+  compactMode: boolean
+  fontSize: "small" | "default" | "large"
+}
+
+export interface AccountSettings {
+  twoFactorEnabled: boolean
+  sessionTimeout: number
+  dataExportFormat: "json" | "csv"
+}
