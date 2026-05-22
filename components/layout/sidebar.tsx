@@ -14,10 +14,10 @@ function Sidebar({ active, onSelect }: SidebarProps) {
   return (
     <aside className="hidden w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar md:flex">
       <div className="flex h-14 items-center gap-2 border-b border-sidebar-border px-5">
-        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent">
+        <div className="flex h-7 w-7 items-center justify-center rounded-lg brand-gradient">
           <IconSparkles className="h-4 w-4 text-primary-foreground" />
         </div>
-        <span className="text-base font-bold">LinkedIQ</span>
+        <span className="brand-gradient-text text-base font-bold">LinkedIQ</span>
       </div>
       <div className="flex-1 space-y-6 p-5">
         <Button variant="outline" className="h-9 w-full gap-2">

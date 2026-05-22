@@ -25,7 +25,7 @@ function HistoryEmpty({ hasFilters }: HistoryEmptyProps) {
       {!hasFilters && (
         <Button
           asChild
-          className="mt-4 gap-2 bg-linear-to-r from-primary to-accent text-primary-foreground shadow-lg shadow-primary/30"
+          className="mt-4 gap-2 brand-gradient text-primary-foreground shadow-lg shadow-primary/30"
         >
           <Link href="/">
             Generate your first post

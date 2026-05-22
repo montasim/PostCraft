@@ -47,6 +47,17 @@
     --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+@utility brand-gradient {
+    background: linear-gradient(135deg, oklch(0.72 0.16 295) 0%, oklch(0.65 0.15 220) 45%, oklch(0.78 0.14 165) 100%);
+}
+
+@utility brand-gradient-text {
+    background: linear-gradient(135deg, oklch(0.72 0.16 295) 0%, oklch(0.65 0.15 220) 45%, oklch(0.78 0.14 165) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 /* Dark theme — default (from social-blossom-ai) */
 :root {
     --radius: 0.875rem;

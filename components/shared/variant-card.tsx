@@ -33,7 +33,7 @@ function VariantCard({ variant, copied, onCopy }: VariantCardProps) {
       )}
     >
       {isTop && (
-        <Badge className="absolute -top-3 left-6 grid-flow-col items-center gap-1 rounded-full bg-linear-to-r from-primary to-accent px-2.5 py-1 text-[10px] leading-none font-bold tracking-wider text-primary-foreground uppercase shadow">
+        <Badge className="absolute -top-3 left-6 grid-flow-col items-center gap-1 rounded-full brand-gradient px-2.5 py-1 text-[10px] leading-none font-bold tracking-wider text-primary-foreground uppercase shadow">
           <IconStar className="h-3 w-3 fill-current" />
           Recommended
         </Badge>
@@ -44,7 +44,7 @@ function VariantCard({ variant, copied, onCopy }: VariantCardProps) {
           className={cn(
             "row-span-2 flex h-10 w-10 items-center justify-center rounded-full",
             isTop
-              ? "bg-linear-to-br from-primary to-accent text-primary-foreground"
+              ? "brand-gradient text-primary-foreground"
               : "bg-muted text-muted-foreground"
           )}
         >
