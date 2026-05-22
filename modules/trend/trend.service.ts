@@ -1,7 +1,7 @@
 import { trendRepository } from "./trend.repository"
 import { createTrendSchema, type CreateTrendInput } from "./trend.schema"
+import { getEnv, isDev } from "@/core/config/env"
 import { publishGenerationJob } from "@/core/queue/qstash"
-import { getEnv } from "@/core/config/env"
 import { ValidationError } from "@/core/errors/app-error"
 import { logger } from "@/core/logger"
 
@@ -29,12 +29,19 @@ export const trendService = {
       status: "queued",
     })
 
-    logger.info({ trendId: trend._id }, "Trend created, enqueuing job")
+    const trendId = trend._id.toString()
+    logger.info({ trendId }, "Trend created")
 
-    const messageId = await publishGenerationJob(trend._id.toString())
+    // Enqueue to QStash if configured (prod). Dev sync handled by route handler.
+    let messageId: string | null = null
+    if (!isDev()) {
+      messageId = await publishGenerationJob(trendId)
+    } else {
+      logger.info({ trendId }, "QStash not configured — use sync mode")
+    }
 
     return {
-      trendId: trend._id.toString(),
+      trendId,
       status: trend.status,
       messageId,
     }
