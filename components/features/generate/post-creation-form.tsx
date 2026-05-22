@@ -14,7 +14,7 @@ import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
 import { MultiSelect } from "@/components/shared"
-import { IconTrendingUp, IconSparkles } from "@tabler/icons-react"
+import { IconTrendingUp, IconSparkles, IconLoader2 } from "@tabler/icons-react"
 import {
   AUDIENCE_OPTIONS,
   TONE_OPTIONS,
@@ -27,7 +27,18 @@ const TOPIC_WARNING_THRESHOLD = 450
 const DEFAULT_TOPIC =
   "How AI is changing software hiring in 2025 — and why most companies are still stuck using the same broken interview process."
 
-function PostCreationForm() {
+interface PostCreationFormProps {
+  onGenerate: (data: {
+    topic: string
+    audiences: string[]
+    tones: string[]
+    languages: string[]
+    includeEmoji: boolean
+  }) => void
+  isSubmitting?: boolean
+}
+
+function PostCreationForm({ onGenerate, isSubmitting }: PostCreationFormProps) {
   const [topic, setTopic] = useState(DEFAULT_TOPIC)
   const [audience, setAudience] = useState<string[]>(["Founders"])
   const [tones, setTones] = useState<string[]>(["Thought leader", "Story"])
@@ -36,7 +47,17 @@ function PostCreationForm() {
 
   const charCount = topic.length
   const isOverWarning = charCount > TOPIC_WARNING_THRESHOLD
-  const isDisabled = topic.trim().length === 0
+  const isDisabled = topic.trim().length === 0 || isSubmitting
+
+  const handleSubmit = () => {
+    onGenerate({
+      topic,
+      audiences: audience,
+      tones,
+      languages,
+      includeEmoji: emoji,
+    })
+  }
 
   return (
     <Card className="flex-1">
@@ -109,10 +130,15 @@ function PostCreationForm() {
         </div>
         <Button
           disabled={isDisabled}
-          className="gap-2 brand-gradient text-primary-foreground shadow-lg shadow-primary/30"
+          onClick={handleSubmit}
+          className="group gap-2 brand-gradient text-primary-foreground shadow-lg shadow-primary/30"
         >
-          <IconSparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
-          Generate
+          {isSubmitting ? (
+            <IconLoader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <IconSparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
+          )}
+          {isSubmitting ? "Submitting..." : "Generate"}
         </Button>
       </CardFooter>
     </Card>

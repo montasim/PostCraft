@@ -1,18 +1,10 @@
 import { AppShell } from "@/components/layout"
-import {
-  PostCreationForm,
-  BrandGuardPanel,
-  PostVariantsCarousel,
-} from "@/components/features/generate"
+import { DashboardClient } from "@/components/features/generate/dashboard-client"
 
 export default function DashboardPage() {
   return (
     <AppShell>
-      <div className="flex flex-col gap-5 lg:flex-row">
-        <PostCreationForm />
-        <BrandGuardPanel />
-      </div>
-      <PostVariantsCarousel />
+      <DashboardClient />
     </AppShell>
   )
 }
