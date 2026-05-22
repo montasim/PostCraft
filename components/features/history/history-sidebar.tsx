@@ -60,7 +60,7 @@ function HistorySidebar({ entries, selectedId, onSelect }: HistorySidebarProps) 
 
   return (
     <aside className="flex w-72 shrink-0 flex-col border-r border-sidebar-border bg-sidebar">
-      <div className="px-4 py-4">
+      <div className="p-5">
         <div className="relative">
           <IconSearch className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
