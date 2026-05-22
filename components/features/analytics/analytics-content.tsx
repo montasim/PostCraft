@@ -10,8 +10,8 @@ import { AnalyticsTopPosts } from "@/components/features/analytics/analytics-top
 function AnalyticsContent() {
   return (
     <div className="space-y-5">
-      <AnalyticsHeader />
       <AnalyticsOverviewCards />
+      <AnalyticsHeader />
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <AnalyticsTrendChart />
         <AnalyticsScoreDistribution />
