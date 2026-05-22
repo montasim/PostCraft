@@ -5,7 +5,7 @@ import {
   IconShield,
   IconBuilding,
 } from "@tabler/icons-react"
-import type { NavItem, Variant, HistoryEntry, SortOption, ScoreRange } from "@/types"
+import type { NavItem, Variant, HistoryEntry, SortOption, ScoreRange, AnalyticsOverview, ScoreDistribution, StylePerformance, TrendDataPoint, TopPerformingPost } from "@/types"
 
 export const POSTS_USED = 3
 export const PLAN_LIMIT = 5
@@ -295,4 +295,56 @@ export const HISTORY_ENTRIES: HistoryEntry[] = [
     createdAt: "2025-05-10T15:30:00Z",
     status: "archived",
   },
+]
+
+export const ANALYTICS_OVERVIEW: AnalyticsOverview = {
+  totalPosts: 15,
+  avgScore: 82,
+  avgEngagement: 84,
+  successRate: 97,
+  weeklyChange: 8,
+  streakDays: 4,
+  consistencyScore: 78,
+  monthlyGoalProgress: 15,
+  monthlyGoal: 20,
+  topPercentile: 12,
+}
+
+export const SCORE_DISTRIBUTION: ScoreDistribution[] = [
+  { range: "90-100", count: 5, percentage: 33 },
+  { range: "80-89", count: 6, percentage: 40 },
+  { range: "70-79", count: 3, percentage: 20 },
+  { range: "Below 70", count: 1, percentage: 7 },
+]
+
+export const STYLE_PERFORMANCE: StylePerformance[] = [
+  { style: "Thought leader", avgScore: 90, avgEngagement: 88, count: 6 },
+  { style: "Story-driven", avgScore: 83, avgEngagement: 86, count: 4 },
+  { style: "Contrarian", avgScore: 81, avgEngagement: 84, count: 3 },
+  { style: "Casual", avgScore: 73, avgEngagement: 72, count: 2 },
+]
+
+export const TREND_DATA: TrendDataPoint[] = [
+  { date: "Apr 18", score: 55, engagement: 58 },
+  { date: "Apr 22", score: 90, engagement: 92 },
+  { date: "Apr 25", score: 83, engagement: 86 },
+  { date: "Apr 28", score: 65, engagement: 62 },
+  { date: "May 2", score: 85, engagement: 87 },
+  { date: "May 5", score: 78, engagement: 81 },
+  { date: "May 8", score: 91, engagement: 88 },
+  { date: "May 10", score: 69, engagement: 74 },
+  { date: "May 12", score: 82, engagement: 80 },
+  { date: "May 15", score: 72, engagement: 76 },
+  { date: "May 17", score: 96, engagement: 94 },
+  { date: "May 18", score: 75, engagement: 78 },
+  { date: "May 19", score: 88, engagement: 85 },
+  { date: "May 20", score: 93, engagement: 91 },
+]
+
+export const TOP_POSTS: TopPerformingPost[] = [
+  { topic: "The contrarian take on AI hiring tools", score: 96, engagement: 94, style: "Contrarian", date: "May 17" },
+  { topic: "How AI is reshaping software hiring in 2025", score: 93, engagement: 91, style: "Thought leader", date: "May 20" },
+  { topic: "How to interview senior engineers", score: 91, engagement: 88, style: "Thought leader", date: "May 8" },
+  { topic: "The resume is dead", score: 90, engagement: 92, style: "Thought leader", date: "Apr 22" },
+  { topic: "The 4-day work week experiment", score: 90, engagement: 92, style: "Thought leader", date: "May 10" },
 ]
