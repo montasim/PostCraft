@@ -2,11 +2,11 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { STYLE_PERFORMANCE } from "@/lib/constants"
 import { IconPalette } from "@tabler/icons-react"
+import type { StylePerformance } from "@/types"
 
-function AnalyticsStyleBreakdown() {
-  const sorted = [...STYLE_PERFORMANCE].sort((a, b) => b.avgScore - a.avgScore)
+function AnalyticsStyleBreakdown({ data }: { data: StylePerformance[] }) {
+  const sorted = [...data].sort((a, b) => b.avgScore - a.avgScore)
   const maxScore = 100
 
   return (

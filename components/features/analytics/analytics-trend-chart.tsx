@@ -1,11 +1,27 @@
 "use client"
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { TREND_DATA } from "@/lib/constants"
 import { IconTrendingUp } from "@tabler/icons-react"
+import type { TrendDataPoint } from "@/types"
 
-function AnalyticsTrendChart() {
-  const data = TREND_DATA
+function AnalyticsTrendChart({ data }: { data: TrendDataPoint[] }) {
+  if (data.length === 0) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+            <IconTrendingUp className="h-4 w-4 text-primary" />
+            Score & Engagement Trend
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="py-8 text-center text-sm text-muted-foreground">
+            No trend data yet. Generate content to see trends.
+          </p>
+        </CardContent>
+      </Card>
+    )
+  }
   const maxVal = 100
   const chartW = 500
   const chartH = 200
