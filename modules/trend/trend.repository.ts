@@ -25,7 +25,7 @@ export const trendRepository = {
     const trend = await TrendModel.findOneAndUpdate(
       { _id: id, workspaceId },
       update,
-      { new: true }
+      { returnDocument: "after" }
     ).lean()
     if (!trend) throw new NotFoundError("Trend")
     return trend
