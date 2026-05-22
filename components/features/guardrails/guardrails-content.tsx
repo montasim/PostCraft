@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
@@ -8,7 +8,9 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
+import { Skeleton } from "@/components/ui/skeleton"
 import { cn } from "@/lib/utils"
+import { toast } from "sonner"
 import {
   IconShield,
   IconX,
@@ -23,6 +25,7 @@ interface Rule {
   id: string
   text: string
   active: boolean
+  category: string
 }
 
 interface RuleSectionProps {
@@ -33,9 +36,10 @@ interface RuleSectionProps {
   onToggle: (id: string) => void
   onRemove: (id: string) => void
   onAdd: (text: string) => void
+  loading?: boolean
 }
 
-function RuleSection({ title, description, icon: Icon, rules, onToggle, onRemove, onAdd }: RuleSectionProps) {
+function RuleSection({ title, description, icon: Icon, rules, onToggle, onRemove, onAdd, loading }: RuleSectionProps) {
   const [newRule, setNewRule] = useState("")
 
   const handleAdd = () => {
@@ -43,6 +47,22 @@ function RuleSection({ title, description, icon: Icon, rules, onToggle, onRemove
       onAdd(newRule.trim())
       setNewRule("")
     }
+  }
+
+  if (loading) {
+    return (
+      <Card>
+        <CardHeader>
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-3 w-48" />
+        </CardHeader>
+        <CardContent className="space-y-2">
+          {[1, 2, 3].map((i) => (
+            <Skeleton key={i} className="h-8 w-full" />
+          ))}
+        </CardContent>
+      </Card>
+    )
   }
 
   return (
@@ -112,26 +132,46 @@ function RuleSection({ title, description, icon: Icon, rules, onToggle, onRemove
 }
 
 function BannedWordsCard({
-  words,
-  activeWords,
-  onToggleWord,
-  onAddWord,
-  onRemoveWord,
+  rules,
+  onToggle,
+  onRemove,
+  onAdd,
+  loading,
 }: {
-  words: string[]
-  activeWords: Set<string>
-  onToggleWord: (word: string) => void
-  onAddWord: (word: string) => void
-  onRemoveWord: (word: string) => void
+  rules: Rule[]
+  onToggle: (id: string) => void
+  onRemove: (id: string) => void
+  onAdd: (text: string) => void
+  loading?: boolean
 }) {
   const [newWord, setNewWord] = useState("")
 
   const handleAdd = () => {
     if (newWord.trim()) {
-      onAddWord(newWord.trim().toLowerCase())
+      onAdd(newWord.trim().toLowerCase())
       setNewWord("")
     }
   }
+
+  if (loading) {
+    return (
+      <Card>
+        <CardHeader>
+          <Skeleton className="h-4 w-28" />
+          <Skeleton className="h-3 w-48" />
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="flex flex-wrap gap-1.5">
+            {[1, 2, 3].map((i) => (
+              <Skeleton key={i} className="h-6 w-20" />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  const activeCount = rules.filter((r) => r.active).length
 
   return (
     <Card>
@@ -140,7 +180,7 @@ function BannedWordsCard({
           <IconBan className="h-4 w-4 text-destructive" />
           Banned words
           <Badge variant="secondary" className="ml-auto text-[10px]">
-            {activeWords.size}/{words.length} active
+            {activeCount}/{rules.length} active
           </Badge>
         </CardTitle>
         <p className="text-xs text-muted-foreground">
@@ -149,24 +189,24 @@ function BannedWordsCard({
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="flex flex-wrap gap-1.5">
-          {words.map((word) => (
+          {rules.map((rule) => (
             <Badge
-              key={word}
+              key={rule.id}
               variant="secondary"
               className={cn(
                 "gap-1 text-xs",
-                !activeWords.has(word) && "opacity-40"
+                !rule.active && "opacity-40"
               )}
             >
               <span
                 className="cursor-pointer"
-                onClick={() => onToggleWord(word)}
-                title={activeWords.has(word) ? "Click to disable" : "Click to enable"}
+                onClick={() => onToggle(rule.id)}
+                title={rule.active ? "Click to disable" : "Click to enable"}
               >
-                {word}
+                {rule.text}
               </span>
               <button
-                onClick={() => onRemoveWord(word)}
+                onClick={() => onRemove(rule.id)}
                 className="ml-0.5 text-muted-foreground hover:text-destructive"
               >
                 <IconX className="h-3 w-3" />
@@ -206,16 +246,17 @@ function PreviewCard({
 }: {
   toneRules: Rule[]
   formatRules: Rule[]
-  bannedWords: string[]
+  bannedWords: Rule[]
 }) {
+  const activeBanned = bannedWords.filter((r) => r.active).map((r) => r.text)
   const sampleText =
     "This game changer will help you leverage synergy to become a thought leader in your industry."
 
   const highlightBanned = (text: string) => {
-    if (bannedWords.length === 0) return text
-    const regex = new RegExp(`(${bannedWords.join("|")})`, "gi")
+    if (activeBanned.length === 0) return text
+    const regex = new RegExp(`(${activeBanned.join("|")})`, "gi")
     return text.split(regex).map((part, i) =>
-      bannedWords.some((w) => w.toLowerCase() === part.toLowerCase()) ? (
+      activeBanned.some((w) => w.toLowerCase() === part.toLowerCase()) ? (
         <span key={i} className="bg-destructive/20 text-destructive line-through decoration-destructive">
           {part}
         </span>
@@ -257,10 +298,10 @@ function PreviewCard({
               {activeFormat} format rule{activeFormat !== 1 && "s"}
             </Badge>
           )}
-          {bannedWords.length > 0 && (
+          {activeBanned.length > 0 && (
             <Badge variant="secondary" className="gap-1 text-[10px] text-destructive">
               <IconBan className="h-3 w-3" />
-              {bannedWords.length} banned word{bannedWords.length !== 1 && "s"}
+              {activeBanned.length} banned word{activeBanned.length !== 1 && "s"}
             </Badge>
           )}
         </div>
@@ -269,66 +310,118 @@ function PreviewCard({
   )
 }
 
-let nextId = 100
-const makeId = () => `r${nextId++}`
+interface ApiGuardrail {
+  id: string
+  category: string
+  rule: string
+  isActive: boolean
+}
 
 function GuardrailsContent() {
-  const [toneRules, setToneRules] = useState<Rule[]>([
-    { id: "t1", text: "Professional voice", active: true },
-    { id: "t2", text: "No clickbait hooks", active: true },
-    { id: "t3", text: "No generic platitudes", active: true },
-  ])
+  const [rules, setRules] = useState<Rule[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const [formatRules, setFormatRules] = useState<Rule[]>([
-    { id: "f1", text: "Max 1,300 characters", active: true },
-    { id: "f2", text: "Hook under 150 chars", active: true },
-  ])
+  useEffect(() => {
+    async function fetchGuardrails() {
+      try {
+        const res = await fetch("/api/guardrails")
+        const data = await res.json()
+        if (data.success) {
+          setRules(
+            data.data.map((g: ApiGuardrail) => ({
+              id: g.id,
+              text: g.rule,
+              active: g.isActive,
+              category: g.category,
+            }))
+          )
+        }
+      } catch {
+        toast.error("Failed to load guardrails")
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchGuardrails()
+  }, [])
 
-  const [customRules, setCustomRules] = useState<Rule[]>([
-    { id: "c1", text: "Include a personal anecdote", active: true },
-    { id: "c2", text: "End with a question", active: false },
-  ])
+  const toneRules = rules.filter((r) => r.category === "tone")
+  const formatRules = rules.filter((r) => r.category === "format")
+  const customRules = rules.filter((r) => r.category === "custom")
+  const bannedRules = rules.filter((r) => r.category === "banned")
 
-  const [bannedWords, setBannedWords] = useState<string[]>([
-    "game changer",
-    "synergy",
-    "leverage",
-  ])
-  const [activeBannedWords, setActiveBannedWords] = useState<Set<string>>(
-    new Set(["game changer", "synergy", "leverage"])
-  )
+  const handleToggle = useCallback(async (id: string) => {
+    const rule = rules.find((r) => r.id === id)
+    if (!rule) return
 
-  const toggleRule = useCallback(
-    (setter: React.Dispatch<React.SetStateAction<Rule[]>>) =>
-      (id: string) =>
-        setter((prev) =>
-          prev.map((r) => (r.id === id ? { ...r, active: !r.active } : r))
-        ),
-    []
-  )
+    const newActive = !rule.active
+    setRules((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, active: newActive } : r))
+    )
 
-  const removeRule = useCallback(
-    (setter: React.Dispatch<React.SetStateAction<Rule[]>>) =>
-      (id: string) =>
-        setter((prev) => prev.filter((r) => r.id !== id)),
-    []
-  )
+    try {
+      const res = await fetch(`/api/guardrails/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isActive: newActive }),
+      })
+      if (!res.ok) throw new Error()
+    } catch {
+      setRules((prev) =>
+        prev.map((r) => (r.id === id ? { ...r, active: !newActive } : r))
+      )
+      toast.error("Failed to toggle rule")
+    }
+  }, [rules])
 
-  const addRule = useCallback(
-    (setter: React.Dispatch<React.SetStateAction<Rule[]>>) =>
-      (text: string) =>
-        setter((prev) => [...prev, { id: makeId(), text, active: true }]),
+  const handleRemove = useCallback(async (id: string) => {
+    const prev = rules
+    setRules((cur) => cur.filter((r) => r.id !== id))
+
+    try {
+      const res = await fetch(`/api/guardrails/${id}`, { method: "DELETE" })
+      if (!res.ok) throw new Error()
+    } catch {
+      setRules(prev)
+      toast.error("Failed to remove rule")
+    }
+  }, [rules])
+
+  const handleAdd = useCallback(
+    (category: string) => async (text: string) => {
+      try {
+        const res = await fetch("/api/guardrails", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ category, rule: text, isActive: true }),
+        })
+        const data = await res.json()
+        if (!data.success) throw new Error()
+
+        setRules((prev) => [
+          ...prev,
+          {
+            id: data.data.id,
+            text: data.data.rule,
+            active: data.data.isActive,
+            category: data.data.category,
+          },
+        ])
+        toast.success("Rule added")
+      } catch {
+        toast.error("Failed to add rule")
+      }
+    },
     []
   )
 
   const allRules = [...toneRules, ...formatRules, ...customRules]
-  const activeCount = allRules.filter((r) => r.active).length + activeBannedWords.size
-  const totalCount = allRules.length + bannedWords.length
+  const activeCount = allRules.filter((r) => r.active).length + bannedRules.filter((r) => r.active).length
+  const totalCount = allRules.length + bannedRules.length
   const strengthPercent = totalCount > 0 ? Math.round((activeCount / totalCount) * 100) : 0
 
   return (
     <div className="space-y-5">
-      {/* Two-column layout */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <div className="space-y-5">
           <RuleSection
@@ -336,74 +429,59 @@ function GuardrailsContent() {
             description="Define the voice and tone of your content"
             icon={IconMessage}
             rules={toneRules}
-            onToggle={toggleRule(setToneRules)}
-            onRemove={removeRule(setToneRules)}
-            onAdd={addRule(setToneRules)}
+            onToggle={handleToggle}
+            onRemove={handleRemove}
+            onAdd={handleAdd("tone")}
+            loading={loading}
           />
           <RuleSection
             title="Format rules"
             description="Set structural requirements for generated posts"
             icon={IconRuler}
             rules={formatRules}
-            onToggle={toggleRule(setFormatRules)}
-            onRemove={removeRule(setFormatRules)}
-            onAdd={addRule(setFormatRules)}
+            onToggle={handleToggle}
+            onRemove={handleRemove}
+            onAdd={handleAdd("format")}
+            loading={loading}
           />
           <RuleSection
             title="Custom rules"
             description="Add your own brand-specific rules"
             icon={IconSparkles}
             rules={customRules}
-            onToggle={toggleRule(setCustomRules)}
-            onRemove={removeRule(setCustomRules)}
-            onAdd={addRule(setCustomRules)}
+            onToggle={handleToggle}
+            onRemove={handleRemove}
+            onAdd={handleAdd("custom")}
+            loading={loading}
           />
         </div>
         <div className="space-y-5">
           <BannedWordsCard
-            words={bannedWords}
-            activeWords={activeBannedWords}
-            onToggleWord={(word) =>
-              setActiveBannedWords((prev) => {
-                const next = new Set(prev)
-                if (next.has(word)) next.delete(word)
-                else next.add(word)
-                return next
-              })
-            }
-            onAddWord={(word) => {
-              setBannedWords((prev) => [...prev, word])
-              setActiveBannedWords((prev) => new Set([...prev, word]))
-            }}
-            onRemoveWord={(word) => {
-              setBannedWords((prev) => prev.filter((w) => w !== word))
-              setActiveBannedWords((prev) => {
-                const next = new Set(prev)
-                next.delete(word)
-                return next
-              })
-            }}
+            rules={bannedRules}
+            onToggle={handleToggle}
+            onRemove={handleRemove}
+            onAdd={handleAdd("banned")}
+            loading={loading}
           />
           <PreviewCard
             toneRules={toneRules}
             formatRules={formatRules}
-            bannedWords={[...activeBannedWords]}
+            bannedWords={bannedRules}
           />
-          {/* Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              
+              <IconShield className="h-5 w-5 text-primary" />
+              <span className="text-sm font-semibold">Shield strength</span>
             </div>
             <div className="flex items-center gap-3">
               <div className="text-right">
                 <p className="text-xs font-medium">{activeCount}/{totalCount} rules active</p>
-                <p className="text-[10px] text-muted-foreground">Shield strength</p>
               </div>
               <Progress value={strengthPercent} className="h-2 w-24" />
             </div>
           </div>
-            </div>
-          </div>
+        </div>
+      </div>
     </div>
   )
 }

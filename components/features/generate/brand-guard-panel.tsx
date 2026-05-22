@@ -22,7 +22,7 @@ function BrandGuardPanel({ showButton = true, title = "Brand Guard" }: { showBut
   useEffect(() => {
     async function fetchGuardrails() {
       try {
-        const res = await fetch("/api/guardrails")
+        const res = await fetch("/api/guardrails?active=true")
         const data = await res.json()
         if (data.success) {
           setGuardrails(data.data)
