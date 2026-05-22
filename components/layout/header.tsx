@@ -1,17 +1,10 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
 import { ThemeToggle } from "@/components/layout/theme-toggle"
 import { UserDropdown } from "@/components/layout/user-dropdown"
-import { IconSparkles, IconMenu2 } from "@tabler/icons-react"
+import { PageBreadcrumb } from "@/components/layout/page-breadcrumb"
+import { IconMenu2 } from "@tabler/icons-react"
 
 interface HeaderProps {
   onMobileMenuOpen: () => void
@@ -29,18 +22,7 @@ function Header({ onMobileMenuOpen }: HeaderProps) {
         >
           <IconMenu2 className="h-4 w-4" />
         </Button>
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <IconSparkles className="h-4 w-4 text-primary" />
-              <BreadcrumbLink href="#">Create</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Your next post</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <PageBreadcrumb />
       </div>
       <div className="flex items-center gap-2">
         <div className="hidden items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground md:inline-flex">
