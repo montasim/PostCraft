@@ -89,9 +89,9 @@ function ProfileHeaderCard({
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        <div className="flex items-center gap-3">
-          <Avatar size="lg">
-            <AvatarFallback className="text-xs">
+        <div className="flex items-center gap-5">
+          <Avatar size="lg" className="!w-32 !h-32">
+            <AvatarFallback className="text-xl">
               {profile.fullName
                 .split(" ")
                 .map((n) => n[0])
@@ -231,7 +231,7 @@ function ProfileDetailsCard({
           </Button>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-4">
         {editing ? (
           <>
             <div className="space-y-1.5">
@@ -527,16 +527,14 @@ function ProfileContent() {
     <div className="space-y-5">
       <ProfileCompletionCard profile={profile} />
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <div className="space-y-5">
-          <ProfileHeaderCard profile={profile} onUpdate={handleUpdate} />
-          <ProfileStatsCard stats={PROFILE_STATS} />
+      <div className="flex w-full items-stretch gap-5">
+          <div className="w-[40%] [&_>div]:h-full">
+            <ProfileHeaderCard profile={profile} onUpdate={handleUpdate} />
+          </div>
+          <div className="w-[60%] [&_>div]:h-full">
+            <ProfileDetailsCard profile={profile} onUpdate={handleUpdate} />
+          </div>
         </div>
-        <div className="space-y-5">
-          <ProfileDetailsCard profile={profile} onUpdate={handleUpdate} />
-          <ProfileAchievementsCard />
-        </div>
-      </div>
     </div>
   )
 }
