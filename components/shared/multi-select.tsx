@@ -48,7 +48,7 @@ function MultiSelect({
           role="button"
           tabIndex={0}
           className={cn(
-            "flex max-h-[88px] min-h-[44px] cursor-pointer flex-wrap items-center gap-1.5 overflow-x-hidden overflow-y-auto rounded-lg border border-input bg-background p-2 text-sm",
+            "flex max-h-[88px] min-h-[44px] cursor-pointer flex-wrap items-center gap-1.5 overflow-x-hidden overflow-y-auto rounded-lg border border-input bg-transparent p-2 text-sm dark:bg-input/30",
             className
           )}
         >
