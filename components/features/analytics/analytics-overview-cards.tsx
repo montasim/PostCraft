@@ -2,9 +2,8 @@
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
 import { ANALYTICS_OVERVIEW, STYLE_PERFORMANCE } from "@/lib/constants"
-import { IconCrown, IconFlame, IconTarget, IconTrendingUp, IconTrophy } from "@tabler/icons-react"
+import { IconTarget, IconTrendingUp, IconTrophy } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
 
 function AnalyticsOverviewCards() {
@@ -16,7 +15,7 @@ function AnalyticsOverviewCards() {
   )
 
   return (
-    <div className="grid grid-cols-2 gap-5 lg:grid-cols-4 xl:grid-cols-7">
+    <div className="grid grid-cols-2 gap-5 lg:grid-cols-5 xl:grid-cols-5">
       {/* Metric cards */}
       <MetricCard
         label="Avg Score"
@@ -42,59 +41,23 @@ function AnalyticsOverviewCards() {
         bg="bg-chart-1/10"
         change={3}
       />
+
       <MetricCard
-        label="Streak"
-        value={`${ANALYTICS_OVERVIEW.streakDays}d`}
-        icon={IconFlame}
-        color="text-chart-3"
-        bg="bg-chart-3/10"
+        label="Best style"
+        value={`${bestStyle.style} · S:${bestStyle.avgScore}`}
+        icon={IconTrophy}
+        color="text-chart-2"
+        bg="bg-chart-2/10"
       />
 
-      {/* Insight cards */}
-      <Card>
-        <CardContent className="space-y-2 p-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-              <IconCrown className="h-3.5 w-3.5 text-primary" />
-            </div>
-            <p className="text-[10px] font-semibold text-muted-foreground">Creator ranking</p>
-          </div>
-          <p className="text-xs">Top <span className="text-lg font-bold text-primary">{ANALYTICS_OVERVIEW.topPercentile}%</span></p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardContent className="space-y-2 p-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-chart-2/10">
-              <IconTrophy className="h-3.5 w-3.5 text-chart-2" />
-            </div>
-            <p className="text-[10px] font-semibold text-muted-foreground">Best style</p>
-          </div>
-          <p className="text-xs">
-            <span className="font-bold">{bestStyle.style}</span>
-            <span className="text-muted-foreground"> · S:{bestStyle.avgScore}</span>
-          </p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardContent className="space-y-2 p-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-chart-3/10">
-              <IconTarget className="h-3.5 w-3.5 text-chart-3" />
-            </div>
-            <p className="text-[10px] font-semibold text-muted-foreground">Monthly goal</p>
-          </div>
-          <div className="space-y-1">
-            <p className="text-xs">
-              <span className="font-bold">{ANALYTICS_OVERVIEW.monthlyGoalProgress}</span>
-              <span className="text-muted-foreground">/{ANALYTICS_OVERVIEW.monthlyGoal} posts</span>
-            </p>
-            <Progress value={goalPercent} className="h-1.5" />
-          </div>
-        </CardContent>
-      </Card>
+      <MetricCard
+        label="Monthly goal"
+        value={`${ANALYTICS_OVERVIEW.monthlyGoalProgress}/${ANALYTICS_OVERVIEW.monthlyGoal}`}
+        icon={IconTarget}
+        color="text-chart-3"
+        bg="bg-chart-3/10"
+        change={goalPercent}
+      />
     </div>
   )
 }
