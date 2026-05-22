@@ -109,7 +109,7 @@ function PostCreationForm() {
         </div>
         <Button
           disabled={isDisabled}
-          className="gap-2 bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-lg shadow-primary/30"
+          className="gap-2 brand-gradient text-primary-foreground shadow-lg shadow-primary/30"
         >
           <IconSparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
           Generate
