@@ -54,3 +54,43 @@ export interface ScoreRange {
   min: number
   max: number
 }
+
+export interface AnalyticsOverview {
+  totalPosts: number
+  avgScore: number
+  avgEngagement: number
+  successRate: number
+  weeklyChange: number
+  streakDays: number
+  consistencyScore: number
+  monthlyGoalProgress: number
+  monthlyGoal: number
+  topPercentile: number
+}
+
+export interface ScoreDistribution {
+  range: string
+  count: number
+  percentage: number
+}
+
+export interface StylePerformance {
+  style: string
+  avgScore: number
+  avgEngagement: number
+  count: number
+}
+
+export interface TrendDataPoint {
+  date: string
+  score: number
+  engagement: number
+}
+
+export interface TopPerformingPost {
+  topic: string
+  score: number
+  engagement: number
+  style: string
+  date: string
+}
