@@ -1,3 +1,4 @@
+export { PageError } from "./page-error"
 export { ScorePill } from "./score-pill"
 export { MultiSelect } from "./multi-select"
 export { NavGroup } from "./nav-group"
