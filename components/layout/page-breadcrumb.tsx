@@ -9,7 +9,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { IconSparkles, IconHistory, IconChartBar, IconShield } from "@tabler/icons-react"
+import { IconSparkles, IconHistory, IconChartBar, IconShield, IconBuilding, IconUser, IconSettings } from "@tabler/icons-react"
 import type { ComponentType } from "react"
 
 interface BreadcrumbConfig {
@@ -38,6 +38,21 @@ const BREADCRUMB_CONFIG: Record<string, BreadcrumbConfig> = {
     label: "Guardrails",
     icon: IconShield,
     page: "Protect your brand voice",
+  },
+  "/workspace": {
+    label: "Workspace",
+    icon: IconBuilding,
+    page: "Manage your workspace",
+  },
+  "/profile": {
+    label: "Profile",
+    icon: IconUser,
+    page: "Your personal information",
+  },
+  "/settings": {
+    label: "Settings",
+    icon: IconSettings,
+    page: "Customize your experience",
   },
 }
 

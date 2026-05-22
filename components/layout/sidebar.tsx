@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { NavGroup, PlanQuotaCard, BrandCard } from "@/components/shared"
 import { IconPlus, IconSparkles } from "@tabler/icons-react"
-import { NAV_MAIN, NAV_CONFIG } from "@/lib/constants"
+import { NAV_MAIN, NAV_CONFIG, NAV_ACCOUNT } from "@/lib/constants"
 
 interface SidebarProps {
   active: string
@@ -33,6 +33,12 @@ function Sidebar({ active, onSelect }: SidebarProps) {
         <NavGroup
           label="Config"
           items={NAV_CONFIG}
+          active={active}
+          onSelect={onSelect}
+        />
+        <NavGroup
+          label="Account"
+          items={NAV_ACCOUNT}
           active={active}
           onSelect={onSelect}
         />
