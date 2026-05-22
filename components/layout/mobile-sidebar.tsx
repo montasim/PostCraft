@@ -38,7 +38,7 @@ function MobileSidebar({
           </div>
           <SheetTitle className="text-base font-bold">LinkedIQ</SheetTitle>
         </SheetHeader>
-        <div className="flex-1 space-y-6 px-5 py-4">
+        <div className="flex-1 space-y-6 p-5">
           <Button variant="outline" className="w-full gap-2">
             <IconPlus className="h-4 w-4" />
             New post

@@ -19,7 +19,7 @@ function Sidebar({ active, onSelect }: SidebarProps) {
         </div>
         <span className="text-base font-bold">LinkedIQ</span>
       </div>
-      <div className="flex-1 space-y-6 px-5 py-4">
+      <div className="flex-1 space-y-6 p-5">
         <Button variant="outline" className="h-9 w-full gap-2">
           <IconPlus className="h-4 w-4" />
           New post
