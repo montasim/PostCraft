@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { NavGroup } from "@/components/shared"
 import { IconPlus, IconSparkles } from "@tabler/icons-react"
-import { NAV_MAIN, NAV_CONFIG } from "@/lib/constants"
+import { NAV_MAIN, NAV_CONFIG, NAV_ACCOUNT } from "@/lib/constants"
 
 interface MobileSidebarProps {
   open: boolean
@@ -52,6 +52,12 @@ function MobileSidebar({
           <NavGroup
             label="Config"
             items={NAV_CONFIG}
+            active={active}
+            onSelect={handleSelect}
+          />
+          <NavGroup
+            label="Account"
+            items={NAV_ACCOUNT}
             active={active}
             onSelect={handleSelect}
           />

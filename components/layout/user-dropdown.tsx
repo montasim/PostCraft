@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -22,13 +23,17 @@ function UserDropdown() {
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="gap-2">
-          <IconUser className="h-4 w-4" />
-          Profile
+        <DropdownMenuItem className="gap-2" asChild>
+          <Link href="/profile">
+            <IconUser className="h-4 w-4" />
+            Profile
+          </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem className="gap-2">
-          <IconSettings className="h-4 w-4" />
-          Settings
+        <DropdownMenuItem className="gap-2" asChild>
+          <Link href="/settings">
+            <IconSettings className="h-4 w-4" />
+            Settings
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="gap-2">

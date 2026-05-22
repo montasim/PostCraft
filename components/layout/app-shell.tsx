@@ -11,7 +11,9 @@ const ROUTE_MAP: Record<string, string> = {
   history: "/history",
   analytics: "/analytics",
   guardrails: "/guardrails",
-  workspace: "/",
+  workspace: "/workspace",
+  profile: "/profile",
+  settings: "/settings",
 }
 
 interface AppShellProps {
@@ -30,7 +32,13 @@ function AppShell({ children }: AppShellProps) {
         ? "analytics"
         : pathname === "/guardrails"
           ? "guardrails"
-          : "generate"
+          : pathname === "/workspace"
+            ? "workspace"
+            : pathname === "/profile"
+              ? "profile"
+              : pathname === "/settings"
+                ? "settings"
+                : "generate"
 
   const handleSelect = (id: string) => {
     router.push(ROUTE_MAP[id] ?? "/")
