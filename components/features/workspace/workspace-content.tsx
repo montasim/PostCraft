@@ -9,15 +9,6 @@ import { Progress } from "@/components/ui/progress"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarBadge } from "@/components/ui/avatar"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
 import { MultiSelect } from "@/components/shared/multi-select"
 import { cn } from "@/lib/utils"
 import {
@@ -35,32 +26,11 @@ import {
   IconBuilding,
   IconBrandLinkedin,
   IconCrown,
-  IconTrash,
-  IconRefresh,
   IconCheck,
   IconPlugConnected,
   IconPlugConnectedX,
-  IconAlertTriangle,
 } from "@tabler/icons-react"
 import type { WorkspaceProfile, BrandPersona, LinkedInConnection } from "@/types"
-
-// ─── Profile Completion Bar ────────────────────────────────────────
-
-function ProfileCompletionBar({ percent }: { percent: number }) {
-  return (
-    <div className="flex items-center gap-4 rounded-lg border bg-card px-4 py-3">
-      <div className="flex-1">
-        <p className="text-xs font-medium">
-          Your workspace is {percent}% complete
-        </p>
-        <p className="text-[10px] text-muted-foreground">
-          {percent < 100 ? "Complete all fields to unlock full potential" : "All configured — you're all set!"}
-        </p>
-      </div>
-      <Progress value={percent} className="h-2 w-32" />
-    </div>
-  )
-}
 
 // ─── Workspace Profile Card ────────────────────────────────────────
 
@@ -306,94 +276,6 @@ function UsagePlanCard({ used, limit }: { used: number; limit: number }) {
   )
 }
 
-// ─── Danger Zone Card ──────────────────────────────────────────────
-
-function DangerZoneCard() {
-  const [deleteOpen, setDeleteOpen] = useState(false)
-  const [resetOpen, setResetOpen] = useState(false)
-
-  return (
-    <Card className="border-destructive/30">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-sm font-semibold text-destructive">
-          <IconAlertTriangle className="h-4 w-4" />
-          Danger zone
-        </CardTitle>
-        <p className="text-xs text-muted-foreground">
-          Irreversible actions — proceed with caution
-        </p>
-      </CardHeader>
-      <CardContent className="space-y-2">
-        <div className="flex items-center justify-between rounded-lg border border-destructive/20 px-3 py-2">
-          <div>
-            <p className="text-xs font-medium">Delete workspace</p>
-            <p className="text-[10px] text-muted-foreground">
-              Permanently remove all data
-            </p>
-          </div>
-          <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-            <DialogTrigger asChild>
-              <Button variant="destructive" size="sm" className="h-7 gap-1 text-xs">
-                <IconTrash className="h-3 w-3" />
-                Delete
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Delete workspace?</DialogTitle>
-                <DialogDescription>
-                  This will permanently delete your workspace and all associated data. This action cannot be undone.
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter>
-                <Button variant="outline" size="sm" onClick={() => setDeleteOpen(false)}>
-                  Cancel
-                </Button>
-                <Button variant="destructive" size="sm" onClick={() => setDeleteOpen(false)}>
-                  Delete workspace
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
-
-        <div className="flex items-center justify-between rounded-lg border border-destructive/20 px-3 py-2">
-          <div>
-            <p className="text-xs font-medium">Reset settings</p>
-            <p className="text-[10px] text-muted-foreground">
-              Restore all defaults
-            </p>
-          </div>
-          <Dialog open={resetOpen} onOpenChange={setResetOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline" size="sm" className="h-7 gap-1 text-xs text-destructive hover:text-destructive">
-                <IconRefresh className="h-3 w-3" />
-                Reset
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Reset all settings?</DialogTitle>
-                <DialogDescription>
-                  This will restore all workspace settings to their defaults. Your generated content will not be affected.
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter>
-                <Button variant="outline" size="sm" onClick={() => setResetOpen(false)}>
-                  Cancel
-                </Button>
-                <Button variant="destructive" size="sm" onClick={() => setResetOpen(false)}>
-                  Reset settings
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
-
 // ─── Orchestrator ──────────────────────────────────────────────────
 
 function WorkspaceContent() {
@@ -423,21 +305,16 @@ function WorkspaceContent() {
   )
 
   return (
-    <div className="space-y-5">
-      <ProfileCompletionBar percent={completionPercent} />
-
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <div className="space-y-5">
           <WorkspaceProfileCard profile={profile} onUpdate={handleProfileUpdate} />
-          <BrandPersonaCard persona={persona} onUpdate={handlePersonaUpdate} />
           <LinkedInConnectionCard linkedIn={linkedIn} />
         </div>
         <div className="space-y-5">
+          <BrandPersonaCard persona={persona} onUpdate={handlePersonaUpdate} />
           <UsagePlanCard used={POSTS_USED} limit={PLAN_LIMIT} />
-          <DangerZoneCard />
         </div>
       </div>
-    </div>
   )
 }
 
