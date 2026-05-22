@@ -13,6 +13,16 @@ export const guardrailService = {
     }))
   },
 
+  async getAllGuardrails(workspaceId: string) {
+    const rules = await guardrailRepository.findAllByWorkspace(workspaceId)
+    return rules.map((r) => ({
+      id: r._id.toString(),
+      category: r.category,
+      rule: r.rule,
+      isActive: r.isActive,
+    }))
+  },
+
   async getGuardrailsByCategory(workspaceId: string, category: "tone" | "format" | "banned" | "custom") {
     return guardrailRepository.findByCategory(workspaceId, category)
   },
@@ -27,7 +37,7 @@ export const guardrailService = {
       ...parsed.data,
       workspaceId,
     })
-    return { id: doc._id.toString(), ...parsed.data }
+    return { id: doc._id.toString(), category: parsed.data.category, rule: parsed.data.rule, isActive: parsed.data.isActive }
   },
 
   async toggleGuardrail(id: string, workspaceId: string, isActive: boolean) {

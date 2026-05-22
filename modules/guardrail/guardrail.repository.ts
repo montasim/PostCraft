@@ -9,6 +9,12 @@ export const guardrailRepository = {
       .lean()
   },
 
+  async findAllByWorkspace(workspaceId: string) {
+    return GuardrailModel.find({ workspaceId })
+      .sort({ category: 1, createdAt: 1 })
+      .lean()
+  },
+
   async findByCategory(workspaceId: string, category: GuardrailCategory) {
     return GuardrailModel.find({ workspaceId, category, isActive: true }).lean()
   },
@@ -25,7 +31,7 @@ export const guardrailRepository = {
     const doc = await GuardrailModel.findOneAndUpdate(
       { _id: id, workspaceId },
       data,
-      { new: true }
+      { returnDocument: "after" }
     )
     if (!doc) throw new NotFoundError("Guardrail")
     return doc
