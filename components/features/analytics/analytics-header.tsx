@@ -7,11 +7,7 @@ function AnalyticsHeader() {
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2.5">
-        <IconChartBar className="h-5 w-5 text-primary" />
-        <div>
-          <h2 className="text-sm font-semibold">Analytics</h2>
-          <p className="text-xs text-muted-foreground">Track your content performance</p>
-        </div>
+        
       </div>
       <div className="flex items-center gap-4">
         <p className="hidden text-xs text-muted-foreground sm:block">
