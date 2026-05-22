@@ -11,4 +11,6 @@ export function getGeminiClient(): GoogleGenerativeAI {
   return client
 }
 
-export const DEFAULT_MODEL = "gemini-2.5-flash"
+export function getDefaultModel(): string {
+  return getEnv().GEMINI_MODEL
+}
