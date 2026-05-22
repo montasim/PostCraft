@@ -26,19 +26,28 @@ function PostVariantsCarousel() {
         <div className="flex gap-1.5">
           <span
             className="inline-flex items-center rounded-md px-2 py-1 text-[10px] font-semibold text-chart-1"
-            style={{ background: "color-mix(in oklab, var(--chart-1) 10%, transparent)" }}
+            style={{
+              background:
+                "color-mix(in oklab, var(--chart-1) 10%, transparent)",
+            }}
           >
             Heuristic 40%
           </span>
           <span
             className="inline-flex items-center rounded-md px-2 py-1 text-[10px] font-semibold text-chart-2"
-            style={{ background: "color-mix(in oklab, var(--chart-2) 10%, transparent)" }}
+            style={{
+              background:
+                "color-mix(in oklab, var(--chart-2) 10%, transparent)",
+            }}
           >
             Judge LLM 40%
           </span>
           <span
             className="inline-flex items-center rounded-md px-2 py-1 text-[10px] font-semibold text-chart-3"
-            style={{ background: "color-mix(in oklab, var(--chart-3) 10%, transparent)" }}
+            style={{
+              background:
+                "color-mix(in oklab, var(--chart-3) 10%, transparent)",
+            }}
           >
             Structure 20%
           </span>
@@ -47,7 +56,7 @@ function PostVariantsCarousel() {
       <div className="group relative">
         <div
           ref={ref}
-          className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-px py-5 scrollbar-none [&::-webkit-scrollbar]:hidden"
+          className="flex snap-x snap-mandatory scrollbar-none gap-4 overflow-x-auto px-px py-5 [&::-webkit-scrollbar]:hidden"
         >
           {VARIANTS.map((variant) => (
             <div
@@ -57,9 +66,7 @@ function PostVariantsCarousel() {
               <VariantCard
                 variant={variant}
                 copied={isCopied(variant.rank)}
-                onCopy={() =>
-                  copy(formatVariantText(variant), variant.rank)
-                }
+                onCopy={() => copy(formatVariantText(variant), variant.rank)}
               />
             </div>
           ))}

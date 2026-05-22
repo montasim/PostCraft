@@ -17,7 +17,7 @@ function CarouselNavigation({
       <Button
         variant="outline"
         size="icon"
-        className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full opacity-0 shadow-md transition-opacity group-hover:opacity-100"
+        className="absolute top-1/2 left-2 z-10 -translate-y-1/2 rounded-full opacity-0 shadow-md transition-opacity group-hover:opacity-100"
         onClick={onScrollLeft}
       >
         <IconChevronLeft className="h-4 w-4" />
@@ -25,7 +25,7 @@ function CarouselNavigation({
       <Button
         variant="outline"
         size="icon"
-        className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full opacity-0 shadow-md transition-opacity group-hover:opacity-100"
+        className="absolute top-1/2 right-2 z-10 -translate-y-1/2 rounded-full opacity-0 shadow-md transition-opacity group-hover:opacity-100"
         onClick={onScrollRight}
       >
         <IconChevronRight className="h-4 w-4" />

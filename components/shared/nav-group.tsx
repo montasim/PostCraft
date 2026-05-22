@@ -13,7 +13,7 @@ interface NavGroupProps {
 function NavGroup({ label, items, active, onSelect }: NavGroupProps) {
   return (
     <div>
-      <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+      <p className="mb-2 px-3 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
         {label}
       </p>
       <ul className="space-y-1">
@@ -27,8 +27,8 @@ function NavGroup({ label, items, active, onSelect }: NavGroupProps) {
                 className={cn(
                   "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm transition",
                   isActive
-                    ? "bg-sidebar-accent text-primary font-medium"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent/50",
+                    ? "bg-sidebar-accent font-medium text-primary"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent/50"
                 )}
               >
                 <Icon className="h-4 w-4" />

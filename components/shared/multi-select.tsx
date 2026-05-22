@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import {
   Command,
-  CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
@@ -38,7 +37,7 @@ function MultiSelect({
     onChange(
       selected.includes(value)
         ? selected.filter((s) => s !== value)
-        : [...selected, value],
+        : [...selected, value]
     )
   }
 
@@ -49,8 +48,8 @@ function MultiSelect({
           role="button"
           tabIndex={0}
           className={cn(
-            "flex min-h-[44px] max-h-[88px] cursor-pointer flex-wrap items-center gap-1.5 overflow-y-auto overflow-x-hidden rounded-lg border border-input bg-background p-2 text-sm",
-            className,
+            "flex max-h-[88px] min-h-[44px] cursor-pointer flex-wrap items-center gap-1.5 overflow-x-hidden overflow-y-auto rounded-lg border border-input bg-background p-2 text-sm",
+            className
           )}
         >
           {selected.length > 0 ? (
@@ -62,7 +61,7 @@ function MultiSelect({
               >
                 {s}
                 <button
-                  className="ml-0.5 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                  className="ml-0.5 rounded-full ring-offset-background outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") toggle(s)
                   }}
@@ -102,7 +101,7 @@ function MultiSelect({
                 <IconCheck
                   className={cn(
                     "mr-2 h-4 w-4",
-                    selected.includes(option) ? "opacity-100" : "opacity-0",
+                    selected.includes(option) ? "opacity-100" : "opacity-0"
                   )}
                 />
                 {option}

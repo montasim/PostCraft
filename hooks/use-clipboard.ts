@@ -15,10 +15,7 @@ function useClipboard() {
     setTimeout(() => setCopiedId(null), RESET_DELAY_MS)
   }, [])
 
-  const isCopied = useCallback(
-    (id: number) => copiedId === id,
-    [copiedId],
-  )
+  const isCopied = useCallback((id: number) => copiedId === id, [copiedId])
 
   return { copy, isCopied }
 }
