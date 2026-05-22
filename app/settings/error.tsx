@@ -2,12 +2,12 @@
 
 import { PageError } from "@/components/shared"
 
-export default function GlobalError({
+export default function SettingsError({
   error,
   reset,
 }: {
   error: Error & { digest?: string }
   reset: () => void
 }) {
-  return <PageError error={error} reset={reset} />
+  return <PageError title="Settings failed to load" error={error} reset={reset} />
 }
