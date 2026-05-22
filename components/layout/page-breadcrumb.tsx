@@ -9,7 +9,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { IconSparkles, IconHistory, IconChartBar } from "@tabler/icons-react"
+import { IconSparkles, IconHistory, IconChartBar, IconShield } from "@tabler/icons-react"
 import type { ComponentType } from "react"
 
 interface BreadcrumbConfig {
@@ -33,6 +33,11 @@ const BREADCRUMB_CONFIG: Record<string, BreadcrumbConfig> = {
     label: "Analytics",
     icon: IconChartBar,
     page: "Performance insights",
+  },
+  "/guardrails": {
+    label: "Guardrails",
+    icon: IconShield,
+    page: "Protect your brand voice",
   },
 }
 
