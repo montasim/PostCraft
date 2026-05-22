@@ -3,11 +3,29 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ScorePill } from "@/components/shared/score-pill"
-import { TOP_POSTS } from "@/lib/constants"
 import { IconTrophy, IconMedal, IconAward } from "@tabler/icons-react"
 import { Separator } from "@/components/ui/separator"
+import type { TopPerformingPost } from "@/types"
 
-function AnalyticsTopPosts() {
+function AnalyticsTopPosts({ posts }: { posts: TopPerformingPost[] }) {
+  if (posts.length === 0) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+            <IconTrophy className="h-4 w-4 text-chart-1" />
+            Top Performing Posts
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="py-8 text-center text-sm text-muted-foreground">
+            No posts yet. Generate content to see top performers.
+          </p>
+        </CardContent>
+      </Card>
+    )
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -17,7 +35,7 @@ function AnalyticsTopPosts() {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-0">
-        {TOP_POSTS.map((post, i) => (
+        {posts.map((post, i) => (
           <div key={i}>
             {i > 0 && <Separator className="my-3" />}
             <div className="flex items-start gap-3">

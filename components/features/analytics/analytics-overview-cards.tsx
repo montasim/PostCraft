@@ -2,40 +2,39 @@
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ANALYTICS_OVERVIEW, STYLE_PERFORMANCE } from "@/lib/constants"
 import { IconTarget, IconTrendingUp, IconTrophy } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
+import type { AnalyticsOverview, StylePerformance } from "@/types"
 
-function AnalyticsOverviewCards() {
-  const bestStyle = STYLE_PERFORMANCE.reduce((best, s) =>
-    s.avgScore > best.avgScore ? s : best
-  )
+function AnalyticsOverviewCards({ overview, styles }: { overview: AnalyticsOverview; styles: StylePerformance[] }) {
+  const bestStyle = styles.length > 0
+    ? styles.reduce((best, s) => s.avgScore > best.avgScore ? s : best)
+    : null
   const goalPercent = Math.round(
-    (ANALYTICS_OVERVIEW.monthlyGoalProgress / ANALYTICS_OVERVIEW.monthlyGoal) * 100
+    (overview.monthlyGoalProgress / overview.monthlyGoal) * 100
   )
 
   return (
     <div className="grid grid-cols-2 gap-5 lg:grid-cols-5 xl:grid-cols-5">
-      {/* Metric cards */}
       <MetricCard
         label="Avg Score"
-        value={ANALYTICS_OVERVIEW.avgScore}
+        value={overview.avgScore}
         icon={IconTrophy}
         color="text-chart-5"
         bg="bg-chart-5/10"
-        change={ANALYTICS_OVERVIEW.weeklyChange}
+        change={overview.weeklyChange}
       />
       <MetricCard
         label="Engagement"
-        value={ANALYTICS_OVERVIEW.avgEngagement}
+        value={overview.avgEngagement}
         icon={IconTrendingUp}
         color="text-chart-2"
         bg="bg-chart-2/10"
-        change={ANALYTICS_OVERVIEW.weeklyChange - 2}
+        change={overview.weeklyChange - 2}
       />
       <MetricCard
         label="Success Rate"
-        value={`${ANALYTICS_OVERVIEW.successRate}%`}
+        value={`${overview.successRate}%`}
         icon={IconTarget}
         color="text-chart-1"
         bg="bg-chart-1/10"
@@ -44,7 +43,7 @@ function AnalyticsOverviewCards() {
 
       <MetricCard
         label="Best style"
-        value={`${bestStyle.style} · S:${bestStyle.avgScore}`}
+        value={bestStyle ? `${bestStyle.style} · S:${bestStyle.avgScore}` : "N/A"}
         icon={IconTrophy}
         color="text-chart-2"
         bg="bg-chart-2/10"
@@ -52,7 +51,7 @@ function AnalyticsOverviewCards() {
 
       <MetricCard
         label="Monthly goal"
-        value={`${ANALYTICS_OVERVIEW.monthlyGoalProgress}/${ANALYTICS_OVERVIEW.monthlyGoal}`}
+        value={`${overview.monthlyGoalProgress}/${overview.monthlyGoal}`}
         icon={IconTarget}
         color="text-chart-3"
         bg="bg-chart-3/10"

@@ -1,9 +1,9 @@
 "use client"
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { SCORE_DISTRIBUTION } from "@/lib/constants"
 import { IconChartBar } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
+import type { ScoreDistribution } from "@/types"
 
 const RANGE_COLORS: Record<string, string> = {
   "90-100": "bg-chart-2",
@@ -12,7 +12,7 @@ const RANGE_COLORS: Record<string, string> = {
   "Below 70": "bg-chart-4",
 }
 
-function AnalyticsScoreDistribution() {
+function AnalyticsScoreDistribution({ data }: { data: ScoreDistribution[] }) {
   return (
     <Card>
       <CardHeader>
@@ -22,7 +22,7 @@ function AnalyticsScoreDistribution() {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        {SCORE_DISTRIBUTION.map((item) => (
+        {data.map((item) => (
           <div key={item.range} className="space-y-1">
             <div className="flex items-center justify-between text-xs">
               <span className="font-medium">{item.range}</span>
