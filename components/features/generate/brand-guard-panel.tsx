@@ -15,13 +15,13 @@ const FORMAT_RULES = ["Max 1,300 characters", "Hook under 150 chars"]
 
 const BANNED_WORDS = ["game changer", "synergy", "leverage"]
 
-function BrandGuardPanel() {
+function BrandGuardPanel({ showButton = true, title = "Brand Guard" }: { showButton?: boolean; title?: string }) {
   return (
     <Card className="hidden w-80 shrink-0 lg:block">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-sm font-semibold">
           <IconShield className="h-4 w-4 text-primary" />
-          Brand Guard
+          {title}
         </CardTitle>
       </CardHeader>
       <CardContent className="mt-3 space-y-4">
@@ -66,9 +66,11 @@ function BrandGuardPanel() {
           ))}
         </div>
 
-        <Button variant="outline" className="w-full border-dashed text-xs">
-          Protect your brand
-        </Button>
+        {showButton && (
+          <Button variant="outline" className="w-full border-dashed text-xs">
+            Protect your brand
+          </Button>
+        )}
       </CardContent>
     </Card>
   )
