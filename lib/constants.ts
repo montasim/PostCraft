@@ -4,8 +4,10 @@ import {
   IconChartBar,
   IconShield,
   IconBuilding,
+  IconUser,
+  IconSettings,
 } from "@tabler/icons-react"
-import type { NavItem, Variant, HistoryEntry, SortOption, ScoreRange, AnalyticsOverview, ScoreDistribution, StylePerformance, TrendDataPoint, TopPerformingPost } from "@/types"
+import type { NavItem, Variant, HistoryEntry, SortOption, ScoreRange, AnalyticsOverview, ScoreDistribution, StylePerformance, TrendDataPoint, TopPerformingPost, WorkspaceProfile, BrandPersona, LinkedInConnection, UserProfile, ProfileStats, NotificationSettings, PrivacySettings, AppearanceSettings, AccountSettings } from "@/types"
 
 export const POSTS_USED = 3
 export const PLAN_LIMIT = 5
@@ -19,6 +21,11 @@ export const NAV_MAIN: NavItem[] = [
 export const NAV_CONFIG: NavItem[] = [
   { id: "guardrails", label: "Guardrails", icon: IconShield },
   { id: "workspace", label: "Workspace", icon: IconBuilding },
+]
+
+export const NAV_ACCOUNT: NavItem[] = [
+  { id: "profile", label: "Profile", icon: IconUser },
+  { id: "settings", label: "Settings", icon: IconSettings },
 ]
 
 export const VARIANTS: Variant[] = [
@@ -348,3 +355,80 @@ export const TOP_POSTS: TopPerformingPost[] = [
   { topic: "The resume is dead", score: 90, engagement: 92, style: "Thought leader", date: "Apr 22" },
   { topic: "The 4-day work week experiment", score: 90, engagement: 92, style: "Thought leader", date: "May 10" },
 ]
+
+export const WORKSPACE_PROFILE: WorkspaceProfile = {
+  name: "Personal Brand",
+  description: "LinkedIn content strategy for tech hiring and startup leadership",
+  industry: "Technology / SaaS",
+  linkedInUrl: "https://linkedin.com/in/example",
+}
+
+export const WORKSPACE_PERSONA: BrandPersona = {
+  targetAudiences: ["Founders", "Engineers"],
+  preferredTones: ["Thought leader", "Story"],
+  language: "EN",
+}
+
+export const WORKSPACE_LINKEDIN: LinkedInConnection = {
+  connected: true,
+  profileUrl: "https://linkedin.com/in/example",
+  connectedAt: "2025-05-15",
+  profileName: "Example User",
+}
+
+export const INDUSTRY_OPTIONS = [
+  "Technology / SaaS",
+  "Marketing / Advertising",
+  "Finance / FinTech",
+  "Healthcare / Biotech",
+  "Education / EdTech",
+  "Consulting",
+  "Other",
+]
+
+export const USER_PROFILE: UserProfile = {
+  fullName: "John Doe",
+  email: "john@example.com",
+  bio: "Tech founder building the future of hiring. Ex-Google, now shipping LinkedIQ. I write about AI, startups, and leadership.",
+  location: "San Francisco, CA",
+  title: "Founder & CEO",
+  company: "LinkedIQ",
+  website: "https://johndoe.dev",
+  twitterHandle: "@johndoe",
+  linkedInSlug: "johndoe",
+  avatarUrl: "",
+  joinedDate: "2025-03-15",
+}
+
+export const PROFILE_STATS: ProfileStats = {
+  postsGenerated: 15,
+  currentStreak: 4,
+  longestStreak: 12,
+  avgScore: 82,
+  topPercentile: 12,
+}
+
+export const NOTIFICATION_DEFAULTS: NotificationSettings = {
+  emailGenerationComplete: true,
+  emailWeeklyDigest: true,
+  emailProductUpdates: false,
+  pushPostReminder: true,
+}
+
+export const PRIVACY_DEFAULTS: PrivacySettings = {
+  profileVisibility: "public",
+  showActivityStatus: true,
+  shareUsageAnalytics: false,
+}
+
+export const APPEARANCE_DEFAULTS: AppearanceSettings = {
+  theme: "system",
+  compactMode: false,
+  fontSize: "default",
+}
+
+export const ACCOUNT_DEFAULTS: AccountSettings = {
+  twoFactorEnabled: false,
+  sessionTimeout: 30,
+  dataExportFormat: "json",
+}
