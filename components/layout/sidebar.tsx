@@ -37,7 +37,7 @@ function Sidebar({ active, onSelect }: SidebarProps) {
           onSelect={onSelect}
         />
       </div>
-      <div className="px-5 pb-4 space-y-2">
+      <div className="space-y-2 px-5 pb-4">
         <PlanQuotaCard />
         <BrandCard />
       </div>

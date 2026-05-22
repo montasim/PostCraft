@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { ThemeToggle } from "@/components/layout/theme-toggle"
 import { UserDropdown } from "@/components/layout/user-dropdown"
-import { IconSparkles, IconUsers, IconMenu2 } from "@tabler/icons-react"
+import { IconSparkles, IconMenu2 } from "@tabler/icons-react"
 
 interface HeaderProps {
   onMobileMenuOpen: () => void

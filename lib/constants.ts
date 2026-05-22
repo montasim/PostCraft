@@ -78,11 +78,6 @@ export const AUDIENCE_OPTIONS = [
   "Designers",
 ]
 
-export const TONE_OPTIONS = [
-  "Thought leader",
-  "Story",
-  "Contrarian",
-  "Casual",
-]
+export const TONE_OPTIONS = ["Thought leader", "Story", "Contrarian", "Casual"]
 
 export const LANGUAGE_OPTIONS = ["EN", "BN", "Banglish"]

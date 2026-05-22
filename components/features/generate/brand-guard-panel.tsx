@@ -24,7 +24,7 @@ function BrandGuardPanel() {
           Brand Guard
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4 mt-3">
+      <CardContent className="mt-3 space-y-4">
         <div className="space-y-2">
           <p className="text-xs font-semibold text-muted-foreground">
             Tone rules
@@ -66,10 +66,7 @@ function BrandGuardPanel() {
           ))}
         </div>
 
-        <Button
-          variant="outline"
-          className="w-full border-dashed text-xs"
-        >
+        <Button variant="outline" className="w-full border-dashed text-xs">
           Protect your brand
         </Button>
       </CardContent>

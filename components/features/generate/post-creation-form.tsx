@@ -74,9 +74,7 @@ function PostCreationForm() {
         </div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <div className="space-y-1.5">
-            <Label className="text-xs font-medium">
-              Target audience
-            </Label>
+            <Label className="text-xs font-medium">Target audience</Label>
             <MultiSelect
               options={AUDIENCE_OPTIONS}
               selected={audience}
@@ -107,13 +105,11 @@ function PostCreationForm() {
       <CardFooter className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Switch checked={emoji} onCheckedChange={setEmoji} />
-          <Label className="text-xs text-muted-foreground">
-            Include emoji
-          </Label>
+          <Label className="text-xs text-muted-foreground">Include emoji</Label>
         </div>
         <Button
           disabled={isDisabled}
-          className="gap-2 bg-gradient-to-r from-primary to-accent shadow-lg shadow-primary/30 text-primary-foreground"
+          className="gap-2 bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-lg shadow-primary/30"
         >
           <IconSparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
           Generate
