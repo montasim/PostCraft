@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
   Dialog,
@@ -210,20 +211,173 @@ function AccountSecurityCard({
           </select>
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="space-y-1.5">
-            <p className="text-xs font-medium">Password</p>
-            <p className="text-[10px] text-muted-foreground">
-              Last changed 30 days ago
-            </p>
-          </div>
+        <ChangePasswordRow />
+      </CardContent>
+    </Card>
+  )
+}
+
+// ─── Change Password Row ──────────────────────────────────────────
+
+function ChangePasswordRow() {
+  const [open, setOpen] = useState(false)
+  const [step, setStep] = useState<"send" | "verify">("send")
+  const [otp, setOtp] = useState("")
+  const [newPassword, setNewPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+
+  const resetState = () => {
+    setStep("send")
+    setOtp("")
+    setNewPassword("")
+    setConfirmPassword("")
+    setError("")
+    setLoading(false)
+  }
+
+  const handleSendOtp = async () => {
+    setError("")
+    setLoading(true)
+    try {
+      const res = await fetch("/api/auth/send-otp", { method: "POST" })
+      if (!res.ok) {
+        const data = await res.json()
+        setError(data.error ?? "Failed to send code")
+        return
+      }
+      setStep("verify")
+      toast.success("Verification code sent to your email")
+    } catch {
+      setError("Network error")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleChangePassword = async () => {
+    setError("")
+    if (newPassword.length < 8) {
+      setError("Password must be at least 8 characters")
+      return
+    }
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match")
+      return
+    }
+    setLoading(true)
+    try {
+      const res = await fetch("/api/auth/verify-otp-and-change", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: otp, newPassword }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error ?? "Failed to change password")
+        return
+      }
+      toast.success("Password changed successfully")
+      setOpen(false)
+      resetState()
+    } catch {
+      setError("Network error")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="flex items-center justify-between">
+      <div className="space-y-1.5">
+        <p className="text-xs font-medium">Password</p>
+        <p className="text-[10px] text-muted-foreground">
+          Keep your account secure
+        </p>
+      </div>
+      <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) resetState() }}>
+        <DialogTrigger asChild>
           <Button variant="outline" size="sm" className="h-7 gap-1 text-xs">
             <IconKey className="h-3 w-3" />
             Change
           </Button>
-        </div>
-      </CardContent>
-    </Card>
+        </DialogTrigger>
+        <DialogContent>
+          {step === "send" ? (
+            <>
+              <DialogHeader>
+                <DialogTitle>Change password</DialogTitle>
+                <DialogDescription>
+                  We'll send a verification code to your email to confirm your identity.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="py-4">
+                <Button onClick={handleSendOtp} className="w-full" disabled={loading}>
+                  {loading ? "Sending..." : "Send verification code"}
+                </Button>
+              </div>
+              {error && <p className="text-xs text-destructive">{error}</p>}
+            </>
+          ) : (
+            <>
+              <DialogHeader>
+                <DialogTitle>Enter verification code</DialogTitle>
+                <DialogDescription>
+                  Enter the 6-digit code sent to your email, then choose a new password.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-3">
+                <div className="space-y-1.5">
+                  <Label className="text-xs">Verification code</Label>
+                  <Input
+                    placeholder="000000"
+                    maxLength={6}
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
+                    className="h-8 text-xs tracking-widest"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs">New password</Label>
+                  <Input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Min. 8 characters"
+                    className="h-8 text-xs"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs">Confirm new password</Label>
+                  <Input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="h-8 text-xs"
+                  />
+                </div>
+                {error && (
+                  <p className="text-xs text-destructive">{error}</p>
+                )}
+              </div>
+              <DialogFooter>
+                <Button variant="outline" size="sm" onClick={() => setStep("send")}>
+                  Resend code
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={handleChangePassword}
+                  disabled={loading || otp.length !== 6 || !newPassword || !confirmPassword}
+                >
+                  {loading ? "Changing..." : "Change password"}
+                </Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
   )
 }
 
