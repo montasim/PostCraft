@@ -33,7 +33,7 @@ export const analyticsRepository = {
     const t = trendStats[0] ?? { total: 0, completed: 0 }
 
     return {
-      totalPosts: v.totalPosts,
+      totalPosts: t.completed,
       avgScore: Math.round(v.avgScore ?? 0),
       avgEngagement: Math.round(v.avgEngagement ?? 0),
       successRate: t.total > 0 ? Math.round((t.completed / t.total) * 100) : 0,

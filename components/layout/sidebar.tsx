@@ -8,9 +8,12 @@ import { NAV_MAIN, NAV_CONFIG, NAV_ACCOUNT } from "@/lib/constants"
 interface SidebarProps {
   active: string
   onSelect: (id: string) => void
+  used?: number
+  limit?: number
+  brandName?: string
 }
 
-function Sidebar({ active, onSelect }: SidebarProps) {
+function Sidebar({ active, onSelect, used, limit, brandName }: SidebarProps) {
   return (
     <aside className="hidden w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar md:flex">
       <div className="flex h-14 items-center gap-2 border-b border-sidebar-border px-5">
@@ -44,8 +47,8 @@ function Sidebar({ active, onSelect }: SidebarProps) {
         />
       </div>
       <div className="space-y-2 px-5 pb-4">
-        <PlanQuotaCard />
-        <BrandCard />
+        <PlanQuotaCard used={used} limit={limit} />
+        <BrandCard name={brandName} />
       </div>
     </aside>
   )
