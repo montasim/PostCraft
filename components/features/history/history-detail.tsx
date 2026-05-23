@@ -95,7 +95,7 @@ function VariantCardWrapper({ variant }: { variant: import("@/types").Variant })
   return <VariantCard variant={variant} copied={copied} onCopy={handleCopy} />
 }
 
-function HistoryDetail({ entry }: { entry: HistoryEntry }) {
+function HistoryDetail({ entry }: { entry: HistoryEntry & { guardrails?: { id: string; category: "tone" | "format" | "banned" | "custom"; rule: string; isActive: boolean }[] } }) {
   const { ref, scrollLeft, scrollRight } = useCarousel()
 
   return (
@@ -103,7 +103,7 @@ function HistoryDetail({ entry }: { entry: HistoryEntry }) {
       {/* Two-column: input card + brand guard */}
       <div className="flex flex-col gap-5 lg:flex-row">
         <OriginalInputCard entry={entry} />
-        <BrandGuardPanel showButton={false} title="Used Brand Guard" />
+        <BrandGuardPanel showButton={false} title="Used Brand Guard" guardrails={entry.guardrails} />
       </div>
 
       {/* Ranked variants carousel */}
