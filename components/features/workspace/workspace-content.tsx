@@ -27,7 +27,24 @@ import {
   IconX,
 } from "@tabler/icons-react"
 import { toast } from "sonner"
-import type { WorkspaceProfile, BrandPersona } from "@/types"
+import type { WorkspaceProfile, BrandPersona, PersonaOption } from "@/types"
+import type { SelectOption } from "@/components/shared/multi-select"
+
+/** Extract value strings from persona options */
+function toValues(items: PersonaOption[]): string[] {
+  return items.map((i) => i.value)
+}
+
+/** Reconstruct persona options from selected value strings + available options */
+function fromValues(values: string[], available: SelectOption[]): PersonaOption[] {
+  const lookup = new Map(available.map((o) => [o.value, o]))
+  return values.map((v) => {
+    const found = lookup.get(v)
+    return found
+      ? { value: found.value, label: found.label, description: found.description }
+      : { value: v, label: v }
+  })
+}
 
 // ─── Workspace Profile Card ────────────────────────────────────────
 
@@ -202,8 +219,8 @@ function BrandPersonaCard({
               <Label className="text-xs">Target audiences</Label>
               <MultiSelect
                 options={AUDIENCE_OPTIONS}
-                selected={draft.targetAudiences}
-                onChange={(v) => setDraft((d) => ({ ...d, targetAudiences: v }))}
+                selected={toValues(draft.targetAudiences)}
+                onChange={(v) => setDraft((d) => ({ ...d, targetAudiences: fromValues(v, AUDIENCE_OPTIONS) }))}
                 placeholder="Select audiences..."
                 creatable
               />
@@ -212,8 +229,8 @@ function BrandPersonaCard({
               <Label className="text-xs">Preferred tones</Label>
               <MultiSelect
                 options={TONE_OPTIONS}
-                selected={draft.preferredTones}
-                onChange={(v) => setDraft((d) => ({ ...d, preferredTones: v }))}
+                selected={toValues(draft.preferredTones)}
+                onChange={(v) => setDraft((d) => ({ ...d, preferredTones: fromValues(v, TONE_OPTIONS) }))}
                 placeholder="Select tones..."
                 creatable
               />
@@ -222,8 +239,8 @@ function BrandPersonaCard({
               <Label className="text-xs">Language</Label>
               <MultiSelect
                 options={LANGUAGE_OPTIONS}
-                selected={draft.language}
-                onChange={(v) => setDraft((d) => ({ ...d, language: v }))}
+                selected={toValues(draft.language)}
+                onChange={(v) => setDraft((d) => ({ ...d, language: fromValues(v, LANGUAGE_OPTIONS) }))}
                 placeholder="Select languages..."
                 creatable
               />
@@ -239,7 +256,7 @@ function BrandPersonaCard({
               <p className="text-xs text-muted-foreground mb-0.5">Target audiences</p>
               <div className="flex flex-wrap gap-1">
                 {persona.targetAudiences.length > 0 ? persona.targetAudiences.map((a) => (
-                  <Badge key={a} variant="secondary" className="text-[10px]">{a}</Badge>
+                  <Badge key={a.value} variant="secondary" className="text-[10px]">{a.label}</Badge>
                 )) : <p className="text-xs">—</p>}
               </div>
             </div>
@@ -247,7 +264,7 @@ function BrandPersonaCard({
               <p className="text-xs text-muted-foreground mb-0.5">Preferred tones</p>
               <div className="flex flex-wrap gap-1">
                 {persona.preferredTones.length > 0 ? persona.preferredTones.map((t) => (
-                  <Badge key={t} variant="secondary" className="text-[10px]">{t}</Badge>
+                  <Badge key={t.value} variant="secondary" className="text-[10px]">{t.label}</Badge>
                 )) : <p className="text-xs">—</p>}
               </div>
             </div>
@@ -255,7 +272,7 @@ function BrandPersonaCard({
               <p className="text-xs text-muted-foreground mb-0.5">Language</p>
               <div className="flex flex-wrap gap-1">
                 {persona.language.length > 0 ? persona.language.map((l) => (
-                  <Badge key={l} variant="secondary" className="text-[10px]">{l}</Badge>
+                  <Badge key={l.value} variant="secondary" className="text-[10px]">{l.label}</Badge>
                 )) : <p className="text-xs">—</p>}
               </div>
             </div>
