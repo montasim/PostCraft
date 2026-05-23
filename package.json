@@ -10,7 +10,9 @@
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
-    "seed": "npx tsx scripts/seed-guardrails.ts"
+    "seed": "npx tsx scripts/seed-guardrails.ts && npx tsx scripts/seed-persona.ts",
+    "seed:guardrails": "npx tsx scripts/seed-guardrails.ts",
+    "seed:persona": "npx tsx scripts/seed-persona.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
