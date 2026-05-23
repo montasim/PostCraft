@@ -1,6 +1,6 @@
 import { connectDB } from "@/core/config/database"
 import { getEnv } from "@/core/config/env"
-import { trendService } from "@/modules/trend"
+import { trendService, trendRepository } from "@/modules/trend"
 import { generationService } from "@/modules/generation"
 import { scoringService } from "@/modules/scoring"
 import { rankingService } from "@/modules/ranking"
@@ -24,6 +24,12 @@ export async function runGenerationPipeline(trendId: string): Promise<void> {
     const toneRules = allGuardrails.filter((g) => g.category === "tone").map((g) => g.rule)
     const formatRules = allGuardrails.filter((g) => g.category === "format").map((g) => g.rule)
     const bannedWords = allGuardrails.filter((g) => g.category === "banned").map((g) => g.rule)
+
+    // 2b. Save guardrail IDs used for this trend
+    const guardrailIds = allGuardrails.map((g) => g._id.toString())
+    if (guardrailIds.length > 0) {
+      await trendRepository.updateGuardrailIds(trendId, DEFAULT_WORKSPACE_ID, guardrailIds)
+    }
 
     // 3. Generate variants via AI
     const rawVariants = await generationService.generateVariants(

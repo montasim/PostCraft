@@ -10,6 +10,7 @@ export interface ITrend extends Document {
   includeEmoji: boolean
   status: TrendStatus
   errorMessage?: string
+  guardrailIds?: string[]
   createdBy: string
   createdAt: Date
   updatedAt: Date
@@ -29,6 +30,7 @@ const trendSchema = new Schema<ITrend>(
       default: "queued",
     },
     errorMessage: { type: String },
+    guardrailIds: { type: [String], default: [] },
     createdBy: { type: String, required: true },
   },
   { timestamps: true }
