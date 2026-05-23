@@ -1,34 +1,19 @@
 import "dotenv/config"
 import mongoose from "mongoose"
 import { WorkspaceModel } from "../modules/workspace/workspace.model"
+import {
+  AUDIENCE_OPTIONS,
+  TONE_OPTIONS,
+  LANGUAGE_OPTIONS,
+} from "../lib/constants"
 
 const MONGODB_URI = process.env.MONGODB_URI ?? "mongodb://localhost:27017/linkediq"
 const WORKSPACE_ID = process.env.SEED_WORKSPACE_ID ?? "ws_default"
 
 const SEED_PERSONA = {
-  targetAudiences: [
-    "HR Recruiters",
-    "Hiring Managers",
-    "Tech Leads",
-    "CTO / VP Engineering",
-    "Fellow Developers",
-    "Startup Founders",
-    "Product Managers",
-    "Potential Clients",
-    "Community Builders",
-    "Indie Hackers",
-  ],
-  preferredTones: [
-    "Thought Leadership",
-    "Storytelling",
-    "Educational",
-    "Contrarian",
-    "Inspirational",
-    "Analytical",
-    "Conversational",
-    "Action-Oriented",
-  ],
-  language: ["EN", "BN", "Banglish"],
+  targetAudiences: AUDIENCE_OPTIONS,
+  preferredTones: TONE_OPTIONS,
+  language: LANGUAGE_OPTIONS,
 }
 
 async function seed() {
@@ -44,7 +29,7 @@ async function seed() {
   console.log(`Seeded brand persona for workspace: ${WORKSPACE_ID}`)
   console.log(`  targetAudiences: ${result.persona.targetAudiences.length} items`)
   console.log(`  preferredTones:  ${result.persona.preferredTones.length} items`)
-  console.log(`  language:        ${result.persona.language.join(", ")}`)
+  console.log(`  language:        ${result.persona.language.map((l: { value: string }) => l.value).join(", ")}`)
 
   await mongoose.disconnect()
   console.log("Done.")
