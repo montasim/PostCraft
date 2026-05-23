@@ -16,6 +16,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 import { cn } from "@/lib/utils"
 import {
   IconBell,
@@ -406,30 +407,19 @@ function DangerZoneCard({ onReset }: { onReset: () => void }) {
               Permanently remove all data
             </p>
           </div>
-          <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-            <DialogTrigger asChild>
-              <Button variant="destructive" size="sm" className="h-7 gap-1 text-xs">
-                <IconTrash className="h-3 w-3" />
-                Delete
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Delete workspace?</DialogTitle>
-                <DialogDescription>
-                  This will permanently delete your workspace and all associated data. This action cannot be undone.
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter>
-                <Button variant="outline" size="sm" onClick={() => setDeleteOpen(false)}>
-                  Cancel
-                </Button>
-                <Button variant="destructive" size="sm" onClick={() => setDeleteOpen(false)}>
-                  Delete workspace
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <Button variant="destructive" size="sm" className="h-7 gap-1 text-xs" onClick={() => setDeleteOpen(true)}>
+            <IconTrash className="h-3 w-3" />
+            Delete
+          </Button>
+          <ConfirmDialog
+            open={deleteOpen}
+            onOpenChange={setDeleteOpen}
+            title="Delete workspace?"
+            description="This will permanently delete your workspace and all associated data. This action cannot be undone."
+            confirmLabel="Delete workspace"
+            variant="destructive"
+            onConfirm={() => {}}
+          />
         </div>
 
         <div className="flex items-center justify-between rounded-lg border border-destructive/20 px-3 py-2">
@@ -439,30 +429,19 @@ function DangerZoneCard({ onReset }: { onReset: () => void }) {
               Restore all defaults
             </p>
           </div>
-          <Dialog open={resetOpen} onOpenChange={setResetOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline" size="sm" className="h-7 gap-1 text-xs text-destructive hover:text-destructive">
-                <IconRefresh className="h-3 w-3" />
-                Reset
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Reset all settings?</DialogTitle>
-                <DialogDescription>
-                  This will restore all workspace settings to their defaults. Your generated content will not be affected.
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter>
-                <Button variant="outline" size="sm" onClick={() => setResetOpen(false)}>
-                  Cancel
-                </Button>
-                <Button variant="destructive" size="sm" onClick={() => { onReset(); setResetOpen(false) }}>
-                  Reset settings
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <Button variant="outline" size="sm" className="h-7 gap-1 text-xs text-destructive hover:text-destructive" onClick={() => setResetOpen(true)}>
+            <IconRefresh className="h-3 w-3" />
+            Reset
+          </Button>
+          <ConfirmDialog
+            open={resetOpen}
+            onOpenChange={setResetOpen}
+            title="Reset all settings?"
+            description="This will restore all workspace settings to their defaults. Your generated content will not be affected."
+            confirmLabel="Reset settings"
+            variant="destructive"
+            onConfirm={onReset}
+          />
         </div>
       </CardContent>
     </Card>

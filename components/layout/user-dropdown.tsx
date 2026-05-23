@@ -12,15 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
+import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 import { IconUser, IconSettings, IconLogout } from "@tabler/icons-react"
 import { authClient } from "@/core/auth/auth-client"
 
@@ -35,7 +27,6 @@ function UserDropdown() {
     : "??"
 
   async function handleLogout() {
-    setLogoutOpen(false)
     await authClient.signOut()
     router.push("/login")
     router.refresh()
@@ -75,24 +66,15 @@ function UserDropdown() {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <Dialog open={logoutOpen} onOpenChange={setLogoutOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Log out?</DialogTitle>
-            <DialogDescription>
-              You'll need to sign in again to access your account.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button variant="outline" size="sm" onClick={() => setLogoutOpen(false)}>
-              Cancel
-            </Button>
-            <Button variant="destructive" size="sm" onClick={handleLogout}>
-              Log out
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <ConfirmDialog
+        open={logoutOpen}
+        onOpenChange={setLogoutOpen}
+        title="Log out?"
+        description="You'll need to sign in again to access your account."
+        confirmLabel="Log out"
+        variant="destructive"
+        onConfirm={handleLogout}
+      />
     </>
   )
 }
