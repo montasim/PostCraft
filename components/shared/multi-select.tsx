@@ -16,14 +16,30 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+
+export interface SelectOption {
+  value: string
+  label: string
+  description?: string
+}
 
 interface MultiSelectProps {
-  options: string[]
+  options: (string | SelectOption)[]
   selected: string[]
   onChange: (selected: string[]) => void
   placeholder?: string
   className?: string
   creatable?: boolean
+}
+
+function normalizeOption(opt: string | SelectOption): SelectOption {
+  return typeof opt === "string" ? { value: opt, label: opt } : opt
 }
 
 function MultiSelect({
@@ -37,6 +53,21 @@ function MultiSelect({
   const [open, setOpen] = React.useState(false)
   const [search, setSearch] = React.useState("")
 
+  const normalized = React.useMemo(() => options.map(normalizeOption), [options])
+  const labelMap = React.useMemo(() => {
+    const map = new Map<string, string>()
+    for (const opt of normalized) map.set(opt.value, opt.label)
+    return map
+  }, [normalized])
+
+  const descMap = React.useMemo(() => {
+    const map = new Map<string, string>()
+    for (const opt of normalized) {
+      if (opt.description) map.set(opt.value, opt.description)
+    }
+    return map
+  }, [normalized])
+
   const toggle = (value: string) => {
     onChange(
       selected.includes(value)
@@ -46,21 +77,26 @@ function MultiSelect({
   }
 
   // Merge static options with any custom selected values
-  const allOptions = creatable
-    ? [...options, ...selected.filter((s) => !options.includes(s))]
-    : options
+  const allOptions: SelectOption[] = creatable
+    ? [
+        ...normalized,
+        ...selected
+          .filter((s) => !normalized.some((o) => o.value === s))
+          .map((s) => ({ value: s, label: s })),
+      ]
+    : normalized
 
   // Manual filtering
   const filtered = search.trim()
     ? allOptions.filter((o) =>
-        o.toLowerCase().includes(search.trim().toLowerCase())
+        o.label.toLowerCase().includes(search.trim().toLowerCase())
       )
     : allOptions
 
   const canCreate =
     creatable &&
     search.trim() !== "" &&
-    !allOptions.some((o) => o.toLowerCase() === search.trim().toLowerCase())
+    !allOptions.some((o) => o.value.toLowerCase() === search.trim().toLowerCase())
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -74,32 +110,48 @@ function MultiSelect({
           )}
         >
           {selected.length > 0 ? (
-            selected.map((s) => (
-              <Badge
-                key={s}
-                variant="secondary"
-                className="gap-1 rounded-md bg-primary/10 text-primary"
-              >
-                {s}
-                <button
-                  className="ml-0.5 rounded-full ring-offset-background outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") toggle(s)
-                  }}
-                  onMouseDown={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                  }}
-                  onClick={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    toggle(s)
-                  }}
+            selected.map((s) => {
+              const badge = (
+                <Badge
+                  key={s}
+                  variant="secondary"
+                  className="gap-1 rounded-md bg-primary/10 text-primary"
                 >
-                  <IconX className="h-3 w-3" />
-                </button>
-              </Badge>
-            ))
+                  {labelMap.get(s) ?? s}
+                  <button
+                    className="ml-0.5 rounded-full ring-offset-background outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") toggle(s)
+                    }}
+                    onMouseDown={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                    }}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      toggle(s)
+                    }}
+                  >
+                    <IconX className="h-3 w-3" />
+                  </button>
+                </Badge>
+              )
+
+              const desc = descMap.get(s)
+              if (!desc) return badge
+
+              return (
+                <TooltipProvider key={s} delayDuration={300}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>{badge}</TooltipTrigger>
+                    <TooltipContent side="bottom" className="max-w-xs text-xs">
+                      {desc}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )
+            })
           ) : (
             <span className="text-muted-foreground">{placeholder}</span>
           )}
@@ -134,17 +186,30 @@ function MultiSelect({
             )}
             {filtered.map((option) => (
               <CommandItem
-                key={option}
-                value={option}
-                onSelect={() => toggle(option)}
+                key={option.value}
+                value={option.value}
+                onSelect={() => toggle(option.value)}
               >
                 <IconCheck
                   className={cn(
-                    "mr-2 h-4 w-4",
-                    selected.includes(option) ? "opacity-100" : "opacity-0"
+                    "mr-2 h-4 w-4 shrink-0",
+                    selected.includes(option.value) ? "opacity-100" : "opacity-0"
                   )}
                 />
-                {option}
+                {option.description ? (
+                  <TooltipProvider delayDuration={300}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="truncate">{option.label}</span>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" className="max-w-xs text-xs">
+                        {option.description}
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                ) : (
+                  <span>{option.label}</span>
+                )}
               </CommandItem>
             ))}
             {creatable && filtered.length === 0 && !canCreate && (
