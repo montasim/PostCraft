@@ -1,11 +1,16 @@
 "use client"
 
-import { useState, useEffect, useCallback, useRef } from "react"
+import { useState, useEffect, useCallback, useRef, useMemo } from "react"
 import { PostCreationForm } from "./post-creation-form"
 import { BrandGuardPanel } from "./brand-guard-panel"
 import { PostVariantsCarousel } from "./post-variants-carousel"
 import type { Variant } from "@/types"
 import { toast } from "sonner"
+import {
+  AUDIENCE_OPTIONS,
+  TONE_OPTIONS,
+  LANGUAGE_OPTIONS,
+} from "@/lib/constants"
 
 type GenerationStatus =
   | "idle"
@@ -31,6 +36,31 @@ function DashboardClient() {
   const [variants, setVariants] = useState<Variant[]>([])
   const [error, setError] = useState<string | null>(null)
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // Workspace persona for merging with static options
+  const [persona, setPersona] = useState<{
+    targetAudiences: string[]
+    preferredTones: string[]
+    language: string[]
+  } | null>(null)
+
+  useEffect(() => {
+    fetch("/api/workspace")
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.success) setPersona(res.data.persona)
+      })
+      .catch(() => {})
+  }, [])
+
+  const mergedOptions = useMemo(() => {
+    if (!persona) return {}
+    return {
+      audienceOptions: persona.targetAudiences,
+      toneOptions: persona.preferredTones,
+      languageOptions: persona.language,
+    }
+  }, [persona])
 
   const stopPolling = useCallback(() => {
     if (pollRef.current) {
@@ -129,7 +159,7 @@ function DashboardClient() {
   return (
     <>
       <div className="flex flex-col gap-5 lg:flex-row">
-        <PostCreationForm onGenerate={handleGenerate} isSubmitting={status === "submitting"} />
+        <PostCreationForm onGenerate={handleGenerate} isSubmitting={status === "submitting"} {...mergedOptions} />
         <BrandGuardPanel />
       </div>
       <PostVariantsCarousel

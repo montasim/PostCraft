@@ -36,9 +36,12 @@ interface PostCreationFormProps {
     includeEmoji: boolean
   }) => void
   isSubmitting?: boolean
+  audienceOptions?: string[]
+  toneOptions?: string[]
+  languageOptions?: string[]
 }
 
-function PostCreationForm({ onGenerate, isSubmitting }: PostCreationFormProps) {
+function PostCreationForm({ onGenerate, isSubmitting, audienceOptions = AUDIENCE_OPTIONS, toneOptions = TONE_OPTIONS, languageOptions = LANGUAGE_OPTIONS }: PostCreationFormProps) {
   const [topic, setTopic] = useState(DEFAULT_TOPIC)
   const [audience, setAudience] = useState<string[]>(["Founders"])
   const [tones, setTones] = useState<string[]>(["Thought leader", "Story"])
@@ -97,7 +100,7 @@ function PostCreationForm({ onGenerate, isSubmitting }: PostCreationFormProps) {
           <div className="space-y-1.5">
             <Label className="text-xs font-medium">Target audience</Label>
             <MultiSelect
-              options={AUDIENCE_OPTIONS}
+              options={audienceOptions}
               selected={audience}
               onChange={setAudience}
               placeholder="Select audience..."
@@ -106,7 +109,7 @@ function PostCreationForm({ onGenerate, isSubmitting }: PostCreationFormProps) {
           <div className="space-y-1.5">
             <Label className="text-xs font-medium">Tones</Label>
             <MultiSelect
-              options={TONE_OPTIONS}
+              options={toneOptions}
               selected={tones}
               onChange={setTones}
               placeholder="Select tones..."
@@ -115,7 +118,7 @@ function PostCreationForm({ onGenerate, isSubmitting }: PostCreationFormProps) {
           <div className="space-y-1.5">
             <Label className="text-xs font-medium">Languages</Label>
             <MultiSelect
-              options={LANGUAGE_OPTIONS}
+              options={languageOptions}
               selected={languages}
               onChange={setLanguages}
               placeholder="Select languages..."
