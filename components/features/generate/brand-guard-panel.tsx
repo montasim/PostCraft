@@ -15,11 +15,19 @@ interface GuardRule {
   isActive: boolean
 }
 
-function BrandGuardPanel({ showButton = true, title = "Brand Guard" }: { showButton?: boolean; title?: string }) {
-  const [guardrails, setGuardrails] = useState<GuardRule[]>([])
-  const [loading, setLoading] = useState(true)
+interface BrandGuardPanelProps {
+  showButton?: boolean
+  title?: string
+  guardrails?: GuardRule[]
+}
+
+function BrandGuardPanel({ showButton = true, title = "Brand Guard", guardrails: providedGuardrails }: BrandGuardPanelProps) {
+  const [guardrails, setGuardrails] = useState<GuardRule[]>(providedGuardrails ?? [])
+  const [loading, setLoading] = useState(!providedGuardrails)
 
   useEffect(() => {
+    if (providedGuardrails) return
+
     async function fetchGuardrails() {
       try {
         const res = await fetch("/api/guardrails?active=true")
@@ -34,7 +42,7 @@ function BrandGuardPanel({ showButton = true, title = "Brand Guard" }: { showBut
       }
     }
     fetchGuardrails()
-  }, [])
+  }, [providedGuardrails])
 
   const toneRules = guardrails.filter((g) => g.category === "tone")
   const formatRules = guardrails.filter((g) => g.category === "format")

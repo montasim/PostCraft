@@ -8,8 +8,14 @@ import {
 } from "@/components/ui/tooltip"
 import type { HistoryEntry } from "@/types"
 
+interface HeatmapDay {
+  date: string
+  count: number
+}
+
 interface ActivityHeatmapProps {
   entries: HistoryEntry[]
+  heatmapData?: HeatmapDay[]
 }
 
 function getDaysAgo(dateStr: string): number {
@@ -29,16 +35,26 @@ function getIntensity(count: number): string {
   return "bg-chart-1/60"
 }
 
-function ActivityHeatmap({ entries }: ActivityHeatmapProps) {
+function ActivityHeatmap({ entries, heatmapData }: ActivityHeatmapProps) {
   const weeks = 12
   const totalDays = weeks * 7
 
-  // Build a map of day-offset → count
+  // Build a map of day-offset → count from server data or entries
   const dayMap = new Map<number, number>()
-  for (const entry of entries) {
-    const daysAgo = getDaysAgo(entry.createdAt)
-    if (daysAgo >= 0 && daysAgo < totalDays) {
-      dayMap.set(daysAgo, (dayMap.get(daysAgo) ?? 0) + 1)
+
+  if (heatmapData && heatmapData.length > 0) {
+    for (const day of heatmapData) {
+      const daysAgo = getDaysAgo(day.date)
+      if (daysAgo >= 0 && daysAgo < totalDays) {
+        dayMap.set(daysAgo, day.count)
+      }
+    }
+  } else {
+    for (const entry of entries) {
+      const daysAgo = getDaysAgo(entry.createdAt)
+      if (daysAgo >= 0 && daysAgo < totalDays) {
+        dayMap.set(daysAgo, (dayMap.get(daysAgo) ?? 0) + 1)
+      }
     }
   }
 
