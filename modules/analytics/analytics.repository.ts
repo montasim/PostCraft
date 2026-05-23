@@ -124,6 +124,17 @@ export const analyticsRepository = {
     return VariantModel.aggregate([
       { $match: { workspaceId } },
       { $sort: { overallScore: -1 } },
+      {
+        $group: {
+          _id: "$trendId",
+          score: { $first: "$overallScore" },
+          engagement: { $first: "$engagementScore" },
+          style: { $first: "$styleType" },
+          createdAt: { $first: "$createdAt" },
+          trendId: { $first: "$trendId" },
+        },
+      },
+      { $sort: { score: -1 } },
       { $limit: limit },
       {
         $lookup: {
@@ -137,9 +148,9 @@ export const analyticsRepository = {
       {
         $project: {
           topic: { $ifNull: ["$trend.topic", "Unknown"] },
-          score: "$overallScore",
-          engagement: "$engagementScore",
-          style: "$styleType",
+          score: 1,
+          engagement: 1,
+          style: 1,
           date: {
             $dateToString: { format: "%b %d, %Y", date: "$createdAt" },
           },
