@@ -65,7 +65,7 @@ function OriginalInputCard({ entry }: { entry: HistoryEntry }) {
               Language
             </p>
             <Badge variant="secondary" className="text-[10px]">
-              {entry.language}
+              {entry.language.join(", ")}
             </Badge>
           </div>
 

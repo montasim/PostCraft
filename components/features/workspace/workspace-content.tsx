@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -8,18 +8,14 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
-import { Avatar, AvatarFallback, AvatarBadge } from "@/components/ui/avatar"
 import { MultiSelect } from "@/components/shared/multi-select"
+import { Skeleton } from "@/components/ui/skeleton"
 import { cn } from "@/lib/utils"
 import {
-  WORKSPACE_PROFILE,
-  WORKSPACE_PERSONA,
-  WORKSPACE_LINKEDIN,
   INDUSTRY_OPTIONS,
   AUDIENCE_OPTIONS,
   TONE_OPTIONS,
   LANGUAGE_OPTIONS,
-  POSTS_USED,
   PLAN_LIMIT,
 } from "@/lib/constants"
 import {
@@ -27,75 +23,119 @@ import {
   IconBrandLinkedin,
   IconCrown,
   IconCheck,
-  IconPlugConnected,
-  IconPlugConnectedX,
+  IconPencil,
+  IconX,
 } from "@tabler/icons-react"
-import type { WorkspaceProfile, BrandPersona, LinkedInConnection } from "@/types"
+import { toast } from "sonner"
+import type { WorkspaceProfile, BrandPersona } from "@/types"
 
 // ─── Workspace Profile Card ────────────────────────────────────────
 
 function WorkspaceProfileCard({
   profile,
-  onUpdate,
+  onSave,
 }: {
   profile: WorkspaceProfile
-  onUpdate: (field: keyof WorkspaceProfile, value: string) => void
+  onSave: (profile: WorkspaceProfile) => void
 }) {
+  const [editing, setEditing] = useState(false)
+  const [draft, setDraft] = useState(profile)
+
+  const handleSave = () => {
+    onSave(draft)
+    setEditing(false)
+  }
+
+  const handleCancel = () => {
+    setDraft(profile)
+    setEditing(false)
+  }
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-sm font-semibold">
           <IconBuilding className="h-4 w-4 text-primary" />
           Workspace profile
-          <Badge variant="secondary" className="ml-auto text-[10px]">
+          <Badge variant="secondary" className="text-[10px]">
             <IconCrown className="h-3 w-3" />
             Owner
           </Badge>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="ml-auto h-7 gap-1 text-xs"
+            onClick={editing ? handleCancel : () => { setDraft(profile); setEditing(true) }}
+          >
+            {editing ? (
+              <>
+                <IconX className="h-3 w-3" />
+                Cancel
+              </>
+            ) : (
+              <>
+                <IconPencil className="h-3 w-3" />
+                Edit
+              </>
+            )}
+          </Button>
         </CardTitle>
         <p className="text-xs text-muted-foreground">
           Define your workspace identity
         </p>
       </CardHeader>
       <CardContent className="space-y-3">
-        <div className="space-y-1.5">
-          <Label className="text-xs">Name</Label>
-          <Input
-            value={profile.name}
-            onChange={(e) => onUpdate("name", e.target.value)}
-            className="h-8 text-xs"
-          />
-        </div>
-        <div className="space-y-1.5">
-          <Label className="text-xs">Description</Label>
-          <Input
-            value={profile.description}
-            onChange={(e) => onUpdate("description", e.target.value)}
-            className="h-8 text-xs"
-          />
-        </div>
-        <div className="space-y-1.5">
-          <Label className="text-xs">Industry</Label>
-          <select
-            value={profile.industry}
-            onChange={(e) => onUpdate("industry", e.target.value)}
-            className="flex h-8 w-full rounded-lg border border-input bg-transparent px-3 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:bg-input/30"
-          >
-            {INDUSTRY_OPTIONS.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="space-y-1.5">
-          <Label className="text-xs">LinkedIn URL</Label>
-          <Input
-            value={profile.linkedInUrl}
-            onChange={(e) => onUpdate("linkedInUrl", e.target.value)}
-            placeholder="https://linkedin.com/in/..."
-            className="h-8 text-xs"
-          />
-        </div>
+        {editing ? (
+          <>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Name</Label>
+              <Input
+                value={draft.name}
+                onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
+                className="h-8 text-xs"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Description</Label>
+              <Input
+                value={draft.description}
+                onChange={(e) => setDraft((d) => ({ ...d, description: e.target.value }))}
+                className="h-8 text-xs"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Industry</Label>
+              <select
+                value={draft.industry}
+                onChange={(e) => setDraft((d) => ({ ...d, industry: e.target.value }))}
+                className="flex h-8 w-full rounded-lg border border-input bg-transparent px-3 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:bg-input/30"
+              >
+                {INDUSTRY_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt}>{opt}</option>
+                ))}
+              </select>
+            </div>
+            <Button size="sm" className="h-7 gap-1 text-xs" onClick={handleSave}>
+              <IconCheck className="h-3 w-3" />
+              Save changes
+            </Button>
+          </>
+        ) : (
+          <>
+            <div>
+              <p className="text-xs text-muted-foreground mb-0.5">Name</p>
+              <p className="text-xs">{profile.name || "—"}</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground mb-0.5">Description</p>
+              <p className="text-xs">{profile.description || "—"}</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground mb-0.5">Industry</p>
+              <p className="text-xs">{profile.industry || "—"}</p>
+            </div>
+          </>
+        )}
       </CardContent>
     </Card>
   )
@@ -105,117 +145,121 @@ function WorkspaceProfileCard({
 
 function BrandPersonaCard({
   persona,
-  onUpdate,
+  onSave,
 }: {
   persona: BrandPersona
-  onUpdate: (field: keyof BrandPersona, value: string | string[]) => void
+  onSave: (persona: BrandPersona) => void
 }) {
+  const [editing, setEditing] = useState(false)
+  const [draft, setDraft] = useState(persona)
+
+  const handleSave = () => {
+    onSave(draft)
+    setEditing(false)
+  }
+
+  const handleCancel = () => {
+    setDraft(persona)
+    setEditing(false)
+  }
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-sm font-semibold">
           <IconBrandLinkedin className="h-4 w-4 text-primary" />
           Brand persona
-          <Badge variant="secondary" className="ml-auto text-[10px]">
+          <Badge variant="secondary" className="text-[10px]">
             {persona.targetAudiences.length} audiences
           </Badge>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="ml-auto h-7 gap-1 text-xs"
+            onClick={editing ? handleCancel : () => { setDraft(persona); setEditing(true) }}
+          >
+            {editing ? (
+              <>
+                <IconX className="h-3 w-3" />
+                Cancel
+              </>
+            ) : (
+              <>
+                <IconPencil className="h-3 w-3" />
+                Edit
+              </>
+            )}
+          </Button>
         </CardTitle>
         <p className="text-xs text-muted-foreground">
           Define who you write for and how you sound
         </p>
       </CardHeader>
       <CardContent className="space-y-3">
-        <div className="space-y-1.5">
-          <Label className="text-xs">Target audiences</Label>
-          <MultiSelect
-            options={AUDIENCE_OPTIONS}
-            selected={persona.targetAudiences}
-            onChange={(v) => onUpdate("targetAudiences", v)}
-            placeholder="Select audiences..."
-          />
-        </div>
-        <div className="space-y-1.5">
-          <Label className="text-xs">Preferred tones</Label>
-          <MultiSelect
-            options={TONE_OPTIONS}
-            selected={persona.preferredTones}
-            onChange={(v) => onUpdate("preferredTones", v)}
-            placeholder="Select tones..."
-          />
-        </div>
-        <div className="space-y-1.5">
-          <Label className="text-xs">Language</Label>
-          <select
-            value={persona.language}
-            onChange={(e) => onUpdate("language", e.target.value)}
-            className="flex h-8 w-full rounded-lg border border-input bg-transparent px-3 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:bg-input/30"
-          >
-            {LANGUAGE_OPTIONS.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
-
-// ─── LinkedIn Connection Card ──────────────────────────────────────
-
-function LinkedInConnectionCard({
-  linkedIn,
-}: {
-  linkedIn: LinkedInConnection
-}) {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-          <IconBrandLinkedin className="h-4 w-4 text-[#0A66C2]" />
-          LinkedIn connection
-          {linkedIn.connected ? (
-            <Badge variant="secondary" className="ml-auto gap-1 text-[10px] text-emerald-600">
-              <IconCheck className="h-3 w-3" />
-              Connected
-            </Badge>
-          ) : (
-            <Badge variant="secondary" className="ml-auto gap-1 text-[10px] text-destructive">
-              <IconPlugConnectedX className="h-3 w-3" />
-              Disconnected
-            </Badge>
-          )}
-        </CardTitle>
-        <p className="text-xs text-muted-foreground">
-          Link your LinkedIn to publish directly
-        </p>
-      </CardHeader>
-      <CardContent>
-        {linkedIn.connected ? (
-          <div className="flex items-center gap-3">
-            <Avatar>
-              <AvatarFallback className="text-xs">
-                {linkedIn.profileName.split(" ").map((n) => n[0]).join("")}
-              </AvatarFallback>
-              <AvatarBadge className="bg-emerald-500" />
-            </Avatar>
-            <div className="flex-1">
-              <p className="text-sm font-medium">{linkedIn.profileName}</p>
-              <p className="text-[10px] text-muted-foreground">
-                Connected {new Date(linkedIn.connectedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-              </p>
+        {editing ? (
+          <>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Target audiences</Label>
+              <MultiSelect
+                options={AUDIENCE_OPTIONS}
+                selected={draft.targetAudiences}
+                onChange={(v) => setDraft((d) => ({ ...d, targetAudiences: v }))}
+                placeholder="Select audiences..."
+                creatable
+              />
             </div>
-            <Button variant="outline" size="sm" className="h-7 gap-1 text-xs">
-              <IconPlugConnectedX className="h-3 w-3" />
-              Disconnect
+            <div className="space-y-1.5">
+              <Label className="text-xs">Preferred tones</Label>
+              <MultiSelect
+                options={TONE_OPTIONS}
+                selected={draft.preferredTones}
+                onChange={(v) => setDraft((d) => ({ ...d, preferredTones: v }))}
+                placeholder="Select tones..."
+                creatable
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Language</Label>
+              <MultiSelect
+                options={LANGUAGE_OPTIONS}
+                selected={draft.language}
+                onChange={(v) => setDraft((d) => ({ ...d, language: v }))}
+                placeholder="Select languages..."
+                creatable
+              />
+            </div>
+            <Button size="sm" className="h-7 gap-1 text-xs" onClick={handleSave}>
+              <IconCheck className="h-3 w-3" />
+              Save changes
             </Button>
-          </div>
+          </>
         ) : (
-          <Button variant="outline" className="w-full gap-2">
-            <IconPlugConnected className="h-4 w-4" />
-            Connect LinkedIn
-          </Button>
+          <>
+            <div>
+              <p className="text-xs text-muted-foreground mb-0.5">Target audiences</p>
+              <div className="flex flex-wrap gap-1">
+                {persona.targetAudiences.length > 0 ? persona.targetAudiences.map((a) => (
+                  <Badge key={a} variant="secondary" className="text-[10px]">{a}</Badge>
+                )) : <p className="text-xs">—</p>}
+              </div>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground mb-0.5">Preferred tones</p>
+              <div className="flex flex-wrap gap-1">
+                {persona.preferredTones.length > 0 ? persona.preferredTones.map((t) => (
+                  <Badge key={t} variant="secondary" className="text-[10px]">{t}</Badge>
+                )) : <p className="text-xs">—</p>}
+              </div>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground mb-0.5">Language</p>
+              <div className="flex flex-wrap gap-1">
+                {persona.language.length > 0 ? persona.language.map((l) => (
+                  <Badge key={l} variant="secondary" className="text-[10px]">{l}</Badge>
+                )) : <p className="text-xs">—</p>}
+              </div>
+            </div>
+          </>
         )}
       </CardContent>
     </Card>
@@ -264,7 +308,7 @@ function UsagePlanCard({ used, limit }: { used: number; limit: number }) {
 
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs font-medium">15 posts generated</p>
+            <p className="text-xs font-medium">{used} posts generated</p>
             <p className="text-[10px] text-muted-foreground">Since you started</p>
           </div>
           <Button size="sm" className="h-7 gap-1 text-xs">
@@ -278,43 +322,86 @@ function UsagePlanCard({ used, limit }: { used: number; limit: number }) {
 
 // ─── Orchestrator ──────────────────────────────────────────────────
 
+interface WorkspaceData {
+  profile: WorkspaceProfile
+  persona: BrandPersona
+  usage: { used: number; limit: number; totalGenerated: number }
+}
+
 function WorkspaceContent() {
-  const [profile, setProfile] = useState<WorkspaceProfile>(WORKSPACE_PROFILE)
-  const [persona, setPersona] = useState<BrandPersona>(WORKSPACE_PERSONA)
-  const [linkedIn] = useState<LinkedInConnection>(WORKSPACE_LINKEDIN)
+  const [data, setData] = useState<WorkspaceData | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  const handleProfileUpdate = (field: keyof WorkspaceProfile, value: string) => {
-    setProfile((prev) => ({ ...prev, [field]: value }))
+  useEffect(() => {
+    async function fetchWorkspace() {
+      try {
+        const res = await fetch("/api/workspace")
+        const result = await res.json()
+        if (result.success) setData(result.data)
+      } catch {
+        toast.error("Failed to load workspace")
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchWorkspace()
+  }, [])
+
+  const saveWorkspace = useCallback(async (updates: { profile?: WorkspaceProfile; persona?: BrandPersona }) => {
+    if (!data) return
+    const previous = data
+    setData((prev) => prev ? { ...prev, ...updates } : prev)
+
+    try {
+      const res = await fetch("/api/workspace", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+      })
+      const result = await res.json()
+      if (!result.success) {
+        setData(previous)
+        toast.error("Failed to save")
+      }
+    } catch {
+      setData(previous)
+      toast.error("Failed to save")
+    }
+  }, [data])
+
+  const handleProfileSave = (profile: WorkspaceProfile) => {
+    saveWorkspace({ profile })
   }
 
-  const handlePersonaUpdate = (field: keyof BrandPersona, value: string | string[]) => {
-    setPersona((prev) => ({ ...prev, [field]: value }))
+  const handlePersonaSave = (persona: BrandPersona) => {
+    saveWorkspace({ persona })
   }
 
-  const completionFields = [
-    !!profile.name,
-    !!profile.description,
-    !!profile.industry,
-    !!profile.linkedInUrl,
-    persona.targetAudiences.length > 0,
-    persona.preferredTones.length > 0,
-    !!persona.language,
-  ]
-  const completionPercent = Math.round(
-    (completionFields.filter(Boolean).length / completionFields.length) * 100
-  )
+  if (loading || !data) {
+    return (
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <div className="space-y-5">
+          <Skeleton className="h-64 w-full rounded-xl" />
+          <Skeleton className="h-40 w-full rounded-xl" />
+        </div>
+        <div className="space-y-5">
+          <Skeleton className="h-56 w-full rounded-xl" />
+          <Skeleton className="h-40 w-full rounded-xl" />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <div className="space-y-5">
-          <WorkspaceProfileCard profile={profile} onUpdate={handleProfileUpdate} />
-          <LinkedInConnectionCard linkedIn={linkedIn} />
-        </div>
-        <div className="space-y-5">
-          <BrandPersonaCard persona={persona} onUpdate={handlePersonaUpdate} />
-          <UsagePlanCard used={POSTS_USED} limit={PLAN_LIMIT} />
-        </div>
+      <div className="space-y-5">
+        <WorkspaceProfileCard profile={data.profile} onSave={handleProfileSave} />
+        <UsagePlanCard used={data.usage.used} limit={data.usage.limit} />
       </div>
+      <div className="space-y-5">
+        <BrandPersonaCard persona={data.persona} onSave={handlePersonaSave} />
+      </div>
+    </div>
   )
 }
 

@@ -1,11 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-
 import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   Dialog,
   DialogContent,
@@ -16,11 +16,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
-import {
-  NOTIFICATION_DEFAULTS,
-  APPEARANCE_DEFAULTS,
-  ACCOUNT_DEFAULTS,
-} from "@/lib/constants"
 import {
   IconBell,
   IconPalette,
@@ -34,6 +29,7 @@ import {
   IconSun,
   IconRefresh,
 } from "@tabler/icons-react"
+import { toast } from "sonner"
 import type {
   NotificationSettings,
   AppearanceSettings,
@@ -231,53 +227,9 @@ function AccountSecurityCard({
   )
 }
 
-// ─── Orchestrator ──────────────────────────────────────────────────
-
-function SettingsContent() {
-  const [notifications, setNotifications] = useState<NotificationSettings>(NOTIFICATION_DEFAULTS)
-  const [appearance, setAppearance] = useState<AppearanceSettings>(APPEARANCE_DEFAULTS)
-  const [account, setAccount] = useState<AccountSettings>(ACCOUNT_DEFAULTS)
-
-  const handleNotificationUpdate = <K extends keyof NotificationSettings>(
-    key: K,
-    value: NotificationSettings[K]
-  ) => {
-    setNotifications((prev) => ({ ...prev, [key]: value }))
-  }
-
-  const handleAppearanceUpdate = <K extends keyof AppearanceSettings>(
-    key: K,
-    value: AppearanceSettings[K]
-  ) => {
-    setAppearance((prev) => ({ ...prev, [key]: value }))
-  }
-
-  const handleAccountUpdate = <K extends keyof AccountSettings>(
-    key: K,
-    value: AccountSettings[K]
-  ) => {
-    setAccount((prev) => ({ ...prev, [key]: value }))
-  }
-
-  return (
-    <div className="space-y-5">
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <div className="space-y-5">
-          <NotificationSettingsCard settings={notifications} onUpdate={handleNotificationUpdate} />
-          <AppearanceSettingsCard settings={appearance} onUpdate={handleAppearanceUpdate} />
-        </div>
-        <div className="space-y-5">
-          <AccountSecurityCard settings={account} onUpdate={handleAccountUpdate} />
-          <DangerZoneCard />
-        </div>
-      </div>
-    </div>
-  )
-}
-
 // ─── Danger Zone Card ──────────────────────────────────────────────
 
-function DangerZoneCard() {
+function DangerZoneCard({ onReset }: { onReset: () => void }) {
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [resetOpen, setResetOpen] = useState(false)
 
@@ -351,7 +303,7 @@ function DangerZoneCard() {
                 <Button variant="outline" size="sm" onClick={() => setResetOpen(false)}>
                   Cancel
                 </Button>
-                <Button variant="destructive" size="sm" onClick={() => setResetOpen(false)}>
+                <Button variant="destructive" size="sm" onClick={() => { onReset(); setResetOpen(false) }}>
                   Reset settings
                 </Button>
               </DialogFooter>
@@ -360,6 +312,121 @@ function DangerZoneCard() {
         </div>
       </CardContent>
     </Card>
+  )
+}
+
+// ─── Orchestrator ──────────────────────────────────────────────────
+
+interface SettingsData {
+  notifications: NotificationSettings
+  appearance: AppearanceSettings
+  account: AccountSettings
+}
+
+function SettingsContent() {
+  const [data, setData] = useState<SettingsData | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchSettings() {
+      try {
+        const res = await fetch("/api/settings")
+        const result = await res.json()
+        if (result.success) setData(result.data)
+      } catch {
+        toast.error("Failed to load settings")
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchSettings()
+  }, [])
+
+  const saveSettings = async (updates: Partial<SettingsData>) => {
+    if (!data) return
+    const previous = data
+    setData((prev) => prev ? { ...prev, ...updates } : prev)
+
+    try {
+      const res = await fetch("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+      })
+      const result = await res.json()
+      if (!result.success) {
+        setData(previous)
+        toast.error("Failed to save")
+      }
+    } catch {
+      setData(previous)
+      toast.error("Failed to save")
+    }
+  }
+
+  const handleNotificationUpdate = <K extends keyof NotificationSettings>(
+    key: K,
+    value: NotificationSettings[K]
+  ) => {
+    if (!data) return
+    const updated = { ...data.notifications, [key]: value }
+    saveSettings({ notifications: updated })
+  }
+
+  const handleAppearanceUpdate = <K extends keyof AppearanceSettings>(
+    key: K,
+    value: AppearanceSettings[K]
+  ) => {
+    if (!data) return
+    const updated = { ...data.appearance, [key]: value }
+    saveSettings({ appearance: updated })
+  }
+
+  const handleAccountUpdate = <K extends keyof AccountSettings>(
+    key: K,
+    value: AccountSettings[K]
+  ) => {
+    if (!data) return
+    const updated = { ...data.account, [key]: value }
+    saveSettings({ account: updated })
+  }
+
+  const handleReset = () => {
+    saveSettings({
+      notifications: { emailGenerationComplete: true, emailWeeklyDigest: true, emailProductUpdates: false, pushPostReminder: true },
+      appearance: { theme: "system", compactMode: false, fontSize: "default" },
+      account: { twoFactorEnabled: false, sessionTimeout: 30, dataExportFormat: "json" },
+    })
+  }
+
+  if (loading || !data) {
+    return (
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <div className="space-y-5">
+          <Skeleton className="h-48 w-full rounded-xl" />
+          <Skeleton className="h-40 w-full rounded-xl" />
+        </div>
+        <div className="space-y-5">
+          <Skeleton className="h-48 w-full rounded-xl" />
+          <Skeleton className="h-40 w-full rounded-xl" />
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-5">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <div className="space-y-5">
+          <NotificationSettingsCard settings={data.notifications} onUpdate={handleNotificationUpdate} />
+          <AppearanceSettingsCard settings={data.appearance} onUpdate={handleAppearanceUpdate} />
+        </div>
+        <div className="space-y-5">
+          <AccountSecurityCard settings={data.account} onUpdate={handleAccountUpdate} />
+          <DangerZoneCard onReset={handleReset} />
+        </div>
+      </div>
+    </div>
   )
 }
 

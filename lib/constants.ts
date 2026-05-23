@@ -7,10 +7,10 @@ import {
   IconUser,
   IconSettings,
 } from "@tabler/icons-react"
-import type { NavItem, Variant, HistoryEntry, SortOption, ScoreRange, AnalyticsOverview, ScoreDistribution, StylePerformance, TrendDataPoint, TopPerformingPost, WorkspaceProfile, BrandPersona, LinkedInConnection, UserProfile, ProfileStats, NotificationSettings, PrivacySettings, AppearanceSettings, AccountSettings } from "@/types"
+import type { NavItem, Variant, HistoryEntry, SortOption, ScoreRange, AnalyticsOverview, ScoreDistribution, StylePerformance, TrendDataPoint, TopPerformingPost } from "@/types"
 
 export const POSTS_USED = 3
-export const PLAN_LIMIT = 5
+export const PLAN_LIMIT = 10
 
 export const NAV_MAIN: NavItem[] = [
   { id: "generate", label: "Generate", icon: IconSparkles },
@@ -112,7 +112,7 @@ export const HISTORY_ENTRIES: HistoryEntry[] = [
     topic: "How AI is reshaping software hiring in 2025",
     audience: ["Founders", "Recruiters"],
     tones: ["Thought leader", "Story", "Contrarian"],
-    language: "English",
+    language: ["English"],
     includeEmoji: true,
     variants: [
       {
@@ -151,7 +151,7 @@ export const HISTORY_ENTRIES: HistoryEntry[] = [
     topic: "Why most startups fail at hiring",
     audience: ["Founders", "Engineers"],
     tones: ["Thought leader", "Story", "Casual"],
-    language: "English",
+    language: ["English"],
     includeEmoji: false,
     variants: [
       {
@@ -190,7 +190,7 @@ export const HISTORY_ENTRIES: HistoryEntry[] = [
     topic: "Remote work productivity hacks",
     audience: ["Engineers", "Product Managers"],
     tones: ["Casual", "Story", "Contrarian"],
-    language: "English",
+    language: ["English"],
     includeEmoji: true,
     variants: [
       {
@@ -229,7 +229,7 @@ export const HISTORY_ENTRIES: HistoryEntry[] = [
     topic: "Building diverse engineering teams",
     audience: ["Founders", "Designers", "Recruiters"],
     tones: ["Thought leader", "Contrarian", "Story"],
-    language: "English",
+    language: ["English"],
     includeEmoji: false,
     variants: [
       {
@@ -268,7 +268,7 @@ export const HISTORY_ENTRIES: HistoryEntry[] = [
     topic: "The 4-day work week experiment",
     audience: ["Founders", "Product Managers", "Engineers"],
     tones: ["Thought leader", "Contrarian", "Casual"],
-    language: "EN",
+    language: ["EN"],
     includeEmoji: true,
     variants: [
       {
@@ -356,26 +356,6 @@ export const TOP_POSTS: TopPerformingPost[] = [
   { topic: "The 4-day work week experiment", score: 90, engagement: 92, style: "Thought leader", date: "May 10" },
 ]
 
-export const WORKSPACE_PROFILE: WorkspaceProfile = {
-  name: "Personal Brand",
-  description: "LinkedIn content strategy for tech hiring and startup leadership",
-  industry: "Technology / SaaS",
-  linkedInUrl: "https://linkedin.com/in/example",
-}
-
-export const WORKSPACE_PERSONA: BrandPersona = {
-  targetAudiences: ["Founders", "Engineers"],
-  preferredTones: ["Thought leader", "Story"],
-  language: "EN",
-}
-
-export const WORKSPACE_LINKEDIN: LinkedInConnection = {
-  connected: true,
-  profileUrl: "https://linkedin.com/in/example",
-  connectedAt: "2025-05-15",
-  profileName: "Example User",
-}
-
 export const INDUSTRY_OPTIONS = [
   "Technology / SaaS",
   "Marketing / Advertising",
@@ -385,50 +365,3 @@ export const INDUSTRY_OPTIONS = [
   "Consulting",
   "Other",
 ]
-
-export const USER_PROFILE: UserProfile = {
-  fullName: "John Doe",
-  email: "john@example.com",
-  bio: "Tech founder building the future of hiring. Ex-Google, now shipping LinkedIQ. I write about AI, startups, and leadership.",
-  location: "San Francisco, CA",
-  title: "Founder & CEO",
-  company: "LinkedIQ",
-  website: "https://johndoe.dev",
-  twitterHandle: "@johndoe",
-  linkedInSlug: "johndoe",
-  avatarUrl: "",
-  joinedDate: "2025-03-15",
-}
-
-export const PROFILE_STATS: ProfileStats = {
-  postsGenerated: 15,
-  currentStreak: 4,
-  longestStreak: 12,
-  avgScore: 82,
-  topPercentile: 12,
-}
-
-export const NOTIFICATION_DEFAULTS: NotificationSettings = {
-  emailGenerationComplete: true,
-  emailWeeklyDigest: true,
-  emailProductUpdates: false,
-  pushPostReminder: true,
-}
-
-export const PRIVACY_DEFAULTS: PrivacySettings = {
-  profileVisibility: "public",
-  showActivityStatus: true,
-  shareUsageAnalytics: false,
-}
-
-export const APPEARANCE_DEFAULTS: AppearanceSettings = {
-  theme: "system",
-  compactMode: false,
-  fontSize: "default",
-}
-
-export const ACCOUNT_DEFAULTS: AccountSettings = {
-  twoFactorEnabled: false,
-  sessionTimeout: 30,
-  dataExportFormat: "json",
-}

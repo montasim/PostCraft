@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -9,8 +9,8 @@ import { Progress } from "@/components/ui/progress"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Skeleton } from "@/components/ui/skeleton"
 import { cn } from "@/lib/utils"
-import { USER_PROFILE, PROFILE_STATS } from "@/lib/constants"
 import {
   IconUser,
   IconPencil,
@@ -28,6 +28,7 @@ import {
   IconCalendar,
   IconTarget,
 } from "@tabler/icons-react"
+import { toast } from "sonner"
 import type { UserProfile, ProfileStats } from "@/types"
 
 // ─── Profile Header Card ──────────────────────────────────────────
@@ -439,31 +440,31 @@ function ProfileCompletionCard({ profile }: { profile: UserProfile }) {
 
 // ─── Profile Achievements Card ─────────────────────────────────────
 
-function ProfileAchievementsCard() {
+function ProfileAchievementsCard({ stats }: { stats: ProfileStats }) {
   const badges = [
     {
       icon: IconTrophy,
       label: "First Post",
       description: "Created your first post",
-      active: true,
+      active: stats.postsGenerated >= 1,
     },
     {
       icon: IconFlame,
       label: "10 Streak",
       description: "10-day posting streak",
-      active: PROFILE_STATS.longestStreak >= 10,
+      active: stats.longestStreak >= 10,
     },
     {
       icon: IconStar,
       label: "Top 10%",
       description: "Reach top 10% of creators",
-      active: PROFILE_STATS.topPercentile <= 10,
+      active: stats.topPercentile <= 10,
     },
     {
       icon: IconMedal,
       label: "50 Posts",
       description: "Generate 50 posts",
-      active: PROFILE_STATS.postsGenerated >= 50,
+      active: stats.postsGenerated >= 50,
     },
   ]
 
@@ -517,10 +518,64 @@ function ProfileAchievementsCard() {
 // ─── Orchestrator ──────────────────────────────────────────────────
 
 function ProfileContent() {
-  const [profile, setProfile] = useState<UserProfile>(USER_PROFILE)
+  const [profile, setProfile] = useState<UserProfile | null>(null)
+  const [stats, setStats] = useState<ProfileStats | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchProfile() {
+      try {
+        const res = await fetch("/api/profile")
+        const result = await res.json()
+        if (result.success) {
+          setProfile(result.data.profile)
+          setStats(result.data.stats)
+        }
+      } catch {
+        toast.error("Failed to load profile")
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchProfile()
+  }, [])
+
+  const saveProfile = async (updates: Record<string, string>) => {
+    if (!profile) return
+    const previous = profile
+    setProfile((prev) => prev ? { ...prev, ...updates } : prev)
+
+    try {
+      const res = await fetch("/api/profile", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+      })
+      const result = await res.json()
+      if (!result.success) {
+        setProfile(previous)
+        toast.error("Failed to save")
+      }
+    } catch {
+      setProfile(previous)
+      toast.error("Failed to save")
+    }
+  }
 
   const handleUpdate = (field: keyof UserProfile, value: string) => {
-    setProfile((prev) => ({ ...prev, [field]: value }))
+    saveProfile({ [field]: value })
+  }
+
+  if (loading || !profile || !stats) {
+    return (
+      <div className="space-y-5">
+        <Skeleton className="h-16 w-full rounded-xl" />
+        <div className="flex w-full items-stretch gap-5">
+          <Skeleton className="h-64 w-[40%] rounded-xl" />
+          <Skeleton className="h-64 w-[60%] rounded-xl" />
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -528,13 +583,18 @@ function ProfileContent() {
       <ProfileCompletionCard profile={profile} />
 
       <div className="flex w-full items-stretch gap-5">
-          <div className="w-[40%] [&_>div]:h-full">
-            <ProfileHeaderCard profile={profile} onUpdate={handleUpdate} />
-          </div>
-          <div className="w-[60%] [&_>div]:h-full">
-            <ProfileDetailsCard profile={profile} onUpdate={handleUpdate} />
-          </div>
+        <div className="w-[40%] [&_>div]:h-full">
+          <ProfileHeaderCard profile={profile} onUpdate={handleUpdate} />
         </div>
+        <div className="w-[60%] [&_>div]:h-full">
+          <ProfileDetailsCard profile={profile} onUpdate={handleUpdate} />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <ProfileStatsCard stats={stats} />
+        <ProfileAchievementsCard stats={stats} />
+      </div>
     </div>
   )
 }
