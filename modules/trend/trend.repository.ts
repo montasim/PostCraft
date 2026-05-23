@@ -31,6 +31,13 @@ export const trendRepository = {
     return trend
   },
 
+  async updateGuardrailIds(id: string, workspaceId: string, guardrailIds: string[]) {
+    await TrendModel.updateOne(
+      { _id: id, workspaceId },
+      { $set: { guardrailIds } }
+    )
+  },
+
   async listByWorkspace(
     workspaceId: string,
     { page = 1, limit = 10 }: { page?: number; limit?: number } = {}

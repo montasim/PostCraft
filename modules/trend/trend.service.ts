@@ -58,6 +58,7 @@ export const trendService = {
       includeEmoji: trend.includeEmoji,
       status: trend.status,
       errorMessage: trend.errorMessage,
+      guardrailIds: trend.guardrailIds ?? [],
       createdAt: trend.createdAt,
     }
   },
