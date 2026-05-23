@@ -29,7 +29,7 @@ export interface HistoryEntry {
   topic: string
   audience: string[]
   tones: string[]
-  language: string
+  language: string[]
   includeEmoji: boolean
   createdAt: string
   status: PostStatus
@@ -99,20 +99,12 @@ export interface WorkspaceProfile {
   name: string
   description: string
   industry: string
-  linkedInUrl: string
 }
 
 export interface BrandPersona {
   targetAudiences: string[]
   preferredTones: string[]
-  language: string
-}
-
-export interface LinkedInConnection {
-  connected: boolean
-  profileUrl: string
-  connectedAt: string
-  profileName: string
+  language: string[]
 }
 
 export interface UserProfile {
