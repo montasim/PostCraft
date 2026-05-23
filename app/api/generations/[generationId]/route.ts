@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { trendService } from "@/modules/trend"
+import { generationService } from "@/modules/generation"
 import { variantService } from "@/modules/variant"
 import { handleApiError } from "@/core/errors/error-handler"
 import { connectDB } from "@/core/config/database"
@@ -7,23 +7,23 @@ import { getWorkspaceId } from "@/core/auth/workspace"
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: Promise<{ trendId: string }> }
+  { params }: { params: Promise<{ generationId: string }> }
 ) {
   try {
     await connectDB()
-    const { trendId } = await params
+    const { generationId } = await params
     const workspaceId = await getWorkspaceId()
 
-    const trend = await trendService.getTrendStatus(trendId, workspaceId)
+    const generation = await generationService.getGenerationStatus(generationId, workspaceId)
 
     let variants: unknown[] = []
-    if (trend.status === "completed") {
-      variants = await variantService.getVariantsByTrend(trendId, workspaceId)
+    if (generation.status === "completed") {
+      variants = await variantService.getVariantsByTrend(generationId, workspaceId)
     }
 
     return NextResponse.json({
       success: true,
-      data: { trend, variants },
+      data: { generation, variants },
     })
   } catch (error) {
     return handleApiError(error)

@@ -1,5 +1,30 @@
 import { z } from "zod"
 
+// ─── Generation Input ─────────────────────────────────────────────
+
+export const createGenerationSchema = z.object({
+  topic: z.string().min(1).max(500),
+  audiences: z.array(z.string()).min(1),
+  tones: z.array(z.string()).min(1),
+  languages: z.array(z.string()).min(1),
+  includeEmoji: z.boolean().default(true),
+})
+
+export type CreateGenerationInput = z.infer<typeof createGenerationSchema>
+
+export const generationStatusSchema = z.enum([
+  "queued",
+  "generating",
+  "scoring",
+  "ranking",
+  "completed",
+  "failed",
+])
+
+export type GenerationStatus = z.infer<typeof generationStatusSchema>
+
+// ─── AI Output ────────────────────────────────────────────────────
+
 export const rawVariantSchema = z.object({
   language: z.string(),
   styleType: z.string(),

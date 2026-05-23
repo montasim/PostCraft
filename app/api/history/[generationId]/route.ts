@@ -6,15 +6,15 @@ import { getWorkspaceId } from "@/core/auth/workspace"
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: Promise<{ trendId: string }> }
+  { params }: { params: Promise<{ generationId: string }> }
 ) {
   try {
     await connectDB()
-    const { trendId } = await params
+    const { generationId } = await params
     const workspaceId = await getWorkspaceId()
 
     const entry = await historyService.getEntryDetail(
-      trendId,
+      generationId,
       workspaceId
     )
     return NextResponse.json({ success: true, data: entry })

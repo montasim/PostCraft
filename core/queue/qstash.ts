@@ -14,9 +14,9 @@ function getQStashClient(): Client {
   return client
 }
 
-export async function publishGenerationJob(trendId: string, workspaceId: string): Promise<string> {
+export async function publishGenerationJob(generationId: string, workspaceId: string): Promise<string> {
   if (!hasQStash()) {
-    logger.info({ trendId }, "QStash not configured, skipping enqueue (use dev sync mode)")
+    logger.info({ generationId }, "QStash not configured, skipping enqueue (use dev sync mode)")
     return "dev-sync"
   }
 
@@ -26,14 +26,14 @@ export async function publishGenerationJob(trendId: string, workspaceId: string)
 
     const result = await qstash.publishJSON({
       url: `${APP_URL}/api/workers/generate`,
-      body: { trendId, workspaceId },
+      body: { generationId, workspaceId },
       retries: 3,
     })
 
-    logger.info({ trendId, messageId: result.messageId }, "Generation job enqueued")
+    logger.info({ generationId, messageId: result.messageId }, "Generation job enqueued")
     return result.messageId
   } catch (error) {
-    logger.error({ err: error, trendId }, "Failed to enqueue generation job")
+    logger.error({ err: error, generationId }, "Failed to enqueue generation job")
     throw new QueueError("Failed to enqueue generation job")
   }
 }

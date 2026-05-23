@@ -31,7 +31,7 @@ const STATUS_LABELS: Record<string, string> = {
 }
 
 function DashboardClient() {
-  const [trendId, setTrendId] = useState<string | null>(null)
+  const [generationId, setGenerationId] = useState<string | null>(null)
   const [status, setStatus] = useState<GenerationStatus>("idle")
   const [variants, setVariants] = useState<Variant[]>([])
   const [error, setError] = useState<string | null>(null)
@@ -74,14 +74,14 @@ function DashboardClient() {
   }, [stopPolling])
 
   useEffect(() => {
-    if (!trendId || status === "completed" || status === "failed" || status === "idle") {
+    if (!generationId || status === "completed" || status === "failed" || status === "idle") {
       stopPolling()
       return
     }
 
     pollRef.current = setInterval(async () => {
       try {
-        const res = await fetch(`/api/trends/${trendId}`)
+        const res = await fetch(`/api/generations/${generationId}`)
         const data = await res.json()
 
         if (!data.success) {
@@ -91,14 +91,14 @@ function DashboardClient() {
           return
         }
 
-        const trendStatus = data.data.trend.status as GenerationStatus
-        setStatus(trendStatus)
+        const generationStatus = data.data.generation.status as GenerationStatus
+        setStatus(generationStatus)
 
-        if (trendStatus === "completed") {
+        if (generationStatus === "completed") {
           setVariants(data.data.variants)
           stopPolling()
-        } else if (trendStatus === "failed") {
-          setError(data.data.trend.errorMessage ?? "Generation failed")
+        } else if (generationStatus === "failed") {
+          setError(data.data.generation.errorMessage ?? "Generation failed")
           stopPolling()
           toast.error("Generation failed")
         }
@@ -110,7 +110,7 @@ function DashboardClient() {
     }, POLL_INTERVAL)
 
     return () => stopPolling()
-  }, [trendId, status, stopPolling])
+  }, [generationId, status, stopPolling])
 
   const handleGenerate = useCallback(async (formData: {
     topic: string
@@ -124,7 +124,7 @@ function DashboardClient() {
     setVariants([])
 
     try {
-      const res = await fetch("/api/trends", {
+      const res = await fetch("/api/generations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -139,7 +139,7 @@ function DashboardClient() {
         return
       }
 
-      setTrendId(data.data.trendId)
+      setGenerationId(data.data.generationId)
       setStatus("queued")
       toast.success(STATUS_LABELS.queued)
     } catch {
@@ -150,7 +150,7 @@ function DashboardClient() {
   }, [])
 
   const handleRetry = useCallback(() => {
-    setTrendId(null)
+    setGenerationId(null)
     setStatus("idle")
     setVariants([])
     setError(null)

@@ -5,7 +5,7 @@ import {
   type GenerationPromptData,
 } from "@/core/ai/prompts/generate"
 
-interface TrendData {
+interface GenerationData {
   topic: string
   audiences: string[]
   tones: string[]
@@ -20,15 +20,15 @@ interface GuardrailData {
 }
 
 export function buildGenerationPrompt(
-  trend: TrendData,
+  generation: GenerationData,
   guardrails: GuardrailData
 ) {
   const data: GenerationPromptData = {
-    topic: trend.topic,
-    audiences: trend.audiences,
-    tones: trend.tones,
-    languages: trend.languages,
-    includeEmoji: trend.includeEmoji,
+    topic: generation.topic,
+    audiences: generation.audiences,
+    tones: generation.tones,
+    languages: generation.languages,
+    includeEmoji: generation.includeEmoji,
     toneRules: guardrails.toneRules,
     formatRules: guardrails.formatRules,
     bannedWords: guardrails.bannedWords,
@@ -37,6 +37,6 @@ export function buildGenerationPrompt(
   return {
     system: buildSystemPrompt(),
     developer: buildDeveloperPrompt(data),
-    user: buildUserPrompt(trend.topic),
+    user: buildUserPrompt(generation.topic),
   }
 }

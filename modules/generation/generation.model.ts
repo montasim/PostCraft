@@ -1,14 +1,14 @@
 import mongoose, { type Document, type Model, Schema } from "mongoose"
-import type { TrendStatus } from "./trend.schema"
+import type { GenerationStatus } from "./generation.schema"
 
-export interface ITrend extends Document {
+export interface IGeneration extends Document {
   workspaceId: string
   topic: string
   audiences: string[]
   tones: string[]
   languages: string[]
   includeEmoji: boolean
-  status: TrendStatus
+  status: GenerationStatus
   errorMessage?: string
   guardrailIds?: string[]
   createdBy: string
@@ -16,7 +16,7 @@ export interface ITrend extends Document {
   updatedAt: Date
 }
 
-const trendSchema = new Schema<ITrend>(
+const generationSchema = new Schema<IGeneration>(
   {
     workspaceId: { type: String, required: true, index: true },
     topic: { type: String, required: true, maxlength: 500 },
@@ -36,11 +36,11 @@ const trendSchema = new Schema<ITrend>(
   { timestamps: true }
 )
 
-trendSchema.index({ workspaceId: 1, status: 1 })
-trendSchema.index({ createdAt: -1 })
+generationSchema.index({ workspaceId: 1, status: 1 })
+generationSchema.index({ createdAt: -1 })
 
-const TrendModel: Model<ITrend> =
-  (mongoose.models.Trend as Model<ITrend>) ||
-  mongoose.model<ITrend>("Trend", trendSchema)
+const GenerationModel: Model<IGeneration> =
+  (mongoose.models.Trend as Model<IGeneration>) ||
+  mongoose.model<IGeneration>("Trend", generationSchema)
 
-export { TrendModel }
+export { GenerationModel }

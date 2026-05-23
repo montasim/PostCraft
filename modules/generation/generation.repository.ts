@@ -1,38 +1,38 @@
-import { TrendModel } from "./trend.model"
-import type { TrendStatus } from "./trend.schema"
+import { GenerationModel } from "./generation.model"
+import type { GenerationStatus } from "./generation.schema"
 import { NotFoundError } from "@/core/errors/app-error"
 
-export const trendRepository = {
+export const generationRepository = {
   async create(data: Record<string, unknown>) {
-    return TrendModel.create(data)
+    return GenerationModel.create(data)
   },
 
   async findById(id: string, workspaceId: string) {
-    const trend = await TrendModel.findOne({ _id: id, workspaceId }).lean()
-    if (!trend) throw new NotFoundError("Trend")
-    return trend
+    const doc = await GenerationModel.findOne({ _id: id, workspaceId }).lean()
+    if (!doc) throw new NotFoundError("Generation")
+    return doc
   },
 
   async updateStatus(
     id: string,
     workspaceId: string,
-    status: TrendStatus,
+    status: GenerationStatus,
     errorMessage?: string
   ) {
     const update: Record<string, unknown> = { status }
     if (errorMessage) update.errorMessage = errorMessage
 
-    const trend = await TrendModel.findOneAndUpdate(
+    const doc = await GenerationModel.findOneAndUpdate(
       { _id: id, workspaceId },
       update,
       { returnDocument: "after" }
     ).lean()
-    if (!trend) throw new NotFoundError("Trend")
-    return trend
+    if (!doc) throw new NotFoundError("Generation")
+    return doc
   },
 
   async updateGuardrailIds(id: string, workspaceId: string, guardrailIds: string[]) {
-    await TrendModel.updateOne(
+    await GenerationModel.updateOne(
       { _id: id, workspaceId },
       { $set: { guardrailIds } }
     )
@@ -44,12 +44,12 @@ export const trendRepository = {
   ) {
     const skip = (page - 1) * limit
     const [items, total] = await Promise.all([
-      TrendModel.find({ workspaceId })
+      GenerationModel.find({ workspaceId })
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
         .lean(),
-      TrendModel.countDocuments({ workspaceId }),
+      GenerationModel.countDocuments({ workspaceId }),
     ])
     return { items, total, page, limit }
   },
