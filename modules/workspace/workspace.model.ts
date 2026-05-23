@@ -1,15 +1,21 @@
 import mongoose, { type Document, type Model } from "mongoose"
 
+export interface IPersonaOption {
+  value: string
+  label: string
+  description?: string
+}
+
+export interface IBrandPersona {
+  targetAudiences: IPersonaOption[]
+  preferredTones: IPersonaOption[]
+  language: IPersonaOption[]
+}
+
 export interface IWorkspaceProfile {
   name: string
   description: string
   industry: string
-}
-
-export interface IBrandPersona {
-  targetAudiences: string[]
-  preferredTones: string[]
-  language: string[]
 }
 
 export interface IWorkspace extends Document {
@@ -19,6 +25,15 @@ export interface IWorkspace extends Document {
   createdAt: Date
   updatedAt: Date
 }
+
+const personaOptionSchema = new mongoose.Schema<IPersonaOption>(
+  {
+    value: { type: String, required: true },
+    label: { type: String, required: true },
+    description: { type: String },
+  },
+  { _id: false }
+)
 
 const workspaceProfileSchema = new mongoose.Schema<IWorkspaceProfile>(
   {
@@ -31,9 +46,9 @@ const workspaceProfileSchema = new mongoose.Schema<IWorkspaceProfile>(
 
 const brandPersonaSchema = new mongoose.Schema<IBrandPersona>(
   {
-    targetAudiences: { type: [String], default: [] },
-    preferredTones: { type: [String], default: [] },
-    language: { type: [String], default: ["EN"] },
+    targetAudiences: { type: [personaOptionSchema], default: [] },
+    preferredTones: { type: [personaOptionSchema], default: [] },
+    language: { type: [personaOptionSchema], default: [{ value: "EN", label: "English" }] },
   },
   { _id: false }
 )

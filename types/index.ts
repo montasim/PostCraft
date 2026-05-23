@@ -101,10 +101,16 @@ export interface WorkspaceProfile {
   industry: string
 }
 
+export interface PersonaOption {
+  value: string
+  label: string
+  description?: string
+}
+
 export interface BrandPersona {
-  targetAudiences: string[]
-  preferredTones: string[]
-  language: string[]
+  targetAudiences: PersonaOption[]
+  preferredTones: PersonaOption[]
+  language: PersonaOption[]
 }
 
 export interface UserProfile {

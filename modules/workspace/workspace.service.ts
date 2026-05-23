@@ -14,7 +14,7 @@ const DEFAULT_PROFILE: WorkspaceProfile = {
 const DEFAULT_PERSONA: BrandPersona = {
   targetAudiences: [],
   preferredTones: [],
-  language: ["EN"],
+  language: [{ value: "EN", label: "English" }],
 }
 
 export const workspaceService = {
@@ -25,7 +25,7 @@ export const workspaceService = {
     const rawPersona = doc?.persona ?? DEFAULT_PERSONA
     const persona: BrandPersona = {
       ...rawPersona,
-      language: Array.isArray(rawPersona.language) ? rawPersona.language : [rawPersona.language],
+      language: Array.isArray(rawPersona.language) ? rawPersona.language : DEFAULT_PERSONA.language,
     }
 
     const overview = await analyticsRepository.getOverview(workspaceId)
@@ -55,7 +55,7 @@ export const workspaceService = {
       profile: updated.profile,
       persona: {
         ...rawPersona,
-        language: Array.isArray(rawPersona.language) ? rawPersona.language : [rawPersona.language],
+        language: Array.isArray(rawPersona.language) ? rawPersona.language : DEFAULT_PERSONA.language,
       },
     }
   },
