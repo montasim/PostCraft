@@ -1,6 +1,6 @@
 import { auth } from "./auth"
 import { headers } from "next/headers"
-import { getEnv } from "@/core/config/env"
+import { UnauthorizedError } from "@/core/errors/app-error"
 
 export async function getAuthSession() {
   return auth.api.getSession({
@@ -10,13 +10,16 @@ export async function getAuthSession() {
 
 export async function getWorkspaceId(): Promise<string> {
   const session = await getAuthSession()
-  if (session?.user?.id) {
-    return `ws_${session.user.id}`
+  if (!session?.user?.id) {
+    throw new UnauthorizedError("Authentication required")
   }
-  return getEnv().DEFAULT_WORKSPACE_ID
+  return `ws_${session.user.id}`
 }
 
 export async function getUserId(): Promise<string> {
   const session = await getAuthSession()
-  return session?.user?.id ?? "user_default"
+  if (!session?.user?.id) {
+    throw new UnauthorizedError("Authentication required")
+  }
+  return session.user.id
 }

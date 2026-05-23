@@ -1,6 +1,6 @@
 import { trendRepository } from "./trend.repository"
 import { createTrendSchema, type CreateTrendInput } from "./trend.schema"
-import { getEnv, isDev } from "@/core/config/env"
+import { isDev } from "@/core/config/env"
 import { publishGenerationJob } from "@/core/queue/qstash"
 import { ValidationError } from "@/core/errors/app-error"
 import { logger } from "@/core/logger"
@@ -8,8 +8,8 @@ import { logger } from "@/core/logger"
 export const trendService = {
   async createTrend(
     data: CreateTrendInput,
-    workspaceId?: string,
-    userId?: string
+    workspaceId: string,
+    userId: string
   ) {
     const parsed = createTrendSchema.safeParse(data)
     if (!parsed.success) {
@@ -17,15 +17,11 @@ export const trendService = {
       throw new ValidationError(errors)
     }
 
-    const { DEFAULT_WORKSPACE_ID } = getEnv()
-    const wsId = workspaceId ?? DEFAULT_WORKSPACE_ID
-    const uid = userId ?? "user_default"
-
     const trend = await trendRepository.create({
       ...parsed.data,
       languages: parsed.data.languages.map((l) => l.toLowerCase()),
-      workspaceId: wsId,
-      createdBy: uid,
+      workspaceId,
+      createdBy: userId,
       status: "queued",
     })
 
@@ -35,7 +31,7 @@ export const trendService = {
     // Enqueue to QStash if configured (prod). Dev sync handled by route handler.
     let messageId: string | null = null
     if (!isDev()) {
-      messageId = await publishGenerationJob(trendId, wsId)
+      messageId = await publishGenerationJob(trendId, workspaceId)
     } else {
       logger.info({ trendId }, "QStash not configured — use sync mode")
     }
