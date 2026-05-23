@@ -1,26 +1,32 @@
 import { guardrailRepository } from "./guardrail.repository"
 import { createGuardrailSchema, type CreateGuardrailInput } from "./guardrail.schema"
+import { DEFAULT_GUARDRAILS } from "./guardrail.defaults"
 import { ValidationError } from "@/core/errors/app-error"
+
+function toGuardrailDTO(r: { _id: { toString(): string }; category: string; rule: string; isActive: boolean }) {
+  return { id: r._id.toString(), category: r.category, rule: r.rule, isActive: r.isActive }
+}
+
+/** Auto-seed default guardrails on first access */
+async function ensureDefaults(workspaceId: string) {
+  const hasData = await guardrailRepository.exists(workspaceId)
+  if (!hasData) {
+    const docs = DEFAULT_GUARDRAILS.map((g) => ({ ...g, workspaceId, isActive: true }))
+    await guardrailRepository.createMany(docs)
+  }
+}
 
 export const guardrailService = {
   async getActiveGuardrails(workspaceId: string) {
+    await ensureDefaults(workspaceId)
     const rules = await guardrailRepository.findByWorkspace(workspaceId)
-    return rules.map((r) => ({
-      id: r._id.toString(),
-      category: r.category,
-      rule: r.rule,
-      isActive: r.isActive,
-    }))
+    return rules.map(toGuardrailDTO)
   },
 
   async getAllGuardrails(workspaceId: string) {
+    await ensureDefaults(workspaceId)
     const rules = await guardrailRepository.findAllByWorkspace(workspaceId)
-    return rules.map((r) => ({
-      id: r._id.toString(),
-      category: r.category,
-      rule: r.rule,
-      isActive: r.isActive,
-    }))
+    return rules.map(toGuardrailDTO)
   },
 
   async getGuardrailsByCategory(workspaceId: string, category: "tone" | "format" | "banned" | "custom") {
