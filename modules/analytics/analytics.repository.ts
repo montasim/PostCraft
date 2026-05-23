@@ -1,9 +1,9 @@
 import { VariantModel } from "@/modules/variant/variant.model"
-import { TrendModel } from "@/modules/trend/trend.model"
+import { GenerationModel } from "@/modules/generation/generation.model"
 
 export const analyticsRepository = {
   async getOverview(workspaceId: string) {
-    const [variantStats, trendStats] = await Promise.all([
+    const [variantStats, generationStats] = await Promise.all([
       VariantModel.aggregate([
         { $match: { workspaceId } },
         {
@@ -15,7 +15,7 @@ export const analyticsRepository = {
           },
         },
       ]),
-      TrendModel.aggregate([
+      GenerationModel.aggregate([
         { $match: { workspaceId } },
         {
           $group: {
@@ -30,15 +30,15 @@ export const analyticsRepository = {
     ])
 
     const v = variantStats[0] ?? { totalPosts: 0, avgScore: 0, avgEngagement: 0 }
-    const t = trendStats[0] ?? { total: 0, completed: 0 }
+    const g = generationStats[0] ?? { total: 0, completed: 0 }
 
     return {
-      totalPosts: t.completed,
+      totalPosts: g.completed,
       avgScore: Math.round(v.avgScore ?? 0),
       avgEngagement: Math.round(v.avgEngagement ?? 0),
-      successRate: t.total > 0 ? Math.round((t.completed / t.total) * 100) : 0,
-      totalTrends: t.total,
-      completedTrends: t.completed,
+      successRate: g.total > 0 ? Math.round((g.completed / g.total) * 100) : 0,
+      totalGenerations: g.total,
+      completedGenerations: g.completed,
     }
   },
 

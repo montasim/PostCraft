@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { trendService } from "@/modules/trend"
+import { generationService } from "@/modules/generation"
 import { handleApiError } from "@/core/errors/error-handler"
 import { connectDB } from "@/core/config/database"
 import { isDev } from "@/core/config/env"
@@ -13,11 +13,11 @@ export async function POST(request: NextRequest) {
     const userId = await getUserId()
 
     const body = await request.json()
-    const result = await trendService.createTrend(body, workspaceId, userId)
+    const result = await generationService.createGeneration(body, workspaceId, userId)
 
     // Dev sync mode: run pipeline directly instead of QStash
     if (isDev()) {
-      runGenerationPipeline(result.trendId, workspaceId).catch((err) => {
+      runGenerationPipeline(result.generationId, workspaceId).catch((err) => {
         console.error("[dev-sync] Pipeline error:", err)
       })
     }

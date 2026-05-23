@@ -1,8 +1,8 @@
 import { historyRepository, type HistoryListFilters } from "./history.repository"
-import { trendService } from "@/modules/trend/trend.service"
+import { generationService } from "@/modules/generation/generation.service"
 import { variantService } from "@/modules/variant/variant.service"
 import { variantRepository } from "@/modules/variant/variant.repository"
-import { trendRepository } from "@/modules/trend/trend.repository"
+import { generationRepository } from "@/modules/generation/generation.repository"
 import { guardrailRepository } from "@/modules/guardrail"
 import type { HistoryEntry, Variant } from "@/types"
 
@@ -43,7 +43,7 @@ function mapVariant(v: {
   }
 }
 
-function mapEntry(trend: {
+function mapEntry(generation: {
   _id: string | { toString(): string }
   topic: string
   audiences: string[]
@@ -67,18 +67,18 @@ function mapEntry(trend: {
   }>
 }): HistoryEntry {
   return {
-    id: typeof trend._id === "string" ? trend._id : trend._id.toString(),
-    topic: trend.topic,
-    audience: trend.audiences,
-    tones: trend.tones,
-    language: trend.languages,
-    includeEmoji: trend.includeEmoji,
+    id: typeof generation._id === "string" ? generation._id : generation._id.toString(),
+    topic: generation.topic,
+    audience: generation.audiences,
+    tones: generation.tones,
+    language: generation.languages,
+    includeEmoji: generation.includeEmoji,
     createdAt:
-      trend.createdAt instanceof Date
-        ? trend.createdAt.toISOString()
-        : String(trend.createdAt),
+      generation.createdAt instanceof Date
+        ? generation.createdAt.toISOString()
+        : String(generation.createdAt),
     status: "published",
-    variants: trend.variants.map(mapVariant),
+    variants: generation.variants.map(mapVariant),
   }
 }
 
@@ -116,42 +116,42 @@ export const historyService = {
     if (topVariants.length === 0) return null
 
     const topVariant = topVariants[0]
-    const trendId = topVariant.trendId.toString()
+    const generationId = topVariant.trendId.toString()
 
-    const trend = await trendRepository.findById(trendId, workspaceId)
+    const generation = await generationRepository.findById(generationId, workspaceId)
     const variants = await variantService.getVariantsByTrend(
-      trendId,
+      generationId,
       workspaceId
     )
 
     return {
-      id: trend._id.toString(),
-      topic: trend.topic,
-      audience: trend.audiences,
-      tones: trend.tones,
-      language: trend.languages,
-      includeEmoji: trend.includeEmoji,
-      createdAt: trend.createdAt.toISOString(),
+      id: generation._id.toString(),
+      topic: generation.topic,
+      audience: generation.audiences,
+      tones: generation.tones,
+      language: generation.languages,
+      includeEmoji: generation.includeEmoji,
+      createdAt: generation.createdAt.toISOString(),
       status: "published",
       variants,
     }
   },
 
   async getEntryDetail(
-    trendId: string,
+    generationId: string,
     workspaceId: string
   ): Promise<HistoryEntry & { guardrails: GuardrailDetail[] }> {
-    const trend = await trendService.getTrendStatus(trendId, workspaceId)
+    const generation = await generationService.getGenerationStatus(generationId, workspaceId)
     const variants = await variantService.getVariantsByTrend(
-      trendId,
+      generationId,
       workspaceId
     )
 
-    // Fetch guardrails that were active when this trend was generated
+    // Fetch guardrails that were active when this generation was created
     let guardrails: GuardrailDetail[] = []
-    if (trend.guardrailIds && trend.guardrailIds.length > 0) {
+    if (generation.guardrailIds && generation.guardrailIds.length > 0) {
       const allGuardrails = await guardrailRepository.findAllByWorkspace(workspaceId)
-      const idSet = new Set(trend.guardrailIds)
+      const idSet = new Set(generation.guardrailIds)
       guardrails = allGuardrails
         .filter((g) => idSet.has(g._id.toString()))
         .map((g) => ({
@@ -163,16 +163,16 @@ export const historyService = {
     }
 
     return {
-      id: trend.id,
-      topic: trend.topic,
-      audience: trend.audiences,
-      tones: trend.tones,
-      language: trend.languages,
-      includeEmoji: trend.includeEmoji,
+      id: generation.id,
+      topic: generation.topic,
+      audience: generation.audiences,
+      tones: generation.tones,
+      language: generation.languages,
+      includeEmoji: generation.includeEmoji,
       createdAt:
-        trend.createdAt instanceof Date
-          ? trend.createdAt.toISOString()
-          : String(trend.createdAt),
+        generation.createdAt instanceof Date
+          ? generation.createdAt.toISOString()
+          : String(generation.createdAt),
       status: "published",
       variants,
       guardrails,

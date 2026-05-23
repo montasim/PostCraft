@@ -1,5 +1,5 @@
-import { TrendModel } from "@/modules/trend/trend.model"
 import { VariantModel } from "@/modules/variant/variant.model"
+import { GenerationModel } from "@/modules/generation/generation.model"
 
 export interface HistoryListFilters {
   search?: string
@@ -12,12 +12,12 @@ export interface HistoryListFilters {
 }
 
 export interface HistoryListResult {
-  entries: TrendWithVariants[]
+  entries: GenerationWithVariants[]
   total: number
   hasMore: boolean
 }
 
-export interface TrendWithVariants {
+export interface GenerationWithVariants {
   _id: string
   topic: string
   audiences: string[]
@@ -73,7 +73,7 @@ export const historyRepository = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pipeline: any[] = []
 
-    // Base match: completed trends only
+    // Base match: completed generations only
     pipeline.push({ $match: { workspaceId, status: "completed" } })
 
     // Lookup variants
@@ -127,9 +127,9 @@ export const historyRepository = {
       },
     })
 
-    const [result] = await TrendModel.aggregate(pipeline)
+    const [result] = await GenerationModel.aggregate(pipeline)
     const total = result.metadata[0]?.total ?? 0
-    const entries = result.data as TrendWithVariants[]
+    const entries = result.data as GenerationWithVariants[]
 
     return {
       entries,
@@ -143,8 +143,8 @@ export const historyRepository = {
     weekAgo.setDate(weekAgo.getDate() - 7)
     weekAgo.setHours(0, 0, 0, 0)
 
-    const [trendStats, variantStats] = await Promise.all([
-      TrendModel.aggregate([
+    const [generationStats, variantStats] = await Promise.all([
+      GenerationModel.aggregate([
         { $match: { workspaceId, status: "completed" } },
         {
           $group: {
@@ -168,12 +168,12 @@ export const historyRepository = {
       ]),
     ])
 
-    const t = trendStats[0] ?? { totalCount: 0, thisWeekCount: 0 }
+    const g = generationStats[0] ?? { totalCount: 0, thisWeekCount: 0 }
     const v = variantStats[0] ?? { bestScore: 0, avgScore: 0 }
 
     return {
-      totalCount: t.totalCount,
-      thisWeekCount: t.thisWeekCount,
+      totalCount: g.totalCount,
+      thisWeekCount: g.thisWeekCount,
       bestScore: Math.round(v.bestScore ?? 0),
       avgScore: Math.round(v.avgScore ?? 0),
     }
@@ -183,7 +183,7 @@ export const historyRepository = {
     const twelveWeeksAgo = new Date()
     twelveWeeksAgo.setDate(twelveWeeksAgo.getDate() - 84)
 
-    return TrendModel.aggregate<{
+    return GenerationModel.aggregate<{
       date: string
       count: number
     }>([
@@ -237,7 +237,7 @@ export const historyRepository = {
   },
 
   async getLongestStreak(workspaceId: string): Promise<number> {
-    const allTimeHeatmap = await TrendModel.aggregate<{ date: string }>([
+    const allTimeHeatmap = await GenerationModel.aggregate<{ date: string }>([
       { $match: { workspaceId, status: "completed" } },
       {
         $group: {

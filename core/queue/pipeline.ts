@@ -1,22 +1,21 @@
 import { connectDB } from "@/core/config/database"
 
-import { trendService, trendRepository } from "@/modules/trend"
-import { generationService } from "@/modules/generation"
+import { generationService, generationRepository } from "@/modules/generation"
 import { scoringService } from "@/modules/scoring"
 import { rankingService } from "@/modules/ranking"
 import { variantService } from "@/modules/variant"
 import { guardrailRepository } from "@/modules/guardrail"
 import { logger } from "@/core/logger"
 
-export async function runGenerationPipeline(trendId: string, workspaceId: string): Promise<void> {
+export async function runGenerationPipeline(generationId: string, workspaceId: string): Promise<void> {
   await connectDB()
 
   try {
-    logger.info({ trendId }, "Pipeline: starting")
+    logger.info({ generationId }, "Pipeline: starting")
 
-    // 1. Fetch trend
-    const trend = await trendService.getTrendStatus(trendId, workspaceId)
-    await trendService.updateStatus(trendId, workspaceId, "generating")
+    // 1. Fetch generation
+    const generation = await generationService.getGenerationStatus(generationId, workspaceId)
+    await generationService.updateStatus(generationId, workspaceId, "generating")
 
     // 2. Fetch guardrails
     const allGuardrails = await guardrailRepository.findByWorkspace(workspaceId)
@@ -24,50 +23,50 @@ export async function runGenerationPipeline(trendId: string, workspaceId: string
     const formatRules = allGuardrails.filter((g) => g.category === "format").map((g) => g.rule)
     const bannedWords = allGuardrails.filter((g) => g.category === "banned").map((g) => g.rule)
 
-    // 2b. Save guardrail IDs used for this trend
+    // 2b. Save guardrail IDs used for this generation
     const guardrailIds = allGuardrails.map((g) => g._id.toString())
     if (guardrailIds.length > 0) {
-      await trendRepository.updateGuardrailIds(trendId, workspaceId, guardrailIds)
+      await generationRepository.updateGuardrailIds(generationId, workspaceId, guardrailIds)
     }
 
     // 3. Generate variants via AI
     const rawVariants = await generationService.generateVariants(
       {
-        topic: trend.topic,
-        audiences: trend.audiences,
-        tones: trend.tones,
-        languages: trend.languages,
-        includeEmoji: trend.includeEmoji,
+        topic: generation.topic,
+        audiences: generation.audiences,
+        tones: generation.tones,
+        languages: generation.languages,
+        includeEmoji: generation.includeEmoji,
       },
       { toneRules, formatRules, bannedWords }
     )
 
     // 4. Score
-    await trendService.updateStatus(trendId, workspaceId, "scoring")
+    await generationService.updateStatus(generationId, workspaceId, "scoring")
 
     const scoredVariants = await scoringService.scoreAllVariants(
       rawVariants,
       bannedWords,
-      trend.audiences,
-      trend.topic
+      generation.audiences,
+      generation.topic
     )
 
     // 5. Rank
-    await trendService.updateStatus(trendId, workspaceId, "ranking")
+    await generationService.updateStatus(generationId, workspaceId, "ranking")
 
     const rankedVariants = rankingService.rankVariants(scoredVariants)
 
     // 6. Persist
-    await variantService.persistVariants(trendId, workspaceId, rankedVariants)
+    await variantService.persistVariants(generationId, workspaceId, rankedVariants)
 
     // 7. Done
-    await trendService.updateStatus(trendId, workspaceId, "completed")
+    await generationService.updateStatus(generationId, workspaceId, "completed")
 
-    logger.info({ trendId }, "Pipeline: completed")
+    logger.info({ generationId }, "Pipeline: completed")
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error"
-    await trendService.updateStatus(trendId, workspaceId, "failed", message).catch(() => {})
-    logger.error({ err: error, trendId }, "Pipeline: failed")
+    await generationService.updateStatus(generationId, workspaceId, "failed", message).catch(() => {})
+    logger.error({ err: error, generationId }, "Pipeline: failed")
     throw error
   }
 }

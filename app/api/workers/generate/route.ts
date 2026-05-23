@@ -5,16 +5,16 @@ import { runGenerationPipeline } from "@/core/queue/pipeline"
 
 async function handler(request: NextRequest) {
   const body = await request.json()
-  const { trendId, workspaceId } = body as { trendId: string; workspaceId?: string }
+  const { generationId, workspaceId } = body as { generationId: string; workspaceId?: string }
 
-  if (!trendId || !workspaceId) {
+  if (!generationId || !workspaceId) {
     return NextResponse.json(
-      { success: false, error: "Missing trendId or workspaceId" },
+      { success: false, error: "Missing generationId or workspaceId" },
       { status: 400 }
     )
   }
 
-  await runGenerationPipeline(trendId, workspaceId)
+  await runGenerationPipeline(generationId, workspaceId)
 
   return NextResponse.json({ success: true })
 }

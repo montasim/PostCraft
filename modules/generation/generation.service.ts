@@ -1,13 +1,17 @@
 import { getGeminiClient, getDefaultModel } from "@/core/ai/gemini"
 import { buildGenerationPrompt } from "./prompt-builder"
 import { aiGenerationOutputSchema, resolveLanguage, type RawVariant } from "./generation.schema"
-import { AIServiceError } from "@/core/errors/app-error"
+import { createGenerationSchema, type CreateGenerationInput, type GenerationStatus } from "./generation.schema"
+import { generationRepository } from "./generation.repository"
+import { publishGenerationJob } from "@/core/queue/qstash"
+import { isDev } from "@/core/config/env"
+import { AIServiceError, ValidationError } from "@/core/errors/app-error"
 import { logger } from "@/core/logger"
 
 const FALLBACK_MODELS = ["gemini-2.0-flash"]
 const MAX_RETRIES = 3
 
-interface TrendData {
+interface GenerationData {
   topic: string
   audiences: string[]
   tones: string[]
@@ -33,11 +37,77 @@ function delay(ms: number): Promise<void> {
 }
 
 export const generationService = {
+  // ─── CRUD ─────────────────────────────────────────────────────
+
+  async createGeneration(
+    data: CreateGenerationInput,
+    workspaceId: string,
+    userId: string
+  ) {
+    const parsed = createGenerationSchema.safeParse(data)
+    if (!parsed.success) {
+      const errors = parsed.error.issues.map((i) => i.message).join(", ")
+      throw new ValidationError(errors)
+    }
+
+    const doc = await generationRepository.create({
+      ...parsed.data,
+      languages: parsed.data.languages.map((l) => l.toLowerCase()),
+      workspaceId,
+      createdBy: userId,
+      status: "queued",
+    })
+
+    const generationId = doc._id.toString()
+    logger.info({ generationId }, "Generation created")
+
+    // Enqueue to QStash if configured (prod). Dev sync handled by route handler.
+    let messageId: string | null = null
+    if (!isDev()) {
+      messageId = await publishGenerationJob(generationId, workspaceId)
+    } else {
+      logger.info({ generationId }, "QStash not configured — use sync mode")
+    }
+
+    return {
+      generationId,
+      status: doc.status,
+      messageId,
+    }
+  },
+
+  async getGenerationStatus(generationId: string, workspaceId: string) {
+    const doc = await generationRepository.findById(generationId, workspaceId)
+    return {
+      id: doc._id.toString(),
+      topic: doc.topic,
+      audiences: doc.audiences,
+      tones: doc.tones,
+      languages: doc.languages,
+      includeEmoji: doc.includeEmoji,
+      status: doc.status,
+      errorMessage: doc.errorMessage,
+      guardrailIds: doc.guardrailIds ?? [],
+      createdAt: doc.createdAt,
+    }
+  },
+
+  async updateStatus(
+    generationId: string,
+    workspaceId: string,
+    status: GenerationStatus,
+    errorMessage?: string
+  ) {
+    return generationRepository.updateStatus(generationId, workspaceId, status, errorMessage)
+  },
+
+  // ─── AI Variant Generation ───────────────────────────────────
+
   async generateVariants(
-    trend: TrendData,
+    generation: GenerationData,
     guardrails: GuardrailData
   ): Promise<RawVariant[]> {
-    const prompt = buildGenerationPrompt(trend, guardrails)
+    const prompt = buildGenerationPrompt(generation, guardrails)
     const userPrompt = `${prompt.developer}\n\n${prompt.user}`
 
     const models = [getDefaultModel(), ...FALLBACK_MODELS.filter((m) => m !== getDefaultModel())]
@@ -57,7 +127,7 @@ export const generationService = {
             },
           })
 
-          logger.info({ topic: trend.topic, model: modelName, attempt }, "Calling Gemini for variant generation")
+          logger.info({ topic: generation.topic, model: modelName, attempt }, "Calling Gemini for variant generation")
 
           const result = await model.generateContent(userPrompt)
           const raw = result.response.text()
