@@ -1,19 +1,19 @@
 import { NextResponse } from "next/server"
 import { connectDB } from "@/core/config/database"
-import { getEnv } from "@/core/config/env"
 import { handleApiError } from "@/core/errors/error-handler"
 import { historyService } from "@/modules/history"
+import { getWorkspaceId } from "@/core/auth/workspace"
 
 export async function GET() {
   try {
     await connectDB()
-    const { DEFAULT_WORKSPACE_ID } = getEnv()
+    const workspaceId = await getWorkspaceId()
 
     const [stats, heatmap, streakDays, bestEntry] = await Promise.all([
-      historyService.getStats(DEFAULT_WORKSPACE_ID),
-      historyService.getHeatmapData(DEFAULT_WORKSPACE_ID),
-      historyService.getStreakDays(DEFAULT_WORKSPACE_ID),
-      historyService.getBestEntry(DEFAULT_WORKSPACE_ID),
+      historyService.getStats(workspaceId),
+      historyService.getHeatmapData(workspaceId),
+      historyService.getStreakDays(workspaceId),
+      historyService.getBestEntry(workspaceId),
     ])
 
     return NextResponse.json({

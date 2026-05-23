@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import { connectDB } from "@/core/config/database"
-import { getEnv } from "@/core/config/env"
 import { handleApiError } from "@/core/errors/error-handler"
 import { historyService } from "@/modules/history"
+import { getWorkspaceId } from "@/core/auth/workspace"
 
 export async function GET(
   _request: NextRequest,
@@ -11,11 +11,11 @@ export async function GET(
   try {
     await connectDB()
     const { trendId } = await params
-    const { DEFAULT_WORKSPACE_ID } = getEnv()
+    const workspaceId = await getWorkspaceId()
 
     const entry = await historyService.getEntryDetail(
       trendId,
-      DEFAULT_WORKSPACE_ID
+      workspaceId
     )
     return NextResponse.json({ success: true, data: entry })
   } catch (error) {
