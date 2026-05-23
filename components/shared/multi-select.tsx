@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { IconCheck, IconSelector, IconX } from "@tabler/icons-react"
+import { IconCheck, IconSelector, IconX, IconPlus } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -9,6 +9,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
+  CommandEmpty,
 } from "@/components/ui/command"
 import {
   Popover,
@@ -22,6 +23,7 @@ interface MultiSelectProps {
   onChange: (selected: string[]) => void
   placeholder?: string
   className?: string
+  creatable?: boolean
 }
 
 function MultiSelect({
@@ -30,8 +32,10 @@ function MultiSelect({
   onChange,
   placeholder = "Select...",
   className,
+  creatable = false,
 }: MultiSelectProps) {
   const [open, setOpen] = React.useState(false)
+  const [search, setSearch] = React.useState("")
 
   const toggle = (value: string) => {
     onChange(
@@ -40,6 +44,23 @@ function MultiSelect({
         : [...selected, value]
     )
   }
+
+  // Merge static options with any custom selected values
+  const allOptions = creatable
+    ? [...options, ...selected.filter((s) => !options.includes(s))]
+    : options
+
+  // Manual filtering
+  const filtered = search.trim()
+    ? allOptions.filter((o) =>
+        o.toLowerCase().includes(search.trim().toLowerCase())
+      )
+    : allOptions
+
+  const canCreate =
+    creatable &&
+    search.trim() !== "" &&
+    !allOptions.some((o) => o.toLowerCase() === search.trim().toLowerCase())
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -89,10 +110,29 @@ function MultiSelect({
         className="w-[--radix-popover-trigger-width] p-0"
         align="start"
       >
-        <Command>
-          <CommandInput placeholder="Search..." />
+        <Command shouldFilter={false}>
+          <CommandInput
+            placeholder="Search..."
+            value={search}
+            onValueChange={setSearch}
+          />
           <CommandList>
-            {options.map((option) => (
+            {!creatable && filtered.length === 0 && (
+              <CommandEmpty>No results found.</CommandEmpty>
+            )}
+            {canCreate && (
+              <CommandItem
+                className="text-primary"
+                onSelect={() => {
+                  toggle(search.trim())
+                  setSearch("")
+                }}
+              >
+                <IconPlus className="mr-2 h-4 w-4" />
+                Add &quot;{search.trim()}&quot;
+              </CommandItem>
+            )}
+            {filtered.map((option) => (
               <CommandItem
                 key={option}
                 value={option}
@@ -107,6 +147,11 @@ function MultiSelect({
                 {option}
               </CommandItem>
             ))}
+            {creatable && filtered.length === 0 && !canCreate && (
+              <div className="py-6 text-center text-sm text-muted-foreground">
+                No results found.
+              </div>
+            )}
           </CommandList>
         </Command>
       </PopoverContent>
