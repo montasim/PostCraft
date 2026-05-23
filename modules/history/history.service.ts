@@ -71,7 +71,7 @@ function mapEntry(trend: {
     topic: trend.topic,
     audience: trend.audiences,
     tones: trend.tones,
-    language: trend.languages[0] ?? "en",
+    language: trend.languages,
     includeEmoji: trend.includeEmoji,
     createdAt:
       trend.createdAt instanceof Date
@@ -129,7 +129,7 @@ export const historyService = {
       topic: trend.topic,
       audience: trend.audiences,
       tones: trend.tones,
-      language: trend.languages[0] ?? "en",
+      language: trend.languages,
       includeEmoji: trend.includeEmoji,
       createdAt: trend.createdAt.toISOString(),
       status: "published",
@@ -167,7 +167,7 @@ export const historyService = {
       topic: trend.topic,
       audience: trend.audiences,
       tones: trend.tones,
-      language: trend.languages[0] ?? "en",
+      language: trend.languages,
       includeEmoji: trend.includeEmoji,
       createdAt:
         trend.createdAt instanceof Date

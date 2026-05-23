@@ -235,4 +235,35 @@ export const historyRepository = {
 
     return streak
   },
+
+  async getLongestStreak(workspaceId: string): Promise<number> {
+    const allTimeHeatmap = await TrendModel.aggregate<{ date: string }>([
+      { $match: { workspaceId, status: "completed" } },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+        },
+      },
+      { $sort: { _id: 1 } },
+      { $project: { _id: 0, date: "$_id" } },
+    ])
+
+    if (allTimeHeatmap.length === 0) return 0
+
+    const dates = allTimeHeatmap.map((d) => new Date(d.date + "T00:00:00Z"))
+    let longest = 1
+    let current = 1
+
+    for (let i = 1; i < dates.length; i++) {
+      const diff = (dates[i].getTime() - dates[i - 1].getTime()) / (1000 * 60 * 60 * 24)
+      if (Math.abs(diff - 1) < 0.5) {
+        current++
+        longest = Math.max(longest, current)
+      } else if (diff > 1) {
+        current = 1
+      }
+    }
+
+    return longest
+  },
 }
