@@ -8,6 +8,7 @@ import {
   IconSettings,
 } from "@tabler/icons-react"
 import type { NavItem, Variant, HistoryEntry, SortOption, ScoreRange, AnalyticsOverview, ScoreDistribution, StylePerformance, TrendDataPoint, TopPerformingPost } from "@/types"
+import type { SelectOption } from "@/components/shared/multi-select"
 
 export const POSTS_USED = 3
 export const PLAN_LIMIT = 10
@@ -76,18 +77,35 @@ export const VARIANTS: Variant[] = [
   },
 ]
 
-export const AUDIENCE_OPTIONS = [
-  "Founders",
-  "Investors",
-  "Engineers",
-  "Recruiters",
-  "Product Managers",
-  "Designers",
+export const AUDIENCE_OPTIONS: SelectOption[] = [
+  { value: "HR Recruiters", label: "HR Recruiters", description: "Scanning for culture fit, communication clarity, and career trajectory signals" },
+  { value: "Hiring Managers", label: "Hiring Managers", description: "Looking for proven problem-solvers who understand business impact" },
+  { value: "Tech Leads", label: "Tech Leads", description: "Respect depth: architectural decisions, trade-offs, and production lessons" },
+  { value: "CTO / VP Engineering", label: "CTO / VP Engineering", description: "Demonstrate systems thinking, ownership, and strategic technical vision" },
+  { value: "Fellow Developers", label: "Fellow Developers", description: "Share battle-tested patterns, debugging war stories, and open-source contributions" },
+  { value: "Startup Founders", label: "Startup Founders", description: "Show you can ship fast, wear multiple hats, and thrive in ambiguity" },
+  { value: "Product Managers", label: "Product Managers", description: "Bridge tech and business: show you understand user problems, not just code" },
+  { value: "Potential Clients", label: "Potential Clients", description: "Prove expertise through case studies and measurable outcomes" },
+  { value: "Community Builders", label: "Community Builders", description: "Engage with genuine questions, amplify others, share freely" },
+  { value: "Indie Hackers", label: "Indie Hackers", description: "Connect through shared struggles of building and shipping alone" },
 ]
 
-export const TONE_OPTIONS = ["Thought leader", "Story", "Contrarian", "Casual"]
+export const TONE_OPTIONS: SelectOption[] = [
+  { value: "Thought Leadership", label: "Thought Leadership", description: "Original insights backed by experience, not recycled advice" },
+  { value: "Storytelling", label: "Storytelling", description: "Real scenarios with conflict, decision, and outcome readers can feel" },
+  { value: "Educational", label: "Educational", description: "Break complex topics into clear, actionable steps anyone can follow" },
+  { value: "Contrarian", label: "Contrarian", description: "Challenge common wisdom with evidence, spark productive debate" },
+  { value: "Inspirational", label: "Inspirational", description: "Comebacks, turning points, and lessons from failure without fluff" },
+  { value: "Analytical", label: "Analytical", description: "Data-driven takes with charts, benchmarks, or before/after comparisons" },
+  { value: "Conversational", label: "Conversational", description: "Write like a DM to a smart friend — warm and approachable" },
+  { value: "Action-Oriented", label: "Action-Oriented", description: "Give specific steps, templates, or frameworks readers can use today" },
+]
 
-export const LANGUAGE_OPTIONS = ["EN", "BN", "Banglish"]
+export const LANGUAGE_OPTIONS: SelectOption[] = [
+  { value: "EN", label: "English" },
+  { value: "BN", label: "Bangla" },
+  { value: "Banglish", label: "Banglish (Bangla + English)" },
+]
 
 export const PAGE_SIZE = 6
 

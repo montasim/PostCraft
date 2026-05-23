@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
-import { MultiSelect } from "@/components/shared"
+import { MultiSelect, type SelectOption } from "@/components/shared"
 import { IconTrendingUp, IconSparkles, IconLoader2 } from "@tabler/icons-react"
 import {
   AUDIENCE_OPTIONS,
@@ -36,9 +36,9 @@ interface PostCreationFormProps {
     includeEmoji: boolean
   }) => void
   isSubmitting?: boolean
-  audienceOptions?: string[]
-  toneOptions?: string[]
-  languageOptions?: string[]
+  audienceOptions?: (string | SelectOption)[]
+  toneOptions?: (string | SelectOption)[]
+  languageOptions?: (string | SelectOption)[]
 }
 
 function PostCreationForm({ onGenerate, isSubmitting, audienceOptions = AUDIENCE_OPTIONS, toneOptions = TONE_OPTIONS, languageOptions = LANGUAGE_OPTIONS }: PostCreationFormProps) {
