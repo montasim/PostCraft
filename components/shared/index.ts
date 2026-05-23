@@ -1,6 +1,6 @@
 export { PageError } from "./page-error"
 export { ScorePill } from "./score-pill"
-export { MultiSelect } from "./multi-select"
+export { MultiSelect, type SelectOption } from "./multi-select"
 export { NavGroup } from "./nav-group"
 export { VariantCard } from "./variant-card"
 export { PlanQuotaCard } from "./plan-quota-card"
