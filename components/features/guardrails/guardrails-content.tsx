@@ -78,32 +78,34 @@ function RuleSection({ title, description, icon: Icon, rules, onToggle, onRemove
         <p className="text-xs text-muted-foreground">{description}</p>
       </CardHeader>
       <CardContent className="space-y-2">
-        {rules.map((rule) => (
-          <div
-            key={rule.id}
-            className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 transition",
-              rule.active ? "bg-card" : "bg-muted/30 opacity-60"
-            )}
-          >
-            <Switch
-              checked={rule.active}
-              onCheckedChange={() => onToggle(rule.id)}
-              className="scale-75"
-            />
-            <span className={cn("flex-1 text-sm", !rule.active && "line-through")}>
-              {rule.text}
-            </span>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6 text-muted-foreground hover:text-destructive"
-              onClick={() => onRemove(rule.id)}
+        <div className="max-h-[220px] space-y-2 overflow-y-auto pr-1">
+          {rules.map((rule) => (
+            <div
+              key={rule.id}
+              className={cn(
+                "flex items-center gap-3 rounded-lg px-3 py-2 transition",
+                rule.active ? "bg-card" : "bg-muted/30 opacity-60"
+              )}
             >
-              <IconX className="h-3.5 w-3.5" />
-            </Button>
-          </div>
-        ))}
+              <Switch
+                checked={rule.active}
+                onCheckedChange={() => onToggle(rule.id)}
+                className="scale-75"
+              />
+              <span className={cn("flex-1 text-sm", !rule.active && "line-through")}>
+                {rule.text}
+              </span>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6 text-muted-foreground hover:text-destructive"
+                onClick={() => onRemove(rule.id)}
+              >
+                <IconX className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          ))}
+        </div>
 
         <Separator className="my-2" />
 
