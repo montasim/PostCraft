@@ -8,7 +8,6 @@ const envSchema = z.object({
   QSTASH_CURRENT_SIGNING_KEY: z.string().optional(),
   QSTASH_NEXT_SIGNING_KEY: z.string().optional(),
   APP_URL: z.string().optional().default("http://localhost:3000"),
-  DEFAULT_WORKSPACE_ID: z.string().default("ws_default"),
 
   // Auth
   BETTER_AUTH_SECRET: z.string().min(1),

@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 import { GuardrailModel } from "../modules/guardrail/guardrail.model"
 
 const MONGODB_URI = process.env.MONGODB_URI ?? "mongodb://localhost:27017/linkediq"
-const WORKSPACE_ID = process.env.DEFAULT_WORKSPACE_ID ?? "ws_default"
+const WORKSPACE_ID = process.env.SEED_WORKSPACE_ID ?? "ws_default"
 
 const SEED_DATA = [
   // Tone rules
