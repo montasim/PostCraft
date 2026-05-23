@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { guardrailService } from "@/modules/guardrail"
 import { handleApiError } from "@/core/errors/error-handler"
 import { connectDB } from "@/core/config/database"
-import { getEnv } from "@/core/config/env"
+import { getWorkspaceId } from "@/core/auth/workspace"
 
 export async function PATCH(
   request: NextRequest,
@@ -10,13 +10,13 @@ export async function PATCH(
 ) {
   try {
     await connectDB()
-    const { DEFAULT_WORKSPACE_ID } = getEnv()
+    const workspaceId = await getWorkspaceId()
     const { id } = await params
     const body = await request.json()
 
     const result = await guardrailService.toggleGuardrail(
       id,
-      DEFAULT_WORKSPACE_ID,
+      workspaceId,
       body.isActive
     )
 
@@ -32,10 +32,10 @@ export async function DELETE(
 ) {
   try {
     await connectDB()
-    const { DEFAULT_WORKSPACE_ID } = getEnv()
+    const workspaceId = await getWorkspaceId()
     const { id } = await params
 
-    await guardrailService.removeGuardrail(id, DEFAULT_WORKSPACE_ID)
+    await guardrailService.removeGuardrail(id, workspaceId)
 
     return NextResponse.json({ success: true })
   } catch (error) {

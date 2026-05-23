@@ -2,17 +2,17 @@ import { NextRequest, NextResponse } from "next/server"
 import { guardrailService } from "@/modules/guardrail"
 import { handleApiError } from "@/core/errors/error-handler"
 import { connectDB } from "@/core/config/database"
-import { getEnv } from "@/core/config/env"
+import { getWorkspaceId } from "@/core/auth/workspace"
 
 export async function GET(request: NextRequest) {
   try {
     await connectDB()
-    const { DEFAULT_WORKSPACE_ID } = getEnv()
+    const workspaceId = await getWorkspaceId()
 
     const activeOnly = request.nextUrl.searchParams.get("active") === "true"
     const guardrails = activeOnly
-      ? await guardrailService.getActiveGuardrails(DEFAULT_WORKSPACE_ID)
-      : await guardrailService.getAllGuardrails(DEFAULT_WORKSPACE_ID)
+      ? await guardrailService.getActiveGuardrails(workspaceId)
+      : await guardrailService.getAllGuardrails(workspaceId)
 
     return NextResponse.json({
       success: true,
@@ -26,10 +26,10 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     await connectDB()
-    const { DEFAULT_WORKSPACE_ID } = getEnv()
+    const workspaceId = await getWorkspaceId()
 
     const body = await request.json()
-    const guardrail = await guardrailService.addGuardrule(body, DEFAULT_WORKSPACE_ID)
+    const guardrail = await guardrailService.addGuardrule(body, workspaceId)
 
     return NextResponse.json(
       { success: true, data: guardrail },

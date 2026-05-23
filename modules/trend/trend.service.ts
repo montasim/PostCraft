@@ -35,7 +35,7 @@ export const trendService = {
     // Enqueue to QStash if configured (prod). Dev sync handled by route handler.
     let messageId: string | null = null
     if (!isDev()) {
-      messageId = await publishGenerationJob(trendId)
+      messageId = await publishGenerationJob(trendId, wsId)
     } else {
       logger.info({ trendId }, "QStash not configured — use sync mode")
     }

@@ -2,14 +2,14 @@ import { NextResponse } from "next/server"
 import { analyticsService } from "@/modules/analytics"
 import { handleApiError } from "@/core/errors/error-handler"
 import { connectDB } from "@/core/config/database"
-import { getEnv } from "@/core/config/env"
+import { getWorkspaceId } from "@/core/auth/workspace"
 
 export async function GET() {
   try {
     await connectDB()
-    const { DEFAULT_WORKSPACE_ID } = getEnv()
+    const workspaceId = await getWorkspaceId()
 
-    const dashboard = await analyticsService.getDashboard(DEFAULT_WORKSPACE_ID)
+    const dashboard = await analyticsService.getDashboard(workspaceId)
 
     return NextResponse.json({
       success: true,
