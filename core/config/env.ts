@@ -7,8 +7,18 @@ const envSchema = z.object({
   QSTASH_TOKEN: z.string().optional(),
   QSTASH_CURRENT_SIGNING_KEY: z.string().optional(),
   QSTASH_NEXT_SIGNING_KEY: z.string().optional(),
-  APP_URL: z.string().url().optional().default("http://localhost:3000"),
+  APP_URL: z.string().optional().default("http://localhost:3000"),
   DEFAULT_WORKSPACE_ID: z.string().default("ws_default"),
+
+  // Auth
+  BETTER_AUTH_SECRET: z.string().min(1),
+  GOOGLE_CLIENT_ID: z.string().optional(),
+  GOOGLE_CLIENT_SECRET: z.string().optional(),
+
+  // Email
+  RESEND_API_KEY: z.string().optional(),
+  EMAIL_FROM: z.string().default("noreply@linkedIQ.dev"),
+
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
