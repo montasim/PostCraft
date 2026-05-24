@@ -32,6 +32,34 @@ function stripMarkdownFences(text: string): string {
     .trim()
 }
 
+function safeJsonParse(text: string): unknown {
+  try {
+    return JSON.parse(text)
+  } catch {
+    // Gemini sometimes truncates JSON when hitting token limit
+    // Try to recover by closing open structures
+    let repaired = text.trimEnd()
+    if (!repaired.endsWith("}") && !repaired.endsWith("]")) {
+      // Count open braces/brackets
+      const opens = (repaired.match(/[[{]/g) || []).length
+      const closes = (repaired.match(/[\]}]/g) || []).length
+      const diff = opens - closes
+      // Try to close the last variant object and the array
+      if (repaired.endsWith(",")) repaired = repaired.slice(0, -1)
+      for (let i = 0; i < diff; i++) repaired += i === diff - 1 ? "]" : "}"
+      try {
+        return JSON.parse(repaired)
+      } catch {
+        // Last resort: extract partial variants array
+        const match = repaired.match(/\[\s*\{[\s\S]*\}\s*\]/)
+        if (match) return JSON.parse(match[0])
+        throw new SyntaxError("Unexpected end of JSON input")
+      }
+    }
+    throw new SyntaxError("Unexpected end of JSON input")
+  }
+}
+
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
@@ -122,7 +150,7 @@ export const generationService = {
             generationConfig: {
               temperature: 0.9,
               topP: 0.95,
-              maxOutputTokens: 4096,
+              maxOutputTokens: 8192,
               responseMimeType: "application/json",
             },
           })
@@ -133,7 +161,7 @@ export const generationService = {
           const raw = result.response.text()
           const text = stripMarkdownFences(raw)
 
-          const parsed = aiGenerationOutputSchema.safeParse(JSON.parse(text))
+          const parsed = aiGenerationOutputSchema.safeParse(safeJsonParse(text))
           if (!parsed.success) {
             const errors = parsed.error.issues.map((i) => i.message).join(", ")
             throw new AIServiceError(`AI output validation failed: ${errors}`)
@@ -147,7 +175,11 @@ export const generationService = {
           logger.info({ count: variants.length, model: modelName }, "Variants generated successfully")
           return variants
         } catch (error) {
-          const isRetryable = error instanceof Error && (error.message.includes("503") || error.message.includes("429"))
+          const isRetryable = error instanceof Error && (
+            error.message.includes("503") ||
+            error.message.includes("429") ||
+            error.message.includes("Unexpected end of JSON")
+          )
 
           if (isRetryable && attempt < MAX_RETRIES) {
             const backoff = 1000 * Math.pow(2, attempt - 1)
