@@ -17,24 +17,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { ConfirmDialog } from "@/components/ui/confirm-dialog"
-import { cn } from "@/lib/utils"
 import {
   IconBell,
-  IconPalette,
   IconShield,
   IconTrash,
   IconAlertTriangle,
   IconKey,
   IconClock,
-  IconDeviceDesktop,
-  IconMoon,
-  IconSun,
   IconRefresh,
 } from "@tabler/icons-react"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
+import { requestNotificationPermission } from "@/lib/browser-notification"
+import { authClient } from "@/core/auth/auth-client"
 import type {
   NotificationSettings,
-  AppearanceSettings,
   AccountSettings,
 } from "@/types"
 
@@ -98,55 +95,6 @@ function NotificationSettingsCard({
             </div>
           </div>
         ))}
-      </CardContent>
-    </Card>
-  )
-}
-
-// ─── Appearance Settings Card ──────────────────────────────────────
-
-function AppearanceSettingsCard({
-  settings,
-  onUpdate,
-}: {
-  settings: AppearanceSettings
-  onUpdate: <K extends keyof AppearanceSettings>(key: K, value: AppearanceSettings[K]) => void
-}) {
-  const themeOptions = [
-    { value: "system" as const, label: "System", icon: IconDeviceDesktop },
-    { value: "dark" as const, label: "Dark", icon: IconMoon },
-    { value: "light" as const, label: "Light", icon: IconSun },
-  ]
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-          <IconPalette className="h-4 w-4 text-primary" />
-          Appearance
-        </CardTitle>
-        <p className="text-xs text-muted-foreground">
-          Customize how LinkedIQ looks for you
-        </p>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-1.5">
-          <Label className="text-xs">Theme</Label>
-          <div className="flex gap-5">
-            {themeOptions.map((opt) => (
-              <Button
-                key={opt.value}
-                variant={settings.theme === opt.value ? "default" : "outline"}
-                size="sm"
-                className={cn("h-8 flex-1 gap-1 text-xs")}
-                onClick={() => onUpdate("theme", opt.value)}
-              >
-                <opt.icon className="h-3 w-3" />
-                {opt.label}
-              </Button>
-            ))}
-          </div>
-        </div>
       </CardContent>
     </Card>
   )
@@ -384,7 +332,7 @@ function ChangePasswordRow() {
 
 // ─── Danger Zone Card ──────────────────────────────────────────────
 
-function DangerZoneCard({ onReset }: { onReset: () => void }) {
+function DangerZoneCard({ onReset, onDelete }: { onReset: () => void; onDelete: () => void }) {
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [resetOpen, setResetOpen] = useState(false)
 
@@ -418,7 +366,7 @@ function DangerZoneCard({ onReset }: { onReset: () => void }) {
             description="This will permanently delete your workspace and all associated data. This action cannot be undone."
             confirmLabel="Delete workspace"
             variant="destructive"
-            onConfirm={() => {}}
+            onConfirm={onDelete}
           />
         </div>
 
@@ -452,13 +400,13 @@ function DangerZoneCard({ onReset }: { onReset: () => void }) {
 
 interface SettingsData {
   notifications: NotificationSettings
-  appearance: AppearanceSettings
   account: AccountSettings
 }
 
 function SettingsContent() {
   const [data, setData] = useState<SettingsData | null>(null)
   const [loading, setLoading] = useState(true)
+  const router = useRouter()
 
   useEffect(() => {
     async function fetchSettings() {
@@ -504,15 +452,16 @@ function SettingsContent() {
     if (!data) return
     const updated = { ...data.notifications, [key]: value }
     saveSettings({ notifications: updated })
-  }
 
-  const handleAppearanceUpdate = <K extends keyof AppearanceSettings>(
-    key: K,
-    value: AppearanceSettings[K]
-  ) => {
-    if (!data) return
-    const updated = { ...data.appearance, [key]: value }
-    saveSettings({ appearance: updated })
+    if (key === "emailGenerationComplete" && value) {
+      requestNotificationPermission().then((granted) => {
+        if (!granted) {
+          toast.error("Browser notifications blocked", {
+            description: "Enable notifications in your browser settings to receive alerts.",
+          })
+        }
+      })
+    }
   }
 
   const handleAccountUpdate = <K extends keyof AccountSettings>(
@@ -527,9 +476,24 @@ function SettingsContent() {
   const handleReset = () => {
     saveSettings({
       notifications: { emailGenerationComplete: true, emailWeeklyDigest: true, emailProductUpdates: false, pushPostReminder: true },
-      appearance: { theme: "system", compactMode: false, fontSize: "default" },
       account: { twoFactorEnabled: false, sessionTimeout: 30, dataExportFormat: "json" },
     })
+  }
+
+  const handleDeleteWorkspace = async () => {
+    try {
+      const res = await fetch("/api/workspace", { method: "DELETE" })
+      const result = await res.json()
+      if (!result.success) {
+        toast.error("Failed to delete workspace")
+        return
+      }
+      await authClient.signOut()
+      router.push("/login")
+      router.refresh()
+    } catch {
+      toast.error("Failed to delete workspace")
+    }
   }
 
   if (loading || !data) {
@@ -552,11 +516,10 @@ function SettingsContent() {
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <div className="space-y-5">
           <NotificationSettingsCard settings={data.notifications} onUpdate={handleNotificationUpdate} />
-          <AppearanceSettingsCard settings={data.appearance} onUpdate={handleAppearanceUpdate} />
         </div>
         <div className="space-y-5">
           <AccountSecurityCard settings={data.account} onUpdate={handleAccountUpdate} />
-          <DangerZoneCard onReset={handleReset} />
+          <DangerZoneCard onReset={handleReset} onDelete={handleDeleteWorkspace} />
         </div>
       </div>
     </div>
