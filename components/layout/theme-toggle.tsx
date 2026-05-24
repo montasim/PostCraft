@@ -7,12 +7,23 @@ import { IconSun, IconMoon } from "@tabler/icons-react"
 function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme()
 
+  const handleToggle = () => {
+    const isDark = document.documentElement.classList.contains("dark")
+    const next = isDark ? "light" : "dark"
+    setTheme(next)
+    fetch("/api/settings", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ appearance: { theme: next } }),
+    }).catch(() => {})
+  }
+
   return (
     <Button
       variant="ghost"
       size="icon"
       className="rounded-full border border-border"
-      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+      onClick={handleToggle}
     >
       {resolvedTheme === "dark" ? (
         <IconSun className="h-4 w-4" />
