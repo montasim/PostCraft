@@ -78,7 +78,7 @@ function RuleSection({ title, description, icon: Icon, rules, onToggle, onRemove
         <p className="text-xs text-muted-foreground">{description}</p>
       </CardHeader>
       <CardContent className="space-y-2">
-        <div className="max-h-[220px] space-y-2 overflow-y-auto pr-1">
+        <div className="max-h-44 space-y-2 overflow-y-auto pr-1">
           {rules.map((rule) => (
             <div
               key={rule.id}
@@ -190,7 +190,7 @@ function BannedWordsCard({
         </p>
       </CardHeader>
       <CardContent className="space-y-3">
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex max-h-[90px] flex-wrap gap-1.5 overflow-y-auto pr-1">
           {rules.map((rule) => (
             <Badge
               key={rule.id}
