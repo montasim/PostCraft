@@ -1,9 +1,10 @@
 import { z } from "zod"
+import { TOPIC_MAX_LENGTH } from "@/lib/constants"
 
 // ─── Generation Input ─────────────────────────────────────────────
 
 export const createGenerationSchema = z.object({
-  topic: z.string().min(1).max(500),
+  topic: z.string().min(1).max(TOPIC_MAX_LENGTH),
   audiences: z.array(z.string()).min(1),
   tones: z.array(z.string()).min(1),
   languages: z.array(z.string()).min(1),
