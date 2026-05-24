@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { NavGroup } from "@/components/shared"
 import { IconPlus, IconSparkles } from "@tabler/icons-react"
 import { NAV_MAIN, NAV_CONFIG, NAV_ACCOUNT } from "@/lib/constants"
+import Link from "next/link"
 
 interface MobileSidebarProps {
   open: boolean
@@ -39,9 +40,11 @@ function MobileSidebar({
           <SheetTitle className="brand-gradient-text text-base font-bold">LinkedIQ</SheetTitle>
         </SheetHeader>
         <div className="flex-1 space-y-6 p-5">
-          <Button variant="outline" className="w-full gap-2">
-            <IconPlus className="h-4 w-4" />
-            New post
+          <Button variant="outline" className="w-full gap-2" asChild>
+            <Link href="/?new=true">
+              <IconPlus className="h-4 w-4" />
+              New post
+            </Link>
           </Button>
           <NavGroup
             label="Main"
