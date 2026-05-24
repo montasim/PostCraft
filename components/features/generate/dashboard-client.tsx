@@ -6,6 +6,7 @@ import { BrandGuardPanel } from "./brand-guard-panel"
 import { PostVariantsCarousel } from "./post-variants-carousel"
 import type { Variant } from "@/types"
 import { toast } from "sonner"
+import { sendBrowserNotification, requestNotificationPermission } from "@/lib/browser-notification"
 
 type GenerationStatus =
   | "idle"
@@ -31,6 +32,7 @@ function DashboardClient() {
   const [variants, setVariants] = useState<Variant[]>([])
   const [error, setError] = useState<string | null>(null)
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const notifiedRef = useRef<string | null>(null)
 
   const stopPolling = useCallback(() => {
     if (pollRef.current) {
@@ -82,6 +84,25 @@ function DashboardClient() {
     return () => stopPolling()
   }, [generationId, status, stopPolling])
 
+  useEffect(() => {
+    if (status !== "completed" || !generationId || notifiedRef.current === generationId) return
+    notifiedRef.current = generationId
+
+    async function notify() {
+      try {
+        const res = await fetch("/api/settings")
+        const data = await res.json()
+        if (!data.success || !data.data?.notifications?.emailGenerationComplete) return
+        const granted = await requestNotificationPermission()
+        if (!granted) return
+        sendBrowserNotification("Generation complete", {
+          body: "Your LinkedIn post variants are ready to review.",
+        })
+      } catch {}
+    }
+    notify()
+  }, [status, generationId])
+
   const handleGenerate = useCallback(async (formData: {
     topic: string
     audiences: string[]
@@ -92,6 +113,7 @@ function DashboardClient() {
     setStatus("submitting")
     setError(null)
     setVariants([])
+    notifiedRef.current = null
 
     try {
       const res = await fetch("/api/generations", {
