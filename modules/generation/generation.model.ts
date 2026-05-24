@@ -1,5 +1,6 @@
 import mongoose, { type Document, type Model, Schema } from "mongoose"
 import type { GenerationStatus } from "./generation.schema"
+import { TOPIC_MAX_LENGTH } from "@/lib/constants"
 
 export interface IGeneration extends Document {
   workspaceId: string
@@ -19,7 +20,7 @@ export interface IGeneration extends Document {
 const generationSchema = new Schema<IGeneration>(
   {
     workspaceId: { type: String, required: true, index: true },
-    topic: { type: String, required: true, maxlength: 500 },
+    topic: { type: String, required: true, maxlength: TOPIC_MAX_LENGTH },
     audiences: { type: [String], required: true },
     tones: { type: [String], required: true },
     languages: { type: [String], required: true },
