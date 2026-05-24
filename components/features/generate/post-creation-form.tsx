@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, Suspense } from "react"
+import { useSearchParams } from "next/navigation"
 import {
   Card,
   CardHeader,
@@ -23,9 +24,16 @@ import {
 
 const TOPIC_MAX_LENGTH = 500
 const TOPIC_WARNING_THRESHOLD = 450
+const STORAGE_KEY = "linkediq:form-prefs"
 
-const DEFAULT_TOPIC =
-  "How AI is changing software hiring in 2026 — and why most companies are still stuck using the same broken interview process."
+function loadPrefs(): { audiences: string[]; tones: string[]; languages: string[]; emoji: boolean } {
+  if (typeof window === "undefined") return { audiences: ["Founders"], tones: ["Thought leader", "Story"], languages: ["EN"], emoji: true }
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (raw) return JSON.parse(raw)
+  } catch {}
+  return { audiences: ["Founders"], tones: ["Thought leader", "Story"], languages: ["EN"], emoji: true }
+}
 
 interface PostCreationFormProps {
   onGenerate: (data: {
@@ -41,12 +49,17 @@ interface PostCreationFormProps {
   languageOptions?: (string | SelectOption)[]
 }
 
-function PostCreationForm({ onGenerate, isSubmitting, audienceOptions = AUDIENCE_OPTIONS, toneOptions = TONE_OPTIONS, languageOptions = LANGUAGE_OPTIONS }: PostCreationFormProps) {
-  const [topic, setTopic] = useState(DEFAULT_TOPIC)
-  const [audience, setAudience] = useState<string[]>(["Founders"])
-  const [tones, setTones] = useState<string[]>(["Thought leader", "Story"])
-  const [languages, setLanguages] = useState<string[]>(["EN"])
-  const [emoji, setEmoji] = useState(true)
+function PostCreationFormInner({ onGenerate, isSubmitting, audienceOptions = AUDIENCE_OPTIONS, toneOptions = TONE_OPTIONS, languageOptions = LANGUAGE_OPTIONS }: PostCreationFormProps) {
+  const searchParams = useSearchParams()
+  const [topic, setTopic] = useState("")
+  const [audience, setAudience] = useState<string[]>(() => loadPrefs().audiences)
+  const [tones, setTones] = useState<string[]>(() => loadPrefs().tones)
+  const [languages, setLanguages] = useState<string[]>(() => loadPrefs().languages)
+  const [emoji, setEmoji] = useState(() => loadPrefs().emoji)
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ audiences: audience, tones, languages, emoji }))
+  }, [audience, tones, languages, emoji])
 
   const charCount = topic.length
   const isOverWarning = charCount > TOPIC_WARNING_THRESHOLD
@@ -145,6 +158,14 @@ function PostCreationForm({ onGenerate, isSubmitting, audienceOptions = AUDIENCE
         </Button>
       </CardFooter>
     </Card>
+  )
+}
+
+function PostCreationForm(props: PostCreationFormProps) {
+  return (
+    <Suspense>
+      <PostCreationFormInner {...props} />
+    </Suspense>
   )
 }
 
