@@ -36,6 +36,7 @@ interface MultiSelectProps {
   placeholder?: string
   className?: string
   creatable?: boolean
+  maxVisible?: number
 }
 
 function normalizeOption(opt: string | SelectOption): SelectOption {
@@ -49,9 +50,13 @@ function MultiSelect({
   placeholder = "Select...",
   className,
   creatable = false,
+  maxVisible,
 }: MultiSelectProps) {
   const [open, setOpen] = React.useState(false)
   const [search, setSearch] = React.useState("")
+  const [expanded, setExpanded] = React.useState(false)
+
+  React.useEffect(() => { setExpanded(false) }, [selected])
 
   const normalized = React.useMemo(() => options.map(normalizeOption), [options])
   const labelMap = React.useMemo(() => {
@@ -105,13 +110,18 @@ function MultiSelect({
           role="button"
           tabIndex={0}
           className={cn(
-            "flex max-h-[88px] min-h-[44px] cursor-pointer flex-wrap items-center gap-1.5 overflow-x-hidden overflow-y-auto rounded-lg border border-input bg-transparent p-2 text-sm dark:bg-input/30",
+            "flex min-h-[44px] cursor-pointer flex-wrap items-center gap-1.5 overflow-hidden rounded-lg border border-input bg-transparent p-2 text-sm dark:bg-input/30",
             className
           )}
         >
           {selected.length > 0 ? (
-            selected.map((s) => {
-              const badge = (
+            (() => {
+              const visible = maxVisible && !expanded ? selected.slice(0, maxVisible) : selected
+              const remaining = maxVisible ? selected.length - visible.length : 0
+              return (
+                <>
+                  {visible.map((s) => {
+                    const badge = (
                 <Badge
                   key={s}
                   variant="secondary"
@@ -151,7 +161,30 @@ function MultiSelect({
                   </Tooltip>
                 </TooltipProvider>
               )
-            })
+            })}
+                  {remaining > 0 && (
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer gap-1 rounded-md bg-primary/20 text-xs text-primary"
+                      onMouseDown={(e) => { e.preventDefault(); e.stopPropagation() }}
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); setExpanded(true) }}
+                    >
+                      +{remaining} more
+                    </Badge>
+                  )}
+                  {maxVisible && expanded && selected.length > maxVisible && (
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer gap-1 rounded-md bg-primary/20 text-xs text-primary"
+                      onMouseDown={(e) => { e.preventDefault(); e.stopPropagation() }}
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); setExpanded(false) }}
+                    >
+                      See less
+                    </Badge>
+                  )}
+                </>
+              )
+            })()
           ) : (
             <span className="text-muted-foreground">{placeholder}</span>
           )}
