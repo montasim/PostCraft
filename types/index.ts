@@ -150,8 +150,6 @@ export interface PrivacySettings {
 
 export interface AppearanceSettings {
   theme: "system" | "dark" | "light"
-  compactMode: boolean
-  fontSize: "small" | "default" | "large"
 }
 
 export interface AccountSettings {

@@ -9,8 +9,6 @@ export const notificationSettingsSchema = z.object({
 
 export const appearanceSettingsSchema = z.object({
   theme: z.enum(["system", "dark", "light"]),
-  compactMode: z.boolean(),
-  fontSize: z.enum(["small", "default", "large"]),
 })
 
 export const accountSettingsSchema = z.object({

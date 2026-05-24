@@ -12,8 +12,6 @@ const DEFAULT_NOTIFICATIONS: NotificationSettings = {
 
 const DEFAULT_APPEARANCE: AppearanceSettings = {
   theme: "system",
-  compactMode: false,
-  fontSize: "default",
 }
 
 const DEFAULT_ACCOUNT: AccountSettings = {

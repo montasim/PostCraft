@@ -9,8 +9,6 @@ export interface INotificationSettings {
 
 export interface IAppearanceSettings {
   theme: "system" | "dark" | "light"
-  compactMode: boolean
-  fontSize: "small" | "default" | "large"
 }
 
 export interface IAccountSettings {
@@ -41,8 +39,6 @@ const notificationSchema = new mongoose.Schema<INotificationSettings>(
 const appearanceSchema = new mongoose.Schema<IAppearanceSettings>(
   {
     theme: { type: String, enum: ["system", "dark", "light"], default: "system" },
-    compactMode: { type: Boolean, default: false },
-    fontSize: { type: String, enum: ["small", "default", "large"], default: "default" },
   },
   { _id: false }
 )
