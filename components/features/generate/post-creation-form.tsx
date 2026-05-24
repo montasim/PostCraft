@@ -20,16 +20,15 @@ import {
   AUDIENCE_OPTIONS,
   TONE_OPTIONS,
   LANGUAGE_OPTIONS,
+  TOPIC_MAX_LENGTH,
+  TOPIC_WARNING_THRESHOLD,
+  FORM_PREFS_KEY,
 } from "@/lib/constants"
-
-const TOPIC_MAX_LENGTH = 500
-const TOPIC_WARNING_THRESHOLD = 450
-const STORAGE_KEY = "linkediq:form-prefs"
 
 function loadPrefs(): { audiences: string[]; tones: string[]; languages: string[]; emoji: boolean } {
   if (typeof window === "undefined") return { audiences: ["Founders"], tones: ["Thought leader", "Story"], languages: ["EN"], emoji: true }
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
+    const raw = localStorage.getItem(FORM_PREFS_KEY)
     if (raw) return JSON.parse(raw)
   } catch {}
   return { audiences: ["Founders"], tones: ["Thought leader", "Story"], languages: ["EN"], emoji: true }
@@ -58,7 +57,7 @@ function PostCreationFormInner({ onGenerate, isSubmitting, audienceOptions = AUD
   const [emoji, setEmoji] = useState(() => loadPrefs().emoji)
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ audiences: audience, tones, languages, emoji }))
+    localStorage.setItem(FORM_PREFS_KEY, JSON.stringify({ audiences: audience, tones, languages, emoji }))
   }, [audience, tones, languages, emoji])
 
   const charCount = topic.length
@@ -99,7 +98,7 @@ function PostCreationFormInner({ onGenerate, isSubmitting, audienceOptions = AUD
             }}
             placeholder="e.g. Why most startups fail at hiring, AI replacing resume screening..."
             rows={10}
-            className="min-h-[200px] resize-none"
+            className="min-h-50 max-h-60 overflow-y-auto resize-none"
           />
           <p
             className={`text-right text-xs ${
@@ -117,6 +116,7 @@ function PostCreationFormInner({ onGenerate, isSubmitting, audienceOptions = AUD
               selected={audience}
               onChange={setAudience}
               placeholder="Select audience..."
+              maxVisible={5}
             />
           </div>
           <div className="space-y-1.5">
@@ -126,6 +126,7 @@ function PostCreationFormInner({ onGenerate, isSubmitting, audienceOptions = AUD
               selected={tones}
               onChange={setTones}
               placeholder="Select tones..."
+              maxVisible={5}
             />
           </div>
           <div className="space-y-1.5">
