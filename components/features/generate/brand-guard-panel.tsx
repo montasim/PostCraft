@@ -179,7 +179,7 @@ function BrandGuardPanel({ showButton = true, title = "Brand Guard", guardrails:
           )}
         </CardTitle>
       </CardHeader>
-      <CardContent className="mt-3 flex-1 min-h-0 space-y-4 overflow-y-auto">
+      <CardContent className="flex-1 min-h-0 space-y-4 overflow-y-auto">
         {loading ? (
           <div className="space-y-3">
             <Skeleton className="h-4 w-full" />
@@ -200,7 +200,7 @@ function BrandGuardPanel({ showButton = true, title = "Brand Guard", guardrails:
 
             {guardrails.length === 0 && (
               <p className="text-xs text-muted-foreground">
-                No guardrail rules configured yet.
+                Your brand voice is unprotected. Add rules to keep your content on-point.
               </p>
             )}
           </>
