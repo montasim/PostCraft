@@ -1,21 +1,24 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { IconFlame } from "@tabler/icons-react"
-import { POSTS_USED, PLAN_LIMIT } from "@/lib/constants"
+import { IconFlame, IconCrown } from "@tabler/icons-react"
+import { PLAN_LIMIT } from "@/lib/constants"
 import { getQuotaMessage, getQuotaFooter } from "@/lib/quota-text"
 
 interface PlanQuotaCardProps {
   used?: number
   limit?: number
+  onUpgradeClick?: () => void
 }
 
 function PlanQuotaCard({
-  used = POSTS_USED,
+  used = 0,
   limit = PLAN_LIMIT,
+  onUpgradeClick,
 }: PlanQuotaCardProps) {
   const remaining = limit - used
   const isLow = remaining > 0 && remaining <= 2
+  const isExceeded = remaining <= 0
 
   return (
     <div className={cn(
@@ -58,6 +61,16 @@ function PlanQuotaCard({
       <p className="mt-1.5 text-[10px] text-muted-foreground/60">
         {getQuotaFooter(used, limit)}
       </p>
+
+      {isExceeded && (
+        <button
+          onClick={onUpgradeClick}
+          className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-lg bg-chart-4/15 px-3 py-1.5 text-xs font-medium text-chart-4 transition-colors hover:bg-chart-4/25"
+        >
+          <IconCrown className="h-3.5 w-3.5" />
+          Upgrade to Pro
+        </button>
+      )}
     </div>
   )
 }
