@@ -57,3 +57,10 @@ export class DatabaseError extends AppError {
     this.name = "DatabaseError"
   }
 }
+
+export class QuotaExceededError extends AppError {
+  constructor(message = "Free plan quota exceeded. Upgrade to generate more posts.") {
+    super(message, 403, "QUOTA_EXCEEDED")
+    this.name = "QuotaExceededError"
+  }
+}
