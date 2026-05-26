@@ -8,26 +8,26 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import type { Variant } from "@/types"
-import { IconTrophy, IconLoader2, IconRefresh, IconAlertCircle, IconInbox } from "@tabler/icons-react"
+import { IconTrophy, IconLoader2, IconRefresh, IconAlertCircle, IconInbox, IconSparkles } from "@tabler/icons-react"
 
 function formatVariantText(variant: Variant): string {
   return `${variant.hook}\n\n${variant.body}\n\n${variant.cta}\n\n${variant.hashtags.join(" ")}`
 }
 
 const STATUS_MESSAGES: Record<string, string> = {
-  queued: "Queued for generation...",
-  generating: "AI is crafting your posts...",
-  scoring: "Evaluating quality & engagement...",
-  ranking: "Ranking best variants...",
-  submitting: "Submitting...",
+  queued: "Your ideas are taking shape...",
+  generating: "Turning your idea into 3 posts...",
+  scoring: "Measuring each post's impact...",
+  ranking: "Choosing the strongest version...",
+  submitting: "Final polish...",
 }
 
 const STATUS_HEADERS: Record<string, string> = {
-  queued: "Preparing generation",
-  generating: "Generating variants",
-  scoring: "Scoring variants",
-  ranking: "Ranking variants",
-  submitting: "Submitting",
+  queued: "Preparing",
+  generating: "Crafting your voice",
+  scoring: "Scoring engagement",
+  ranking: "Picking your strongest version",
+  submitting: "Finishing up",
 }
 
 interface PostVariantsCarouselProps {
@@ -45,7 +45,40 @@ function PostVariantsCarousel({ variants, status, error, onRetry }: PostVariants
   const isEmpty = status === "idle" && variants.length === 0
 
   if (isEmpty) {
-    return null
+    return (
+      <section>
+        <div className="mb-2 flex items-center justify-between">
+          <h2 className="flex items-center gap-2 text-lg font-semibold text-muted-foreground">
+            <IconTrophy className="h-5 w-5" />
+            Your next post is one idea away
+          </h2>
+        </div>
+        <div className="relative overflow-hidden rounded-xl border border-dashed border-border/60 bg-muted/20 px-6 py-10">
+          <div className="flex flex-col items-center text-center">
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
+              <IconSparkles className="h-7 w-7 text-primary/60" />
+            </div>
+            <h3 className="text-sm font-semibold text-foreground">
+              3 posts crafted from your idea, ranked by engagement score
+            </h3>
+            <p className="mt-1.5 max-w-sm text-xs leading-relaxed text-muted-foreground">
+              Share your idea above and hit <span className="font-medium text-primary">Write My Post</span>.
+              You'll get 3 LinkedIn-ready versions, each scored for engagement, clarity, and readability.
+            </p>
+            <div className="mt-5 flex flex-wrap justify-center gap-2">
+              {["3 unique versions", "Scored and ranked", "Copy and post in seconds"].map((item) => (
+                <span
+                  key={item}
+                  className="inline-flex items-center rounded-full bg-background px-3 py-1 text-[10px] font-medium text-muted-foreground border border-border/40"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    )
   }
 
   if (isProcessing) {
@@ -83,9 +116,9 @@ function PostVariantsCarousel({ variants, status, error, onRetry }: PostVariants
           <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-destructive/10">
             <IconAlertCircle className="h-8 w-8 text-destructive" />
           </div>
-          <h3 className="text-sm font-semibold">Generation failed</h3>
+          <h3 className="text-sm font-semibold">Hit a snag</h3>
           <p className="mt-1 text-xs text-muted-foreground">
-            {error ?? "Something went wrong. Please try again."}
+            {error ?? "Your post did not come through. Try again when you are ready."}
           </p>
           {onRetry && (
             <Button variant="outline" onClick={onRetry} className="mt-4 gap-2">
@@ -104,10 +137,19 @@ function PostVariantsCarousel({ variants, status, error, onRetry }: PostVariants
 
   return (
     <section>
+      <div className="mb-4 flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-3">
+        <IconSparkles className="h-5 w-5 text-primary" />
+        <div>
+          <p className="text-sm font-semibold text-foreground">3 posts, ready for your audience</p>
+          <p className="text-[11px] text-muted-foreground">
+            {variants.length} versions ranked by engagement score. Version #1 is your strongest.
+          </p>
+        </div>
+      </div>
       <div className="mb-2 flex items-center justify-between">
         <h2 className="flex items-center gap-2 text-lg font-semibold">
           <IconTrophy className="h-5 w-5 text-chart-1" />
-          Ranked variants
+          Pick your favorite
         </h2>
         <div className="flex gap-1.5">
           <span
