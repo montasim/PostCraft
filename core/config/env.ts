@@ -7,6 +7,7 @@ const envSchema = z.object({
   QSTASH_TOKEN: z.string().optional(),
   QSTASH_CURRENT_SIGNING_KEY: z.string().optional(),
   QSTASH_NEXT_SIGNING_KEY: z.string().optional(),
+  VERCEL_PROTECTION_BYPASS_SECRET: z.string().optional(),
   APP_URL: z.string().optional().default("http://localhost:3000"),
 
   // Auth
