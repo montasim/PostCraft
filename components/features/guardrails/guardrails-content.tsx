@@ -180,13 +180,13 @@ function BannedWordsCard({
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-sm font-semibold">
           <IconBan className="h-4 w-4 text-destructive" />
-          Banned words
+          Words to avoid
           <Badge variant="secondary" className="ml-auto text-[10px]">
             {activeCount}/{rules.length} active
           </Badge>
         </CardTitle>
         <p className="text-xs text-muted-foreground">
-          Words or phrases that will never appear in generated content
+          These words will never appear in your content
         </p>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -276,10 +276,10 @@ function PreviewCard({
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-sm font-semibold">
           <IconSparkles className="h-4 w-4 text-primary" />
-          Live preview
+          Content preview
         </CardTitle>
         <p className="text-xs text-muted-foreground">
-          How your rules apply to generated content
+          See how your rules shape generated content
         </p>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -428,7 +428,7 @@ function GuardrailsContent() {
         <div className="space-y-5">
           <RuleSection
             title="Tone rules"
-            description="Define the voice and tone of your content"
+            description="Shape how your voice sounds across every post"
             icon={IconMessage}
             rules={toneRules}
             onToggle={handleToggle}
@@ -438,7 +438,7 @@ function GuardrailsContent() {
           />
           <RuleSection
             title="Format rules"
-            description="Set structural requirements for generated posts"
+            description="Control the structure of every post we write"
             icon={IconRuler}
             rules={formatRules}
             onToggle={handleToggle}
@@ -448,7 +448,7 @@ function GuardrailsContent() {
           />
           <RuleSection
             title="Custom rules"
-            description="Add your own brand-specific rules"
+            description="Your rules, your brand. Add what matters to you."
             icon={IconSparkles}
             rules={customRules}
             onToggle={handleToggle}
@@ -473,11 +473,11 @@ function GuardrailsContent() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <IconShield className="h-5 w-5 text-primary" />
-              <span className="text-sm font-semibold">Shield strength</span>
+              <span className="text-sm font-semibold">Your brand shield</span>
             </div>
             <div className="flex items-center gap-3">
               <div className="text-right">
-                <p className="text-xs font-medium">{activeCount}/{totalCount} rules active</p>
+                <p className="text-xs font-medium">{activeCount} of {totalCount} rules protecting your brand</p>
               </div>
               <Progress value={strengthPercent} className="h-2 w-24" />
             </div>
