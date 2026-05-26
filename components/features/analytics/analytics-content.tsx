@@ -83,11 +83,11 @@ function AnalyticsContent() {
     <div className="space-y-5">
       <AnalyticsOverviewCards overview={data.overview} styles={data.stylePerformance} />
       <AnalyticsHeader />
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:gap-5 lg:grid-cols-2">
         <AnalyticsTrendChart data={data.trendData} />
         <AnalyticsScoreDistribution data={data.scoreDistribution} />
       </div>
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:gap-5 lg:grid-cols-2">
         <AnalyticsStyleBreakdown data={data.stylePerformance} />
         <AnalyticsTopPosts posts={data.topPosts} />
       </div>
