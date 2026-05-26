@@ -10,7 +10,6 @@ import {
 import type { NavItem, Variant, HistoryEntry, SortOption, ScoreRange, AnalyticsOverview, ScoreDistribution, StylePerformance, TrendDataPoint, TopPerformingPost } from "@/types"
 import type { SelectOption } from "@/components/shared/multi-select"
 
-export const POSTS_USED = 3
 export const PLAN_LIMIT = 10
 export const TOPIC_MAX_LENGTH = 2000
 export const TOPIC_WARNING_THRESHOLD = 1500
