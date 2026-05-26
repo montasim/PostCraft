@@ -52,7 +52,7 @@ function Sidebar({ active, onSelect, used, limit, brandName, streakDays = 0, wee
           onSelect={onSelect}
         />
       </div>
-      <div className="space-y-5 px-5 pb-4">
+      <div className="space-y-5 p-5">
         <PlanQuotaCard used={used} limit={limit} />
         <BrandCard name={brandName} />
       </div>
