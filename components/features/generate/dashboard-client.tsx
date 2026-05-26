@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react"
 import { PostCreationForm } from "./post-creation-form"
 import { BrandGuardPanel } from "./brand-guard-panel"
 import { PostVariantsCarousel } from "./post-variants-carousel"
+import { UpgradeModal } from "@/components/shared/upgrade-modal"
 import type { Variant } from "@/types"
 import { toast } from "sonner"
 import { sendBrowserNotification, requestNotificationPermission } from "@/lib/browser-notification"
@@ -32,6 +33,8 @@ function DashboardClient() {
   const [variants, setVariants] = useState<Variant[]>([])
   const [error, setError] = useState<string | null>(null)
   const [userName, setUserName] = useState<string>("")
+  const [quotaExceeded, setQuotaExceeded] = useState(false)
+  const [upgradeOpen, setUpgradeOpen] = useState(false)
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const notifiedRef = useRef<string | null>(null)
 
@@ -40,6 +43,15 @@ function DashboardClient() {
       .then((r) => r.json())
       .then((res) => {
         if (res.success) setUserName(res.data.profile.fullName)
+      })
+      .catch(() => {})
+
+    fetch("/api/workspace")
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.success && res.data.usage.used >= res.data.usage.limit) {
+          setQuotaExceeded(true)
+        }
       })
       .catch(() => {})
   }, [])
@@ -120,6 +132,11 @@ function DashboardClient() {
     languages: string[]
     includeEmoji: boolean
   }) => {
+    if (quotaExceeded) {
+      setUpgradeOpen(true)
+      return
+    }
+
     setStatus("submitting")
     setError(null)
     setVariants([])
@@ -135,6 +152,12 @@ function DashboardClient() {
       const data = await res.json()
 
       if (!data.success) {
+        if (data.code === "QUOTA_EXCEEDED") {
+          setQuotaExceeded(true)
+          setUpgradeOpen(true)
+          setStatus("idle")
+          return
+        }
         setStatus("failed")
         setError(data.error)
         toast.error(data.error)
@@ -161,7 +184,7 @@ function DashboardClient() {
   return (
     <div className="space-y-8">
       <div className="flex flex-col gap-5 lg:flex-row">
-        <PostCreationForm onGenerate={handleGenerate} isSubmitting={status === "submitting"} userName={userName} />
+        <PostCreationForm onGenerate={handleGenerate} isSubmitting={status === "submitting" || quotaExceeded} userName={userName} />
         <BrandGuardPanel />
       </div>
       <PostVariantsCarousel
@@ -170,6 +193,7 @@ function DashboardClient() {
         error={error}
         onRetry={handleRetry}
       />
+      <UpgradeModal open={upgradeOpen} onOpenChange={setUpgradeOpen} />
     </div>
   )
 }
