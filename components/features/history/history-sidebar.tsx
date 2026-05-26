@@ -59,12 +59,12 @@ function HistorySidebar({ entries, selectedId, onSelect }: HistorySidebarProps) 
   const groups = useMemo(() => groupByDate(filtered), [filtered])
 
   return (
-    <aside className="flex w-72 shrink-0 flex-col border-r border-sidebar-border bg-sidebar">
-      <div className="p-5">
+    <aside className="flex w-full shrink-0 flex-col">
+      <div className="mb-4">
         <div className="relative">
           <IconSearch className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search sessions..."
+            placeholder="Find a post you wrote..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="h-9 bg-background/50 pl-8 text-xs"
@@ -72,7 +72,7 @@ function HistorySidebar({ entries, selectedId, onSelect }: HistorySidebarProps) 
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 pt-2">
+      <div className="flex-1 overflow-y-auto -mx-1 px-1">
         {groups.map((group) => (
           <div key={group.label} className="mb-3">
             <p className="mb-1 px-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
