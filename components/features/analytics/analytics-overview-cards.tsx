@@ -15,7 +15,7 @@ function AnalyticsOverviewCards({ overview, styles }: { overview: AnalyticsOverv
   )
 
   return (
-    <div className="grid grid-cols-2 gap-5 lg:grid-cols-5 xl:grid-cols-5">
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5 lg:gap-5">
       <MetricCard
         label="Avg Score"
         value={overview.avgScore}
@@ -42,7 +42,7 @@ function AnalyticsOverviewCards({ overview, styles }: { overview: AnalyticsOverv
       />
 
       <MetricCard
-        label="Best style"
+        label="Your best style"
         value={bestStyle ? `${bestStyle.style} · S:${bestStyle.avgScore}` : "N/A"}
         icon={IconTrophy}
         color="text-chart-2"
@@ -50,7 +50,7 @@ function AnalyticsOverviewCards({ overview, styles }: { overview: AnalyticsOverv
       />
 
       <MetricCard
-        label="Monthly goal"
+        label="Monthly progress"
         value={`${overview.monthlyGoalProgress}/${overview.monthlyGoal}`}
         icon={IconTarget}
         color="text-chart-3"
@@ -78,7 +78,7 @@ function MetricCard({
 }) {
   return (
     <Card>
-      <CardContent className="flex items-center gap-3 p-4">
+      <CardContent className="flex items-center gap-3 p-3 lg:p-4">
         <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", bg)}>
           <Icon className={cn("h-5 w-5", color)} />
         </div>
