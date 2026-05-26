@@ -31,8 +31,18 @@ function DashboardClient() {
   const [status, setStatus] = useState<GenerationStatus>("idle")
   const [variants, setVariants] = useState<Variant[]>([])
   const [error, setError] = useState<string | null>(null)
+  const [userName, setUserName] = useState<string>("")
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const notifiedRef = useRef<string | null>(null)
+
+  useEffect(() => {
+    fetch("/api/profile")
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.success) setUserName(res.data.profile.fullName)
+      })
+      .catch(() => {})
+  }, [])
 
   const stopPolling = useCallback(() => {
     if (pollRef.current) {
@@ -95,8 +105,8 @@ function DashboardClient() {
         if (!data.success || !data.data?.notifications?.emailGenerationComplete) return
         const granted = await requestNotificationPermission()
         if (!granted) return
-        sendBrowserNotification("Generation complete", {
-          body: "Your LinkedIn post variants are ready to review.",
+        sendBrowserNotification("Your posts are ready", {
+          body: "3 versions ranked and waiting for you.",
         })
       } catch {}
     }
@@ -149,9 +159,9 @@ function DashboardClient() {
   }, [])
 
   return (
-    <>
+    <div className="space-y-8">
       <div className="flex flex-col gap-5 lg:flex-row">
-        <PostCreationForm onGenerate={handleGenerate} isSubmitting={status === "submitting"} />
+        <PostCreationForm onGenerate={handleGenerate} isSubmitting={status === "submitting"} userName={userName} />
         <BrandGuardPanel />
       </div>
       <PostVariantsCarousel
@@ -160,7 +170,7 @@ function DashboardClient() {
         error={error}
         onRetry={handleRetry}
       />
-    </>
+    </div>
   )
 }
 
