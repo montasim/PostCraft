@@ -68,7 +68,7 @@ function ProfileHeaderCard({
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-sm font-semibold">
           <IconUser className="h-4 w-4 text-primary" />
-          Personal info
+          Your creator identity
           <Button
             variant="ghost"
             size="sm"
@@ -91,8 +91,8 @@ function ProfileHeaderCard({
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="flex items-center gap-5">
-          <Avatar size="lg" className="!w-32 !h-32">
-            <AvatarFallback className="text-xl">
+          <Avatar size="lg" className="!h-20 !w-20 sm:!h-24 sm:!w-24 lg:!h-32 lg:!w-32">
+            <AvatarFallback className="text-lg sm:text-xl">
               {profile.fullName
                 .split(" ")
                 .map((n) => n[0])
@@ -140,7 +140,7 @@ function ProfileHeaderCard({
                   onClick={handleSave}
                 >
                   <IconCheck className="h-3 w-3" />
-                  Save changes
+                  Save profile
                 </Button>
               </div>
             ) : (
@@ -211,7 +211,7 @@ function ProfileDetailsCard({
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-sm font-semibold">
           <IconTarget className="h-4 w-4 text-primary" />
-          Profile details
+          Your presence
           <Button
             variant="ghost"
             size="sm"
@@ -337,7 +337,7 @@ function ProfileStatsCard({ stats }: { stats: ProfileStats }) {
     {
       icon: IconTrophy,
       value: stats.postsGenerated,
-      label: "Posts generated",
+      label: "Posts crafted",
     },
     {
       icon: IconFlame,
@@ -348,12 +348,12 @@ function ProfileStatsCard({ stats }: { stats: ProfileStats }) {
     {
       icon: IconMedal,
       value: stats.longestStreak,
-      label: "Longest streak",
+      label: "Best streak",
     },
     {
       icon: IconStar,
       value: stats.avgScore,
-      label: "Avg. score",
+      label: "Avg score",
     },
   ]
 
@@ -362,9 +362,9 @@ function ProfileStatsCard({ stats }: { stats: ProfileStats }) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-sm font-semibold">
           <IconFlame className="h-4 w-4 text-primary" />
-          Your stats
+          Your impact
           <Badge variant="secondary" className="ml-auto gap-1 text-[10px]">
-            Top {stats.topPercentile}% of creators
+            Top {stats.topPercentile}% of creators — your consistency pays off
           </Badge>
         </CardTitle>
       </CardHeader>
@@ -378,13 +378,13 @@ function ProfileStatsCard({ stats }: { stats: ProfileStats }) {
               <div
                 className={cn(
                   "flex h-8 w-8 items-center justify-center rounded-md bg-muted",
-                  item.highlight && "bg-orange-500/10 text-orange-500"
+                  item.highlight && "bg-chart-4/10 text-chart-4"
                 )}
               >
                 <item.icon
                   className={cn(
                     "h-4 w-4",
-                    item.highlight ? "text-orange-500" : "text-muted-foreground"
+                    item.highlight ? "text-chart-4" : "text-muted-foreground"
                   )}
                 />
               </div>
@@ -425,12 +425,12 @@ function ProfileCompletionCard({ profile }: { profile: UserProfile }) {
     <div className="flex items-center gap-4 rounded-lg border bg-card px-4 py-3">
       <div className="flex-1">
         <p className="text-xs font-medium">
-          Your profile is {percent}% complete
+          Profile {percent}% complete
         </p>
         <p className="text-[10px] text-muted-foreground">
           {percent < 100
-            ? `Add ${missing.map((m) => m.label).join(", ")} to complete your profile`
-            : "All set — your profile is fully filled out!"}
+            ? `Add ${missing.map((m) => m.label).join(", ")} so your content reflects the real you`
+            : "Your profile is complete. Your posts will reflect the real you."}
         </p>
       </div>
       <Progress value={percent} className="h-2 w-32" />
@@ -445,25 +445,25 @@ function ProfileAchievementsCard({ stats }: { stats: ProfileStats }) {
     {
       icon: IconTrophy,
       label: "First Post",
-      description: "Created your first post",
+      description: "You published your first post",
       active: stats.postsGenerated >= 1,
     },
     {
       icon: IconFlame,
       label: "10 Streak",
-      description: "10-day posting streak",
+      description: "You showed up 10 days in a row",
       active: stats.longestStreak >= 10,
     },
     {
       icon: IconStar,
       label: "Top 10%",
-      description: "Reach top 10% of creators",
+      description: "You outperform 90% of creators",
       active: stats.topPercentile <= 10,
     },
     {
       icon: IconMedal,
       label: "50 Posts",
-      description: "Generate 50 posts",
+      description: "50 posts crafted and counting",
       active: stats.postsGenerated >= 50,
     },
   ]
@@ -475,7 +475,7 @@ function ProfileAchievementsCard({ stats }: { stats: ProfileStats }) {
           <IconMedal className="h-4 w-4 text-primary" />
           Achievements
           <Badge variant="secondary" className="ml-auto text-[10px]">
-            {badges.filter((b) => b.active).length}/{badges.length} unlocked
+            {badges.filter((b) => b.active).length} of {badges.length} earned
           </Badge>
         </CardTitle>
       </CardHeader>
@@ -570,9 +570,9 @@ function ProfileContent() {
     return (
       <div className="space-y-5">
         <Skeleton className="h-16 w-full rounded-xl" />
-        <div className="flex w-full items-stretch gap-5">
-          <Skeleton className="h-64 w-[40%] rounded-xl" />
-          <Skeleton className="h-64 w-[60%] rounded-xl" />
+        <div className="flex flex-col gap-5 lg:flex-row">
+          <Skeleton className="h-64 w-full rounded-xl lg:w-[40%]" />
+          <Skeleton className="h-64 w-full rounded-xl lg:w-[60%]" />
         </div>
       </div>
     )
@@ -582,16 +582,16 @@ function ProfileContent() {
     <div className="space-y-5">
       <ProfileCompletionCard profile={profile} />
 
-      <div className="flex w-full items-stretch gap-5">
-        <div className="w-[40%] [&_>div]:h-full">
+      <div className="flex flex-col gap-5 lg:flex-row">
+        <div className="w-full lg:w-[40%] [&_>div]:h-full">
           <ProfileHeaderCard profile={profile} onUpdate={handleUpdate} />
         </div>
-        <div className="w-[60%] [&_>div]:h-full">
+        <div className="w-full lg:w-[60%] [&_>div]:h-full">
           <ProfileDetailsCard profile={profile} onUpdate={handleUpdate} />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:gap-5 lg:grid-cols-2">
         <ProfileStatsCard stats={stats} />
         <ProfileAchievementsCard stats={stats} />
       </div>
