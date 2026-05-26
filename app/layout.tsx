@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { Toaster } from "sonner"
 
@@ -5,6 +6,32 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
+
+export const metadata: Metadata = {
+  metadataBase: new URL(process.env.APP_URL || "https://linkedIQ.dev"),
+  title: {
+    template: "%s | LinkedIQ",
+    default: "LinkedIQ — Write LinkedIn Posts That Get Engagement",
+  },
+  description:
+    "Generate LinkedIn posts ranked by engagement score. Get 3 AI-written variants tailored to your brand voice, scored for clarity, engagement, and readability.",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "LinkedIQ",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
+}
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
