@@ -73,6 +73,9 @@ function AppShell({ children }: AppShellProps) {
         used={sidebarData?.used}
         limit={sidebarData?.limit}
         brandName={sidebarData?.brandName}
+        streakDays={4}
+        weeklyGoal={5}
+        weeklyProgress={3}
       />
       <MobileSidebar
         open={mobileOpen}
