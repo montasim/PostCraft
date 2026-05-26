@@ -21,12 +21,18 @@ export async function publishGenerationJob(generationId: string, workspaceId: st
   }
 
   try {
-    const { APP_URL } = getEnv()
+    const { APP_URL, VERCEL_PROTECTION_BYPASS_SECRET } = getEnv()
     const qstash = getQStashClient()
+
+    const headers: Record<string, string> = {}
+    if (VERCEL_PROTECTION_BYPASS_SECRET) {
+      headers["x-vercel-protection-bypass"] = VERCEL_PROTECTION_BYPASS_SECRET
+    }
 
     const result = await qstash.publishJSON({
       url: `${APP_URL}/api/workers/generate`,
       body: { generationId, workspaceId },
+      headers,
       retries: 3,
     })
 
