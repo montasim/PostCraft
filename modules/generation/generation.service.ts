@@ -3,8 +3,7 @@ import { buildGenerationPrompt } from "./prompt-builder"
 import { aiGenerationOutputSchema, resolveLanguage, type RawVariant } from "./generation.schema"
 import { createGenerationSchema, type CreateGenerationInput, type GenerationStatus } from "./generation.schema"
 import { generationRepository } from "./generation.repository"
-import { publishGenerationJob } from "@/core/queue/qstash"
-import { isDev } from "@/core/config/env"
+import { inngest } from "@/core/queue/client"
 import { AIServiceError, ValidationError } from "@/core/errors/app-error"
 import { logger } from "@/core/logger"
 
@@ -89,18 +88,16 @@ export const generationService = {
     const generationId = doc._id.toString()
     logger.info({ generationId }, "Generation created")
 
-    // Enqueue to QStash if configured (prod). Dev sync handled by route handler.
-    let messageId: string | null = null
-    if (!isDev()) {
-      messageId = await publishGenerationJob(generationId, workspaceId)
-    } else {
-      logger.info({ generationId }, "QStash not configured — use sync mode")
-    }
+    // Enqueue to Inngest
+    await inngest.send({
+      name: "generation/created",
+      data: { generationId, workspaceId },
+    })
+    logger.info({ generationId }, "Generation enqueued to Inngest")
 
     return {
       generationId,
       status: doc.status,
-      messageId,
     }
   },
 

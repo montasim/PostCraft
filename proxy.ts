@@ -3,11 +3,12 @@ import { getSessionCookie } from "better-auth/cookies"
 
 const AUTH_ROUTES = ["/login", "/signup", "/forgot-password", "/reset-password", "/verify-email"]
 const API_AUTH_PREFIX = "/api/auth"
+const API_INNGEST_PREFIX = "/api/inngest"
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  if (pathname.startsWith(API_AUTH_PREFIX)) {
+  if (pathname.startsWith(API_AUTH_PREFIX) || pathname.startsWith(API_INNGEST_PREFIX)) {
     return NextResponse.next()
   }
 

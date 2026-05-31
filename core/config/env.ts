@@ -4,11 +4,8 @@ const envSchema = z.object({
   MONGODB_URI: z.string().min(1),
   GEMINI_API_KEY: z.string().min(1),
   GEMINI_MODEL: z.string().default("gemini-2.5-flash"),
-  QSTASH_TOKEN: z.string().optional(),
-  QSTASH_CURRENT_SIGNING_KEY: z.string().optional(),
-  QSTASH_NEXT_SIGNING_KEY: z.string().optional(),
-  VERCEL_AUTOMATION_BYPASS_SECRET: z.string().optional(),
-  APP_URL: z.string().optional().default("http://localhost:3000"),
+  INNGEST_EVENT_KEY: z.string().optional(),
+  INNGEST_SIGNING_KEY: z.string().optional(),
 
   // Auth
   BETTER_AUTH_SECRET: z.string().min(1),
@@ -46,9 +43,4 @@ export function getEnv(): Env {
 
 export function isDev(): boolean {
   return getEnv().NODE_ENV === "development"
-}
-
-export function hasQStash(): boolean {
-  const env = getEnv()
-  return !!(env.QSTASH_TOKEN && env.QSTASH_CURRENT_SIGNING_KEY && env.QSTASH_NEXT_SIGNING_KEY)
 }

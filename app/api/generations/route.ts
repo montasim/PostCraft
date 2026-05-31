@@ -4,8 +4,6 @@ import { analyticsRepository } from "@/modules/analytics/analytics.repository"
 import { handleApiError } from "@/core/errors/error-handler"
 import { QuotaExceededError } from "@/core/errors/app-error"
 import { connectDB } from "@/core/config/database"
-import { isDev } from "@/core/config/env"
-import { runGenerationPipeline } from "@/core/queue/pipeline"
 import { getWorkspaceId, getUserId } from "@/core/auth/workspace"
 import { PLAN_LIMIT } from "@/lib/constants"
 
@@ -22,13 +20,6 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
     const result = await generationService.createGeneration(body, workspaceId, userId)
-
-    // Dev sync mode: run pipeline directly instead of QStash
-    if (isDev()) {
-      runGenerationPipeline(result.generationId, workspaceId).catch((err) => {
-        console.error("[dev-sync] Pipeline error:", err)
-      })
-    }
 
     return NextResponse.json(
       { success: true, data: result },
