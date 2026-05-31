@@ -13,7 +13,6 @@ import type { SelectOption } from "@/components/shared/multi-select"
 export const PLAN_LIMIT = 10
 export const TOPIC_MAX_LENGTH = 2000
 export const TOPIC_WARNING_THRESHOLD = 1500
-export const FORM_PREFS_KEY = "linkediq:form-prefs"
 
 export const NAV_MAIN: NavItem[] = [
   { id: "generate", label: "Generate", icon: IconSparkles },

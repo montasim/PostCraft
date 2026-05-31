@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, Suspense } from "react"
+import { useState, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import {
   Card,
@@ -23,8 +23,8 @@ import {
   LANGUAGE_OPTIONS,
   TOPIC_MAX_LENGTH,
   TOPIC_WARNING_THRESHOLD,
-  FORM_PREFS_KEY,
 } from "@/lib/constants"
+import type { GenerationPrefs } from "@/modules/prefs/prefs.schema"
 
 const TOPIC_SUGGESTIONS = [
   "Why most startups fail at hiring in 2025",
@@ -59,15 +59,6 @@ const QUICK_PRESETS = [
   },
 ]
 
-function loadPrefs(): { audiences: string[]; tones: string[]; languages: string[]; emoji: boolean } {
-  if (typeof window === "undefined") return { audiences: ["Founders"], tones: ["Thought leader", "Story"], languages: ["EN"], emoji: true }
-  try {
-    const raw = localStorage.getItem(FORM_PREFS_KEY)
-    if (raw) return JSON.parse(raw)
-  } catch {}
-  return { audiences: ["Founders"], tones: ["Thought leader", "Story"], languages: ["EN"], emoji: true }
-}
-
 interface PostCreationFormProps {
   onGenerate: (data: {
     topic: string
@@ -78,28 +69,33 @@ interface PostCreationFormProps {
   }) => void
   isSubmitting?: boolean
   userName?: string
+  initialPrefs?: GenerationPrefs
   audienceOptions?: (string | SelectOption)[]
   toneOptions?: (string | SelectOption)[]
   languageOptions?: (string | SelectOption)[]
 }
 
-function PostCreationFormInner({ onGenerate, isSubmitting, userName, audienceOptions = AUDIENCE_OPTIONS, toneOptions = TONE_OPTIONS, languageOptions = LANGUAGE_OPTIONS }: PostCreationFormProps) {
+function PostCreationFormInner({ onGenerate, isSubmitting, userName, initialPrefs, audienceOptions = AUDIENCE_OPTIONS, toneOptions = TONE_OPTIONS, languageOptions = LANGUAGE_OPTIONS }: PostCreationFormProps) {
   const searchParams = useSearchParams()
   const [topic, setTopic] = useState("")
-  const [audience, setAudience] = useState<string[]>(() => loadPrefs().audiences)
-  const [tones, setTones] = useState<string[]>(() => loadPrefs().tones)
-  const [languages, setLanguages] = useState<string[]>(() => loadPrefs().languages)
-  const [emoji, setEmoji] = useState(() => loadPrefs().emoji)
+  const [audience, setAudience] = useState<string[]>(initialPrefs?.audiences ?? ["Founders"])
+  const [tones, setTones] = useState<string[]>(initialPrefs?.tones ?? ["Thought leader", "Story"])
+  const [languages, setLanguages] = useState<string[]>(initialPrefs?.languages ?? ["EN"])
+  const [emoji, setEmoji] = useState(initialPrefs?.emoji ?? true)
   const [isFocused, setIsFocused] = useState(false)
-
-  useEffect(() => {
-    localStorage.setItem(FORM_PREFS_KEY, JSON.stringify({ audiences: audience, tones, languages, emoji }))
-  }, [audience, tones, languages, emoji])
 
   const charCount = topic.length
   const isOverWarning = charCount > TOPIC_WARNING_THRESHOLD
   const isDisabled = topic.trim().length === 0 || isSubmitting
   const progressPercent = Math.min((charCount / TOPIC_WARNING_THRESHOLD) * 100, 100)
+
+  const savePrefs = (data: { audiences: string[]; tones: string[]; languages: string[]; emoji: boolean }) => {
+    fetch("/api/prefs/generation", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    }).catch(() => {})
+  }
 
   const handleSubmit = () => {
     onGenerate({
@@ -112,13 +108,35 @@ function PostCreationFormInner({ onGenerate, isSubmitting, userName, audienceOpt
   }
 
   const applyPreset = (preset: typeof QUICK_PRESETS[0]) => {
-    setAudience(preset.audiences)
-    setTones(preset.tones)
-    setLanguages(preset.languages)
+    const next = { audiences: preset.audiences, tones: preset.tones, languages: preset.languages, emoji }
+    setAudience(next.audiences)
+    setTones(next.tones)
+    setLanguages(next.languages)
+    savePrefs(next)
   }
 
   const applySuggestion = (suggestion: string) => {
     setTopic(suggestion)
+  }
+
+  const handleAudienceChange = (val: string[]) => {
+    setAudience(val)
+    savePrefs({ audiences: val, tones, languages, emoji })
+  }
+
+  const handleTonesChange = (val: string[]) => {
+    setTones(val)
+    savePrefs({ audiences: audience, tones: val, languages, emoji })
+  }
+
+  const handleLanguagesChange = (val: string[]) => {
+    setLanguages(val)
+    savePrefs({ audiences: audience, tones, languages: val, emoji })
+  }
+
+  const handleEmojiChange = (val: boolean) => {
+    setEmoji(val)
+    savePrefs({ audiences: audience, tones, languages, emoji: val })
   }
 
   return (
@@ -238,7 +256,7 @@ function PostCreationFormInner({ onGenerate, isSubmitting, userName, audienceOpt
               <MultiSelect
                 options={audienceOptions}
                 selected={audience}
-                onChange={setAudience}
+                onChange={handleAudienceChange}
                 placeholder="Select audience..."
                 maxVisible={3}
               />
@@ -251,7 +269,7 @@ function PostCreationFormInner({ onGenerate, isSubmitting, userName, audienceOpt
               <MultiSelect
                 options={toneOptions}
                 selected={tones}
-                onChange={setTones}
+                onChange={handleTonesChange}
                 placeholder="Select tones..."
                 maxVisible={3}
               />
@@ -264,7 +282,7 @@ function PostCreationFormInner({ onGenerate, isSubmitting, userName, audienceOpt
               <MultiSelect
                 options={languageOptions}
                 selected={languages}
-                onChange={setLanguages}
+                onChange={handleLanguagesChange}
                 placeholder="Select languages..."
                 maxVisible={3}
               />
@@ -277,7 +295,7 @@ function PostCreationFormInner({ onGenerate, isSubmitting, userName, audienceOpt
         <div className="flex items-center gap-2">
           <Switch
             checked={emoji}
-            onCheckedChange={setEmoji}
+            onCheckedChange={handleEmojiChange}
             className="data-[state=checked]:bg-primary"
           />
           <Label className="text-xs text-muted-foreground">
