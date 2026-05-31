@@ -6,6 +6,7 @@ const envSchema = z.object({
   GEMINI_MODEL: z.string().default("gemini-2.5-flash"),
   INNGEST_EVENT_KEY: z.string().optional(),
   INNGEST_SIGNING_KEY: z.string().optional(),
+  APP_URL: z.string().optional().default("http://localhost:3000"),
 
   // Auth
   BETTER_AUTH_SECRET: z.string().min(1),
