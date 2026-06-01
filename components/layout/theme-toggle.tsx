@@ -15,7 +15,9 @@ function ThemeToggle() {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ appearance: { theme: next } }),
-    }).catch(() => {})
+    }).catch(() => {
+      // Non-critical: theme preference save failed silently
+    })
   }
 
   return (

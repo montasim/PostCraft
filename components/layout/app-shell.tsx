@@ -68,7 +68,9 @@ function AppShell({ children }: AppShellProps) {
   useEffect(() => {
     if (pathname === "/trending") {
       dispatch(setTrendingCount(0))
-      fetch("/api/trending/dismiss-all", { method: "PATCH" }).catch(() => {})
+      fetch("/api/trending/dismiss-all", { method: "PATCH" }).catch(() => {
+        // Non-critical: dismiss-all failed, badge will persist
+      })
     }
   }, [pathname, dispatch])
 

@@ -91,7 +91,9 @@ function PostCreationFormInner({ onGenerate, isSubmitting, quotaExceeded, userNa
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
-    }).catch(() => {})
+    }).catch(() => {
+        // Non-critical: prefs save failed
+      })
   }
 
   useEffect(() => {
@@ -106,7 +108,9 @@ function PostCreationFormInner({ onGenerate, isSubmitting, quotaExceeded, userNa
           setTopicSuggestions(res.data.topics)
         }
       })
-      .catch(() => {})
+      .catch(() => {
+          // Non-critical: topic suggestions load failed
+        })
       .finally(() => {
         if (!cancelled) setSuggestionsLoading(false)
       })

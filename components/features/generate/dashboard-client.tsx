@@ -67,7 +67,9 @@ function DashboardClient() {
       .then((res) => {
         if (res.success) setGenerationPrefs(res.data)
       })
-      .catch(() => {})
+      .catch(() => {
+        // Non-critical: generation prefs load failed, defaults apply
+      })
   }, [])
 
   const stopPolling = useCallback(() => {
@@ -134,7 +136,9 @@ function DashboardClient() {
         sendBrowserNotification("Your posts are ready", {
           body: "3 versions ranked and waiting for you.",
         })
-      } catch {}
+      } catch {
+        // Non-critical: notification permission/settings check failed
+      }
     }
     notify()
   }, [status, generationId])
