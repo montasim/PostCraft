@@ -6,6 +6,10 @@ export const settingsRepository = {
     return SettingsModel.findOne({ userId }).lean()
   },
 
+  async deleteByUserId(userId: string): Promise<void> {
+    await SettingsModel.deleteMany({ userId })
+  },
+
   async upsert(userId: string, data: UpdateSettingsInput) {
     const update: Record<string, unknown> = {}
     if (data.notifications) update.notifications = data.notifications

@@ -42,6 +42,10 @@ export const guardrailRepository = {
     if (result.deletedCount === 0) throw new NotFoundError("Guardrail")
   },
 
+  async deleteByWorkspace(workspaceId: string): Promise<void> {
+    await GuardrailModel.deleteMany({ workspaceId })
+  },
+
   async exists(workspaceId: string): Promise<boolean> {
     const count = await GuardrailModel.countDocuments({ workspaceId })
     return count > 0

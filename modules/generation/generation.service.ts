@@ -2,10 +2,12 @@ import { buildGenerationPrompt } from "./prompt-builder"
 import { aiGenerationOutputSchema, resolveLanguage, type RawVariant } from "./generation.schema"
 import { createGenerationSchema, type CreateGenerationInput, type GenerationStatus } from "./generation.schema"
 import { generationRepository } from "./generation.repository"
+import { analyticsRepository } from "@/modules/analytics/analytics.repository"
 import { inngest } from "@/core/queue/client"
-import { AIServiceError, ValidationError } from "@/core/errors/app-error"
+import { AIServiceError, QuotaExceededError, ValidationError } from "@/core/errors/app-error"
 import { logger } from "@/core/logger"
 import { callWithTaskFallback } from "@/core/ai/provider"
+import { PLAN_LIMIT } from "@/lib/constants"
 
 const MAX_RETRIES = 3
 
@@ -66,6 +68,11 @@ export const generationService = {
     workspaceId: string,
     userId: string
   ) {
+    const overview = await analyticsRepository.getOverview(workspaceId)
+    if (overview.completedGenerations >= PLAN_LIMIT) {
+      throw new QuotaExceededError()
+    }
+
     const parsed = createGenerationSchema.safeParse(data)
     if (!parsed.success) {
       const errors = parsed.error.issues.map((i) => i.message).join(", ")
@@ -166,5 +173,9 @@ export const generationService = {
         error instanceof Error ? error.message : "Generation failed"
       )
     }
+  },
+
+  async getTotalPostCount(): Promise<number> {
+    return generationRepository.countAll()
   },
 }

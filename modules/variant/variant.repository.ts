@@ -23,6 +23,17 @@ export const variantRepository = {
       .limit(limit)
   },
 
+  async findTopRankedByTrendIds(trendIds: string[]) {
+    return VariantModel.find({
+      trendId: { $in: trendIds },
+      overallRank: 1,
+    }).lean()
+  },
+
+  async deleteByTrendIds(trendIds: mongoose.Types.ObjectId[]): Promise<void> {
+    await VariantModel.deleteMany({ trendId: { $in: trendIds } })
+  },
+
   async deleteByTrendId(trendId: string): Promise<void> {
     await VariantModel.deleteMany({ trendId })
   },

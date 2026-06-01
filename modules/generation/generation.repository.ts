@@ -38,6 +38,22 @@ export const generationRepository = {
     )
   },
 
+  async findByIds(ids: string[]) {
+    return GenerationModel.find({ _id: { $in: ids } }).lean()
+  },
+
+  async findGenerationIdsByWorkspace(workspaceId: string) {
+    return GenerationModel.find({ workspaceId }).select("_id").lean()
+  },
+
+  async deleteByWorkspace(workspaceId: string): Promise<void> {
+    await GenerationModel.deleteMany({ workspaceId })
+  },
+
+  async countAll(): Promise<number> {
+    return GenerationModel.estimatedDocumentCount()
+  },
+
   async listByWorkspace(
     workspaceId: string,
     { page = 1, limit = 10 }: { page?: number; limit?: number } = {}

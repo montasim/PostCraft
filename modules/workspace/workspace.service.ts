@@ -1,5 +1,9 @@
 import { workspaceRepository } from "./workspace.repository"
 import { analyticsRepository } from "@/modules/analytics/analytics.repository"
+import { guardrailRepository } from "@/modules/guardrail/guardrail.repository"
+import { generationRepository } from "@/modules/generation/generation.repository"
+import { variantRepository } from "@/modules/variant/variant.repository"
+import { settingsRepository } from "@/modules/settings/settings.repository"
 import { updateWorkspaceSchema, type UpdateWorkspaceInput } from "./workspace.schema"
 import { ValidationError } from "@/core/errors/app-error"
 import { PLAN_LIMIT } from "@/lib/constants"
@@ -64,5 +68,18 @@ export const workspaceService = {
         industry: Array.isArray(rawPersona.industry) ? rawPersona.industry : [],
       },
     }
+  },
+
+  async deleteWorkspaceCascade(workspaceId: string): Promise<void> {
+    const generationDocs = await generationRepository.findGenerationIdsByWorkspace(workspaceId)
+    const generationIds = generationDocs.map((d) => d._id)
+
+    await Promise.all([
+      workspaceRepository.deleteByWorkspaceId(workspaceId),
+      guardrailRepository.deleteByWorkspace(workspaceId),
+      generationRepository.deleteByWorkspace(workspaceId),
+      variantRepository.deleteByTrendIds(generationIds),
+      settingsRepository.deleteByUserId(workspaceId.replace("ws_", "")),
+    ])
   },
 }

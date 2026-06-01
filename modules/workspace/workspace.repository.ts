@@ -6,6 +6,10 @@ export const workspaceRepository = {
     return WorkspaceModel.findOne({ workspaceId }).lean()
   },
 
+  async deleteByWorkspaceId(workspaceId: string): Promise<void> {
+    await WorkspaceModel.deleteOne({ workspaceId })
+  },
+
   async upsert(workspaceId: string, data: UpdateWorkspaceInput) {
     const update: Record<string, unknown> = {}
     if (data.profile) update.profile = data.profile
