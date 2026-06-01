@@ -5,6 +5,7 @@ import { Toaster } from "sonner"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { ReduxProvider } from "@/components/providers/redux-provider"
 import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
@@ -57,9 +58,11 @@ export default function RootLayout({
       )}
     >
       <body>
-        <ThemeProvider>
-          <TooltipProvider>{children}</TooltipProvider>
-        </ThemeProvider>
+        <ReduxProvider>
+          <ThemeProvider>
+            <TooltipProvider>{children}</TooltipProvider>
+          </ThemeProvider>
+        </ReduxProvider>
         <Toaster />
       </body>
     </html>
