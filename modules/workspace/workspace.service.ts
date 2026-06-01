@@ -10,13 +10,7 @@ import {
 } from "./workspace.schema"
 import { ValidationError } from "@/core/errors/app-error"
 import { PLAN_LIMIT, WORKSPACE_ID_PREFIX } from "@/lib/constants"
-import type { WorkspaceProfile, BrandPersona } from "@/types"
-
-const DEFAULT_PROFILE: WorkspaceProfile = {
-  name: "",
-  description: "",
-  industry: "",
-}
+import type { BrandPersona } from "@/types"
 
 const DEFAULT_PERSONA: BrandPersona = {
   targetAudiences: [],
@@ -30,7 +24,6 @@ export const workspaceService = {
   async getWorkspace(workspaceId: string) {
     const doc = await workspaceRepository.findByWorkspaceId(workspaceId)
 
-    const profile: WorkspaceProfile = doc?.profile ?? DEFAULT_PROFILE
     const rawPersona = doc?.persona ?? DEFAULT_PERSONA
     const persona: BrandPersona = {
       ...rawPersona,
@@ -44,7 +37,6 @@ export const workspaceService = {
     const overview = await analyticsRepository.getOverview(workspaceId)
 
     return {
-      profile,
       persona,
       usage: {
         used: overview.totalPosts,
@@ -65,7 +57,6 @@ export const workspaceService = {
 
     const rawPersona = updated.persona
     return {
-      profile: updated.profile,
       persona: {
         ...rawPersona,
         language: Array.isArray(rawPersona.language)

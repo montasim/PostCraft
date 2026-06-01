@@ -12,7 +12,6 @@ export const workspaceRepository = {
 
   async upsert(workspaceId: string, data: UpdateWorkspaceInput) {
     const update: Record<string, unknown> = {}
-    if (data.profile) update.profile = data.profile
     if (data.persona) update.persona = data.persona
 
     return WorkspaceModel.findOneAndUpdate(

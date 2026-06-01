@@ -95,12 +95,6 @@ export interface TopPerformingPost {
   date: string
 }
 
-export interface WorkspaceProfile {
-  name: string
-  description: string
-  industry: string
-}
-
 export interface PersonaOption {
   value: string
   label: string

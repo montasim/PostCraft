@@ -14,15 +14,8 @@ export interface IBrandPersona {
   industry: IPersonaOption[]
 }
 
-export interface IWorkspaceProfile {
-  name: string
-  description: string
-  industry: string
-}
-
 export interface IWorkspace extends Document {
   workspaceId: string
-  profile: IWorkspaceProfile
   persona: IBrandPersona
   createdAt: Date
   updatedAt: Date
@@ -33,15 +26,6 @@ const personaOptionSchema = new mongoose.Schema<IPersonaOption>(
     value: { type: String, required: true },
     label: { type: String, required: true },
     description: { type: String },
-  },
-  { _id: false }
-)
-
-const workspaceProfileSchema = new mongoose.Schema<IWorkspaceProfile>(
-  {
-    name: { type: String, default: "" },
-    description: { type: String, default: "" },
-    industry: { type: String, default: "" },
   },
   { _id: false }
 )
@@ -60,7 +44,6 @@ const brandPersonaSchema = new mongoose.Schema<IBrandPersona>(
 const workspaceSchema = new mongoose.Schema<IWorkspace>(
   {
     workspaceId: { type: String, required: true, unique: true, index: true },
-    profile: { type: workspaceProfileSchema, default: () => ({}) },
     persona: { type: brandPersonaSchema, default: () => ({}) },
   },
   { timestamps: true }
