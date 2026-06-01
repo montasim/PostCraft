@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
-import { IconShield, IconCheck } from "@tabler/icons-react"
+import { IconCheck, IconSettings } from "@tabler/icons-react"
 import Link from "next/link"
 
 interface GuardRule {
@@ -173,7 +173,7 @@ function BrandGuardPanel({ showButton = true, title = "Brand Guard", guardrails:
           {showButton && (
             <Button variant="ghost" size="icon" className="h-7 w-7" asChild>
               <Link href="/guardrails" title="Protect your brand">
-                <IconShield className="h-4 w-4" />
+                <IconSettings className="h-4 w-4" />
               </Link>
             </Button>
           )}
