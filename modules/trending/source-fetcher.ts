@@ -1,6 +1,16 @@
 import type { SourceItem } from "./trending.types"
 import type { TrendingPrefs } from "../prefs/prefs.schema"
 import { logger } from "@/core/logger"
+import {
+  EXTERNAL_API,
+  AI_CONFIG,
+  HTTP_STATUS,
+  TRENDING_KEYWORDS_MAX,
+  TRENDING_SUBREDDITS_MAX,
+  TRENDING_POSTS_DEFAULT,
+  MILLISECONDS,
+  GITHUB_FRESH_DAYS,
+} from "@/lib/constants"
 
 interface HNHit {
   title: string
@@ -33,16 +43,21 @@ interface RedditChild {
 export function buildSourceKeywords(config: TrendingPrefs): string[] {
   const raw = [
     ...(config.topics ?? []),
-    ...(Array.isArray(config.industry) ? config.industry : [config.industry ?? ""]),
+    ...(Array.isArray(config.industry)
+      ? config.industry
+      : [config.industry ?? ""]),
     ...(config.targetAudience ?? []),
   ]
   return [...new Set(raw.filter(Boolean).map((k) => k.toLowerCase().trim()))]
 }
 
-export async function fetchHackerNews(keywords: string[], count: number): Promise<SourceItem[]> {
+export async function fetchHackerNews(
+  keywords: string[],
+  count: number
+): Promise<SourceItem[]> {
   try {
-    const query = keywords.slice(0, 5).join(" OR ")
-    const url = `https://hn.algolia.com/api/v1/search?query=${encodeURIComponent(query)}&tags=story&hitsPerPage=${count}&numericFilters=points>50`
+    const query = keywords.slice(0, TRENDING_KEYWORDS_MAX).join(" OR ")
+    const url = `${EXTERNAL_API.HN_SEARCH}?query=${encodeURIComponent(query)}&tags=story&hitsPerPage=${count}&numericFilters=points>50`
     const res = await fetch(url)
     if (!res.ok) throw new Error(`HN API ${res.status}`)
     const data = await res.json()
@@ -61,10 +76,13 @@ export async function fetchHackerNews(keywords: string[], count: number): Promis
   }
 }
 
-export async function fetchDevTo(keywords: string[], count: number): Promise<SourceItem[]> {
+export async function fetchDevTo(
+  keywords: string[],
+  count: number
+): Promise<SourceItem[]> {
   try {
     const tag = keywords[0] ?? "programming"
-    const url = `https://dev.to/api/articles?tag=${encodeURIComponent(tag)}&per_page=${count}&top=7`
+    const url = `${EXTERNAL_API.DEVTO_ARTICLES}?tag=${encodeURIComponent(tag)}&per_page=${count}&top=7`
     const res = await fetch(url)
     if (!res.ok) throw new Error(`Dev.to API ${res.status}`)
     const articles = await res.json()
@@ -81,20 +99,28 @@ export async function fetchDevTo(keywords: string[], count: number): Promise<Sou
   }
 }
 
-export async function fetchGitHub(keywords: string[], count: number): Promise<SourceItem[]> {
+export async function fetchGitHub(
+  keywords: string[],
+  count: number
+): Promise<SourceItem[]> {
   try {
-    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+    const sevenDaysAgo = new Date(
+      Date.now() - GITHUB_FRESH_DAYS * MILLISECONDS.DAY
+    )
       .toISOString()
       .split("T")[0]
     const q = `${keywords.slice(0, 3).join("+")}+created:>${sevenDaysAgo}`
-    const url = `https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&sort=stars&order=desc&per_page=${count}`
+    const url = `${EXTERNAL_API.GITHUB_SEARCH}?q=${encodeURIComponent(q)}&sort=stars&order=desc&per_page=${count}`
     const res = await fetch(url, {
       headers: {
         Accept: "application/vnd.github.v3+json",
-        "User-Agent": "linkedIQ/1.0",
+        "User-Agent": AI_CONFIG.GITHUB_USER_AGENT,
       },
     })
-    if (res.status === 403 || res.status === 429) {
+    if (
+      res.status === HTTP_STATUS.FORBIDDEN ||
+      res.status === HTTP_STATUS.TOO_MANY_REQUESTS
+    ) {
       logger.warn({ status: res.status }, "GitHub rate limit hit")
       return []
     }
@@ -113,7 +139,10 @@ export async function fetchGitHub(keywords: string[], count: number): Promise<So
   }
 }
 
-export async function fetchReddit(keywords: string[], count: number): Promise<SourceItem[]> {
+export async function fetchReddit(
+  keywords: string[],
+  count: number
+): Promise<SourceItem[]> {
   const subredditMap: Record<string, string> = {
     react: "reactjs",
     typescript: "typescript",
@@ -131,14 +160,19 @@ export async function fetchReddit(keywords: string[], count: number): Promise<So
     engineering: "ExperiencedDevs",
   }
   const subreddits = [
-    ...new Set(keywords.flatMap((k) => (subredditMap[k] ? [subredditMap[k]] : []))),
+    ...new Set(
+      keywords.flatMap((k) => (subredditMap[k] ? [subredditMap[k]] : []))
+    ),
   ]
-  const subreddit = subreddits.length > 0 ? subreddits.slice(0, 5).join("+") : "programming+webdev"
+  const subreddit =
+    subreddits.length > 0
+      ? subreddits.slice(0, TRENDING_SUBREDDITS_MAX).join("+")
+      : "programming+webdev"
 
   try {
-    const url = `https://www.reddit.com/r/${subreddit}/hot.json?limit=${count}`
+    const url = `${EXTERNAL_API.REDDIT_HOT}/${subreddit}/hot.json?limit=${count}`
     const res = await fetch(url, {
-      headers: { "User-Agent": "linkedIQ/1.0 (by /u/linkediq)" },
+      headers: { "User-Agent": AI_CONFIG.REDDIT_USER_AGENT },
     })
     if (!res.ok) throw new Error(`Reddit API ${res.status}`)
     const data = await res.json()
@@ -147,7 +181,7 @@ export async function fetchReddit(keywords: string[], count: number): Promise<So
       .map((c: RedditChild) => ({
         source: "reddit" as const,
         title: c.data.title,
-        url: `https://reddit.com${c.data.permalink}`,
+        url: `${AI_CONFIG.REDDIT_BASE_URL}${c.data.permalink}`,
         score: c.data.score ?? 0,
         rank: 0,
       }))
@@ -157,19 +191,27 @@ export async function fetchReddit(keywords: string[], count: number): Promise<So
   }
 }
 
-export async function fetchTrendingSources(config: TrendingPrefs): Promise<SourceItem[]> {
+export async function fetchTrendingSources(
+  config: TrendingPrefs
+): Promise<SourceItem[]> {
   const keywords = buildSourceKeywords(config)
-  const count = config.postsPerPlatform ?? 5
+  const count = config.postsPerPlatform ?? TRENDING_POSTS_DEFAULT
 
   const fetchers: Promise<SourceItem[]>[] = []
-  if (config.platforms.includes("hackernews")) fetchers.push(fetchHackerNews(keywords, count))
-  if (config.platforms.includes("devto")) fetchers.push(fetchDevTo(keywords, count))
-  if (config.platforms.includes("github")) fetchers.push(fetchGitHub(keywords, count))
-  if (config.platforms.includes("reddit")) fetchers.push(fetchReddit(keywords, count))
+  if (config.platforms.includes("hackernews"))
+    fetchers.push(fetchHackerNews(keywords, count))
+  if (config.platforms.includes("devto"))
+    fetchers.push(fetchDevTo(keywords, count))
+  if (config.platforms.includes("github"))
+    fetchers.push(fetchGitHub(keywords, count))
+  if (config.platforms.includes("reddit"))
+    fetchers.push(fetchReddit(keywords, count))
 
   const results = await Promise.allSettled(fetchers)
   const all = results
-    .filter((r): r is PromiseFulfilledResult<SourceItem[]> => r.status === "fulfilled")
+    .filter(
+      (r): r is PromiseFulfilledResult<SourceItem[]> => r.status === "fulfilled"
+    )
     .flatMap((r) => r.value)
 
   const seen = new Set<string>()

@@ -1,15 +1,34 @@
 import { inngest } from "./client"
 import { runGenerationPipeline } from "./pipeline"
-import { fetchTrendingSources, buildSourceKeywords } from "@/modules/trending/source-fetcher"
+import {
+  fetchTrendingSources,
+  buildSourceKeywords,
+} from "@/modules/trending/source-fetcher"
 import { rankSourceItems } from "@/modules/trending/trending-ranker"
-import { updateRunSourceItems, updateRunGenerationIds, updateRunStatus } from "@/modules/trending/trending.repository"
-import { generatePostsFromTrends, shortlistWithAI } from "@/modules/trending/trending.service"
+import {
+  updateRunSourceItems,
+  updateRunGenerationIds,
+  updateRunStatus,
+} from "@/modules/trending/trending.repository"
+import {
+  generatePostsFromTrends,
+  shortlistWithAI,
+} from "@/modules/trending/trending.service"
 import { sendTrendingCompletionEmail } from "@/modules/trending/trending-email"
-import { saveGlobalTopics, saveGlobalTopicsFailure } from "@/modules/trending/global-topics.repository"
+import {
+  saveGlobalTopics,
+  saveGlobalTopicsFailure,
+} from "@/modules/trending/global-topics.repository"
 import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
 import { connectDB } from "@/core/config/database"
 import { analyticsRepository } from "@/modules/analytics/analytics.repository"
-import { PLAN_LIMIT } from "@/lib/constants"
+import {
+  PLAN_LIMIT,
+  GENERATION_EVENT,
+  CRON,
+  TRENDING_TOP_N,
+} from "@/lib/constants"
+import { RUN_STATUS } from "@/lib/constants"
 import { logger } from "@/core/logger"
 
 export const generatePosts = inngest.createFunction(
@@ -17,7 +36,7 @@ export const generatePosts = inngest.createFunction(
     id: "generate-posts",
     name: "Generate Posts",
     retries: 3,
-    triggers: [{ event: "generation/created" }],
+    triggers: [{ event: GENERATION_EVENT }],
   },
   async ({ event }) => {
     const { generationId, workspaceId } = event.data as {
@@ -47,8 +66,11 @@ export const runTrendingPipeline = inngest.createFunction(
       await connectDB()
       const overview = await analyticsRepository.getOverview(workspaceId)
       if (overview.completedGenerations >= PLAN_LIMIT) {
-        await updateRunStatus(runId, "failed", "Quota exceeded")
-        logger.info({ workspaceId, runId }, "Trending pipeline skipped — quota exceeded")
+        await updateRunStatus(runId, RUN_STATUS.FAILED, "Quota exceeded")
+        logger.info(
+          { workspaceId, runId },
+          "Trending pipeline skipped — quota exceeded"
+        )
         return
       }
 
@@ -56,19 +78,34 @@ export const runTrendingPipeline = inngest.createFunction(
       const rankedItems = rankSourceItems(rawItems)
       await updateRunSourceItems(runId, rankedItems)
 
-      const shortlisted = await shortlistWithAI(rankedItems, config, config.topPostsForAI ?? 5)
-      const generationIds = await generatePostsFromTrends(shortlisted, config, workspaceId, userId)
+      const shortlisted = await shortlistWithAI(
+        rankedItems,
+        config,
+        config.topPostsForAI ?? 5
+      )
+      const generationIds = await generatePostsFromTrends(
+        shortlisted,
+        config,
+        workspaceId,
+        userId
+      )
 
       await updateRunGenerationIds(runId, generationIds)
-      await updateRunStatus(runId, "completed")
+      await updateRunStatus(runId, RUN_STATUS.COMPLETED)
 
       await sendTrendingCompletionEmail(userId, runId).catch((err) => {
-        logger.warn({ userId, runId, err: String(err) }, "Failed to send trending completion email")
+        logger.warn(
+          { userId, runId, err: String(err) },
+          "Failed to send trending completion email"
+        )
       })
     } catch (err) {
       const message = err instanceof Error ? err.message : "Unknown error"
-      logger.error({ workspaceId, runId, err: message }, "Trending pipeline failed")
-      await updateRunStatus(runId, "failed", message)
+      logger.error(
+        { workspaceId, runId, err: message },
+        "Trending pipeline failed"
+      )
+      await updateRunStatus(runId, RUN_STATUS.FAILED, message)
       throw err
     }
   }
@@ -79,7 +116,14 @@ export const runTrendingPipeline = inngest.createFunction(
 const GLOBAL_TRENDING_CONFIG = {
   enabled: true,
   platforms: ["hackernews", "devto", "reddit"],
-  topics: ["AI", "startup", "engineering", "productivity", "hiring", "remote work"],
+  topics: [
+    "AI",
+    "startup",
+    "engineering",
+    "productivity",
+    "hiring",
+    "remote work",
+  ],
   industry: ["software", "saas"],
   targetAudience: ["developers", "founders", "tech leads"],
   language: ["english"],
@@ -96,7 +140,7 @@ export const fetchGlobalTrendingTopics = inngest.createFunction(
     id: "fetch-global-trending-topics",
     name: "Fetch Global Trending Topics",
     retries: 2,
-    triggers: [{ cron: "0 6 * * *" }],
+    triggers: [{ cron: CRON.DAILY_6AM }],
   },
   async ({ step }) => {
     const rawItems = await step.run("fetch-sources", async () => {
@@ -106,7 +150,7 @@ export const fetchGlobalTrendingTopics = inngest.createFunction(
 
     const topTopics = await step.run("rank-and-select", async () => {
       const ranked = rankSourceItems(rawItems)
-      return ranked.slice(0, 6)
+      return ranked.slice(0, TRENDING_TOP_N)
     })
 
     await step.run("save-topics", async () => {

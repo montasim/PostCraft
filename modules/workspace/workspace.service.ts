@@ -4,9 +4,12 @@ import { guardrailRepository } from "@/modules/guardrail/guardrail.repository"
 import { generationRepository } from "@/modules/generation/generation.repository"
 import { variantRepository } from "@/modules/variant/variant.repository"
 import { settingsRepository } from "@/modules/settings/settings.repository"
-import { updateWorkspaceSchema, type UpdateWorkspaceInput } from "./workspace.schema"
+import {
+  updateWorkspaceSchema,
+  type UpdateWorkspaceInput,
+} from "./workspace.schema"
 import { ValidationError } from "@/core/errors/app-error"
-import { PLAN_LIMIT } from "@/lib/constants"
+import { PLAN_LIMIT, WORKSPACE_ID_PREFIX } from "@/lib/constants"
 import type { WorkspaceProfile, BrandPersona } from "@/types"
 
 const DEFAULT_PROFILE: WorkspaceProfile = {
@@ -31,7 +34,9 @@ export const workspaceService = {
     const rawPersona = doc?.persona ?? DEFAULT_PERSONA
     const persona: BrandPersona = {
       ...rawPersona,
-      language: Array.isArray(rawPersona.language) ? rawPersona.language : DEFAULT_PERSONA.language,
+      language: Array.isArray(rawPersona.language)
+        ? rawPersona.language
+        : DEFAULT_PERSONA.language,
       topics: Array.isArray(rawPersona.topics) ? rawPersona.topics : [],
       industry: Array.isArray(rawPersona.industry) ? rawPersona.industry : [],
     }
@@ -63,7 +68,9 @@ export const workspaceService = {
       profile: updated.profile,
       persona: {
         ...rawPersona,
-        language: Array.isArray(rawPersona.language) ? rawPersona.language : DEFAULT_PERSONA.language,
+        language: Array.isArray(rawPersona.language)
+          ? rawPersona.language
+          : DEFAULT_PERSONA.language,
         topics: Array.isArray(rawPersona.topics) ? rawPersona.topics : [],
         industry: Array.isArray(rawPersona.industry) ? rawPersona.industry : [],
       },
@@ -71,7 +78,8 @@ export const workspaceService = {
   },
 
   async deleteWorkspaceCascade(workspaceId: string): Promise<void> {
-    const generationDocs = await generationRepository.findGenerationIdsByWorkspace(workspaceId)
+    const generationDocs =
+      await generationRepository.findGenerationIdsByWorkspace(workspaceId)
     const generationIds = generationDocs.map((d) => d._id)
 
     await Promise.all([
@@ -79,7 +87,9 @@ export const workspaceService = {
       guardrailRepository.deleteByWorkspace(workspaceId),
       generationRepository.deleteByWorkspace(workspaceId),
       variantRepository.deleteByTrendIds(generationIds),
-      settingsRepository.deleteByUserId(workspaceId.replace("ws_", "")),
+      settingsRepository.deleteByUserId(
+        workspaceId.replace(WORKSPACE_ID_PREFIX, "")
+      ),
     ])
   },
 }

@@ -1,9 +1,16 @@
 import { calculateHeuristicScore } from "./heuristic-scorer"
 import { scoreWithJudge } from "./judge-scorer"
-import { WEIGHTS } from "./scoring.schema"
 import type { RawVariant } from "@/modules/generation"
 import { getProviders } from "@/core/ai/provider"
 import { logger } from "@/core/logger"
+import {
+  SCORE_WEIGHTS,
+  BODY_MIN_LENGTH,
+  BODY_MAX_LENGTH,
+  HASHTAG_MIN,
+  HASHTAG_MAX,
+  MAX_SCORE,
+} from "@/lib/constants"
 
 interface ScoringInput extends RawVariant {
   audiences?: string[]
@@ -30,20 +37,25 @@ function scoreStructure(variant: ScoringInput): number {
   const fullPost = `${variant.hook}\n${variant.body}\n${variant.cta}\n${variant.hashtags.join(" ")}`
   let score = 0
 
-  if (fullPost.length >= 600 && fullPost.length <= 1300) score += 33
+  if (fullPost.length >= BODY_MIN_LENGTH && fullPost.length <= BODY_MAX_LENGTH)
+    score += 33
   else if (fullPost.length >= 400) score += 16
 
   const sections = [variant.hook, variant.body, variant.cta, variant.hashtags]
-  const present = sections.filter(
-    (s) => (Array.isArray(s) ? s.length > 0 : s.trim().length > 0)
+  const present = sections.filter((s) =>
+    Array.isArray(s) ? s.length > 0 : s.trim().length > 0
   ).length
   if (present === 4) score += 33
   else if (present === 3) score += 16
 
-  if (variant.hashtags.length >= 2 && variant.hashtags.length <= 5) score += 34
+  if (
+    variant.hashtags.length >= HASHTAG_MIN &&
+    variant.hashtags.length <= HASHTAG_MAX
+  )
+    score += 34
   else if (variant.hashtags.length > 0) score += 17
 
-  return Math.min(100, score)
+  return Math.min(MAX_SCORE, score)
 }
 
 export const scoringService = {
@@ -57,16 +69,17 @@ export const scoringService = {
 
     for (const variant of variants) {
       const heuristic = calculateHeuristicScore(variant, bannedWords)
-      const heuristicAvg = (heuristic.engagement + heuristic.clarity + heuristic.formatting) / 3
+      const heuristicAvg =
+        (heuristic.engagement + heuristic.clarity + heuristic.formatting) / 3
 
       const judge = await scoreWithJudge(variant, audiences, topic)
 
       const structure = scoreStructure(variant)
 
       const overallScore = Math.round(
-        WEIGHTS.heuristic * heuristicAvg +
-        WEIGHTS.judge * judge.score +
-        WEIGHTS.structure * structure
+        SCORE_WEIGHTS.heuristic * heuristicAvg +
+          SCORE_WEIGHTS.judge * judge.score +
+          SCORE_WEIGHTS.structure * structure
       )
 
       const fullPost = `${variant.hook}\n\n${variant.body}\n\n${variant.cta}\n\n${variant.hashtags.join(" ")}`
@@ -82,7 +95,7 @@ export const scoringService = {
         engagementScore: heuristic.engagement,
         clarityScore: heuristic.clarity,
         formattingScore: heuristic.formatting,
-        overallScore: Math.max(0, Math.min(100, overallScore)),
+        overallScore: Math.max(0, Math.min(MAX_SCORE, overallScore)),
         judgeReasoning: judge.reasoning,
         model: getProviders()[0]?.name ?? "unknown",
       })

@@ -1,4 +1,5 @@
 import { analyticsRepository } from "./analytics.repository"
+import { ANALYTICS_MONTHLY_GOAL } from "@/lib/constants"
 import type {
   AnalyticsOverview,
   ScoreDistribution,
@@ -36,9 +37,19 @@ export const analyticsService = {
         successRate: overview.successRate,
         weeklyChange: 0,
         streakDays: 0,
-        consistencyScore: overview.totalPosts > 0 ? Math.min(100, Math.round((overview.completedGenerations / Math.max(overview.totalGenerations, 1)) * 100)) : 0,
+        consistencyScore:
+          overview.totalPosts > 0
+            ? Math.min(
+                100,
+                Math.round(
+                  (overview.completedGenerations /
+                    Math.max(overview.totalGenerations, 1)) *
+                    100
+                )
+              )
+            : 0,
         monthlyGoalProgress: overview.completedGenerations,
-        monthlyGoal: 20,
+        monthlyGoal: ANALYTICS_MONTHLY_GOAL,
         topPercentile: bestStyle ? bestStyle.avgScore : 0,
       },
       scoreDistribution,

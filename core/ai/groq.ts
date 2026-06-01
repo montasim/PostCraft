@@ -1,5 +1,6 @@
 import OpenAI from "openai"
 import { getEnv } from "@/core/config/env"
+import { EXTERNAL_API } from "@/lib/constants"
 
 let client: OpenAI | null = null
 
@@ -10,7 +11,7 @@ export function getGroqClient(): OpenAI | null {
   if (!client) {
     client = new OpenAI({
       apiKey: GROQ_API_KEY,
-      baseURL: "https://api.groq.com/openai/v1",
+      baseURL: EXTERNAL_API.GROQ,
     })
   }
   return client

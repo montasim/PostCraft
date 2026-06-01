@@ -1,11 +1,12 @@
 import { z } from "zod"
+import { EXTERNAL_API } from "@/lib/constants"
 
 const envSchema = z.object({
   MONGODB_URI: z.string().min(1),
   GEMINI_API_KEY: z.string().min(1),
   GEMINI_MODEL: z.string().default("gemini-2.5-flash"),
   ZAI_API_KEY: z.string().optional(),
-  ZAI_BASE_URL: z.string().default("https://open.bigmodel.cn/api/paas/v4"),
+  ZAI_BASE_URL: z.string().default(EXTERNAL_API.ZHIPU),
   ZAI_MODEL: z.string().default("glm-4.5-air"),
 
   // Groq
@@ -15,11 +16,11 @@ const envSchema = z.object({
   // OpenRouter
   OPENROUTER_API_KEY: z.string().optional(),
   OPENROUTER_MODEL: z.string().default("deepseek/deepseek-v3:free"),
-  OPENROUTER_SITE_URL: z.string().default("https://linkediq.onrender.com"),
+  OPENROUTER_SITE_URL: z.string().default(EXTERNAL_API.OPENROUTER_SITE),
   OPENROUTER_SITE_NAME: z.string().default("linkedIQ"),
   INNGEST_EVENT_KEY: z.string().optional(),
   INNGEST_SIGNING_KEY: z.string().optional(),
-  APP_URL: z.string().optional().default("http://localhost:3000"),
+  APP_URL: z.string().optional().default(EXTERNAL_API.LOCALHOST),
 
   // Auth
   BETTER_AUTH_SECRET: z.string().min(1),

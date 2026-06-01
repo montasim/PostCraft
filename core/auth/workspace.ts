@@ -1,5 +1,6 @@
 import { auth } from "./auth"
 import { headers } from "next/headers"
+import { WORKSPACE_ID_PREFIX } from "@/lib/constants"
 import { UnauthorizedError } from "@/core/errors/app-error"
 
 export async function getAuthSession() {
@@ -13,7 +14,7 @@ export async function getWorkspaceId(): Promise<string> {
   if (!session?.user?.id) {
     throw new UnauthorizedError("Authentication required")
   }
-  return `ws_${session.user.id}`
+  return `${WORKSPACE_ID_PREFIX}${session.user.id}`
 }
 
 export async function getUserId(): Promise<string> {

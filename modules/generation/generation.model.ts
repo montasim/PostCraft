@@ -1,6 +1,10 @@
 import mongoose, { type Document, type Model, Schema } from "mongoose"
 import type { GenerationStatus } from "./generation.schema"
-import { TOPIC_MAX_LENGTH } from "@/lib/constants"
+import {
+  TOPIC_MAX_LENGTH,
+  GENERATION_STATUSES,
+  GENERATION_STATUS,
+} from "@/lib/constants"
 
 export interface IGeneration extends Document {
   workspaceId: string
@@ -27,8 +31,8 @@ const generationSchema = new Schema<IGeneration>(
     includeEmoji: { type: Boolean, default: true },
     status: {
       type: String,
-      enum: ["queued", "generating", "scoring", "ranking", "completed", "failed"],
-      default: "queued",
+      enum: GENERATION_STATUSES,
+      default: GENERATION_STATUS.QUEUED,
     },
     errorMessage: { type: String },
     guardrailIds: { type: [String], default: [] },

@@ -2,6 +2,12 @@ import { betterAuth } from "better-auth"
 import { mongodbAdapter } from "better-auth/adapters/mongodb"
 import { getAuthDb } from "./auth-db"
 import { sendEmail } from "./email"
+import {
+  PASSWORD_MIN_LENGTH,
+  PASSWORD_MAX_LENGTH,
+  AUTH_TOKEN,
+  SESSION,
+} from "@/lib/constants"
 import { getEnv } from "@/core/config/env"
 
 function buildAuthConfig() {
@@ -18,21 +24,33 @@ function buildAuthConfig() {
     emailAndPassword: {
       enabled: true,
       requireEmailVerification: true,
-      minPasswordLength: 8,
-      maxPasswordLength: 128,
+      minPasswordLength: PASSWORD_MIN_LENGTH,
+      maxPasswordLength: PASSWORD_MAX_LENGTH,
       autoSignIn: true,
-      sendResetPassword: async ({ user, url }: { user: { email: string }; url: string }) => {
+      sendResetPassword: async ({
+        user,
+        url,
+      }: {
+        user: { email: string }
+        url: string
+      }) => {
         await sendEmail({
           to: user.email,
           subject: "Reset your LinkedIQ password",
           text: `Click here to reset your password: ${url}`,
         })
       },
-      resetPasswordTokenExpiresIn: 3600,
+      resetPasswordTokenExpiresIn: AUTH_TOKEN.RESET_PASSWORD_EXPIRY_SECONDS,
     },
 
     emailVerification: {
-      sendVerificationEmail: async ({ user, url }: { user: { email: string }; url: string }) => {
+      sendVerificationEmail: async ({
+        user,
+        url,
+      }: {
+        user: { email: string }
+        url: string
+      }) => {
         await sendEmail({
           to: user.email,
           subject: "Verify your LinkedIQ email",
@@ -41,7 +59,7 @@ function buildAuthConfig() {
       },
       sendOnSignUp: true,
       autoSignInAfterVerification: true,
-      expiresIn: 3600,
+      expiresIn: AUTH_TOKEN.VERIFICATION_EXPIRY_SECONDS,
     },
 
     socialProviders: {
@@ -53,11 +71,11 @@ function buildAuthConfig() {
     },
 
     session: {
-      expiresIn: 60 * 60 * 24 * 7,
-      updateAge: 60 * 60 * 24,
+      expiresIn: SESSION.EXPIRY_SECONDS,
+      updateAge: SESSION.UPDATE_AGE_SECONDS,
       cookieCache: {
         enabled: true,
-        maxAge: 60 * 5,
+        maxAge: SESSION.COOKIE_CACHE_MAX_AGE,
       },
     },
   }

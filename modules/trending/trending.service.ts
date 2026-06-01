@@ -1,6 +1,9 @@
 import { generationService } from "@/modules/generation"
 import { callWithTaskFallback } from "@/core/ai/provider"
-import { buildShortlistSystemPrompt, buildShortlistPrompt } from "@/core/ai/prompts/shortlist"
+import {
+  buildShortlistSystemPrompt,
+  buildShortlistPrompt,
+} from "@/core/ai/prompts/shortlist"
 import { logger } from "@/core/logger"
 import { inngest } from "@/core/queue/client"
 import { QuotaExceededError, ValidationError } from "@/core/errors/app-error"
@@ -8,7 +11,13 @@ import { generationRepository } from "@/modules/generation/generation.repository
 import { variantRepository } from "@/modules/variant/variant.repository"
 import { analyticsRepository } from "@/modules/analytics/analytics.repository"
 import { prefsService } from "@/modules/prefs"
-import { PLAN_LIMIT } from "@/lib/constants"
+import {
+  PLAN_LIMIT,
+  LANGUAGE_TO_CODE,
+  AI_TEMPERATURE,
+  AI_MAX_TOKENS,
+  TRENDING_TOP_N,
+} from "@/lib/constants"
 import {
   findRunsByWorkspace,
   countUndismissedRuns,
@@ -27,13 +36,6 @@ import type {
 } from "./trending.types"
 import type { IVariant } from "@/modules/variant/variant.model"
 
-const LANGUAGE_TO_CODE: Record<string, string> = {
-  english: "en",
-  bangla: "bn",
-  bengali: "bn",
-  banglish: "en",
-}
-
 const STATIC_FALLBACK_TOPICS = [
   "Why most startups fail at hiring in 2025",
   "AI replacing resume screening — what actually works",
@@ -44,7 +46,9 @@ const STATIC_FALLBACK_TOPICS = [
 ]
 
 function mapVariantToPreview(
-  v: Omit<IVariant, "save" | "validate" | "remove"> & { _id: { toString(): string } }
+  v: Omit<IVariant, "save" | "validate" | "remove"> & {
+    _id: { toString(): string }
+  }
 ): VariantPreview {
   return {
     _id: v._id.toString(),
@@ -67,7 +71,10 @@ function mapVariantToPreview(
 export async function getTrendingDashboard(workspaceId: string) {
   const runs = await findRunsByWorkspace(workspaceId, 50)
 
-  const generationMeta = new Map<string, { run: ITrendingRunDoc; index: number }>()
+  const generationMeta = new Map<
+    string,
+    { run: ITrendingRunDoc; index: number }
+  >()
   for (const run of runs) {
     run.generationIds.forEach((genId, i) => {
       generationMeta.set(genId, { run, index: i })
@@ -75,14 +82,16 @@ export async function getTrendingDashboard(workspaceId: string) {
   }
 
   const allGenIds = [...generationMeta.keys()]
-  const generationDocs = allGenIds.length > 0
-    ? await generationRepository.findByIds(allGenIds)
-    : []
-  const variantDocs = allGenIds.length > 0
-    ? await variantRepository.findTopRankedByTrendIds(allGenIds)
-    : []
+  const generationDocs =
+    allGenIds.length > 0 ? await generationRepository.findByIds(allGenIds) : []
+  const variantDocs =
+    allGenIds.length > 0
+      ? await variantRepository.findTopRankedByTrendIds(allGenIds)
+      : []
 
-  const variantByGenId = new Map(variantDocs.map((v) => [v.trendId.toString(), v]))
+  const variantByGenId = new Map(
+    variantDocs.map((v) => [v.trendId.toString(), v])
+  )
 
   const generations: TrendingGenerationPreview[] = generationDocs.map((gen) => {
     const meta = generationMeta.get(gen._id.toString())!
@@ -116,7 +125,10 @@ export async function getTrendingDashboard(workspaceId: string) {
   return { runs, generations, unreadCount }
 }
 
-export async function dismissRun(runId: string, workspaceId: string): Promise<void> {
+export async function dismissRun(
+  runId: string,
+  workspaceId: string
+): Promise<void> {
   await repoDismissRun(runId, workspaceId)
 }
 
@@ -196,8 +208,8 @@ Topics should be timely, specific, and conversation-starting.
 No markdown. No explanation. JSON only.`,
       user: `Generate 6 trending LinkedIn topic suggestions for tech professionals.
 Return exactly: { "topics": ["topic1", "topic2", "topic3", "topic4", "topic5", "topic6"] }`,
-      temperature: 0.8,
-      maxTokens: 256,
+      temperature: AI_TEMPERATURE.TRENDING,
+      maxTokens: AI_MAX_TOKENS.TRENDING,
     })
 
     const cleaned = raw
@@ -208,7 +220,11 @@ Return exactly: { "topics": ["topic1", "topic2", "topic3", "topic4", "topic5", "
     const parsed = JSON.parse(cleaned) as { topics: string[] }
 
     if (Array.isArray(parsed.topics) && parsed.topics.length > 0) {
-      return { topics: parsed.topics.slice(0, 6), source: "ai", fetchedAt: null }
+      return {
+        topics: parsed.topics.slice(0, TRENDING_TOP_N),
+        source: "ai",
+        fetchedAt: null,
+      }
     }
   } catch (aiErr) {
     logger.warn(
@@ -235,11 +251,15 @@ export async function generatePostsFromTrends(
     const result = await generationService.createGeneration(
       {
         topic,
-        audiences: config.targetAudience.length > 0 ? config.targetAudience : ["developers"],
+        audiences:
+          config.targetAudience.length > 0
+            ? config.targetAudience
+            : ["developers"],
         tones: ["Thought leader"],
-        languages: (config.language.length > 0 ? config.language : ["english"]).map(
-          (l) => LANGUAGE_TO_CODE[l.toLowerCase()] ?? "en"
-        ),
+        languages: (config.language.length > 0
+          ? config.language
+          : ["english"]
+        ).map((l) => LANGUAGE_TO_CODE[l.toLowerCase()] ?? "en"),
         includeEmoji: true,
       },
       workspaceId,
@@ -282,8 +302,8 @@ export async function shortlistWithAI(
     const { text: raw } = await callWithTaskFallback("shortlist", {
       system: systemPrompt,
       user: userPrompt,
-      temperature: 0.3,
-      maxTokens: 1024,
+      temperature: AI_TEMPERATURE.SHORTLIST,
+      maxTokens: AI_MAX_TOKENS.SHORTLIST,
     })
 
     const cleaned = raw

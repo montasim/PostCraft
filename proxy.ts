@@ -1,14 +1,24 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getSessionCookie } from "better-auth/cookies"
+import { API } from "@/lib/constants"
 
-const AUTH_ROUTES = ["/login", "/signup", "/forgot-password", "/reset-password", "/verify-email"]
-const API_AUTH_PREFIX = "/api/auth"
-const API_INNGEST_PREFIX = "/api/inngest"
+const AUTH_ROUTES = [
+  "/login",
+  "/signup",
+  "/forgot-password",
+  "/reset-password",
+  "/verify-email",
+]
+const API_AUTH_PREFIX = API.AUTH_PREFIX
+const API_INNGEST_PREFIX = API.INNGEST_PREFIX
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  if (pathname.startsWith(API_AUTH_PREFIX) || pathname.startsWith(API_INNGEST_PREFIX)) {
+  if (
+    pathname.startsWith(API_AUTH_PREFIX) ||
+    pathname.startsWith(API_INNGEST_PREFIX)
+  ) {
     return NextResponse.next()
   }
 
@@ -30,5 +40,7 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 }

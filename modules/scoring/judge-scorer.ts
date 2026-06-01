@@ -1,9 +1,17 @@
-import { buildJudgeSystemPrompt, buildJudgePrompt, type JudgePromptData } from "@/core/ai/prompts/judge"
+import {
+  buildJudgeSystemPrompt,
+  buildJudgePrompt,
+  type JudgePromptData,
+} from "@/core/ai/prompts/judge"
 import { callWithTaskFallback } from "@/core/ai/provider"
 import { logger } from "@/core/logger"
 import { z } from "zod"
-
-const MAX_RETRIES = 2
+import { MARKDOWN_FENCE_OPEN, MARKDOWN_FENCE_CLOSE } from "@/lib/constants"
+import {
+  MAX_RETRIES_JUDGE,
+  AI_TEMPERATURE,
+  AI_MAX_TOKENS,
+} from "@/lib/constants"
 
 const judgeOutputSchema = z.object({
   score: z.number().min(0).max(100),
@@ -17,8 +25,8 @@ interface JudgeResult {
 
 function stripMarkdownFences(text: string): string {
   return text
-    .replace(/^```(?:json)?\s*\n?/i, "")
-    .replace(/\n?```\s*$/i, "")
+    .replace(MARKDOWN_FENCE_OPEN, "")
+    .replace(MARKDOWN_FENCE_CLOSE, "")
     .trim()
 }
 
@@ -43,16 +51,19 @@ export async function scoreWithJudge(
       {
         system: buildJudgeSystemPrompt(),
         user: userPrompt,
-        temperature: 0.3,
-        maxTokens: 1024,
+        temperature: AI_TEMPERATURE.JUDGE,
+        maxTokens: AI_MAX_TOKENS.JUDGE,
       },
-      MAX_RETRIES
+      MAX_RETRIES_JUDGE
     )
 
     const text = stripMarkdownFences(raw)
     const parsed = judgeOutputSchema.safeParse(JSON.parse(text))
     if (!parsed.success) {
-      logger.warn({ errors: parsed.error.issues }, "Judge output validation failed")
+      logger.warn(
+        { errors: parsed.error.issues },
+        "Judge output validation failed"
+      )
       return { score: 50, reasoning: "Judge evaluation parsing failed" }
     }
 

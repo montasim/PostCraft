@@ -1,4 +1,9 @@
 import mongoose from "mongoose"
+import {
+  DB_MAX_POOL_SIZE,
+  DB_SERVER_SELECTION_TIMEOUT_MS,
+  DB_SOCKET_TIMEOUT_MS,
+} from "@/lib/constants"
 import { getEnv } from "./env"
 
 let cached: mongoose.Connection | null = null
@@ -9,9 +14,9 @@ export async function connectDB(): Promise<mongoose.Connection> {
   const { MONGODB_URI } = getEnv()
 
   const opts: mongoose.ConnectOptions = {
-    maxPoolSize: 10,
-    serverSelectionTimeoutMS: 5000,
-    socketTimeoutMS: 45000,
+    maxPoolSize: DB_MAX_POOL_SIZE,
+    serverSelectionTimeoutMS: DB_SERVER_SELECTION_TIMEOUT_MS,
+    socketTimeoutMS: DB_SOCKET_TIMEOUT_MS,
   }
 
   const conn = await mongoose.connect(MONGODB_URI, opts)

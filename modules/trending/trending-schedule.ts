@@ -1,4 +1,5 @@
 import type { ScheduleType } from "./trending.types"
+import { MILLISECONDS } from "@/lib/constants"
 
 export function computeNextRunAt(config: {
   scheduleType: ScheduleType
@@ -25,7 +26,15 @@ export function computeNextRunAt(config: {
   }
 
   if (config.scheduleType === "weekly" && config.scheduledDay) {
-    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ]
     const target = days.indexOf(config.scheduledDay)
     const current = next.getDay()
     const diff = (target - current + 7) % 7 || 7
@@ -41,9 +50,15 @@ export function formatNextRun(date: Date | null): string {
   const now = new Date()
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
   const target = new Date(date.getFullYear(), date.getMonth(), date.getDate())
-  const diffDays = Math.round((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
+  const diffDays = Math.round(
+    (target.getTime() - today.getTime()) / MILLISECONDS.DAY
+  )
 
-  const time = date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true })
+  const time = date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })
 
   if (diffDays === 0) return `Today at ${time}`
   if (diffDays === 1) return `Tomorrow at ${time}`
@@ -55,7 +70,7 @@ export function formatRelativeTime(date: Date | null): string {
 
   const now = new Date()
   const diffMs = now.getTime() - date.getTime()
-  const diffMins = Math.floor(diffMs / 60000)
+  const diffMins = Math.floor(diffMs / MILLISECONDS.MINUTE)
   const diffHours = Math.floor(diffMins / 60)
   const diffDays = Math.floor(diffHours / 24)
 

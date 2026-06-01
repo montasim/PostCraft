@@ -1,3 +1,11 @@
+import {
+  GENERATION_VARIANT_COUNT,
+  HOOK_MAX_LENGTH,
+  BODY_MAX_LENGTH,
+  HASHTAG_MIN,
+  HASHTAG_MAX,
+} from "@/lib/constants"
+
 export interface GenerationPromptData {
   topic: string
   audiences: string[]
@@ -15,13 +23,15 @@ export function buildSystemPrompt(): string {
 
 export function buildDeveloperPrompt(data: GenerationPromptData): string {
   const constraints = [
-    "Generate exactly 3 distinct variants.",
+    `Generate exactly ${GENERATION_VARIANT_COUNT} distinct variants.`,
     "Each variant MUST use a different style from the requested tones.",
-    "Hooks MUST be under 150 characters.",
-    "Body text MUST be under 1,300 characters total.",
-    "Each variant MUST have 2-5 relevant hashtags.",
+    `Hooks MUST be under ${HOOK_MAX_LENGTH} characters.`,
+    `Body text MUST be under ${BODY_MAX_LENGTH} characters total.`,
+    `Each variant MUST have ${HASHTAG_MIN}-${HASHTAG_MAX} relevant hashtags.`,
     "CTAs must encourage comments or shares.",
-    data.includeEmoji ? "Use emojis sparingly and contextually." : "Do NOT use any emojis.",
+    data.includeEmoji
+      ? "Use emojis sparingly and contextually."
+      : "Do NOT use any emojis.",
     `Target audiences: ${data.audiences.join(", ")}.`,
     `Write in these languages: ${data.languages.join(", ")}.`,
     `Use these tones/styles: ${data.tones.join(", ")}.`,
@@ -31,10 +41,14 @@ export function buildDeveloperPrompt(data: GenerationPromptData): string {
     constraints.push(`TONE RULES (mandatory): ${data.toneRules.join("; ")}.`)
   }
   if (data.formatRules.length > 0) {
-    constraints.push(`FORMAT RULES (mandatory): ${data.formatRules.join("; ")}.`)
+    constraints.push(
+      `FORMAT RULES (mandatory): ${data.formatRules.join("; ")}.`
+    )
   }
   if (data.bannedWords.length > 0) {
-    constraints.push(`BANNED WORDS (never use): ${data.bannedWords.join(", ")}.`)
+    constraints.push(
+      `BANNED WORDS (never use): ${data.bannedWords.join(", ")}.`
+    )
   }
 
   return `CONSTRAINTS:
@@ -58,5 +72,5 @@ OUTPUT FORMAT — respond with valid JSON only, no markdown:
 export function buildUserPrompt(topic: string): string {
   return `TOPIC: ${topic}
 
-Generate 3 LinkedIn post variants following the constraints above. Return valid JSON only.`
+Generate ${GENERATION_VARIANT_COUNT} LinkedIn post variants following the constraints above. Return valid JSON only.`
 }

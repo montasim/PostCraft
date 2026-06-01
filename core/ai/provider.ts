@@ -1,7 +1,20 @@
 import { getGeminiClient, getDefaultModel } from "./gemini"
 import { getZhipuClient, getZhipuModel, hasZhipuAI } from "./zhipu"
 import { getGroqClient, getGroqModel, hasGroq } from "./groq"
-import { getOpenRouterClient, getOpenRouterModel, hasOpenRouter } from "./openrouter"
+import {
+  getOpenRouterClient,
+  getOpenRouterModel,
+  hasOpenRouter,
+} from "./openrouter"
+import {
+  AI_CONFIG,
+  AI_TASKS,
+  TASK_PROVIDER_ORDER,
+  MAX_RETRIES_DEFAULT,
+  RETRYABLE_ERROR_PATTERNS,
+  BACKOFF_BASE_MS,
+  MILLISECONDS,
+} from "@/lib/constants"
 import { logger } from "@/core/logger"
 import type { Schema } from "@google/generative-ai"
 
@@ -104,16 +117,10 @@ const openrouterProvider = (model: string): AIProvider => ({
 
 export type AITask = "generate" | "score" | "shortlist"
 
-const TASK_PROVIDER_ORDER: Record<AITask, string[]> = {
-  generate: ["groq", "openrouter", "gemini", "zhipu"],
-  score: ["groq", "gemini", "openrouter", "zhipu"],
-  shortlist: ["groq", "openrouter", "gemini", "zhipu"],
-}
-
 export function getProviders(): AIProvider[] {
   const providers: AIProvider[] = [
     geminiProvider(getDefaultModel()),
-    geminiProvider("gemini-2.0-flash"),
+    geminiProvider(AI_CONFIG.GEMINI_FALLBACK_MODEL),
   ]
 
   if (hasGroq()) {
@@ -142,7 +149,7 @@ export function getProvidersForTask(task: AITask): AIProvider[] {
 
 export async function callWithFallback(
   params: AIModelCall,
-  maxRetries = 3
+  maxRetries = MAX_RETRIES_DEFAULT
 ): Promise<{ text: string; provider: string }> {
   const providers = getProviders()
 
@@ -153,21 +160,24 @@ export async function callWithFallback(
         return { text, provider: provider.name }
       } catch (err) {
         const msg = err instanceof Error ? err.message : "Unknown error"
-        const isRetryable =
-          msg.includes("503") ||
-          msg.includes("429") ||
-          msg.includes("Unexpected end of JSON") ||
-          msg.includes("Overloaded") ||
-          msg.includes("load")
+        const isRetryable = RETRYABLE_ERROR_PATTERNS.some((pattern) =>
+          msg.includes(pattern)
+        )
 
         if (isRetryable && attempt < maxRetries) {
-          const backoff = 1000 * Math.pow(2, attempt - 1)
-          logger.warn({ provider: provider.name, attempt, retryIn: backoff, err: msg }, "AI call failed, retrying")
+          const backoff = BACKOFF_BASE_MS * Math.pow(2, attempt - 1)
+          logger.warn(
+            { provider: provider.name, attempt, retryIn: backoff, err: msg },
+            "AI call failed, retrying"
+          )
           await new Promise((r) => setTimeout(r, backoff))
           continue
         }
 
-        logger.warn({ provider: provider.name, err: msg }, "AI provider failed, trying next")
+        logger.warn(
+          { provider: provider.name, err: msg },
+          "AI provider failed, trying next"
+        )
         break
       }
     }
@@ -179,7 +189,7 @@ export async function callWithFallback(
 export async function callWithTaskFallback(
   task: AITask,
   params: AIModelCall,
-  maxRetries = 3
+  maxRetries = MAX_RETRIES_DEFAULT
 ): Promise<{ text: string; provider: string }> {
   const providers = getProvidersForTask(task)
 
@@ -190,21 +200,30 @@ export async function callWithTaskFallback(
         return { text, provider: provider.name }
       } catch (err) {
         const msg = err instanceof Error ? err.message : "Unknown error"
-        const isRetryable =
-          msg.includes("503") ||
-          msg.includes("429") ||
-          msg.includes("Unexpected end of JSON") ||
-          msg.includes("Overloaded") ||
-          msg.includes("load")
+        const isRetryable = RETRYABLE_ERROR_PATTERNS.some((pattern) =>
+          msg.includes(pattern)
+        )
 
         if (isRetryable && attempt < maxRetries) {
-          const backoff = 1000 * Math.pow(2, attempt - 1)
-          logger.warn({ task, provider: provider.name, attempt, retryIn: backoff, err: msg }, "AI call failed, retrying")
+          const backoff = BACKOFF_BASE_MS * Math.pow(2, attempt - 1)
+          logger.warn(
+            {
+              task,
+              provider: provider.name,
+              attempt,
+              retryIn: backoff,
+              err: msg,
+            },
+            "AI call failed, retrying"
+          )
           await new Promise((r) => setTimeout(r, backoff))
           continue
         }
 
-        logger.warn({ task, provider: provider.name, err: msg }, "AI provider failed, trying next")
+        logger.warn(
+          { task, provider: provider.name, err: msg },
+          "AI provider failed, trying next"
+        )
         break
       }
     }

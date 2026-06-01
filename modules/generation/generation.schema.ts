@@ -1,5 +1,9 @@
 import { z } from "zod"
-import { TOPIC_MAX_LENGTH } from "@/lib/constants"
+import {
+  TOPIC_MAX_LENGTH,
+  GENERATION_STATUSES,
+  LANGUAGE_MAP,
+} from "@/lib/constants"
 
 // ─── Generation Input ─────────────────────────────────────────────
 
@@ -13,14 +17,7 @@ export const createGenerationSchema = z.object({
 
 export type CreateGenerationInput = z.infer<typeof createGenerationSchema>
 
-export const generationStatusSchema = z.enum([
-  "queued",
-  "generating",
-  "scoring",
-  "ranking",
-  "completed",
-  "failed",
-])
+export const generationStatusSchema = z.enum(GENERATION_STATUSES)
 
 export type GenerationStatus = z.infer<typeof generationStatusSchema>
 
@@ -40,12 +37,6 @@ export const aiGenerationOutputSchema = z.object({
 })
 
 export type RawVariant = z.infer<typeof rawVariantSchema>
-
-export const LANGUAGE_MAP: Record<string, string> = {
-  en: "English",
-  bn: "Bengali",
-  banglish: "Banglish",
-}
 
 export function resolveLanguage(code: string): string {
   return LANGUAGE_MAP[code.toLowerCase()] ?? code

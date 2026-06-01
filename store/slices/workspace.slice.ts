@@ -1,5 +1,10 @@
-import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit"
+import {
+  createSlice,
+  createAsyncThunk,
+  type PayloadAction,
+} from "@reduxjs/toolkit"
 import type { WorkspaceProfile, BrandPersona, PersonaOption } from "@/types"
+import { API, ERROR_MESSAGES, GENERATION_STATUS } from "@/lib/constants"
 
 export interface WorkspaceData {
   profile: WorkspaceProfile
@@ -22,10 +27,10 @@ const initialState: WorkspaceState = {
 export const fetchWorkspace = createAsyncThunk(
   "workspace/fetch",
   async (_, { rejectWithValue }) => {
-    const res = await fetch("/api/workspace")
-    if (!res.ok) return rejectWithValue("Failed to fetch workspace")
+    const res = await fetch(API.WORKSPACE)
+    if (!res.ok) return rejectWithValue(ERROR_MESSAGES.FETCH_WORKSPACE)
     const json = await res.json()
-    if (!json.success) return rejectWithValue("Failed to fetch workspace")
+    if (!json.success) return rejectWithValue(ERROR_MESSAGES.FETCH_WORKSPACE)
     return json.data as WorkspaceData
   }
 )
@@ -62,12 +67,18 @@ export const { updateWorkspace, resetWorkspace } = workspaceSlice.actions
 export default workspaceSlice.reducer
 
 // Selectors
-export const selectWorkspace = (state: { workspace: WorkspaceState }) => state.workspace.data
-export const selectWorkspaceStatus = (state: { workspace: WorkspaceState }) => state.workspace.status
-export const selectQuotaUsed = (state: { workspace: WorkspaceState }) => state.workspace.data?.usage.used ?? 0
-export const selectQuotaLimit = (state: { workspace: WorkspaceState }) => state.workspace.data?.usage.limit ?? 0
-export const selectBrandName = (state: { workspace: WorkspaceState }) => state.workspace.data?.profile.name ?? ""
-export const selectPersona = (state: { workspace: WorkspaceState }) => state.workspace.data?.persona ?? null
+export const selectWorkspace = (state: { workspace: WorkspaceState }) =>
+  state.workspace.data
+export const selectWorkspaceStatus = (state: { workspace: WorkspaceState }) =>
+  state.workspace.status
+export const selectQuotaUsed = (state: { workspace: WorkspaceState }) =>
+  state.workspace.data?.usage.used ?? 0
+export const selectQuotaLimit = (state: { workspace: WorkspaceState }) =>
+  state.workspace.data?.usage.limit ?? 0
+export const selectBrandName = (state: { workspace: WorkspaceState }) =>
+  state.workspace.data?.profile.name ?? ""
+export const selectPersona = (state: { workspace: WorkspaceState }) =>
+  state.workspace.data?.persona ?? null
 export const selectQuotaExceeded = (state: { workspace: WorkspaceState }) => {
   const d = state.workspace.data
   return d ? d.usage.used >= d.usage.limit : false

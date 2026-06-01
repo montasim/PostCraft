@@ -1,4 +1,5 @@
 import mongoose, { Schema, type Document, type Model } from "mongoose"
+import { RUN_STATUSES } from "@/lib/constants"
 
 export interface ISourceItemDoc {
   source: string
@@ -59,7 +60,7 @@ const TrendingRunSchema = new Schema<ITrendingRunDoc>(
   {
     workspaceId: { type: String, required: true },
     configSnapshot: { type: ConfigSnapshotSchema, required: true },
-    status: { type: String, enum: ["running", "completed", "failed"], default: "running" },
+    status: { type: String, enum: RUN_STATUSES, default: "running" },
     ranAt: { type: Date, default: Date.now },
     sourceItems: { type: [SourceItemSchema], default: [] },
     generationIds: { type: [String], default: [] },

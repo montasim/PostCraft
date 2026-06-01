@@ -1,5 +1,6 @@
 import mongoose, { type Document, type Model } from "mongoose"
 import type { GuardrailCategory } from "./guardrail.schema"
+import { GUARDRAIL_CATEGORIES, GUARDRAIL_MAX_LENGTH } from "@/lib/constants"
 
 export interface IGuardrail extends Document {
   workspaceId: string
@@ -15,10 +16,10 @@ const guardrailSchema = new mongoose.Schema<IGuardrail>(
     workspaceId: { type: String, required: true, index: true },
     category: {
       type: String,
-      enum: ["tone", "format", "banned", "custom"],
+      enum: GUARDRAIL_CATEGORIES,
       required: true,
     },
-    rule: { type: String, required: true, maxlength: 200 },
+    rule: { type: String, required: true, maxlength: GUARDRAIL_MAX_LENGTH },
     isActive: { type: Boolean, default: true },
   },
   { timestamps: true }

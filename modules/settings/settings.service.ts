@@ -1,7 +1,15 @@
 import { settingsRepository } from "./settings.repository"
-import { updateSettingsSchema, type UpdateSettingsInput } from "./settings.schema"
+import {
+  updateSettingsSchema,
+  type UpdateSettingsInput,
+} from "./settings.schema"
 import { ValidationError } from "@/core/errors/app-error"
-import type { NotificationSettings, AppearanceSettings, AccountSettings } from "@/types"
+import type {
+  NotificationSettings,
+  AppearanceSettings,
+  AccountSettings,
+} from "@/types"
+import { SESSION_TIMEOUT_DEFAULT } from "@/lib/constants"
 
 const DEFAULT_NOTIFICATIONS: NotificationSettings = {
   emailGenerationComplete: true,
@@ -17,7 +25,7 @@ const DEFAULT_APPEARANCE: AppearanceSettings = {
 
 const DEFAULT_ACCOUNT: AccountSettings = {
   twoFactorEnabled: false,
-  sessionTimeout: 30,
+  sessionTimeout: SESSION_TIMEOUT_DEFAULT,
   dataExportFormat: "json",
 }
 

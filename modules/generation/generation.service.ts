@@ -1,15 +1,34 @@
 import { buildGenerationPrompt } from "./prompt-builder"
-import { aiGenerationOutputSchema, resolveLanguage, type RawVariant } from "./generation.schema"
-import { createGenerationSchema, type CreateGenerationInput, type GenerationStatus } from "./generation.schema"
+import {
+  aiGenerationOutputSchema,
+  resolveLanguage,
+  type RawVariant,
+} from "./generation.schema"
+import {
+  createGenerationSchema,
+  type CreateGenerationInput,
+  type GenerationStatus,
+} from "./generation.schema"
 import { generationRepository } from "./generation.repository"
 import { analyticsRepository } from "@/modules/analytics/analytics.repository"
 import { inngest } from "@/core/queue/client"
-import { AIServiceError, QuotaExceededError, ValidationError } from "@/core/errors/app-error"
+import {
+  AIServiceError,
+  QuotaExceededError,
+  ValidationError,
+} from "@/core/errors/app-error"
 import { logger } from "@/core/logger"
 import { callWithTaskFallback } from "@/core/ai/provider"
-import { PLAN_LIMIT } from "@/lib/constants"
-
-const MAX_RETRIES = 3
+import {
+  PLAN_LIMIT,
+  GENERATION_STATUS,
+  GENERATION_EVENT,
+  MAX_RETRIES_DEFAULT,
+  AI_TEMPERATURE,
+  AI_MAX_TOKENS,
+  ERROR_MESSAGES,
+} from "@/lib/constants"
+import { MARKDOWN_FENCE_OPEN, MARKDOWN_FENCE_CLOSE } from "@/lib/constants"
 
 interface GenerationData {
   topic: string
@@ -27,8 +46,8 @@ interface GuardrailData {
 
 function stripMarkdownFences(text: string): string {
   return text
-    .replace(/^```(?:json)?\s*\n?/i, "")
-    .replace(/\n?```\s*$/i, "")
+    .replace(MARKDOWN_FENCE_OPEN, "")
+    .replace(MARKDOWN_FENCE_CLOSE, "")
     .trim()
 }
 
@@ -84,7 +103,7 @@ export const generationService = {
       languages: parsed.data.languages.map((l) => l.toLowerCase()),
       workspaceId,
       createdBy: userId,
-      status: "queued",
+      status: GENERATION_STATUS.QUEUED,
     })
 
     const generationId = doc._id.toString()
@@ -92,7 +111,7 @@ export const generationService = {
 
     // Enqueue to Inngest
     await inngest.send({
-      name: "generation/created",
+      name: GENERATION_EVENT,
       data: { generationId, workspaceId },
     })
     logger.info({ generationId }, "Generation enqueued to Inngest")
@@ -125,7 +144,12 @@ export const generationService = {
     status: GenerationStatus,
     errorMessage?: string
   ) {
-    return generationRepository.updateStatus(generationId, workspaceId, status, errorMessage)
+    return generationRepository.updateStatus(
+      generationId,
+      workspaceId,
+      status,
+      errorMessage
+    )
   },
 
   // ─── AI Variant Generation ───────────────────────────────────
@@ -138,17 +162,20 @@ export const generationService = {
     const userPrompt = `${prompt.developer}\n\n${prompt.user}`
 
     try {
-      logger.info({ topic: generation.topic }, "Calling AI for variant generation")
+      logger.info(
+        { topic: generation.topic },
+        "Calling AI for variant generation"
+      )
 
       const { text: raw, provider } = await callWithTaskFallback(
         "generate",
         {
           system: prompt.system,
           user: userPrompt,
-          temperature: 0.9,
-          maxTokens: 8192,
+          temperature: AI_TEMPERATURE.GENERATE,
+          maxTokens: AI_MAX_TOKENS.GENERATE,
         },
-        MAX_RETRIES
+        MAX_RETRIES_DEFAULT
       )
 
       const text = stripMarkdownFences(raw)
@@ -156,7 +183,9 @@ export const generationService = {
       const parsed = aiGenerationOutputSchema.safeParse(safeJsonParse(text))
       if (!parsed.success) {
         const errors = parsed.error.issues.map((i) => i.message).join(", ")
-        throw new AIServiceError(`AI output validation failed: ${errors}`)
+        throw new AIServiceError(
+          ERROR_MESSAGES.AI_VALIDATION_FAILED.replace("%s", errors)
+        )
       }
 
       const variants = parsed.data.variants.map((v) => ({
@@ -164,13 +193,18 @@ export const generationService = {
         language: resolveLanguage(v.language),
       }))
 
-      logger.info({ count: variants.length, provider }, "Variants generated successfully")
+      logger.info(
+        { count: variants.length, provider },
+        "Variants generated successfully"
+      )
       return variants
     } catch (error) {
       if (error instanceof AIServiceError) throw error
       logger.error({ err: error }, "AI generation failed")
       throw new AIServiceError(
-        error instanceof Error ? error.message : "Generation failed"
+        error instanceof Error
+          ? error.message
+          : ERROR_MESSAGES.GENERATION_FAILED
       )
     }
   },

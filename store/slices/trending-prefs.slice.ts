@@ -1,6 +1,11 @@
-import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit"
+import {
+  createSlice,
+  createAsyncThunk,
+  type PayloadAction,
+} from "@reduxjs/toolkit"
 import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
 import { TRENDING_PREFS_DEFAULTS } from "@/modules/prefs/prefs.schema"
+import { API, ERROR_MESSAGES } from "@/lib/constants"
 
 interface TrendingPrefsState {
   data: TrendingPrefs | null
@@ -20,12 +25,14 @@ export const fetchTrendingPrefs = createAsyncThunk(
   "trendingPrefs/fetch",
   async (_, { rejectWithValue }) => {
     const [prefsRes, trendingRes] = await Promise.all([
-      fetch("/api/prefs/trending"),
-      fetch("/api/trending"),
+      fetch(API.TRENDING_PREFS),
+      fetch(API.TRENDING),
     ])
-    if (!prefsRes.ok) return rejectWithValue("Failed to fetch trending prefs")
+    if (!prefsRes.ok)
+      return rejectWithValue(ERROR_MESSAGES.FETCH_TRENDING_PREFS)
     const prefsJson = await prefsRes.json()
-    if (!prefsJson.success) return rejectWithValue("Failed to fetch trending prefs")
+    if (!prefsJson.success)
+      return rejectWithValue(ERROR_MESSAGES.FETCH_TRENDING_PREFS)
 
     const trendingJson = trendingRes.ok ? await trendingRes.json() : null
 
@@ -84,7 +91,15 @@ export const {
 export default trendingPrefsSlice.reducer
 
 // Selectors
-export const selectTrendingPrefs = (state: { trendingPrefs: TrendingPrefsState }) => state.trendingPrefs.data
-export const selectTrendingCount = (state: { trendingPrefs: TrendingPrefsState }) => state.trendingPrefs.trendingCount
-export const selectTrendingPrefsStatus = (state: { trendingPrefs: TrendingPrefsState }) => state.trendingPrefs.status
-export const selectTrendingEnabled = (state: { trendingPrefs: TrendingPrefsState }) => state.trendingPrefs.data?.enabled ?? false
+export const selectTrendingPrefs = (state: {
+  trendingPrefs: TrendingPrefsState
+}) => state.trendingPrefs.data
+export const selectTrendingCount = (state: {
+  trendingPrefs: TrendingPrefsState
+}) => state.trendingPrefs.trendingCount
+export const selectTrendingPrefsStatus = (state: {
+  trendingPrefs: TrendingPrefsState
+}) => state.trendingPrefs.status
+export const selectTrendingEnabled = (state: {
+  trendingPrefs: TrendingPrefsState
+}) => state.trendingPrefs.data?.enabled ?? false
