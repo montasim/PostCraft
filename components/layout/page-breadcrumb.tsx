@@ -24,6 +24,11 @@ const BREADCRUMB_CONFIG: Record<string, BreadcrumbConfig> = {
     icon: IconSparkles,
     page: "Your next post",
   },
+  "/trending": {
+    label: "Trending",
+    icon: IconHistory,
+    page: "Discover what's trending",
+  },
   "/history": {
     label: "History",
     icon: IconHistory,
