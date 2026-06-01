@@ -2,10 +2,10 @@ import { inngest } from "./client"
 import { runGenerationPipeline } from "./pipeline"
 import {
   fetchTrendingSources,
-  buildSourceKeywords,
 } from "@/modules/trending/source-fetcher"
 import { rankSourceItems } from "@/modules/trending/trending-ranker"
 import {
+  createRun,
   updateRunSourceItems,
   updateRunGenerationIds,
   updateRunStatus,
@@ -19,6 +19,8 @@ import {
   saveGlobalTopics,
   saveGlobalTopicsFailure,
 } from "@/modules/trending/global-topics.repository"
+import { prefsRepository } from "@/modules/prefs/prefs.repository"
+import { computeNextRunAt } from "@/modules/trending/trending-schedule"
 import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
 import { connectDB } from "@/core/config/database"
 import { analyticsRepository } from "@/modules/analytics/analytics.repository"
@@ -27,6 +29,7 @@ import {
   GENERATION_EVENT,
   CRON,
   TRENDING_TOP_N,
+  WORKSPACE_ID_PREFIX,
 } from "@/lib/constants"
 import { RUN_STATUS } from "@/lib/constants"
 import { logger } from "@/core/logger"
@@ -164,5 +167,138 @@ export const fetchGlobalTrendingTopics = inngest.createFunction(
     })
 
     return { fetched: rawItems.length, saved: topTopics.length }
+  }
+)
+
+// ─── Self-Scheduling Trending Runner ──────────────────────────────────────
+
+export const scheduledTrendingRunner = inngest.createFunction(
+  {
+    id: "scheduled-trending-runner",
+    name: "Scheduled Trending Runner",
+    retries: 2,
+    triggers: [{ event: "trending/schedule-set" }],
+    singleton: {
+      key: "event.data.userId",
+      mode: "cancel",
+    },
+    cancelOn: [
+      {
+        event: "trending/schedule-cancel",
+        match: "data.userId",
+        timeout: "30d",
+      },
+    ],
+  },
+  async ({ event, step }) => {
+    const { userId, workspaceId } = event.data as {
+      userId: string
+      workspaceId: string
+    }
+
+    const prefs = await step.run("get-prefs", async () => {
+      await connectDB()
+      const doc = await prefsRepository.findByUserId(userId)
+      return doc?.trending ?? null
+    })
+
+    if (!prefs?.enabled) return { skipped: true, reason: "disabled" }
+
+    const nextRunAt = await step.run("compute-next", async () => {
+      const date = computeNextRunAt({
+        scheduleType: prefs.scheduleType,
+        scheduledTime: prefs.scheduledTime,
+        scheduledDay: prefs.scheduledDay,
+      })
+      return date.toISOString()
+    })
+
+    await step.sleepUntil("wait-for-schedule", new Date(nextRunAt))
+
+    const quotaCheck = await step.run("check-quota", async () => {
+      await connectDB()
+      const overview = await analyticsRepository.getOverview(workspaceId)
+      return overview.completedGenerations < PLAN_LIMIT
+    })
+
+    if (quotaCheck) {
+      await step.run("execute", async () => {
+        const run = await createRun({
+          workspaceId,
+          configSnapshot: {
+            platforms: prefs.platforms,
+            topics: prefs.topics,
+            industry: prefs.industry,
+            targetAudience: prefs.targetAudience,
+            language: prefs.language,
+            postsPerPlatform: prefs.postsPerPlatform,
+            topPostsForAI: prefs.topPostsForAI,
+            postsToGenerate: prefs.postsToGenerate,
+            scheduleType: prefs.scheduleType,
+            scheduledTime: prefs.scheduledTime,
+            scheduledDay: prefs.scheduledDay,
+          },
+          status: "running",
+          ranAt: new Date(),
+          sourceItems: [],
+          generationIds: [],
+          dismissed: false,
+          error: null,
+        })
+
+        await inngest.send({
+          name: "trending/run-triggered",
+          data: {
+            workspaceId,
+            userId,
+            config: prefs as TrendingPrefs,
+            runId: run._id.toString(),
+          },
+        })
+      })
+    } else {
+      logger.info({ workspaceId }, "Scheduled run skipped — quota exceeded")
+    }
+
+    await step.sendEvent("schedule-next", {
+      name: "trending/schedule-set",
+      data: { userId, workspaceId },
+    })
+
+    return { executed: quotaCheck, nextRunAt }
+  }
+)
+
+// ─── Recovery Cron ────────────────────────────────────────────────────────
+
+export const recoverScheduledTrending = inngest.createFunction(
+  {
+    id: "recover-scheduled-trending",
+    name: "Recover Scheduled Trending",
+    retries: 1,
+    triggers: [{ cron: CRON.WEEKLY_MONDAY_3AM }],
+  },
+  async ({ step }) => {
+    const enabledUsers = await step.run("find-enabled-users", async () => {
+      await connectDB()
+      const docs = await prefsRepository.findEnabledTrending()
+      return docs.map((doc) => ({
+        userId: doc.userId,
+        workspaceId: `${WORKSPACE_ID_PREFIX}${doc.userId}`,
+      }))
+    })
+
+    if (enabledUsers.length === 0) return { recovered: 0 }
+
+    await step.sendEvent(
+      "redispatch-schedules",
+      enabledUsers.map((u) => ({
+        name: "trending/schedule-set",
+        data: u,
+      }))
+    )
+
+    logger.info({ count: enabledUsers.length }, "Recovered scheduled trending chains")
+    return { recovered: enabledUsers.length }
   }
 )
