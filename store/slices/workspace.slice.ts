@@ -3,11 +3,10 @@ import {
   createAsyncThunk,
   type PayloadAction,
 } from "@reduxjs/toolkit"
-import type { WorkspaceProfile, BrandPersona, PersonaOption } from "@/types"
+import type { BrandPersona, PersonaOption } from "@/types"
 import { API, ERROR_MESSAGES, GENERATION_STATUS } from "@/lib/constants"
 
 export interface WorkspaceData {
-  profile: WorkspaceProfile
   persona: BrandPersona
   usage: { used: number; limit: number; totalGenerated: number }
 }
@@ -75,8 +74,6 @@ export const selectQuotaUsed = (state: { workspace: WorkspaceState }) =>
   state.workspace.data?.usage.used ?? 0
 export const selectQuotaLimit = (state: { workspace: WorkspaceState }) =>
   state.workspace.data?.usage.limit ?? 0
-export const selectBrandName = (state: { workspace: WorkspaceState }) =>
-  state.workspace.data?.profile.name ?? ""
 export const selectPersona = (state: { workspace: WorkspaceState }) =>
   state.workspace.data?.persona ?? null
 export const selectQuotaExceeded = (state: { workspace: WorkspaceState }) => {
