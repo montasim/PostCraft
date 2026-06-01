@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import { IconCheck, IconSettings } from "@tabler/icons-react"
+import { API } from "@/lib/constants"
 import Link from "next/link"
 
 interface GuardRule {
@@ -31,7 +32,14 @@ interface RuleGroupProps {
   onExpand?: (expanded: boolean) => void
 }
 
-function RuleGroup({ label, rules, icon: Icon, iconClass, maxVisible = 3, onExpand }: RuleGroupProps) {
+function RuleGroup({
+  label,
+  rules,
+  icon: Icon,
+  iconClass,
+  maxVisible = 3,
+  onExpand,
+}: RuleGroupProps) {
   const [expanded, setExpanded] = useState(false)
 
   if (rules.length === 0) return null
@@ -49,8 +57,11 @@ function RuleGroup({ label, rules, icon: Icon, iconClass, maxVisible = 3, onExpa
       <p className="text-xs font-semibold text-muted-foreground">{label}</p>
       <div className="space-y-2 pr-1">
         {visible.map((rule) => (
-          <div key={rule.id} className="flex items-start gap-2 text-sm leading-6">
-            <Icon className={`h-3.5 w-3.5 mt-1 shrink-0 ${iconClass}`} />
+          <div
+            key={rule.id}
+            className="flex items-start gap-2 text-sm leading-6"
+          >
+            <Icon className={`mt-1 h-3.5 w-3.5 shrink-0 ${iconClass}`} />
             <span className="break-words">{rule.rule}</span>
           </div>
         ))}
@@ -82,7 +93,12 @@ interface BannedWordsGroupProps {
   onExpand?: (expanded: boolean) => void
 }
 
-function BannedWordsGroup({ label, rules, maxVisible = 5, onExpand }: BannedWordsGroupProps) {
+function BannedWordsGroup({
+  label,
+  rules,
+  maxVisible = 5,
+  onExpand,
+}: BannedWordsGroupProps) {
   const [expanded, setExpanded] = useState(false)
 
   if (rules.length === 0) return null
@@ -103,7 +119,7 @@ function BannedWordsGroup({ label, rules, maxVisible = 5, onExpand }: BannedWord
           <Badge
             key={rule.id}
             variant="outline"
-            className="rounded-md border-destructive/30 text-destructive bg-transparent hover:bg-destructive/5 font-normal"
+            className="rounded-md border-destructive/30 bg-transparent font-normal text-destructive hover:bg-destructive/5"
           >
             {rule.rule}
           </Badge>
@@ -111,7 +127,7 @@ function BannedWordsGroup({ label, rules, maxVisible = 5, onExpand }: BannedWord
         {remaining > 0 && !expanded && (
           <Badge
             variant="outline"
-            className="cursor-pointer rounded-md border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 font-normal"
+            className="cursor-pointer rounded-md border-primary/30 bg-primary/10 font-normal text-primary hover:bg-primary/20"
             onClick={() => handleExpand(true)}
           >
             +{remaining} more
@@ -120,7 +136,7 @@ function BannedWordsGroup({ label, rules, maxVisible = 5, onExpand }: BannedWord
         {expanded && rules.length > maxVisible && (
           <Badge
             variant="outline"
-            className="cursor-pointer rounded-md border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 font-normal"
+            className="cursor-pointer rounded-md border-primary/30 bg-primary/10 font-normal text-primary hover:bg-primary/20"
             onClick={() => handleExpand(false)}
           >
             See less
@@ -131,17 +147,27 @@ function BannedWordsGroup({ label, rules, maxVisible = 5, onExpand }: BannedWord
   )
 }
 
-function BrandGuardPanel({ showButton = true, title = "Brand Guard", guardrails: providedGuardrails }: BrandGuardPanelProps) {
-  const [guardrails, setGuardrails] = useState<GuardRule[]>(providedGuardrails ?? [])
+function BrandGuardPanel({
+  showButton = true,
+  title = "Brand Guard",
+  guardrails: providedGuardrails,
+}: BrandGuardPanelProps) {
+  const [guardrails, setGuardrails] = useState<GuardRule[]>(
+    providedGuardrails ?? []
+  )
   const [loading, setLoading] = useState(!providedGuardrails)
-  const [expandedSections, setExpandedSections] = useState({ tone: false, format: false, banned: false })
+  const [expandedSections, setExpandedSections] = useState({
+    tone: false,
+    format: false,
+    banned: false,
+  })
 
   useEffect(() => {
     if (providedGuardrails) return
 
     async function fetchGuardrails() {
       try {
-        const res = await fetch("/api/guardrails?active=true")
+        const res = await fetch(API.GUARDRAILS + "?active=true")
         const data = await res.json()
         if (data.success) {
           setGuardrails(data.data)
@@ -159,17 +185,18 @@ function BrandGuardPanel({ showButton = true, title = "Brand Guard", guardrails:
   const formatRules = guardrails.filter((g) => g.category === "format")
   const bannedWords = guardrails.filter((g) => g.category === "banned")
 
-  const updateExpanded = (key: 'tone' | 'format' | 'banned', expanded: boolean) => {
-    setExpandedSections(prev => ({ ...prev, [key]: expanded }))
+  const updateExpanded = (
+    key: "tone" | "format" | "banned",
+    expanded: boolean
+  ) => {
+    setExpandedSections((prev) => ({ ...prev, [key]: expanded }))
   }
 
   return (
-    <Card className="hidden w-full shrink-0 md:w-[40%] lg:w-[40%] flex flex-col max-h-[30.5rem]">
+    <Card className="flex hidden max-h-[30.5rem] w-full shrink-0 flex-col md:w-[40%] lg:w-[40%]">
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-sm font-semibold">
-          <div className="flex items-center gap-2">
-            {title}
-          </div>
+          <div className="flex items-center gap-2">{title}</div>
           {showButton && (
             <Button variant="ghost" size="icon" className="h-7 w-7" asChild>
               <Link href="/guardrails" title="Protect your brand">
@@ -179,7 +206,7 @@ function BrandGuardPanel({ showButton = true, title = "Brand Guard", guardrails:
           )}
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 min-h-0 space-y-4 overflow-y-auto">
+      <CardContent className="min-h-0 flex-1 space-y-4 overflow-y-auto">
         {loading ? (
           <div className="space-y-3">
             <Skeleton className="h-4 w-full" />
@@ -191,16 +218,34 @@ function BrandGuardPanel({ showButton = true, title = "Brand Guard", guardrails:
           </div>
         ) : (
           <>
-            <RuleGroup label="Tone rules" rules={toneRules} icon={IconCheck} iconClass="text-green-500" onExpand={(v) => updateExpanded('tone', v)} />
-            <RuleGroup label="Format rules" rules={formatRules} icon={IconCheck} iconClass="text-green-500" onExpand={(v) => updateExpanded('format', v)} />
+            <RuleGroup
+              label="Tone rules"
+              rules={toneRules}
+              icon={IconCheck}
+              iconClass="text-green-500"
+              onExpand={(v) => updateExpanded("tone", v)}
+            />
+            <RuleGroup
+              label="Format rules"
+              rules={formatRules}
+              icon={IconCheck}
+              iconClass="text-green-500"
+              onExpand={(v) => updateExpanded("format", v)}
+            />
 
-            {(toneRules.length > 0 || formatRules.length > 0) && bannedWords.length > 0 && <Separator />}
+            {(toneRules.length > 0 || formatRules.length > 0) &&
+              bannedWords.length > 0 && <Separator />}
 
-            <BannedWordsGroup label="Banned words" rules={bannedWords} onExpand={(v) => updateExpanded('banned', v)} />
+            <BannedWordsGroup
+              label="Banned words"
+              rules={bannedWords}
+              onExpand={(v) => updateExpanded("banned", v)}
+            />
 
             {guardrails.length === 0 && (
               <p className="text-xs text-muted-foreground">
-                Your brand voice is unprotected. Add rules to keep your content on-point.
+                Your brand voice is unprotected. Add rules to keep your content
+                on-point.
               </p>
             )}
           </>

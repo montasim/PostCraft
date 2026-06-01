@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useMemo } from "react"
-import { HISTORY_ENTRIES, PAGE_SIZE, SCORE_RANGES } from "@/lib/constants"
+import { useState, useEffect, useCallback, useMemo } from "react"
+import { API, PAGE_SIZE, SCORE_RANGES } from "@/lib/constants"
 import type { HistoryEntry, HistoryFilterState } from "@/types"
 
 const DEFAULT_FILTERS: HistoryFilterState = {
@@ -12,122 +12,138 @@ const DEFAULT_FILTERS: HistoryFilterState = {
   sort: "newest",
 }
 
+interface HistoryStats {
+  totalCount: number
+  thisWeekCount: number
+  bestScore: number
+  avgScore: number
+  streakDays: number
+}
+
 function useHistoryFilters() {
   const [filters, setFilters] = useState<HistoryFilterState>(DEFAULT_FILTERS)
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
+  const [allEntries, setAllEntries] = useState<HistoryEntry[]>([])
+  const [bestEntry, setBestEntry] = useState<HistoryEntry | null>(null)
+  const [stats, setStats] = useState<HistoryStats>({
+    totalCount: 0,
+    thisWeekCount: 0,
+    bestScore: 0,
+    avgScore: 0,
+    streakDays: 0,
+  })
+  const [hasMore, setHasMore] = useState(false)
+  const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const bestScore = (e: HistoryEntry) =>
-    Math.max(...e.variants.map((v) => v.score))
-
-  const bestEngagement = (e: HistoryEntry) =>
-    Math.max(...e.variants.map((v) => v.engagement))
-
-  const filteredEntries = useMemo(() => {
-    let result = [...HISTORY_ENTRIES]
-
-    if (filters.search) {
-      const q = filters.search.toLowerCase()
-      result = result.filter((e) => e.topic.toLowerCase().includes(q))
-    }
-
-    if (filters.styles.length > 0) {
-      result = result.filter((e) =>
-        e.variants.some((v) => filters.styles.includes(v.style))
-      )
-    }
-
-    if (filters.languages.length > 0) {
-      result = result.filter((e) =>
-        e.variants.some((v) => filters.languages.includes(v.language))
-      )
-    }
-
-    if (filters.scoreRange !== "all") {
-      const range = SCORE_RANGES.find((r) => r.id === filters.scoreRange)
-      if (range) {
-        result = result.filter(
-          (e) => bestScore(e) >= range.min && bestScore(e) <= range.max
-        )
+  const buildParams = useCallback(
+    (pageNum: number) => {
+      const params = new URLSearchParams()
+      if (filters.search) params.set("search", filters.search)
+      if (filters.styles.length > 0)
+        params.set("styles", filters.styles.join(","))
+      if (filters.languages.length > 0)
+        params.set("languages", filters.languages.join(","))
+      if (filters.scoreRange !== "all") {
+        const range = SCORE_RANGES.find((r) => r.id === filters.scoreRange)
+        if (range) {
+          params.set("scoreMin", String(range.min))
+          params.set("scoreMax", String(range.max))
+        }
       }
-    }
-
-    switch (filters.sort) {
-      case "oldest":
-        result.sort(
-          (a, b) =>
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        )
-        break
-      case "highest-score":
-        result.sort((a, b) => bestScore(b) - bestScore(a))
-        break
-      case "most-engaging":
-        result.sort((a, b) => bestEngagement(b) - bestEngagement(a))
-        break
-      default:
-        result.sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        )
-    }
-
-    return result
-  }, [filters])
-
-  const visibleEntries = useMemo(
-    () => filteredEntries.slice(0, visibleCount),
-    [filteredEntries, visibleCount]
+      params.set("sort", filters.sort)
+      params.set("page", String(pageNum))
+      params.set("limit", String(PAGE_SIZE))
+      return params
+    },
+    [filters]
   )
 
-  const hasMore = visibleCount < filteredEntries.length
-  const loadMore = () => setVisibleCount((c) => c + PAGE_SIZE)
+  const fetchEntries = useCallback(
+    async (pageNum: number) => {
+      try {
+        setLoading(true)
+        setError(null)
+        const params = buildParams(pageNum)
+        const res = await fetch(`${API.HISTORY}?${params}`)
+        if (!res.ok) throw new Error("Failed to fetch history")
+        const json = await res.json()
+        if (!json.success) throw new Error("Failed to fetch history")
+        return json.data as {
+          entries: HistoryEntry[]
+          total: number
+          hasMore: boolean
+        }
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : "Unknown error"
+        setError(msg)
+        return null
+      } finally {
+        setLoading(false)
+      }
+    },
+    [buildParams]
+  )
 
-  const bestEntry = useMemo(() => {
-    const scoreOf = (e: HistoryEntry) =>
-      Math.max(...e.variants.map((v) => v.score))
-    return HISTORY_ENTRIES.reduce<HistoryEntry | null>(
-      (best, e) => (!best || scoreOf(e) > scoreOf(best) ? e : best),
-      null
-    )
+  const fetchStats = useCallback(async () => {
+    try {
+      const res = await fetch(`${API.HISTORY}/stats`)
+      if (!res.ok) return
+      const json = await res.json()
+      if (!json.success) return
+      setBestEntry(json.data.bestEntry)
+    } catch {
+      // stats non-critical, silently fail
+    }
   }, [])
 
-  const stats = useMemo(() => {
-    const now = new Date()
-    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
-    const thisWeekCount = HISTORY_ENTRIES.filter(
-      (e) => new Date(e.createdAt) >= weekAgo
-    ).length
+  useEffect(() => {
+    setPage(1)
+    setAllEntries([])
 
-    const scores = HISTORY_ENTRIES.flatMap((e) => e.variants.map((v) => v.score))
-    const topScore = Math.max(...scores)
-    const avgScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
+    const load = async () => {
+      const [data] = await Promise.all([fetchEntries(1), fetchStats()])
+      if (data) {
+        setAllEntries(data.entries)
+        setHasMore(data.hasMore)
 
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-    let streakDays = 0
-    const checkDate = new Date(today)
-    let iterating = true
-    while (iterating) {
-      const dayStr = checkDate.toISOString().slice(0, 10)
-      const hasPost = HISTORY_ENTRIES.some(
-        (e) => e.createdAt.slice(0, 10) === dayStr
-      )
-      if (hasPost) {
-        streakDays++
-        checkDate.setDate(checkDate.getDate() - 1)
-      } else {
-        iterating = false
+        const scores = data.entries.flatMap((e) =>
+          e.variants.map((v) => v.score)
+        )
+        const now = new Date()
+        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+        const thisWeekCount = data.entries.filter(
+          (e) => new Date(e.createdAt) >= weekAgo
+        ).length
+
+        setStats({
+          totalCount: data.total,
+          thisWeekCount,
+          bestScore: scores.length > 0 ? Math.max(...scores) : 0,
+          avgScore:
+            scores.length > 0
+              ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
+              : 0,
+          streakDays: 0,
+        })
       }
     }
+    load()
+  }, [fetchEntries, fetchStats])
 
-    return {
-      totalCount: HISTORY_ENTRIES.length,
-      thisWeekCount,
-      bestScore: topScore,
-      avgScore,
-      streakDays,
+  const loadMore = useCallback(async () => {
+    const nextPage = page + 1
+    const data = await fetchEntries(nextPage)
+    if (data) {
+      setAllEntries((prev) => [...prev, ...data.entries])
+      setHasMore(data.hasMore)
+      setPage(nextPage)
     }
-  }, [])
+  }, [page, fetchEntries])
+
+  const filteredEntries = useMemo(() => allEntries, [allEntries])
+
+  const visibleEntries = useMemo(() => filteredEntries, [filteredEntries])
 
   return {
     filters,
@@ -138,7 +154,9 @@ function useHistoryFilters() {
     loadMore,
     bestEntry,
     stats,
-    allEntries: HISTORY_ENTRIES,
+    allEntries,
+    loading,
+    error,
   }
 }
 

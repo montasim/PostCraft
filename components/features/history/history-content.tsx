@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "sonner"
 import { IconArrowLeft } from "@tabler/icons-react"
+import { API } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 import type { HistoryEntry } from "@/types"
 
@@ -22,7 +23,7 @@ function HistoryContent() {
 
   // Fetch sidebar entries on mount
   useEffect(() => {
-    fetch("/api/history?limit=100")
+    fetch(API.HISTORY + "?limit=100")
       .then((r) => r.json())
       .then((result) => {
         if (result.success) {
@@ -54,7 +55,7 @@ function HistoryContent() {
 
       if (!cancelled) setDetailLoading(true)
       try {
-        const res = await fetch(`/api/history/${selectedId}`)
+        const res = await fetch(`${API.HISTORY}/${selectedId}`)
         const result = await res.json()
         if (!cancelled) {
           setDetailEntry(result.success ? result.data : null)
@@ -70,7 +71,9 @@ function HistoryContent() {
     }
 
     loadDetail()
-    return () => { cancelled = true }
+    return () => {
+      cancelled = true
+    }
   }, [selectedId, entries])
 
   const handleSelect = (id: string) => {
@@ -83,7 +86,7 @@ function HistoryContent() {
 
   if (loading) {
     return (
-      <div className="flex h-[calc(100vh)] flex-col lg:flex-row lg:-mx-5 lg:-mt-5">
+      <div className="flex h-[calc(100vh)] flex-col lg:-mx-5 lg:-mt-5 lg:flex-row">
         <aside className="hidden w-full shrink-0 flex-col border-r border-sidebar-border bg-sidebar p-5 lg:flex lg:w-72">
           <Skeleton className="mb-4 h-9 w-full" />
           {[1, 2, 3, 4].map((i) => (
@@ -102,7 +105,7 @@ function HistoryContent() {
   const showList = !showDetail
 
   return (
-    <div className="flex h-[calc(100vh-3.5rem)] overflow-hidden flex-col lg:flex-row lg:-m-5">
+    <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:-m-5 lg:flex-row">
       {/* Sidebar / List */}
       <div
         className={cn(

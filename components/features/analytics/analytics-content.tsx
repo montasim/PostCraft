@@ -9,7 +9,14 @@ import { AnalyticsStyleBreakdown } from "@/components/features/analytics/analyti
 import { AnalyticsTopPosts } from "@/components/features/analytics/analytics-top-posts"
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "sonner"
-import type { AnalyticsOverview, ScoreDistribution, StylePerformance, TrendDataPoint, TopPerformingPost } from "@/types"
+import { API } from "@/lib/constants"
+import type {
+  AnalyticsOverview,
+  ScoreDistribution,
+  StylePerformance,
+  TrendDataPoint,
+  TopPerformingPost,
+} from "@/types"
 
 interface AnalyticsData {
   overview: AnalyticsOverview
@@ -45,7 +52,7 @@ function AnalyticsContent() {
   useEffect(() => {
     async function fetchAnalytics() {
       try {
-        const res = await fetch("/api/analytics")
+        const res = await fetch(API.ANALYTICS)
         const result = await res.json()
         if (result.success) {
           setData(result.data)
@@ -81,7 +88,10 @@ function AnalyticsContent() {
 
   return (
     <div className="space-y-5">
-      <AnalyticsOverviewCards overview={data.overview} styles={data.stylePerformance} />
+      <AnalyticsOverviewCards
+        overview={data.overview}
+        styles={data.stylePerformance}
+      />
       <AnalyticsHeader />
       <div className="grid grid-cols-1 gap-3 sm:gap-5 lg:grid-cols-2">
         <AnalyticsTrendChart data={data.trendData} />

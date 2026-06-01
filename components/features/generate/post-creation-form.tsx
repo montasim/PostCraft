@@ -16,7 +16,15 @@ import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { MultiSelect, type SelectOption } from "@/components/shared"
-import { IconTrendingUp, IconSparkles, IconLoader2, IconMap, IconUsers, IconMessageCircle, IconGlobe } from "@tabler/icons-react"
+import {
+  IconTrendingUp,
+  IconSparkles,
+  IconLoader2,
+  IconMap,
+  IconUsers,
+  IconMessageCircle,
+  IconGlobe,
+} from "@tabler/icons-react"
 import {
   AUDIENCE_OPTIONS,
   TONE_OPTIONS,
@@ -25,6 +33,7 @@ import {
   TOPIC_WARNING_THRESHOLD,
 } from "@/lib/constants"
 import type { GenerationPrefs } from "@/modules/prefs/prefs.schema"
+import { API } from "@/lib/constants"
 import { consumeRefineData, type RefineData } from "@/lib/refine-store"
 
 const QUICK_PRESETS = [
@@ -69,13 +78,35 @@ interface PostCreationFormProps {
   languageOptions?: (string | SelectOption)[]
 }
 
-function PostCreationFormInner({ onGenerate, isSubmitting, quotaExceeded, userName, initialPrefs, initialRefine, audienceOptions = AUDIENCE_OPTIONS, toneOptions = TONE_OPTIONS, languageOptions = LANGUAGE_OPTIONS }: PostCreationFormProps) {
+function PostCreationFormInner({
+  onGenerate,
+  isSubmitting,
+  quotaExceeded,
+  userName,
+  initialPrefs,
+  initialRefine,
+  audienceOptions = AUDIENCE_OPTIONS,
+  toneOptions = TONE_OPTIONS,
+  languageOptions = LANGUAGE_OPTIONS,
+}: PostCreationFormProps) {
   const searchParams = useSearchParams()
   const refine = initialRefine ?? consumeRefineData()
   const [topic, setTopic] = useState(refine?.topic ?? "")
-  const [audience, setAudience] = useState<string[]>(refine?.audiences?.length ? refine.audiences : (initialPrefs?.audiences ?? ["Founders"]))
-  const [tones, setTones] = useState<string[]>(refine?.tones?.length ? refine.tones : (initialPrefs?.tones ?? ["Thought leader", "Story"]))
-  const [languages, setLanguages] = useState<string[]>(refine?.languages?.length ? refine.languages : (initialPrefs?.languages ?? ["EN"]))
+  const [audience, setAudience] = useState<string[]>(
+    refine?.audiences?.length
+      ? refine.audiences
+      : (initialPrefs?.audiences ?? ["Founders"])
+  )
+  const [tones, setTones] = useState<string[]>(
+    refine?.tones?.length
+      ? refine.tones
+      : (initialPrefs?.tones ?? ["Thought leader", "Story"])
+  )
+  const [languages, setLanguages] = useState<string[]>(
+    refine?.languages?.length
+      ? refine.languages
+      : (initialPrefs?.languages ?? ["EN"])
+  )
   const [emoji, setEmoji] = useState(initialPrefs?.emoji ?? true)
   const [isFocused, setIsFocused] = useState(false)
   const [topicSuggestions, setTopicSuggestions] = useState<string[]>([])
@@ -84,23 +115,31 @@ function PostCreationFormInner({ onGenerate, isSubmitting, quotaExceeded, userNa
   const charCount = topic.length
   const isOverWarning = charCount > TOPIC_WARNING_THRESHOLD
   const isDisabled = topic.trim().length === 0 || isSubmitting || quotaExceeded
-  const progressPercent = Math.min((charCount / TOPIC_WARNING_THRESHOLD) * 100, 100)
+  const progressPercent = Math.min(
+    (charCount / TOPIC_WARNING_THRESHOLD) * 100,
+    100
+  )
 
-  const savePrefs = (data: { audiences: string[]; tones: string[]; languages: string[]; emoji: boolean }) => {
-    fetch("/api/prefs/generation", {
+  const savePrefs = (data: {
+    audiences: string[]
+    tones: string[]
+    languages: string[]
+    emoji: boolean
+  }) => {
+    fetch(API.PREFS_GENERATION, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     }).catch(() => {
-        // Non-critical: prefs save failed
-      })
+      // Non-critical: prefs save failed
+    })
   }
 
   useEffect(() => {
     let cancelled = false
     setSuggestionsLoading(true)
 
-    fetch("/api/trending/global-topics")
+    fetch(API.TRENDING_GLOBAL_TOPICS)
       .then((r) => r.json())
       .then((res) => {
         if (cancelled) return
@@ -109,13 +148,15 @@ function PostCreationFormInner({ onGenerate, isSubmitting, quotaExceeded, userNa
         }
       })
       .catch(() => {
-          // Non-critical: topic suggestions load failed
-        })
+        // Non-critical: topic suggestions load failed
+      })
       .finally(() => {
         if (!cancelled) setSuggestionsLoading(false)
       })
 
-    return () => { cancelled = true }
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   const handleSubmit = () => {
@@ -128,8 +169,13 @@ function PostCreationFormInner({ onGenerate, isSubmitting, quotaExceeded, userNa
     })
   }
 
-  const applyPreset = (preset: typeof QUICK_PRESETS[0]) => {
-    const next = { audiences: preset.audiences, tones: preset.tones, languages: preset.languages, emoji }
+  const applyPreset = (preset: (typeof QUICK_PRESETS)[0]) => {
+    const next = {
+      audiences: preset.audiences,
+      tones: preset.tones,
+      languages: preset.languages,
+      emoji,
+    }
     setAudience(next.audiences)
     setTones(next.tones)
     setLanguages(next.languages)
@@ -169,8 +215,7 @@ function PostCreationFormInner({ onGenerate, isSubmitting, quotaExceeded, userNa
             What&apos;s on your mind, {userName || "creator"}?
           </CardTitle>
           <Badge variant="secondary" className="text-[10px] font-medium">
-            <IconSparkles className="mr-1 h-3 w-3" />
-            3 posts in ~12 seconds
+            <IconSparkles className="mr-1 h-3 w-3" />3 posts in ~12 seconds
           </Badge>
         </div>
       </CardHeader>
@@ -195,7 +240,7 @@ function PostCreationFormInner({ onGenerate, isSubmitting, quotaExceeded, userNa
               } ${topic.trim().length > 0 ? "bg-primary/[0.02]" : ""}`}
             />
             {/* Character progress bar */}
-            <div className="absolute bottom-2 right-2 flex items-center gap-2">
+            <div className="absolute right-2 bottom-2 flex items-center gap-2">
               <div className="h-1 w-16 overflow-hidden rounded-full bg-muted">
                 <div
                   className={`h-full rounded-full transition-all duration-300 ${
@@ -217,13 +262,12 @@ function PostCreationFormInner({ onGenerate, isSubmitting, quotaExceeded, userNa
           {/* Topic Suggestions */}
           {topic.trim().length === 0 && (
             <div className="space-y-1.5">
-              <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+              <p className="text-[10px] font-medium tracking-wider text-muted-foreground uppercase">
                 {suggestionsLoading
                   ? "Loading trending topics..."
                   : topicSuggestions.length > 0
                     ? "Trending in tech right now — pick one to get started"
-                    : null
-                }
+                    : null}
               </p>
               {suggestionsLoading ? (
                 <div className="flex flex-wrap gap-1.5">
@@ -257,8 +301,12 @@ function PostCreationFormInner({ onGenerate, isSubmitting, quotaExceeded, userNa
         {/* Configuration Section */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold text-foreground">Shape your post</p>
-            <p className="text-[10px] text-muted-foreground">Or skip — defaults work great</p>
+            <p className="text-xs font-semibold text-foreground">
+              Shape your post
+            </p>
+            <p className="text-[10px] text-muted-foreground">
+              Or skip — defaults work great
+            </p>
           </div>
 
           {/* Quick Presets */}
@@ -343,14 +391,18 @@ function PostCreationFormInner({ onGenerate, isSubmitting, quotaExceeded, userNa
         <Button
           disabled={isDisabled}
           onClick={handleSubmit}
-          className="group gap-2 brand-gradient px-6 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:shadow-primary/40 hover:scale-[1.02] active:scale-[0.98]"
+          className="group gap-2 px-6 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-all brand-gradient hover:scale-[1.02] hover:shadow-primary/40 active:scale-[0.98]"
         >
           {isSubmitting ? (
             <IconLoader2 className="h-4 w-4 animate-spin" />
           ) : (
             <IconSparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
           )}
-          {isSubmitting ? "Crafting your voice..." : quotaExceeded ? "Quota Exceeded" : "Write My Post"}
+          {isSubmitting
+            ? "Crafting your voice..."
+            : quotaExceeded
+              ? "Quota Exceeded"
+              : "Write My Post"}
         </Button>
       </CardFooter>
     </Card>

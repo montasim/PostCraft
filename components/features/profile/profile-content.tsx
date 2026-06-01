@@ -30,6 +30,7 @@ import {
   IconTarget,
 } from "@tabler/icons-react"
 import { toast } from "sonner"
+import { API } from "@/lib/constants"
 import type { UserProfile } from "@/types"
 
 // ─── Profile Header Card ──────────────────────────────────────────
@@ -49,7 +50,11 @@ function ProfileHeaderCard({
   })
 
   const handleSave = () => {
-    onUpdate({ fullName: draft.fullName, title: draft.title, company: draft.company })
+    onUpdate({
+      fullName: draft.fullName,
+      title: draft.title,
+      company: draft.company,
+    })
     setEditing(false)
   }
 
@@ -90,7 +95,10 @@ function ProfileHeaderCard({
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="flex items-center gap-5">
-          <Avatar size="lg" className="!h-20 !w-20 sm:!h-24 sm:!w-24 lg:!h-32 lg:!w-32">
+          <Avatar
+            size="lg"
+            className="!h-20 !w-20 sm:!h-24 sm:!w-24 lg:!h-32 lg:!w-32"
+          >
             <AvatarFallback className="text-lg sm:text-xl">
               {profile.fullName
                 .split(" ")
@@ -186,7 +194,13 @@ function ProfileDetailsCard({
   })
 
   const handleSave = () => {
-    onUpdate({ bio: draft.bio, location: draft.location, website: draft.website, twitterHandle: draft.twitterHandle, linkedInSlug: draft.linkedInSlug })
+    onUpdate({
+      bio: draft.bio,
+      location: draft.location,
+      website: draft.website,
+      twitterHandle: draft.twitterHandle,
+      linkedInSlug: draft.linkedInSlug,
+    })
     setEditing(false)
   }
 
@@ -300,7 +314,7 @@ function ProfileDetailsCard({
         ) : (
           <>
             <div>
-              <p className="text-xs text-muted-foreground mb-1">Bio</p>
+              <p className="mb-1 text-xs text-muted-foreground">Bio</p>
               <p className="text-xs leading-relaxed">{profile.bio}</p>
             </div>
             <div className="flex items-center gap-2 text-xs">
@@ -309,7 +323,7 @@ function ProfileDetailsCard({
             </div>
             <div className="flex items-center gap-2 text-xs">
               <IconWorld className="h-3 w-3 text-muted-foreground" />
-              <span className="text-primary hover:underline cursor-pointer">
+              <span className="cursor-pointer text-primary hover:underline">
                 {profile.website}
               </span>
             </div>
@@ -319,7 +333,7 @@ function ProfileDetailsCard({
             </div>
             <div className="flex items-center gap-2 text-xs">
               <IconBrandLinkedin className="h-3 w-3 text-muted-foreground" />
-              <span className="text-primary hover:underline cursor-pointer">
+              <span className="cursor-pointer text-primary hover:underline">
                 linkedin.com/in/{profile.linkedInSlug}
               </span>
             </div>
@@ -352,9 +366,7 @@ function ProfileCompletionCard({ profile }: { profile: UserProfile }) {
   return (
     <div className="flex items-center gap-4 rounded-lg border bg-card px-4 py-3">
       <div className="flex-1">
-        <p className="text-xs font-medium">
-          Profile {percent}% complete
-        </p>
+        <p className="text-xs font-medium">Profile {percent}% complete</p>
         <p className="text-[10px] text-muted-foreground">
           {percent < 100
             ? `Add ${missing.map((m) => m.label).join(", ")} so your content reflects the real you`
@@ -387,7 +399,7 @@ function ProfileContent() {
     dispatch(updateProfile(updates))
 
     try {
-      const res = await fetch("/api/profile", {
+      const res = await fetch(API.PROFILE, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updates),

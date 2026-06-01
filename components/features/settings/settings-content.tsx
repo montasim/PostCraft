@@ -29,11 +29,9 @@ import {
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { requestNotificationPermission } from "@/lib/browser-notification"
+import { API } from "@/lib/constants"
 import { authClient } from "@/core/auth/auth-client"
-import type {
-  NotificationSettings,
-  AccountSettings,
-} from "@/types"
+import type { NotificationSettings, AccountSettings } from "@/types"
 
 // ─── Notification Settings Card ────────────────────────────────────
 
@@ -42,7 +40,10 @@ function NotificationSettingsCard({
   onUpdate,
 }: {
   settings: NotificationSettings
-  onUpdate: <K extends keyof NotificationSettings>(key: K, value: NotificationSettings[K]) => void
+  onUpdate: <K extends keyof NotificationSettings>(
+    key: K,
+    value: NotificationSettings[K]
+  ) => void
 }) {
   const items = [
     {
@@ -112,7 +113,10 @@ function AccountSecurityCard({
   onUpdate,
 }: {
   settings: AccountSettings
-  onUpdate: <K extends keyof AccountSettings>(key: K, value: AccountSettings[K]) => void
+  onUpdate: <K extends keyof AccountSettings>(
+    key: K,
+    value: AccountSettings[K]
+  ) => void
 }) {
   return (
     <Card>
@@ -157,7 +161,7 @@ function AccountSecurityCard({
           <select
             value={settings.sessionTimeout}
             onChange={(e) => onUpdate("sessionTimeout", Number(e.target.value))}
-            className="flex h-8 rounded-lg border border-input bg-transparent px-3 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:bg-input/30"
+            className="flex h-8 rounded-lg border border-input bg-transparent px-3 text-xs ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none dark:bg-input/30"
           >
             <option value={15}>15 mins</option>
             <option value={30}>30 mins</option>
@@ -195,7 +199,7 @@ function ChangePasswordRow() {
     setError("")
     setLoading(true)
     try {
-      const res = await fetch("/api/auth/send-otp", { method: "POST" })
+      const res = await fetch(API.AUTH_SEND_OTP, { method: "POST" })
       if (!res.ok) {
         const data = await res.json()
         setError(data.error ?? "Failed to send code")
@@ -222,7 +226,7 @@ function ChangePasswordRow() {
     }
     setLoading(true)
     try {
-      const res = await fetch("/api/auth/verify-otp-and-change", {
+      const res = await fetch(API.AUTH_VERIFY_OTP, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code: otp, newPassword }),
@@ -250,7 +254,13 @@ function ChangePasswordRow() {
           Keep your account secure
         </p>
       </div>
-      <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) resetState() }}>
+      <Dialog
+        open={open}
+        onOpenChange={(v) => {
+          setOpen(v)
+          if (!v) resetState()
+        }}
+      >
         <DialogTrigger asChild>
           <Button variant="outline" size="sm" className="h-7 gap-1 text-xs">
             <IconKey className="h-3 w-3" />
@@ -263,11 +273,16 @@ function ChangePasswordRow() {
               <DialogHeader>
                 <DialogTitle>Change password</DialogTitle>
                 <DialogDescription>
-                  We'll send a verification code to your email to confirm your identity.
+                  We'll send a verification code to your email to confirm your
+                  identity.
                 </DialogDescription>
               </DialogHeader>
               <div className="py-4">
-                <Button onClick={handleSendOtp} className="w-full" disabled={loading}>
+                <Button
+                  onClick={handleSendOtp}
+                  className="w-full"
+                  disabled={loading}
+                >
                   {loading ? "Sending..." : "Send verification code"}
                 </Button>
               </div>
@@ -278,7 +293,8 @@ function ChangePasswordRow() {
               <DialogHeader>
                 <DialogTitle>Enter verification code</DialogTitle>
                 <DialogDescription>
-                  Enter the 6-digit code sent to your email, then choose a new password.
+                  Enter the 6-digit code sent to your email, then choose a new
+                  password.
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-3">
@@ -311,18 +327,25 @@ function ChangePasswordRow() {
                     className="h-8 text-xs"
                   />
                 </div>
-                {error && (
-                  <p className="text-xs text-destructive">{error}</p>
-                )}
+                {error && <p className="text-xs text-destructive">{error}</p>}
               </div>
               <DialogFooter>
-                <Button variant="outline" size="sm" onClick={() => setStep("send")}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setStep("send")}
+                >
                   Resend code
                 </Button>
                 <Button
                   size="sm"
                   onClick={handleChangePassword}
-                  disabled={loading || otp.length !== 6 || !newPassword || !confirmPassword}
+                  disabled={
+                    loading ||
+                    otp.length !== 6 ||
+                    !newPassword ||
+                    !confirmPassword
+                  }
                 >
                   {loading ? "Changing..." : "Change password"}
                 </Button>
@@ -337,7 +360,13 @@ function ChangePasswordRow() {
 
 // ─── Danger Zone Card ──────────────────────────────────────────────
 
-function DangerZoneCard({ onReset, onDelete }: { onReset: () => void; onDelete: () => void }) {
+function DangerZoneCard({
+  onReset,
+  onDelete,
+}: {
+  onReset: () => void
+  onDelete: () => void
+}) {
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [resetOpen, setResetOpen] = useState(false)
 
@@ -360,7 +389,12 @@ function DangerZoneCard({ onReset, onDelete }: { onReset: () => void; onDelete: 
               Permanently remove all data
             </p>
           </div>
-          <Button variant="destructive" size="sm" className="h-7 gap-1 text-xs" onClick={() => setDeleteOpen(true)}>
+          <Button
+            variant="destructive"
+            size="sm"
+            className="h-7 gap-1 text-xs"
+            onClick={() => setDeleteOpen(true)}
+          >
             <IconTrash className="h-3 w-3" />
             Delete
           </Button>
@@ -382,7 +416,12 @@ function DangerZoneCard({ onReset, onDelete }: { onReset: () => void; onDelete: 
               Restore all defaults
             </p>
           </div>
-          <Button variant="outline" size="sm" className="h-7 gap-1 text-xs text-destructive hover:text-destructive" onClick={() => setResetOpen(true)}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-7 gap-1 text-xs text-destructive hover:text-destructive"
+            onClick={() => setResetOpen(true)}
+          >
             <IconRefresh className="h-3 w-3" />
             Reset
           </Button>
@@ -416,7 +455,7 @@ function SettingsContent() {
   useEffect(() => {
     async function fetchSettings() {
       try {
-        const res = await fetch("/api/settings")
+        const res = await fetch(API.SETTINGS)
         const result = await res.json()
         if (result.success) setData(result.data)
       } catch {
@@ -431,10 +470,10 @@ function SettingsContent() {
   const saveSettings = async (updates: Partial<SettingsData>) => {
     if (!data) return
     const previous = data
-    setData((prev) => prev ? { ...prev, ...updates } : prev)
+    setData((prev) => (prev ? { ...prev, ...updates } : prev))
 
     try {
-      const res = await fetch("/api/settings", {
+      const res = await fetch(API.SETTINGS, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updates),
@@ -462,7 +501,8 @@ function SettingsContent() {
       requestNotificationPermission().then((granted) => {
         if (!granted) {
           toast.error("Browser notifications blocked", {
-            description: "Enable notifications in your browser settings to receive alerts.",
+            description:
+              "Enable notifications in your browser settings to receive alerts.",
           })
         }
       })
@@ -480,14 +520,24 @@ function SettingsContent() {
 
   const handleReset = () => {
     saveSettings({
-      notifications: { emailGenerationComplete: true, emailTrendingComplete: false, emailWeeklyDigest: true, emailProductUpdates: false, pushPostReminder: true },
-      account: { twoFactorEnabled: false, sessionTimeout: 30, dataExportFormat: "json" },
+      notifications: {
+        emailGenerationComplete: true,
+        emailTrendingComplete: false,
+        emailWeeklyDigest: true,
+        emailProductUpdates: false,
+        pushPostReminder: true,
+      },
+      account: {
+        twoFactorEnabled: false,
+        sessionTimeout: 30,
+        dataExportFormat: "json",
+      },
     })
   }
 
   const handleDeleteWorkspace = async () => {
     try {
-      const res = await fetch("/api/workspace", { method: "DELETE" })
+      const res = await fetch(API.WORKSPACE, { method: "DELETE" })
       const result = await res.json()
       if (!result.success) {
         toast.error("Failed to delete workspace")
@@ -520,11 +570,20 @@ function SettingsContent() {
     <div className="space-y-5">
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <div className="space-y-5">
-          <NotificationSettingsCard settings={data.notifications} onUpdate={handleNotificationUpdate} />
+          <NotificationSettingsCard
+            settings={data.notifications}
+            onUpdate={handleNotificationUpdate}
+          />
         </div>
         <div className="space-y-5">
-          <AccountSecurityCard settings={data.account} onUpdate={handleAccountUpdate} />
-          <DangerZoneCard onReset={handleReset} onDelete={handleDeleteWorkspace} />
+          <AccountSecurityCard
+            settings={data.account}
+            onUpdate={handleAccountUpdate}
+          />
+          <DangerZoneCard
+            onReset={handleReset}
+            onDelete={handleDeleteWorkspace}
+          />
         </div>
       </div>
     </div>

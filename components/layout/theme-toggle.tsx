@@ -2,6 +2,7 @@
 
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
+import { API } from "@/lib/constants"
 import { IconSun, IconMoon } from "@tabler/icons-react"
 
 function ThemeToggle() {
@@ -11,7 +12,7 @@ function ThemeToggle() {
     const isDark = document.documentElement.classList.contains("dark")
     const next = isDark ? "light" : "dark"
     setTheme(next)
-    fetch("/api/settings", {
+    fetch(API.SETTINGS, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ appearance: { theme: next } }),

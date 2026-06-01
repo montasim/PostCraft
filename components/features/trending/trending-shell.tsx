@@ -11,10 +11,14 @@ import { EmptyState } from "@/components/shared"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import type { SelectOption } from "@/components/shared/multi-select"
-import type { ITrendingRun, TrendingGenerationPreview } from "@/modules/trending/trending.types"
+import type {
+  ITrendingRun,
+  TrendingGenerationPreview,
+} from "@/modules/trending/trending.types"
 import { type TrendingPrefs } from "@/modules/prefs/prefs.schema"
 import { IconArrowLeft, IconTrendingUp } from "@tabler/icons-react"
 import { toast } from "sonner"
+import { API } from "@/lib/constants"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import {
   selectTrendingPrefs,
@@ -28,7 +32,9 @@ import {
 function TrendingShell() {
   const dispatch = useAppDispatch()
   const [runs, setRuns] = useState<ITrendingRun[]>([])
-  const [generations, setGenerations] = useState<TrendingGenerationPreview[]>([])
+  const [generations, setGenerations] = useState<TrendingGenerationPreview[]>(
+    []
+  )
   const [settingsPanelOpen, setSettingsPanelOpen] = useState(false)
   const [isRunning, setIsRunning] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -45,9 +51,16 @@ function TrendingShell() {
     topics: SelectOption[]
     industries: SelectOption[]
   } = (() => {
-    if (!workspace?.persona) return { audiences: [], languages: [], topics: [], industries: [] }
-    const toOptions = (items: { value: string; label: string; description?: string }[]) =>
-      items.map((i) => ({ value: i.value, label: i.label, description: i.description }))
+    if (!workspace?.persona)
+      return { audiences: [], languages: [], topics: [], industries: [] }
+    const toOptions = (
+      items: { value: string; label: string; description?: string }[]
+    ) =>
+      items.map((i) => ({
+        value: i.value,
+        label: i.label,
+        description: i.description,
+      }))
     const p = workspace.persona
     return {
       audiences: toOptions(p.targetAudiences ?? []),
@@ -61,16 +74,24 @@ function TrendingShell() {
 
   const loadTrending = useCallback(async () => {
     try {
-      const res = await fetch("/api/trending")
+      const res = await fetch(API.TRENDING)
       const result = await res.json()
       if (result.success && result.data) {
         setRuns(
-          (result.data.runs ?? []).map((r: Omit<ITrendingRun, "ranAt" | "createdAt" | "updatedAt"> & { ranAt: string; createdAt: string; updatedAt: string }) => ({
-            ...r,
-            ranAt: new Date(r.ranAt),
-            createdAt: new Date(r.createdAt),
-            updatedAt: new Date(r.updatedAt),
-          }))
+          (result.data.runs ?? []).map(
+            (
+              r: Omit<ITrendingRun, "ranAt" | "createdAt" | "updatedAt"> & {
+                ranAt: string
+                createdAt: string
+                updatedAt: string
+              }
+            ) => ({
+              ...r,
+              ranAt: new Date(r.ranAt),
+              createdAt: new Date(r.createdAt),
+              updatedAt: new Date(r.updatedAt),
+            })
+          )
         )
         setGenerations(result.data.generations ?? [])
         if (!selectedRunId && result.data.runs?.length > 0) {
@@ -91,9 +112,10 @@ function TrendingShell() {
   async function handleRunNow() {
     setIsRunning(true)
     try {
-      const res = await fetch("/api/trending/run-now", { method: "POST" })
+      const res = await fetch(API.TRENDING_RUN_NOW, { method: "POST" })
       const result = await res.json()
-      if (!result.success) throw new Error(result.error ?? "Failed to start run")
+      if (!result.success)
+        throw new Error(result.error ?? "Failed to start run")
       toast.success("Run started — posts will appear shortly")
       setTimeout(loadTrending, 15_000)
     } catch (err) {
@@ -105,7 +127,7 @@ function TrendingShell() {
 
   async function handleSave(newPrefs: TrendingPrefs) {
     try {
-      const res = await fetch("/api/prefs/trending", {
+      const res = await fetch(API.TRENDING_PREFS, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...newPrefs, enabled: true }),
@@ -145,22 +167,24 @@ function TrendingShell() {
           onRunNow={handleRunNow}
         />
         <TrendingEmptyState onConfigure={() => setSettingsPanelOpen(true)} />
-        {prefs && <TrendingSettingsPanel
-          open={settingsPanelOpen}
-          prefs={prefs}
-          onClose={() => setSettingsPanelOpen(false)}
-          onSave={handleSave}
-          audienceOptions={personaOptions.audiences}
-          languageOptions={personaOptions.languages}
-          topicOptions={personaOptions.topics}
-          industryOptions={personaOptions.industries}
-        />}
+        {prefs && (
+          <TrendingSettingsPanel
+            open={settingsPanelOpen}
+            prefs={prefs}
+            onClose={() => setSettingsPanelOpen(false)}
+            onSave={handleSave}
+            audienceOptions={personaOptions.audiences}
+            languageOptions={personaOptions.languages}
+            topicOptions={personaOptions.topics}
+            industryOptions={personaOptions.industries}
+          />
+        )}
       </div>
     )
   }
 
   return (
-    <div className="flex h-[calc(100vh-3.5rem)] overflow-hidden flex-col lg:flex-row lg:-m-5">
+    <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:-m-5 lg:flex-row">
       <div
         className={cn(
           "shrink-0 border-r border-sidebar-border bg-sidebar",
@@ -223,21 +247,25 @@ function TrendingShell() {
             variant="centered"
             title="Trending Posts"
             description="Select a run from the sidebar to view generated posts."
-            icon={<IconTrendingUp className="h-10 w-10 text-muted-foreground" />}
+            icon={
+              <IconTrendingUp className="h-10 w-10 text-muted-foreground" />
+            }
           />
         )}
       </div>
 
-      {prefs && <TrendingSettingsPanel
-        open={settingsPanelOpen}
-        prefs={prefs}
-        onClose={() => setSettingsPanelOpen(false)}
-        onSave={handleSave}
-        audienceOptions={personaOptions.audiences}
-        languageOptions={personaOptions.languages}
-        topicOptions={personaOptions.topics}
-        industryOptions={personaOptions.industries}
-      />}
+      {prefs && (
+        <TrendingSettingsPanel
+          open={settingsPanelOpen}
+          prefs={prefs}
+          onClose={() => setSettingsPanelOpen(false)}
+          onSave={handleSave}
+          audienceOptions={personaOptions.audiences}
+          languageOptions={personaOptions.languages}
+          topicOptions={personaOptions.topics}
+          industryOptions={personaOptions.industries}
+        />
+      )}
     </div>
   )
 }

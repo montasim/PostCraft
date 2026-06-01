@@ -1,7 +1,6 @@
 export { AnalyticsContent } from "@/components/features/analytics/analytics-content"
 export { AnalyticsHeader } from "@/components/features/analytics/analytics-header"
 export { AnalyticsOverviewCards } from "@/components/features/analytics/analytics-overview-cards"
-export { AnalyticsInsights } from "@/components/features/analytics/analytics-insights"
 export { AnalyticsTrendChart } from "@/components/features/analytics/analytics-trend-chart"
 export { AnalyticsScoreDistribution } from "@/components/features/analytics/analytics-score-distribution"
 export { AnalyticsStyleBreakdown } from "@/components/features/analytics/analytics-style-breakdown"

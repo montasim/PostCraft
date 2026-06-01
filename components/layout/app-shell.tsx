@@ -6,8 +6,19 @@ import { Sidebar } from "@/components/layout/sidebar"
 import { Header } from "@/components/layout/header"
 import { MobileSidebar } from "@/components/layout/mobile-sidebar"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
-import { fetchWorkspace, selectQuotaUsed, selectQuotaLimit, selectBrandName } from "@/store/slices/workspace.slice"
-import { fetchTrendingPrefs, selectTrendingCount, selectTrendingPrefs, setTrendingCount } from "@/store/slices/trending-prefs.slice"
+import {
+  fetchWorkspace,
+  selectQuotaUsed,
+  selectQuotaLimit,
+  selectBrandName,
+} from "@/store/slices/workspace.slice"
+import {
+  fetchTrendingPrefs,
+  selectTrendingCount,
+  selectTrendingPrefs,
+  setTrendingCount,
+} from "@/store/slices/trending-prefs.slice"
+import { API } from "@/lib/constants"
 import { fetchProfile } from "@/store/slices/profile.slice"
 
 const ROUTE_MAP: Record<string, string> = {
@@ -68,7 +79,7 @@ function AppShell({ children }: AppShellProps) {
   useEffect(() => {
     if (pathname === "/trending") {
       dispatch(setTrendingCount(0))
-      fetch("/api/trending/dismiss-all", { method: "PATCH" }).catch(() => {
+      fetch(API.TRENDING_DISMISS_ALL, { method: "PATCH" }).catch(() => {
         // Non-critical: dismiss-all failed, badge will persist
       })
     }
@@ -96,9 +107,7 @@ function AppShell({ children }: AppShellProps) {
       />
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header onMobileMenuOpen={() => setMobileOpen(true)} />
-        <main className="flex-1 overflow-y-auto p-5">
-          {children}
-        </main>
+        <main className="flex-1 overflow-y-auto p-5">{children}</main>
       </div>
     </div>
   )

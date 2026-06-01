@@ -1,10 +1,17 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
+import { API } from "@/lib/constants"
 import Link from "next/link"
 
 function ForgotPasswordForm() {
@@ -16,7 +23,7 @@ function ForgotPasswordForm() {
     e.preventDefault()
     setLoading(true)
 
-    await fetch("/api/auth/request-password-reset", {
+    await fetch(API.AUTH_RESET_PASSWORD, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, redirectTo: "/reset-password" }),
@@ -34,7 +41,11 @@ function ForgotPasswordForm() {
           <CardTitle className="text-xl">Check your email</CardTitle>
         </CardHeader>
         <CardContent className="text-center text-sm text-muted-foreground">
-          <p>If an account exists for <strong className="text-foreground">{email}</strong>, you&apos;ll receive a password reset link.</p>
+          <p>
+            If an account exists for{" "}
+            <strong className="text-foreground">{email}</strong>, you&apos;ll
+            receive a password reset link.
+          </p>
         </CardContent>
         <CardFooter className="justify-center">
           <Link href="/login" className="text-sm hover:underline">
@@ -73,7 +84,10 @@ function ForgotPasswordForm() {
         </form>
       </CardContent>
       <CardFooter className="justify-center">
-        <Link href="/login" className="text-sm text-muted-foreground hover:underline">
+        <Link
+          href="/login"
+          className="text-sm text-muted-foreground hover:underline"
+        >
           Back to login
         </Link>
       </CardFooter>

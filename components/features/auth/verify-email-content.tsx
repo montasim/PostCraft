@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { API } from "@/lib/constants"
 import { IconLoader2, IconCheck, IconX } from "@tabler/icons-react"
 
 function VerifyEmailContentInner() {
@@ -11,7 +12,9 @@ function VerifyEmailContentInner() {
   const searchParams = useSearchParams()
   const token = searchParams.get("token")
 
-  const [status, setStatus] = useState<"loading" | "success" | "error">("loading")
+  const [status, setStatus] = useState<"loading" | "success" | "error">(
+    "loading"
+  )
   const [errorMessage, setErrorMessage] = useState("")
 
   useEffect(() => {
@@ -21,17 +24,17 @@ function VerifyEmailContentInner() {
       return
     }
 
-    fetch(`/api/auth/verify-email?token=${encodeURIComponent(token)}`)
+    fetch(`${API.AUTH_VERIFY_EMAIL}?token=${encodeURIComponent(token)}`)
       .then((res) => res.json())
       .then((result) => {
-      if (result.error) {
-        setStatus("error")
-        setErrorMessage(result.error.message ?? "Verification failed")
-      } else {
-        setStatus("success")
-        setTimeout(() => router.push("/"), 2000)
-      }
-    })
+        if (result.error) {
+          setStatus("error")
+          setErrorMessage(result.error.message ?? "Verification failed")
+        } else {
+          setStatus("success")
+          setTimeout(() => router.push("/"), 2000)
+        }
+      })
   }, [token, router])
 
   return (

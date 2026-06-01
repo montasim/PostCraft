@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
+import { API } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 import {
@@ -39,7 +40,16 @@ interface RuleSectionProps {
   loading?: boolean
 }
 
-function RuleSection({ title, description, icon: Icon, rules, onToggle, onRemove, onAdd, loading }: RuleSectionProps) {
+function RuleSection({
+  title,
+  description,
+  icon: Icon,
+  rules,
+  onToggle,
+  onRemove,
+  onAdd,
+  loading,
+}: RuleSectionProps) {
   const [newRule, setNewRule] = useState("")
 
   const handleAdd = () => {
@@ -92,7 +102,9 @@ function RuleSection({ title, description, icon: Icon, rules, onToggle, onRemove
                 onCheckedChange={() => onToggle(rule.id)}
                 className="scale-75"
               />
-              <span className={cn("flex-1 text-sm", !rule.active && "line-through")}>
+              <span
+                className={cn("flex-1 text-sm", !rule.active && "line-through")}
+              >
                 {rule.text}
               </span>
               <Button
@@ -195,10 +207,7 @@ function BannedWordsCard({
             <Badge
               key={rule.id}
               variant="secondary"
-              className={cn(
-                "gap-1 text-xs",
-                !rule.active && "opacity-40"
-              )}
+              className={cn("gap-1 text-xs", !rule.active && "opacity-40")}
             >
               <span
                 className="cursor-pointer"
@@ -251,15 +260,23 @@ function PreviewCard({
   bannedWords: Rule[]
 }) {
   const activeBanned = bannedWords.filter((r) => r.active).map((r) => r.text)
+  const previewTone = toneRules.filter((r) => r.active).map((r) => r.text)
+  const previewFormat = formatRules.filter((r) => r.active).map((r) => r.text)
+  const previewRules = [...previewTone, ...previewFormat, ...activeBanned]
   const sampleText =
-    "This game changer will help you leverage synergy to become a thought leader in your industry."
+    previewRules.length > 0
+      ? previewRules.slice(0, 3).join(". ") + "."
+      : "Your post will appear here. Add guardrails to preview their effect."
 
   const highlightBanned = (text: string) => {
     if (activeBanned.length === 0) return text
     const regex = new RegExp(`(${activeBanned.join("|")})`, "gi")
     return text.split(regex).map((part, i) =>
       activeBanned.some((w) => w.toLowerCase() === part.toLowerCase()) ? (
-        <span key={i} className="bg-destructive/20 text-destructive line-through decoration-destructive">
+        <span
+          key={i}
+          className="bg-destructive/20 text-destructive line-through decoration-destructive"
+        >
           {part}
         </span>
       ) : (
@@ -301,9 +318,13 @@ function PreviewCard({
             </Badge>
           )}
           {activeBanned.length > 0 && (
-            <Badge variant="secondary" className="gap-1 text-[10px] text-destructive">
+            <Badge
+              variant="secondary"
+              className="gap-1 text-[10px] text-destructive"
+            >
               <IconBan className="h-3 w-3" />
-              {activeBanned.length} banned word{activeBanned.length !== 1 && "s"}
+              {activeBanned.length} banned word
+              {activeBanned.length !== 1 && "s"}
             </Badge>
           )}
         </div>
@@ -326,7 +347,7 @@ function GuardrailsContent() {
   useEffect(() => {
     async function fetchGuardrails() {
       try {
-        const res = await fetch("/api/guardrails")
+        const res = await fetch(API.GUARDRAILS)
         const data = await res.json()
         if (data.success) {
           setRules(
@@ -352,47 +373,53 @@ function GuardrailsContent() {
   const customRules = rules.filter((r) => r.category === "custom")
   const bannedRules = rules.filter((r) => r.category === "banned")
 
-  const handleToggle = useCallback(async (id: string) => {
-    const rule = rules.find((r) => r.id === id)
-    if (!rule) return
+  const handleToggle = useCallback(
+    async (id: string) => {
+      const rule = rules.find((r) => r.id === id)
+      if (!rule) return
 
-    const newActive = !rule.active
-    setRules((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, active: newActive } : r))
-    )
-
-    try {
-      const res = await fetch(`/api/guardrails/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isActive: newActive }),
-      })
-      if (!res.ok) throw new Error()
-    } catch {
+      const newActive = !rule.active
       setRules((prev) =>
-        prev.map((r) => (r.id === id ? { ...r, active: !newActive } : r))
+        prev.map((r) => (r.id === id ? { ...r, active: newActive } : r))
       )
-      toast.error("Failed to toggle rule")
-    }
-  }, [rules])
 
-  const handleRemove = useCallback(async (id: string) => {
-    const prev = rules
-    setRules((cur) => cur.filter((r) => r.id !== id))
+      try {
+        const res = await fetch(`${API.GUARDRAILS}/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ isActive: newActive }),
+        })
+        if (!res.ok) throw new Error()
+      } catch {
+        setRules((prev) =>
+          prev.map((r) => (r.id === id ? { ...r, active: !newActive } : r))
+        )
+        toast.error("Failed to toggle rule")
+      }
+    },
+    [rules]
+  )
 
-    try {
-      const res = await fetch(`/api/guardrails/${id}`, { method: "DELETE" })
-      if (!res.ok) throw new Error()
-    } catch {
-      setRules(prev)
-      toast.error("Failed to remove rule")
-    }
-  }, [rules])
+  const handleRemove = useCallback(
+    async (id: string) => {
+      const prev = rules
+      setRules((cur) => cur.filter((r) => r.id !== id))
+
+      try {
+        const res = await fetch(`${API.GUARDRAILS}/${id}`, { method: "DELETE" })
+        if (!res.ok) throw new Error()
+      } catch {
+        setRules(prev)
+        toast.error("Failed to remove rule")
+      }
+    },
+    [rules]
+  )
 
   const handleAdd = useCallback(
     (category: string) => async (text: string) => {
       try {
-        const res = await fetch("/api/guardrails", {
+        const res = await fetch(API.GUARDRAILS, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ category, rule: text, isActive: true }),
@@ -418,9 +445,12 @@ function GuardrailsContent() {
   )
 
   const allRules = [...toneRules, ...formatRules, ...customRules]
-  const activeCount = allRules.filter((r) => r.active).length + bannedRules.filter((r) => r.active).length
+  const activeCount =
+    allRules.filter((r) => r.active).length +
+    bannedRules.filter((r) => r.active).length
   const totalCount = allRules.length + bannedRules.length
-  const strengthPercent = totalCount > 0 ? Math.round((activeCount / totalCount) * 100) : 0
+  const strengthPercent =
+    totalCount > 0 ? Math.round((activeCount / totalCount) * 100) : 0
 
   return (
     <div className="space-y-5">
@@ -477,7 +507,9 @@ function GuardrailsContent() {
             </div>
             <div className="flex items-center gap-3">
               <div className="text-right">
-                <p className="text-xs font-medium">{activeCount} of {totalCount} rules protecting your brand</p>
+                <p className="text-xs font-medium">
+                  {activeCount} of {totalCount} rules protecting your brand
+                </p>
               </div>
               <Progress value={strengthPercent} className="h-2 w-24" />
             </div>
