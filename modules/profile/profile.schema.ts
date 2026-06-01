@@ -1,7 +1,8 @@
 import { z } from "zod"
 
 export const updateProfileSchema = z.object({
-  bio: z.string().max(500).optional(),
+  fullName: z.string().max(100).optional(),
+  bio: z.string().max(2000).optional(),
   location: z.string().max(100).optional(),
   title: z.string().max(100).optional(),
   company: z.string().max(100).optional(),

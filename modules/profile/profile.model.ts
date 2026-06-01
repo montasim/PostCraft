@@ -16,7 +16,7 @@ export interface IProfile extends Document {
 const profileSchema = new mongoose.Schema<IProfile>(
   {
     userId: { type: String, required: true, unique: true, index: true },
-    bio: { type: String, default: "", maxlength: 500 },
+    bio: { type: String, default: "", maxlength: 2000 },
     location: { type: String, default: "", maxlength: 100 },
     title: { type: String, default: "", maxlength: 100 },
     company: { type: String, default: "", maxlength: 100 },
