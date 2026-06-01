@@ -33,7 +33,7 @@ export interface ITrendingRunDoc extends Document {
   updatedAt: Date
 }
 
-const SourceItemSchema = new Schema<ISourceItemDoc>(
+export const SourceItemSchema = new Schema<ISourceItemDoc>(
   { source: String, title: String, url: String, score: Number, rank: Number },
   { _id: false }
 )
