@@ -4,6 +4,7 @@ import { fetchTrendingSources, buildSourceKeywords } from "@/modules/trending/so
 import { rankSourceItems } from "@/modules/trending/trending-ranker"
 import { updateRunSourceItems, updateRunGenerationIds, updateRunStatus } from "@/modules/trending/trending.repository"
 import { generatePostsFromTrends, shortlistWithAI } from "@/modules/trending/trending.service"
+import { sendTrendingCompletionEmail } from "@/modules/trending/trending-email"
 import { saveGlobalTopics, saveGlobalTopicsFailure } from "@/modules/trending/global-topics.repository"
 import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
 import { connectDB } from "@/core/config/database"
@@ -50,6 +51,10 @@ export const runTrendingPipeline = inngest.createFunction(
 
       await updateRunGenerationIds(runId, generationIds)
       await updateRunStatus(runId, "completed")
+
+      await sendTrendingCompletionEmail(userId, runId).catch((err) => {
+        logger.warn({ userId, runId, err: String(err) }, "Failed to send trending completion email")
+      })
     } catch (err) {
       const message = err instanceof Error ? err.message : "Unknown error"
       logger.error({ workspaceId, runId, err: message }, "Trending pipeline failed")
