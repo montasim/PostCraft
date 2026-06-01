@@ -3,71 +3,74 @@ import { Skeleton } from "@/components/ui/skeleton"
 function ProfileLoading() {
   return (
     <div className="space-y-5">
-      {/* Completion bar skeleton */}
-      <div className="flex items-center gap-4 rounded-lg border px-4 py-3">
+      {/* Profile completion bar */}
+      <div className="flex items-center gap-4 rounded-lg border bg-card px-4 py-3">
         <div className="flex-1 space-y-1">
-          <Skeleton className="h-3 w-36" />
-          <Skeleton className="h-2 w-52" />
+          <Skeleton className="h-3 w-40" />
+          <Skeleton className="h-2.5 w-64" />
         </div>
         <Skeleton className="h-2 w-32 rounded-full" />
       </div>
 
-      {/* 40/60 flex layout skeleton */}
+      {/* 40/60 flex layout */}
       <div className="flex flex-col gap-5 lg:flex-row">
+        {/* Left — Profile header card with avatar */}
         <div className="w-full lg:w-[40%]">
-          {/* Profile header card skeleton */}
-          <div className="h-full rounded-xl border p-5">
-            <div className="mb-4 flex items-center gap-2">
-              <Skeleton className="h-5 w-5 rounded" />
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="ml-auto h-7 w-16 rounded-md" />
+          <div className="h-full rounded-xl border p-0">
+            <div className="flex items-center gap-2 border-b px-6 py-4">
+              <Skeleton className="h-4 w-4 rounded" />
+              <Skeleton className="h-4 w-28" />
+              <Skeleton className="ml-auto h-7 w-14 rounded-md" />
             </div>
-            <div className="flex flex-col items-center gap-4 pt-2 sm:flex-row sm:items-start">
-              <Skeleton className="h-24 w-24 shrink-0 rounded-full sm:h-32 sm:w-32" />
-              <div className="flex-1 space-y-3">
-                <Skeleton className="h-5 w-28" />
-                <Skeleton className="h-3 w-36" />
-                <div className="flex items-center gap-1.5">
-                  <Skeleton className="h-3 w-3" />
-                  <Skeleton className="h-3 w-24" />
+            <div className="p-6">
+              <div className="flex items-center gap-5">
+                <Skeleton className="h-24 w-24 shrink-0 rounded-full lg:h-32 lg:w-32" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-5 w-28" />
+                  <Skeleton className="h-3 w-40" />
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Skeleton className="h-3 w-3" />
-                  <Skeleton className="h-3 w-32" />
-                </div>
+              </div>
+              <div className="mt-3 flex items-center gap-1.5">
+                <Skeleton className="h-3 w-3" />
+                <Skeleton className="h-2.5 w-32" />
               </div>
             </div>
           </div>
         </div>
+
+        {/* Right — Profile details card */}
         <div className="w-full lg:w-[60%]">
-          {/* Profile details card skeleton */}
-          <div className="h-full rounded-xl border p-5">
-            <div className="mb-4 flex items-center gap-2">
-              <Skeleton className="h-5 w-5 rounded" />
+          <div className="h-full rounded-xl border p-0">
+            <div className="flex items-center gap-2 border-b px-6 py-4">
+              <Skeleton className="h-4 w-4 rounded" />
               <Skeleton className="h-4 w-24" />
-              <Skeleton className="ml-auto h-7 w-16 rounded-md" />
+              <Skeleton className="ml-auto h-7 w-14 rounded-md" />
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 p-6">
+              {/* Bio field */}
               <div className="space-y-1.5">
                 <Skeleton className="h-3 w-8" />
                 <Skeleton className="h-16 w-full rounded-lg" />
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="space-y-1.5">
-                    <Skeleton className="h-3 w-16" />
-                    <div className="flex flex-wrap gap-1">
-                      <Skeleton className="h-7 w-20 rounded-full" />
-                      <Skeleton className="h-7 w-24 rounded-full" />
-                    </div>
-                  </div>
-                ))}
+              {/* Location row */}
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-3 w-3" />
+                <Skeleton className="h-3 w-28" />
               </div>
-              <div className="space-y-1.5">
-                <Skeleton className="h-3 w-20" />
-                <div className="flex flex-wrap gap-1">
-                  <Skeleton className="h-7 w-20 rounded-full" />
-                  <Skeleton className="h-7 w-24 rounded-full" />
+              {/* Website row */}
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-3 w-3" />
+                <Skeleton className="h-3 w-36" />
+              </div>
+              {/* X / LinkedIn row */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-3 w-3" />
+                  <Skeleton className="h-3 w-20" />
+                </div>
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-3 w-3" />
+                  <Skeleton className="h-3 w-28" />
                 </div>
               </div>
             </div>
