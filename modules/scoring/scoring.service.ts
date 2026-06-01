@@ -2,7 +2,7 @@ import { calculateHeuristicScore } from "./heuristic-scorer"
 import { scoreWithJudge } from "./judge-scorer"
 import { WEIGHTS } from "./scoring.schema"
 import type { RawVariant } from "@/modules/generation"
-import { getDefaultModel } from "@/core/ai/gemini"
+import { getProviders } from "@/core/ai/provider"
 import { logger } from "@/core/logger"
 
 interface ScoringInput extends RawVariant {
@@ -84,7 +84,7 @@ export const scoringService = {
         formattingScore: heuristic.formatting,
         overallScore: Math.max(0, Math.min(100, overallScore)),
         judgeReasoning: judge.reasoning,
-        model: getDefaultModel(),
+        model: getProviders()[0]?.name ?? "unknown",
       })
 
       logger.info(
