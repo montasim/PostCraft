@@ -1,5 +1,6 @@
 import { sendEmail } from "@/core/auth/email"
 import { getAuthDb } from "@/core/auth/auth-db"
+import { getEnv } from "@/core/config/env"
 import { ObjectId } from "mongodb"
 import { SettingsModel } from "@/modules/settings/settings.model"
 import { TrendingRun } from "./trending.model"
@@ -113,7 +114,7 @@ function buildEmailHtml(insights: TrendingRunInsights): string {
       ${previewBlock}
 
       <div style="margin-top:28px;padding-top:16px;border-top:1px solid #e5e7eb;">
-        <a href="${process.env.APP_URL ?? "http://localhost:3000"}/trending"
+        <a href="${getEnv().APP_URL}/trending"
            style="display:inline-block;padding:10px 20px;background:#6366f1;color:#fff;text-decoration:none;border-radius:6px;font-size:13px;font-weight:500;">
           View all trending posts
         </a>
@@ -139,7 +140,7 @@ export async function sendTrendingCompletionEmail(
   await sendEmail({
     to: email,
     subject: `${insights.postsGenerated} trending posts ready — LinkedIQ`,
-    text: `Your scheduled trending run completed. ${insights.postsGenerated} posts generated from ${insights.topicCount} topics across ${insights.platforms.join(", ")}. View them at ${process.env.APP_URL ?? "http://localhost:3000"}/trending`,
+    text: `Your scheduled trending run completed. ${insights.postsGenerated} posts generated from ${insights.topicCount} topics across ${insights.platforms.join(", ")}. View them at ${getEnv().APP_URL}/trending`,
     html: buildEmailHtml(insights),
   })
 }

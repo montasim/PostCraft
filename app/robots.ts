@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next"
+import { getEnv } from "@/core/config/env"
 
 export default function robots(): MetadataRoute.Robots {
-  const url = process.env.APP_URL || "https://linkedIQ.dev"
+  const url = getEnv().APP_URL
 
   return {
     rules: [

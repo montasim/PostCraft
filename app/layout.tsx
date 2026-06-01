@@ -7,9 +7,10 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { ReduxProvider } from "@/components/providers/redux-provider"
 import { cn } from "@/lib/utils"
+import { getEnv } from "@/core/config/env"
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.APP_URL || "https://linkedIQ.dev"),
+  metadataBase: new URL(getEnv().APP_URL),
   title: {
     template: "%s | LinkedIQ",
     default: "LinkedIQ — Write LinkedIn Posts That Get Engagement",

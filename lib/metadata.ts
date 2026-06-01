@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
+import { getEnv } from "@/core/config/env"
 
-const SITE_URL = process.env.APP_URL || "https://linkedIQ.dev"
+const SITE_URL = getEnv().APP_URL
 const SITE_NAME = "LinkedIQ"
 
 export function buildMetadata(opts: {
