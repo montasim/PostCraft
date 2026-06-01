@@ -3,14 +3,25 @@
 import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { IconChevronDown, IconChevronRight, IconAlertCircle, IconBrandGithub, IconBrandReddit } from "@tabler/icons-react"
+import {
+  IconChevronDown,
+  IconChevronRight,
+  IconAlertCircle,
+  IconBrandGithub,
+  IconBrandReddit,
+  IconRefresh,
+} from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { setRefineData } from "@/lib/refine-store"
 import { VariantCard } from "@/components/shared/variant-card"
 import type { Variant } from "@/types"
-import type { ITrendingRun, TrendingGenerationPreview, TrendingPlatform } from "@/modules/trending/trending.types"
+import type {
+  ITrendingRun,
+  TrendingGenerationPreview,
+  TrendingPlatform,
+} from "@/modules/trending/trending.types"
 
 const PLATFORM_ABBREV: Record<TrendingPlatform, string> = {
   hackernews: "HN",
@@ -19,11 +30,20 @@ const PLATFORM_ABBREV: Record<TrendingPlatform, string> = {
   reddit: "Reddit",
 }
 
-const SOURCE_META: Record<TrendingPlatform, { icon: React.ReactNode; className: string }> = {
+const SOURCE_META: Record<
+  TrendingPlatform,
+  { icon: React.ReactNode; className: string }
+> = {
   hackernews: { icon: "Y", className: "bg-orange-600 text-white" },
   devto: { icon: "D", className: "bg-purple-600 text-white" },
-  github: { icon: <IconBrandGithub className="h-5 w-5" />, className: "bg-slate-700 text-white" },
-  reddit: { icon: <IconBrandReddit className="h-5 w-5" />, className: "bg-red-600 text-white" },
+  github: {
+    icon: <IconBrandGithub className="h-5 w-5" />,
+    className: "bg-slate-700 text-white",
+  },
+  reddit: {
+    icon: <IconBrandReddit className="h-5 w-5" />,
+    className: "bg-red-600 text-white",
+  },
 }
 
 const STATUS_STYLES: Record<string, string> = {
@@ -32,7 +52,10 @@ const STATUS_STYLES: Record<string, string> = {
   failed: "bg-red-500/10 text-red-600",
 }
 
-function toVariant(gen: TrendingGenerationPreview): { variant: Variant; source: { icon: React.ReactNode; className: string } } | null {
+function toVariant(gen: TrendingGenerationPreview): {
+  variant: Variant
+  source: { icon: React.ReactNode; className: string }
+} | null {
   const v = gen.topVariant
   if (!v) return null
   return {
@@ -61,7 +84,12 @@ interface TrendingRunGroupProps {
   defaultExpanded?: boolean
 }
 
-function TrendingRunGroup({ dateLabel, runs, generations, defaultExpanded = false }: TrendingRunGroupProps) {
+function TrendingRunGroup({
+  dateLabel,
+  runs,
+  generations,
+  defaultExpanded = false,
+}: TrendingRunGroupProps) {
   const [expanded, setExpanded] = useState(defaultExpanded)
 
   return (
@@ -84,14 +112,25 @@ function TrendingRunGroup({ dateLabel, runs, generations, defaultExpanded = fals
   )
 }
 
-function RunItem({ run, generations, expanded, onToggle }: {
+function RunItem({
+  run,
+  generations,
+  expanded,
+  onToggle,
+}: {
   run: ITrendingRun
   generations: TrendingGenerationPreview[]
   expanded: boolean
   onToggle: () => void
 }) {
-  const platformSummary = run.configSnapshot.platforms.map((p) => PLATFORM_ABBREV[p]).join(" + ")
-  const time = run.ranAt.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true })
+  const platformSummary = run.configSnapshot.platforms
+    .map((p) => PLATFORM_ABBREV[p])
+    .join(" + ")
+  const time = run.ranAt.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })
 
   return (
     <div className="rounded-lg border bg-card">
@@ -112,7 +151,10 @@ function RunItem({ run, generations, expanded, onToggle }: {
         <span className="text-xs text-muted-foreground">·</span>
         <span className="text-xs text-muted-foreground">{platformSummary}</span>
         <span className="text-xs text-muted-foreground">·</span>
-        <Badge variant="secondary" className={cn("text-[10px]", STATUS_STYLES[run.status])}>
+        <Badge
+          variant="secondary"
+          className={cn("text-[10px]", STATUS_STYLES[run.status])}
+        >
           {run.status}
         </Badge>
       </button>
@@ -125,7 +167,7 @@ function RunItem({ run, generations, expanded, onToggle }: {
               Error: {run.error}
             </div>
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-4">
+            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {generations.map((gen) => (
                 <TrendingVariant key={gen.generationId} generation={gen} />
               ))}
@@ -137,7 +179,11 @@ function RunItem({ run, generations, expanded, onToggle }: {
   )
 }
 
-function TrendingVariant({ generation }: { generation: TrendingGenerationPreview }) {
+function TrendingVariant({
+  generation,
+}: {
+  generation: TrendingGenerationPreview
+}) {
   const [copied, setCopied] = useState(false)
   const router = useRouter()
   const mapped = toVariant(generation)
@@ -162,7 +208,10 @@ function TrendingVariant({ generation }: { generation: TrendingGenerationPreview
       badgeLabel="Top Trending"
       headerIcon={source.icon}
       headerIconClassName={source.className}
-      sourceLink={{ title: generation.sourceItem.title, url: generation.sourceItem.url }}
+      sourceLink={{
+        title: generation.sourceItem.title,
+        url: generation.sourceItem.url,
+      }}
       extraActions={
         <Button
           variant="outline"
@@ -178,6 +227,7 @@ function TrendingVariant({ generation }: { generation: TrendingGenerationPreview
           }}
           className="gap-1 text-xs"
         >
+          <IconRefresh className="h-3.5 w-3.5" />
           Refine
         </Button>
       }
