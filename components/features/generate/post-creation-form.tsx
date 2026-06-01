@@ -25,6 +25,7 @@ import {
   TOPIC_WARNING_THRESHOLD,
 } from "@/lib/constants"
 import type { GenerationPrefs } from "@/modules/prefs/prefs.schema"
+import { consumeRefineData, type RefineData } from "@/lib/refine-store"
 
 const QUICK_PRESETS = [
   {
@@ -59,19 +60,22 @@ interface PostCreationFormProps {
     includeEmoji: boolean
   }) => void
   isSubmitting?: boolean
+  quotaExceeded?: boolean
   userName?: string
   initialPrefs?: GenerationPrefs
+  initialRefine?: RefineData | null
   audienceOptions?: (string | SelectOption)[]
   toneOptions?: (string | SelectOption)[]
   languageOptions?: (string | SelectOption)[]
 }
 
-function PostCreationFormInner({ onGenerate, isSubmitting, userName, initialPrefs, audienceOptions = AUDIENCE_OPTIONS, toneOptions = TONE_OPTIONS, languageOptions = LANGUAGE_OPTIONS }: PostCreationFormProps) {
+function PostCreationFormInner({ onGenerate, isSubmitting, quotaExceeded, userName, initialPrefs, initialRefine, audienceOptions = AUDIENCE_OPTIONS, toneOptions = TONE_OPTIONS, languageOptions = LANGUAGE_OPTIONS }: PostCreationFormProps) {
   const searchParams = useSearchParams()
-  const [topic, setTopic] = useState("")
-  const [audience, setAudience] = useState<string[]>(initialPrefs?.audiences ?? ["Founders"])
-  const [tones, setTones] = useState<string[]>(initialPrefs?.tones ?? ["Thought leader", "Story"])
-  const [languages, setLanguages] = useState<string[]>(initialPrefs?.languages ?? ["EN"])
+  const refine = initialRefine ?? consumeRefineData()
+  const [topic, setTopic] = useState(refine?.topic ?? "")
+  const [audience, setAudience] = useState<string[]>(refine?.audiences?.length ? refine.audiences : (initialPrefs?.audiences ?? ["Founders"]))
+  const [tones, setTones] = useState<string[]>(refine?.tones?.length ? refine.tones : (initialPrefs?.tones ?? ["Thought leader", "Story"]))
+  const [languages, setLanguages] = useState<string[]>(refine?.languages?.length ? refine.languages : (initialPrefs?.languages ?? ["EN"]))
   const [emoji, setEmoji] = useState(initialPrefs?.emoji ?? true)
   const [isFocused, setIsFocused] = useState(false)
   const [topicSuggestions, setTopicSuggestions] = useState<string[]>([])
@@ -79,7 +83,7 @@ function PostCreationFormInner({ onGenerate, isSubmitting, userName, initialPref
 
   const charCount = topic.length
   const isOverWarning = charCount > TOPIC_WARNING_THRESHOLD
-  const isDisabled = topic.trim().length === 0 || isSubmitting
+  const isDisabled = topic.trim().length === 0 || isSubmitting || quotaExceeded
   const progressPercent = Math.min((charCount / TOPIC_WARNING_THRESHOLD) * 100, 100)
 
   const savePrefs = (data: { audiences: string[]; tones: string[]; languages: string[]; emoji: boolean }) => {
@@ -342,7 +346,7 @@ function PostCreationFormInner({ onGenerate, isSubmitting, userName, initialPref
           ) : (
             <IconSparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
           )}
-          {isSubmitting ? "Crafting your voice..." : "Write My Post"}
+          {isSubmitting ? "Crafting your voice..." : quotaExceeded ? "Quota Exceeded" : "Write My Post"}
         </Button>
       </CardFooter>
     </Card>

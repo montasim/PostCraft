@@ -7,6 +7,7 @@ import { IconChevronDown, IconChevronRight, IconAlertCircle, IconBrandGithub, Ic
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { setRefineData } from "@/lib/refine-store"
 import { VariantCard } from "@/components/shared/variant-card"
 import type { Variant } from "@/types"
 import type { ITrendingRun, TrendingGenerationPreview, TrendingPlatform } from "@/modules/trending/trending.types"
@@ -166,7 +167,15 @@ function TrendingVariant({ generation }: { generation: TrendingGenerationPreview
         <Button
           variant="outline"
           size="sm"
-          onClick={() => router.push(`/?generationId=${generation.generationId}`)}
+          onClick={() => {
+            setRefineData({
+              topic: `${v.hook}\n\n${v.body}\n\n${v.cta}`,
+              audiences: [],
+              tones: [v.styleType],
+              languages: [v.language],
+            })
+            router.push("/")
+          }}
           className="gap-1 text-xs"
         >
           Refine

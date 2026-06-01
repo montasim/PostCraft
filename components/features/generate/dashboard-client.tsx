@@ -8,6 +8,7 @@ import { UpgradeModal } from "@/components/shared/upgrade-modal"
 import type { Variant } from "@/types"
 import type { SelectOption } from "@/components/shared/multi-select"
 import { toast } from "sonner"
+import { consumeRefineData } from "@/lib/refine-store"
 import { sendBrowserNotification, requestNotificationPermission } from "@/lib/browser-notification"
 import { GENERATION_PREFS_DEFAULTS, type GenerationPrefs } from "@/modules/prefs/prefs.schema"
 
@@ -38,6 +39,7 @@ function DashboardClient() {
   const [quotaExceeded, setQuotaExceeded] = useState(false)
   const [upgradeOpen, setUpgradeOpen] = useState(false)
   const [generationPrefs, setGenerationPrefs] = useState<GenerationPrefs>({ ...GENERATION_PREFS_DEFAULTS })
+  const [refineData] = useState(() => consumeRefineData())
   const [personaOptions, setPersonaOptions] = useState<{
     audiences: SelectOption[]
     tones: SelectOption[]
@@ -213,9 +215,11 @@ function DashboardClient() {
       <div className="flex flex-col gap-5 lg:flex-row">
         <PostCreationForm
           onGenerate={handleGenerate}
-          isSubmitting={status === "submitting" || quotaExceeded}
+          isSubmitting={status === "submitting"}
+          quotaExceeded={quotaExceeded}
           userName={userName}
           initialPrefs={generationPrefs}
+          initialRefine={refineData}
           audienceOptions={personaOptions.audiences}
           toneOptions={personaOptions.tones}
           languageOptions={personaOptions.languages}
