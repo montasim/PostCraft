@@ -2,6 +2,7 @@ import { z } from "zod"
 
 export const notificationSettingsSchema = z.object({
   emailGenerationComplete: z.boolean(),
+  emailTrendingComplete: z.boolean(),
   emailWeeklyDigest: z.boolean(),
   emailProductUpdates: z.boolean(),
   pushPostReminder: z.boolean(),

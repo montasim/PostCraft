@@ -5,6 +5,7 @@ import type { NotificationSettings, AppearanceSettings, AccountSettings } from "
 
 const DEFAULT_NOTIFICATIONS: NotificationSettings = {
   emailGenerationComplete: true,
+  emailTrendingComplete: false,
   emailWeeklyDigest: true,
   emailProductUpdates: false,
   pushPostReminder: true,

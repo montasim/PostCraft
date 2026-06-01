@@ -139,6 +139,7 @@ export interface ProfileStats {
 
 export interface NotificationSettings {
   emailGenerationComplete: boolean
+  emailTrendingComplete: boolean
   emailWeeklyDigest: boolean
   emailProductUpdates: boolean
   pushPostReminder: boolean

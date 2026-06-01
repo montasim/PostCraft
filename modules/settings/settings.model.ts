@@ -2,6 +2,7 @@ import mongoose, { type Document, type Model } from "mongoose"
 
 export interface INotificationSettings {
   emailGenerationComplete: boolean
+  emailTrendingComplete: boolean
   emailWeeklyDigest: boolean
   emailProductUpdates: boolean
   pushPostReminder: boolean
@@ -29,6 +30,7 @@ export interface ISettings extends Document {
 const notificationSchema = new mongoose.Schema<INotificationSettings>(
   {
     emailGenerationComplete: { type: Boolean, default: true },
+    emailTrendingComplete: { type: Boolean, default: false },
     emailWeeklyDigest: { type: Boolean, default: true },
     emailProductUpdates: { type: Boolean, default: false },
     pushPostReminder: { type: Boolean, default: true },
