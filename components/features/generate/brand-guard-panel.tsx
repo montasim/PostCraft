@@ -193,7 +193,7 @@ function BrandGuardPanel({
   }
 
   return (
-    <Card className="flex hidden max-h-[30.5rem] w-full shrink-0 flex-col md:w-[40%] lg:w-[40%]">
+    <Card className="hidden max-h-[30.5rem] w-full shrink-0 md:flex md:w-[40%]">
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-sm font-semibold">
           <div className="flex items-center gap-2">{title}</div>
