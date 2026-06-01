@@ -6,6 +6,7 @@ import { BrandGuardPanel } from "./brand-guard-panel"
 import { PostVariantsCarousel } from "./post-variants-carousel"
 import { UpgradeModal } from "@/components/shared/upgrade-modal"
 import type { Variant } from "@/types"
+import type { SelectOption } from "@/components/shared/multi-select"
 import { toast } from "sonner"
 import { sendBrowserNotification, requestNotificationPermission } from "@/lib/browser-notification"
 import { GENERATION_PREFS_DEFAULTS, type GenerationPrefs } from "@/modules/prefs/prefs.schema"
@@ -37,6 +38,11 @@ function DashboardClient() {
   const [quotaExceeded, setQuotaExceeded] = useState(false)
   const [upgradeOpen, setUpgradeOpen] = useState(false)
   const [generationPrefs, setGenerationPrefs] = useState<GenerationPrefs>({ ...GENERATION_PREFS_DEFAULTS })
+  const [personaOptions, setPersonaOptions] = useState<{
+    audiences: SelectOption[]
+    tones: SelectOption[]
+    languages: SelectOption[]
+  }>({ audiences: [], tones: [], languages: [] })
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const notifiedRef = useRef<string | null>(null)
 
@@ -51,8 +57,20 @@ function DashboardClient() {
     fetch("/api/workspace")
       .then((r) => r.json())
       .then((res) => {
-        if (res.success && res.data.usage.used >= res.data.usage.limit) {
-          setQuotaExceeded(true)
+        if (res.success) {
+          if (res.data.usage.used >= res.data.usage.limit) {
+            setQuotaExceeded(true)
+          }
+          const persona = res.data.persona
+          if (persona) {
+            const toOptions = (items: { value: string; label: string; description?: string }[]) =>
+              items.map((i) => ({ value: i.value, label: i.label, description: i.description }))
+            setPersonaOptions({
+              audiences: toOptions(persona.targetAudiences ?? []),
+              tones: toOptions(persona.preferredTones ?? []),
+              languages: toOptions(persona.language ?? []),
+            })
+          }
         }
       })
       .catch(() => {})
@@ -193,7 +211,15 @@ function DashboardClient() {
   return (
     <div className="space-y-8">
       <div className="flex flex-col gap-5 lg:flex-row">
-        <PostCreationForm onGenerate={handleGenerate} isSubmitting={status === "submitting" || quotaExceeded} userName={userName} initialPrefs={generationPrefs} />
+        <PostCreationForm
+          onGenerate={handleGenerate}
+          isSubmitting={status === "submitting" || quotaExceeded}
+          userName={userName}
+          initialPrefs={generationPrefs}
+          audienceOptions={personaOptions.audiences}
+          toneOptions={personaOptions.tones}
+          languageOptions={personaOptions.languages}
+        />
         <BrandGuardPanel />
       </div>
       <PostVariantsCarousel

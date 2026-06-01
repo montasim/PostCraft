@@ -10,6 +10,8 @@ export interface IBrandPersona {
   targetAudiences: IPersonaOption[]
   preferredTones: IPersonaOption[]
   language: IPersonaOption[]
+  topics: IPersonaOption[]
+  industry: IPersonaOption[]
 }
 
 export interface IWorkspaceProfile {
@@ -49,6 +51,8 @@ const brandPersonaSchema = new mongoose.Schema<IBrandPersona>(
     targetAudiences: { type: [personaOptionSchema], default: [] },
     preferredTones: { type: [personaOptionSchema], default: [] },
     language: { type: [personaOptionSchema], default: [{ value: "EN", label: "English" }] },
+    topics: { type: [personaOptionSchema], default: [] },
+    industry: { type: [personaOptionSchema], default: [] },
   },
   { _id: false }
 )

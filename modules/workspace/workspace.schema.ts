@@ -16,6 +16,8 @@ export const brandPersonaSchema = z.object({
   targetAudiences: z.array(personaOptionSchema),
   preferredTones: z.array(personaOptionSchema),
   language: z.array(personaOptionSchema),
+  topics: z.array(personaOptionSchema),
+  industry: z.array(personaOptionSchema),
 })
 
 export const updateWorkspaceSchema = z.object({

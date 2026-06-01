@@ -13,6 +13,7 @@ import {
   IconTrophy,
   IconMedal,
   IconAward,
+  IconExternalLink,
 } from "@tabler/icons-react"
 import type { Variant } from "@/types"
 
@@ -20,9 +21,23 @@ interface VariantCardProps {
   variant: Variant
   copied: boolean
   onCopy: () => void
+  badgeLabel?: string
+  headerIcon?: React.ReactNode
+  headerIconClassName?: string
+  sourceLink?: { title: string; url: string }
+  extraActions?: React.ReactNode
 }
 
-function VariantCard({ variant, copied, onCopy }: VariantCardProps) {
+function VariantCard({
+  variant,
+  copied,
+  onCopy,
+  badgeLabel = "Recommended",
+  headerIcon,
+  headerIconClassName,
+  sourceLink,
+  extraActions,
+}: VariantCardProps) {
   const isTop = variant.rank === 1
 
   return (
@@ -35,7 +50,7 @@ function VariantCard({ variant, copied, onCopy }: VariantCardProps) {
       {isTop && (
         <Badge className="absolute -top-3 left-6 grid-flow-col items-center gap-1 rounded-full brand-gradient px-2.5 py-1 text-[10px] leading-none font-bold tracking-wider text-primary-foreground uppercase shadow">
           <IconStar className="h-3 w-3 fill-current" />
-          Recommended
+          {badgeLabel}
         </Badge>
       )}
 
@@ -43,46 +58,30 @@ function VariantCard({ variant, copied, onCopy }: VariantCardProps) {
         <div
           className={cn(
             "row-span-2 flex h-10 w-10 items-center justify-center rounded-full",
-            isTop
-              ? "brand-gradient text-primary-foreground"
-              : "bg-muted text-muted-foreground"
+            headerIcon
+              ? headerIconClassName
+              : isTop
+                ? "brand-gradient text-primary-foreground"
+                : "bg-muted text-muted-foreground"
           )}
         >
-          {variant.rank === 1 ? (
-            <IconTrophy className="h-5 w-5" />
-          ) : variant.rank === 2 ? (
-            <IconMedal className="h-5 w-5" />
-          ) : (
-            <IconAward className="h-5 w-5" />
+          {headerIcon ?? (
+            variant.rank === 1 ? (
+              <IconTrophy className="h-5 w-5" />
+            ) : variant.rank === 2 ? (
+              <IconMedal className="h-5 w-5" />
+            ) : (
+              <IconAward className="h-5 w-5" />
+            )
           )}
         </div>
         <div className="flex items-center justify-between">
           <span className="text-sm font-semibold">#{variant.rank}</span>
           <div className="flex flex-wrap gap-1.5">
-            <ScorePill
-              label="Score"
-              short="S"
-              value={variant.score}
-              color="chart-5"
-            />
-            <ScorePill
-              label="Engagement"
-              short="E"
-              value={variant.engagement}
-              color="chart-2"
-            />
-            <ScorePill
-              label="Clarity"
-              short="C"
-              value={variant.clarity}
-              color="chart-3"
-            />
-            <ScorePill
-              label="Formatting"
-              short="F"
-              value={variant.formatting}
-              color="primary"
-            />
+            <ScorePill label="Score" short="S" value={variant.score} color="chart-5" />
+            <ScorePill label="Engagement" short="E" value={variant.engagement} color="chart-2" />
+            <ScorePill label="Clarity" short="C" value={variant.clarity} color="chart-3" />
+            <ScorePill label="Formatting" short="F" value={variant.formatting} color="primary" />
           </div>
         </div>
         <div className="flex items-center justify-between">
@@ -93,19 +92,30 @@ function VariantCard({ variant, copied, onCopy }: VariantCardProps) {
 
       <Separator className="my-4" />
 
+      {sourceLink && (
+        <>
+          <a
+            href={sourceLink.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
+          >
+            <IconExternalLink className="h-3 w-3 shrink-0" />
+            <span className="truncate">{sourceLink.title}</span>
+          </a>
+          <Separator className="my-4" />
+        </>
+      )}
+
       <div className="space-y-3">
         <p className="text-base leading-snug">{variant.hook}</p>
         <p className="text-sm leading-relaxed text-muted-foreground">
           {variant.body}
         </p>
-        <p className="text-sm font-medium text-primary">{variant.cta}</p>
+        <p className="text-sm font-medium">{variant.cta}</p>
         <div className="flex flex-wrap gap-1.5 pt-1">
           {variant.hashtags.map((tag) => (
-            <Badge
-              key={tag}
-              variant="secondary"
-              className="text-xs font-normal"
-            >
+            <Badge key={tag} variant="secondary" className="text-xs font-normal">
               {tag}
             </Badge>
           ))}
@@ -118,26 +128,28 @@ function VariantCard({ variant, copied, onCopy }: VariantCardProps) {
         <p className="text-xs text-muted-foreground italic">
           {variant.reasoning}
         </p>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={onCopy}
-          className={cn(
-            "shrink-0 gap-1.5 text-xs",
-            isTop &&
-              "border-primary/40 bg-primary/10 text-primary hover:bg-primary/20"
-          )}
-        >
-          {copied ? (
-            <>
-              <IconCheck className="h-3.5 w-3.5" /> Copied
-            </>
-          ) : (
-            <>
-              <IconCopy className="h-3.5 w-3.5" /> Copy
-            </>
-          )}
-        </Button>
+        <div className="flex shrink-0 items-center gap-1.5">
+          {extraActions}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onCopy}
+            className={cn(
+              "gap-1.5 text-xs",
+              isTop && "border-primary/40 bg-primary/10 text-primary hover:bg-primary/20"
+            )}
+          >
+            {copied ? (
+              <>
+                <IconCheck className="h-3.5 w-3.5" /> Copied
+              </>
+            ) : (
+              <>
+                <IconCopy className="h-3.5 w-3.5" /> Copy
+              </>
+            )}
+          </Button>
+        </div>
       </div>
     </Card>
   )

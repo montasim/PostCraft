@@ -5,9 +5,11 @@ import { usePathname, useRouter } from "next/navigation"
 import { Sidebar } from "@/components/layout/sidebar"
 import { Header } from "@/components/layout/header"
 import { MobileSidebar } from "@/components/layout/mobile-sidebar"
+import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
 
 const ROUTE_MAP: Record<string, string> = {
   generate: "/",
+  trending: "/trending",
   history: "/history",
   analytics: "/analytics",
   guardrails: "/guardrails",
@@ -29,6 +31,7 @@ function AppShell({ children }: AppShellProps) {
     limit: number
     brandName: string
   }>()
+  const [trendingPrefs, setTrendingPrefs] = useState<TrendingPrefs>()
 
   useEffect(() => {
     fetch("/api/workspace")
@@ -43,22 +46,31 @@ function AppShell({ children }: AppShellProps) {
         }
       })
       .catch(() => {})
+
+    fetch("/api/prefs/trending")
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.success && res.data) setTrendingPrefs(res.data)
+      })
+      .catch(() => {})
   }, [])
 
   const active =
-    pathname === "/history"
-      ? "history"
-      : pathname === "/analytics"
-        ? "analytics"
-        : pathname === "/guardrails"
-          ? "guardrails"
-          : pathname === "/workspace"
-            ? "workspace"
-            : pathname === "/profile"
-              ? "profile"
-              : pathname === "/settings"
-                ? "settings"
-                : "generate"
+    pathname === "/trending"
+      ? "trending"
+      : pathname === "/history"
+        ? "history"
+        : pathname === "/analytics"
+          ? "analytics"
+          : pathname === "/guardrails"
+            ? "guardrails"
+            : pathname === "/workspace"
+              ? "workspace"
+              : pathname === "/profile"
+                ? "profile"
+                : pathname === "/settings"
+                  ? "settings"
+                  : "generate"
 
   const handleSelect = (id: string) => {
     router.push(ROUTE_MAP[id] ?? "/")
@@ -76,6 +88,8 @@ function AppShell({ children }: AppShellProps) {
         streakDays={4}
         weeklyGoal={5}
         weeklyProgress={3}
+        trendingCount={3}
+        trendingPrefs={trendingPrefs}
       />
       <MobileSidebar
         open={mobileOpen}
@@ -86,7 +100,7 @@ function AppShell({ children }: AppShellProps) {
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header onMobileMenuOpen={() => setMobileOpen(true)} />
         <main className="flex-1 overflow-y-auto p-5">
-          <div className="space-y-10">{children}</div>
+          {children}
         </main>
       </div>
     </div>

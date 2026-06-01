@@ -6,6 +6,7 @@ import {
   IconBuilding,
   IconUser,
   IconSettings,
+  IconTrendingUp,
 } from "@tabler/icons-react"
 import type { NavItem, Variant, HistoryEntry, SortOption, ScoreRange, AnalyticsOverview, ScoreDistribution, StylePerformance, TrendDataPoint, TopPerformingPost } from "@/types"
 import type { SelectOption } from "@/components/shared/multi-select"
@@ -16,6 +17,7 @@ export const TOPIC_WARNING_THRESHOLD = 1500
 
 export const NAV_MAIN: NavItem[] = [
   { id: "generate", label: "Generate", icon: IconSparkles },
+  { id: "trending", label: "Trending", icon: IconTrendingUp },
   { id: "history", label: "History", icon: IconHistory },
   { id: "analytics", label: "Analytics", icon: IconChartBar },
 ]
@@ -375,12 +377,30 @@ export const TOP_POSTS: TopPerformingPost[] = [
   { topic: "The 4-day work week experiment", score: 90, engagement: 92, style: "Thought leader", date: "May 10" },
 ]
 
-export const INDUSTRY_OPTIONS = [
-  "Technology / SaaS",
-  "Marketing / Advertising",
-  "Finance / FinTech",
-  "Healthcare / Biotech",
-  "Education / EdTech",
-  "Consulting",
-  "Other",
+export const INDUSTRY_OPTIONS: SelectOption[] = [
+  { value: "Technology / SaaS", label: "Technology / SaaS" },
+  { value: "Marketing / Advertising", label: "Marketing / Advertising" },
+  { value: "Finance / FinTech", label: "Finance / FinTech" },
+  { value: "Healthcare / Biotech", label: "Healthcare / Biotech" },
+  { value: "Education / EdTech", label: "Education / EdTech" },
+  { value: "Consulting", label: "Consulting" },
+  { value: "Other", label: "Other" },
+]
+
+export const TOPIC_OPTIONS: SelectOption[] = [
+  { value: "react", label: "React" },
+  { value: "typescript", label: "TypeScript" },
+  { value: "nextjs", label: "Next.js" },
+  { value: "nodejs", label: "Node.js" },
+  { value: "python", label: "Python" },
+  { value: "devops", label: "DevOps" },
+  { value: "ai", label: "AI / Machine Learning" },
+  { value: "cloud", label: "Cloud Computing" },
+  { value: "security", label: "Security" },
+  { value: "mobile", label: "Mobile Development" },
+  { value: "startup", label: "Startups" },
+  { value: "career", label: "Career Growth" },
+  { value: "leadership", label: "Engineering Leadership" },
+  { value: "open-source", label: "Open Source" },
+  { value: "web-performance", label: "Web Performance" },
 ]

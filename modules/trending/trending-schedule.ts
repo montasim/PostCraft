@@ -1,0 +1,68 @@
+import type { ScheduleType } from "./trending.types"
+
+export function computeNextRunAt(config: {
+  scheduleType: ScheduleType
+  scheduledTime: string
+  scheduledDay: string | null
+}): Date {
+  const [hours, minutes] = config.scheduledTime.split(":").map(Number)
+  const now = new Date()
+  const next = new Date()
+
+  next.setHours(hours, minutes, 0, 0)
+
+  if (config.scheduleType === "hourly") {
+    const elapsed = now.getMinutes() + now.getSeconds() / 60
+    if (elapsed >= minutes) {
+      next.setHours(now.getHours() + 1)
+    }
+    next.setMinutes(minutes, 0, 0)
+    return next
+  }
+
+  if (next <= now) {
+    next.setDate(next.getDate() + 1)
+  }
+
+  if (config.scheduleType === "weekly" && config.scheduledDay) {
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    const target = days.indexOf(config.scheduledDay)
+    const current = next.getDay()
+    const diff = (target - current + 7) % 7 || 7
+    next.setDate(next.getDate() + diff - 1)
+  }
+
+  return next
+}
+
+export function formatNextRun(date: Date | null): string {
+  if (!date) return "Not scheduled"
+
+  const now = new Date()
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const target = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+  const diffDays = Math.round((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
+
+  const time = date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true })
+
+  if (diffDays === 0) return `Today at ${time}`
+  if (diffDays === 1) return `Tomorrow at ${time}`
+  return `${date.toLocaleDateString("en-US", { weekday: "long" })} at ${time}`
+}
+
+export function formatRelativeTime(date: Date | null): string {
+  if (!date) return "Never"
+
+  const now = new Date()
+  const diffMs = now.getTime() - date.getTime()
+  const diffMins = Math.floor(diffMs / 60000)
+  const diffHours = Math.floor(diffMins / 60)
+  const diffDays = Math.floor(diffHours / 24)
+
+  if (diffMins < 1) return "Just now"
+  if (diffMins < 60) return `${diffMins}m ago`
+  if (diffHours < 24) return `${diffHours}h ago`
+  if (diffDays === 1) return "Yesterday"
+  if (diffDays < 7) return `${diffDays}d ago`
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+}

@@ -72,9 +72,9 @@ function HistorySidebar({ entries, selectedId, onSelect }: HistorySidebarProps) 
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto -mx-1 px-1">
+      <div className="flex-1 -mx-1 px-1">
         {groups.map((group) => (
-          <div key={group.label} className="mb-3">
+          <div key={group.label} className="mb-8">
             <p className="mb-1 px-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
               {group.label}
             </p>

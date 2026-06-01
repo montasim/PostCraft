@@ -83,7 +83,7 @@ function HistoryContent() {
 
   if (loading) {
     return (
-      <div className="flex h-[calc(100vh-7rem)] flex-col lg:flex-row lg:-mx-5 lg:-mt-5">
+      <div className="flex h-[calc(100vh)] flex-col lg:flex-row lg:-mx-5 lg:-mt-5">
         <aside className="hidden w-full shrink-0 flex-col border-r border-sidebar-border bg-sidebar p-5 lg:flex lg:w-72">
           <Skeleton className="mb-4 h-9 w-full" />
           {[1, 2, 3, 4].map((i) => (
@@ -102,13 +102,13 @@ function HistoryContent() {
   const showList = !showDetail
 
   return (
-    <div className="flex h-[calc(100vh-7rem)] flex-col lg:flex-row lg:-mx-5 lg:-mt-5">
+    <div className="flex h-[calc(100vh-3.5rem)] overflow-hidden flex-col lg:flex-row lg:-m-5">
       {/* Sidebar / List */}
       <div
         className={cn(
           "shrink-0 border-r border-sidebar-border bg-sidebar",
-          showDetail ? "hidden" : "flex w-full flex-col p-5",
-          "lg:flex lg:w-72"
+          showDetail ? "hidden" : "flex w-full flex-col p-4",
+          "lg:flex lg:w-72 lg:overflow-y-auto"
         )}
       >
         <HistorySidebar

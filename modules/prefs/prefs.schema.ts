@@ -15,3 +15,35 @@ export const GENERATION_PREFS_DEFAULTS: GenerationPrefs = {
   languages: ["EN"],
   emoji: true,
 }
+
+export const trendingPrefsSchema = z.object({
+  enabled: z.boolean().default(false),
+  platforms: z.array(z.string()).default([]),
+  topics: z.array(z.string()).default([]),
+  industry: z.array(z.string()).default([]),
+  targetAudience: z.array(z.string()).default([]),
+  language: z.array(z.string()).default([]),
+  postsPerPlatform: z.number().min(1).max(20).default(5),
+  topPostsForAI: z.number().min(1).max(10).default(5),
+  postsToGenerate: z.number().min(1).max(10).default(3),
+  scheduleType: z.enum(["hourly", "daily", "weekly"]).default("daily"),
+  scheduledTime: z.string().default("09:00"),
+  scheduledDay: z.string().nullable().default(null),
+})
+
+export type TrendingPrefs = z.infer<typeof trendingPrefsSchema>
+
+export const TRENDING_PREFS_DEFAULTS: TrendingPrefs = {
+  enabled: false,
+  platforms: [],
+  topics: [],
+  industry: [],
+  targetAudience: [],
+  language: [],
+  postsPerPlatform: 5,
+  topPostsForAI: 5,
+  postsToGenerate: 3,
+  scheduleType: "daily",
+  scheduledTime: "09:00",
+  scheduledDay: null,
+}

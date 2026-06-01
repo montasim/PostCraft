@@ -111,6 +111,8 @@ export interface BrandPersona {
   targetAudiences: PersonaOption[]
   preferredTones: PersonaOption[]
   language: PersonaOption[]
+  topics: PersonaOption[]
+  industry: PersonaOption[]
 }
 
 export interface UserProfile {

@@ -10,9 +10,11 @@ import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { MultiSelect } from "@/components/shared/multi-select"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Switch } from "@/components/ui/switch"
 import { cn } from "@/lib/utils"
 import {
   INDUSTRY_OPTIONS,
+  TOPIC_OPTIONS,
   AUDIENCE_OPTIONS,
   TONE_OPTIONS,
   LANGUAGE_OPTIONS,
@@ -25,10 +27,44 @@ import {
   IconCheck,
   IconPencil,
   IconX,
+  IconFlame,
+  IconArrowRight,
 } from "@tabler/icons-react"
 import { toast } from "sonner"
+import Link from "next/link"
 import type { WorkspaceProfile, BrandPersona, PersonaOption } from "@/types"
 import type { SelectOption } from "@/components/shared/multi-select"
+
+function TrendingToggleCard() {
+  const [enabled, setEnabled] = useState(true)
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <div className="flex items-center gap-2">
+          <IconFlame className="h-4 w-4 text-orange-500" />
+          <CardTitle className="text-sm">Trending Posts</CardTitle>
+        </div>
+        <Switch checked={enabled} onCheckedChange={setEnabled} />
+      </CardHeader>
+      <CardContent>
+        <p className="text-xs text-muted-foreground">
+          Auto-generate LinkedIn posts from trending dev topics on a custom schedule.
+        </p>
+        {enabled && (
+          <div className="mt-3 flex items-center gap-1.5">
+            <IconCheck className="h-3.5 w-3.5 text-emerald-500" />
+            <span className="text-xs text-muted-foreground">Enabled</span>
+            <span className="text-xs text-muted-foreground">·</span>
+            <Link href="/trending" className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
+              Configure in Trending settings
+              <IconArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
 
 /** Extract value strings from persona options */
 function toValues(items: PersonaOption[]): string[] {
@@ -128,7 +164,7 @@ function WorkspaceProfileCard({
                 className="flex h-8 w-full rounded-lg border border-input bg-transparent px-3 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:bg-input/30"
               >
                 {INDUSTRY_OPTIONS.map((opt) => (
-                  <option key={opt} value={opt}>{opt}</option>
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
                 ))}
               </select>
             </div>
@@ -245,6 +281,26 @@ function BrandPersonaCard({
                 creatable
               />
             </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Topics / Keywords</Label>
+              <MultiSelect
+                options={TOPIC_OPTIONS}
+                selected={toValues(draft.topics)}
+                onChange={(v) => setDraft((d) => ({ ...d, topics: fromValues(v, TOPIC_OPTIONS) }))}
+                placeholder="Select topics..."
+                creatable
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Industry</Label>
+              <MultiSelect
+                options={INDUSTRY_OPTIONS}
+                selected={toValues(draft.industry)}
+                onChange={(v) => setDraft((d) => ({ ...d, industry: fromValues(v, INDUSTRY_OPTIONS) }))}
+                placeholder="Select industries..."
+                creatable
+              />
+            </div>
             <Button size="sm" className="h-7 gap-1 text-xs" onClick={handleSave}>
               <IconCheck className="h-3 w-3" />
               Save changes
@@ -273,6 +329,22 @@ function BrandPersonaCard({
               <div className="flex flex-wrap gap-1">
                 {persona.language.length > 0 ? persona.language.map((l) => (
                   <Badge key={l.value} variant="secondary" className="text-[10px]">{l.label}</Badge>
+                )) : <p className="text-xs">—</p>}
+              </div>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground mb-0.5">Topics / Keywords</p>
+              <div className="flex flex-wrap gap-1">
+                {(persona.topics ?? []).length > 0 ? (persona.topics ?? []).map((t) => (
+                  <Badge key={t.value} variant="secondary" className="text-[10px]">{t.label}</Badge>
+                )) : <p className="text-xs">—</p>}
+              </div>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground mb-0.5">Industry</p>
+              <div className="flex flex-wrap gap-1">
+                {(persona.industry ?? []).length > 0 ? (persona.industry ?? []).map((i) => (
+                  <Badge key={i.value} variant="secondary" className="text-[10px]">{i.label}</Badge>
                 )) : <p className="text-xs">—</p>}
               </div>
             </div>
@@ -417,6 +489,7 @@ function WorkspaceContent() {
       </div>
       <div className="space-y-5">
         <BrandPersonaCard persona={data.persona} onSave={handlePersonaSave} />
+        <TrendingToggleCard />
       </div>
     </div>
   )

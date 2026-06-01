@@ -15,6 +15,8 @@ const DEFAULT_PERSONA: BrandPersona = {
   targetAudiences: [],
   preferredTones: [],
   language: [{ value: "EN", label: "English" }],
+  topics: [],
+  industry: [],
 }
 
 export const workspaceService = {
@@ -26,6 +28,8 @@ export const workspaceService = {
     const persona: BrandPersona = {
       ...rawPersona,
       language: Array.isArray(rawPersona.language) ? rawPersona.language : DEFAULT_PERSONA.language,
+      topics: Array.isArray(rawPersona.topics) ? rawPersona.topics : [],
+      industry: Array.isArray(rawPersona.industry) ? rawPersona.industry : [],
     }
 
     const overview = await analyticsRepository.getOverview(workspaceId)
@@ -56,6 +60,8 @@ export const workspaceService = {
       persona: {
         ...rawPersona,
         language: Array.isArray(rawPersona.language) ? rawPersona.language : DEFAULT_PERSONA.language,
+        topics: Array.isArray(rawPersona.topics) ? rawPersona.topics : [],
+        industry: Array.isArray(rawPersona.industry) ? rawPersona.industry : [],
       },
     }
   },

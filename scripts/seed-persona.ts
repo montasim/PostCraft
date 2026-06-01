@@ -5,6 +5,8 @@ import {
   AUDIENCE_OPTIONS,
   TONE_OPTIONS,
   LANGUAGE_OPTIONS,
+  TOPIC_OPTIONS,
+  INDUSTRY_OPTIONS,
 } from "../lib/constants"
 
 const MONGODB_URI = process.env.MONGODB_URI ?? "mongodb://localhost:27017/linkediq"
@@ -14,6 +16,8 @@ const SEED_PERSONA = {
   targetAudiences: AUDIENCE_OPTIONS,
   preferredTones: TONE_OPTIONS,
   language: LANGUAGE_OPTIONS,
+  topics: TOPIC_OPTIONS,
+  industry: INDUSTRY_OPTIONS,
 }
 
 async function seed() {
@@ -30,6 +34,8 @@ async function seed() {
   console.log(`  targetAudiences: ${result.persona.targetAudiences.length} items`)
   console.log(`  preferredTones:  ${result.persona.preferredTones.length} items`)
   console.log(`  language:        ${result.persona.language.map((l: { value: string }) => l.value).join(", ")}`)
+  console.log(`  topics:          ${result.persona.topics.length} items`)
+  console.log(`  industry:        ${result.persona.industry.length} items`)
 
   await mongoose.disconnect()
   console.log("Done.")

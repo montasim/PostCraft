@@ -8,9 +8,10 @@ interface NavGroupProps {
   items: NavItem[]
   active: string
   onSelect: (id: string) => void
+  badges?: Record<string, number>
 }
 
-function NavGroup({ label, items, active, onSelect }: NavGroupProps) {
+function NavGroup({ label, items, active, onSelect, badges }: NavGroupProps) {
   return (
     <div>
       <p className="mb-2 px-3 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
@@ -20,6 +21,7 @@ function NavGroup({ label, items, active, onSelect }: NavGroupProps) {
         {items.map((item) => {
           const Icon = item.icon
           const isActive = active === item.id
+          const badge = badges?.[item.id]
           return (
             <li key={item.id}>
               <button
@@ -33,6 +35,11 @@ function NavGroup({ label, items, active, onSelect }: NavGroupProps) {
               >
                 <Icon className="h-4 w-4" />
                 {item.label}
+                {badge != null && badge > 0 && (
+                  <span className="ml-auto text-[10px] font-semibold bg-primary text-primary-foreground rounded-full px-1.5 py-0.5 leading-none">
+                    {badge}
+                  </span>
+                )}
               </button>
             </li>
           )
