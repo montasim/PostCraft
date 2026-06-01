@@ -1,11 +1,9 @@
 import { NextResponse } from "next/server"
-import { connectDB } from "@/core/config/database"
-import { GenerationModel } from "@/modules/generation/generation.model"
+import { generationService } from "@/modules/generation"
 
 export async function GET() {
   try {
-    await connectDB()
-    const totalPosts = await GenerationModel.estimatedDocumentCount()
+    const totalPosts = await generationService.getTotalPostCount()
 
     return NextResponse.json({ success: true, data: { totalPosts } })
   } catch {

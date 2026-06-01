@@ -3,7 +3,7 @@ import { connectDB } from "@/core/config/database"
 import { handleApiError } from "@/core/errors/error-handler"
 import { historyService } from "@/modules/history"
 import { getWorkspaceId } from "@/core/auth/workspace"
-import type { HistoryListFilters } from "@/modules/history/history.repository"
+import type { HistoryListFilters } from "@/modules/history"
 
 export async function GET(request: NextRequest) {
   try {
