@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, Suspense } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import {
   Card,
@@ -25,15 +25,6 @@ import {
   TOPIC_WARNING_THRESHOLD,
 } from "@/lib/constants"
 import type { GenerationPrefs } from "@/modules/prefs/prefs.schema"
-
-const TOPIC_SUGGESTIONS = [
-  "Why most startups fail at hiring in 2025",
-  "AI replacing resume screening — what actually works",
-  "The 4-day work week experiment: honest results",
-  "Remote work productivity hacks that stick",
-  "Building diverse engineering teams",
-  "Scaling from 5 to 50 people: hiring lessons",
-]
 
 const QUICK_PRESETS = [
   {
@@ -83,6 +74,8 @@ function PostCreationFormInner({ onGenerate, isSubmitting, userName, initialPref
   const [languages, setLanguages] = useState<string[]>(initialPrefs?.languages ?? ["EN"])
   const [emoji, setEmoji] = useState(initialPrefs?.emoji ?? true)
   const [isFocused, setIsFocused] = useState(false)
+  const [topicSuggestions, setTopicSuggestions] = useState<string[]>([])
+  const [suggestionsLoading, setSuggestionsLoading] = useState(true)
 
   const charCount = topic.length
   const isOverWarning = charCount > TOPIC_WARNING_THRESHOLD
@@ -96,6 +89,26 @@ function PostCreationFormInner({ onGenerate, isSubmitting, userName, initialPref
       body: JSON.stringify(data),
     }).catch(() => {})
   }
+
+  useEffect(() => {
+    let cancelled = false
+    setSuggestionsLoading(true)
+
+    fetch("/api/trending/global-topics")
+      .then((r) => r.json())
+      .then((res) => {
+        if (cancelled) return
+        if (res.success && Array.isArray(res.data?.topics)) {
+          setTopicSuggestions(res.data.topics)
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setSuggestionsLoading(false)
+      })
+
+    return () => { cancelled = true }
+  }, [])
 
   const handleSubmit = () => {
     onGenerate({
@@ -197,19 +210,36 @@ function PostCreationFormInner({ onGenerate, isSubmitting, userName, initialPref
           {topic.trim().length === 0 && (
             <div className="space-y-1.5">
               <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-                Topics your peers are writing about — pick one to get started
+                {suggestionsLoading
+                  ? "Loading trending topics..."
+                  : topicSuggestions.length > 0
+                    ? "Trending in tech right now — pick one to get started"
+                    : null
+                }
               </p>
-              <div className="flex flex-wrap gap-1.5">
-                {TOPIC_SUGGESTIONS.map((suggestion) => (
-                  <button
-                    key={suggestion}
-                    onClick={() => applySuggestion(suggestion)}
-                    className="inline-flex items-center rounded-md border border-border/60 bg-muted/40 px-2.5 py-1 text-xs text-muted-foreground transition-all hover:border-primary/30 hover:bg-primary/5 hover:text-primary"
-                  >
-                    {suggestion}
-                  </button>
-                ))}
-              </div>
+              {suggestionsLoading ? (
+                <div className="flex flex-wrap gap-1.5">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="h-7 w-40 animate-pulse rounded-md bg-muted/40"
+                    />
+                  ))}
+                </div>
+              ) : topicSuggestions.length > 0 ? (
+                <div className="flex flex-wrap gap-1.5">
+                  {topicSuggestions.map((suggestion) => (
+                    <button
+                      key={suggestion}
+                      onClick={() => applySuggestion(suggestion)}
+                      className="inline-flex items-center gap-1 rounded-md border border-border/60 bg-muted/40 px-2.5 py-1 text-xs text-muted-foreground transition-all hover:border-primary/30 hover:bg-primary/5 hover:text-primary"
+                    >
+                      <IconTrendingUp className="h-3 w-3 text-orange-500" />
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
             </div>
           )}
         </div>
