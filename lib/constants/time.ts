@@ -37,6 +37,7 @@ export const CLIPBOARD_RESET_DELAY_MS = 1500
 
 export const CRON = {
   DAILY_6AM: "0 6 * * *",
+  WEEKLY_MONDAY_3AM: "0 3 * * 1",
 } as const
 
 export const SCHEDULE_DEFAULTS = {

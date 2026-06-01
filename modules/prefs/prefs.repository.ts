@@ -6,6 +6,10 @@ export const prefsRepository = {
     return PrefsModel.findOne({ userId }).lean()
   },
 
+  async findEnabledTrending() {
+    return PrefsModel.find({ "trending.enabled": true }).lean()
+  },
+
   async upsertGeneration(userId: string, data: GenerationPrefs) {
     return PrefsModel.findOneAndUpdate(
       { userId },
