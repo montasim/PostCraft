@@ -2,6 +2,8 @@ import { profileRepository } from "./profile.repository"
 import { updateProfileSchema, type UpdateProfileInput } from "./profile.schema"
 import { analyticsRepository } from "@/modules/analytics/analytics.repository"
 import { historyRepository } from "@/modules/history/history.repository"
+import { getAuthDb } from "@/core/auth/auth-db"
+import { ObjectId } from "mongodb"
 import { ValidationError } from "@/core/errors/app-error"
 import type { UserProfile, ProfileStats } from "@/types"
 
@@ -52,9 +54,21 @@ export const profileService = {
       throw new ValidationError(errors)
     }
 
-    const updated = await profileRepository.upsert(userId, parsed.data)
+    if (parsed.data.fullName) {
+      const { db } = getAuthDb()
+      await db.collection("user").updateOne(
+        { _id: new ObjectId(userId) },
+        { $set: { name: parsed.data.fullName } }
+      )
+    }
+
+    const profileData = { ...parsed.data }
+    delete (profileData as Record<string, unknown>).fullName
+
+    const updated = await profileRepository.upsert(userId, profileData)
 
     return {
+      fullName: parsed.data.fullName,
       bio: updated.bio,
       location: updated.location,
       title: updated.title,
