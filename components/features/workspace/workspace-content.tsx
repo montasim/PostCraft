@@ -3,7 +3,6 @@
 import { useState, useCallback } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Label } from "@/components/ui/label"
@@ -20,8 +19,6 @@ import {
   LANGUAGE_OPTIONS,
 } from "@/lib/constants"
 import {
-  IconBuilding,
-  IconBrandLinkedin,
   IconCrown,
   IconCheck,
   IconPencil,
@@ -31,7 +28,7 @@ import {
 } from "@tabler/icons-react"
 import { toast } from "sonner"
 import Link from "next/link"
-import type { WorkspaceProfile, BrandPersona, PersonaOption } from "@/types"
+import type { BrandPersona, PersonaOption } from "@/types"
 import type { SelectOption } from "@/components/shared/multi-select"
 import { API } from "@/lib/constants"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
@@ -100,139 +97,6 @@ function fromValues(
   })
 }
 
-// ─── Workspace Profile Card ────────────────────────────────────────
-
-function WorkspaceProfileCard({
-  profile,
-  onSave,
-}: {
-  profile: WorkspaceProfile
-  onSave: (profile: WorkspaceProfile) => void
-}) {
-  const [editing, setEditing] = useState(false)
-  const [draft, setDraft] = useState(profile)
-
-  const handleSave = () => {
-    onSave(draft)
-    setEditing(false)
-  }
-
-  const handleCancel = () => {
-    setDraft(profile)
-    setEditing(false)
-  }
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-          <IconBuilding className="h-4 w-4 text-primary" />
-          Workspace profile
-          <Badge variant="secondary" className="text-[10px]">
-            <IconCrown className="h-3 w-3" />
-            Owner
-          </Badge>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="ml-auto h-7 gap-1 text-xs"
-            onClick={
-              editing
-                ? handleCancel
-                : () => {
-                    setDraft(profile)
-                    setEditing(true)
-                  }
-            }
-          >
-            {editing ? (
-              <>
-                <IconX className="h-3 w-3" />
-                Cancel
-              </>
-            ) : (
-              <>
-                <IconPencil className="h-3 w-3" />
-                Edit
-              </>
-            )}
-          </Button>
-        </CardTitle>
-        <p className="text-xs text-muted-foreground">
-          Define your workspace identity
-        </p>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {editing ? (
-          <>
-            <div className="space-y-1.5">
-              <Label className="text-xs">Name</Label>
-              <Input
-                value={draft.name}
-                onChange={(e) =>
-                  setDraft((d) => ({ ...d, name: e.target.value }))
-                }
-                className="h-8 text-xs"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs">Description</Label>
-              <Input
-                value={draft.description}
-                onChange={(e) =>
-                  setDraft((d) => ({ ...d, description: e.target.value }))
-                }
-                className="h-8 text-xs"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs">Industry</Label>
-              <select
-                value={draft.industry}
-                onChange={(e) =>
-                  setDraft((d) => ({ ...d, industry: e.target.value }))
-                }
-                className="flex h-8 w-full rounded-lg border border-input bg-transparent px-3 text-xs ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none dark:bg-input/30"
-              >
-                {INDUSTRY_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <Button
-              size="sm"
-              className="h-7 gap-1 text-xs"
-              onClick={handleSave}
-            >
-              <IconCheck className="h-3 w-3" />
-              Save changes
-            </Button>
-          </>
-        ) : (
-          <>
-            <div>
-              <p className="mb-0.5 text-xs text-muted-foreground">Name</p>
-              <p className="text-xs">{profile.name || "—"}</p>
-            </div>
-            <div>
-              <p className="mb-0.5 text-xs text-muted-foreground">
-                Description
-              </p>
-              <p className="text-xs">{profile.description || "—"}</p>
-            </div>
-            <div>
-              <p className="mb-0.5 text-xs text-muted-foreground">Industry</p>
-              <p className="text-xs">{profile.industry || "—"}</p>
-            </div>
-          </>
-        )}
-      </CardContent>
-    </Card>
-  )
-}
-
 // ─── Brand Persona Card ────────────────────────────────────────────
 
 function BrandPersonaCard({
@@ -259,7 +123,6 @@ function BrandPersonaCard({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-          <IconBrandLinkedin className="h-4 w-4 text-primary" />
           Brand persona
           <Badge variant="secondary" className="text-[10px]">
             {persona.targetAudiences.length} audiences
@@ -557,7 +420,7 @@ function WorkspaceContent() {
   const loading = status === "idle" || status === "loading"
 
   const saveWorkspace = useCallback(
-    async (updates: { profile?: WorkspaceProfile; persona?: BrandPersona }) => {
+    async (updates: { persona?: BrandPersona }) => {
       if (!data) return
       dispatch(updateWorkspace(updates))
 
@@ -580,10 +443,6 @@ function WorkspaceContent() {
     [data, dispatch]
   )
 
-  const handleProfileSave = (profile: WorkspaceProfile) => {
-    saveWorkspace({ profile })
-  }
-
   const handlePersonaSave = (persona: BrandPersona) => {
     saveWorkspace({ persona })
   }
@@ -592,26 +451,6 @@ function WorkspaceContent() {
     return (
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <div className="space-y-5">
-          <div className="rounded-xl border p-0">
-            <div className="space-y-1 border-b px-6 py-4">
-              <div className="flex items-center gap-2">
-                <Skeleton className="h-4 w-4" />
-                <Skeleton className="h-4 w-28" />
-                <Skeleton className="ml-1 h-4 w-12 rounded-full" />
-                <Skeleton className="ml-auto h-7 w-14 rounded-md" />
-              </div>
-              <Skeleton className="h-3 w-44" />
-            </div>
-            <div className="space-y-3 p-6">
-              {["Name", "Description", "Industry"].map((_, i) => (
-                <div key={i} className="space-y-1.5">
-                  <Skeleton className="h-3 w-12" />
-                  <Skeleton className="h-8 w-full rounded-md" />
-                </div>
-              ))}
-              <Skeleton className="h-7 w-28 rounded-md" />
-            </div>
-          </div>
           <div className="rounded-xl border p-0">
             <div className="space-y-1 border-b px-6 py-4">
               <div className="flex items-center gap-2">
@@ -698,14 +537,10 @@ function WorkspaceContent() {
   return (
     <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
       <div className="space-y-5">
-        <WorkspaceProfileCard
-          profile={data.profile}
-          onSave={handleProfileSave}
-        />
-        <UsagePlanCard used={data.usage.used} limit={data.usage.limit} />
+        <BrandPersonaCard persona={data.persona} onSave={handlePersonaSave} />
       </div>
       <div className="space-y-5">
-        <BrandPersonaCard persona={data.persona} onSave={handlePersonaSave} />
+        <UsagePlanCard used={data.usage.used} limit={data.usage.limit} />
         <TrendingToggleCard />
       </div>
     </div>

@@ -5,33 +5,6 @@ function WorkspaceLoading() {
     <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
       {/* Left column */}
       <div className="space-y-5">
-        {/* Workspace profile card */}
-        <div className="rounded-xl border p-0">
-          <div className="space-y-1 border-b px-6 py-4">
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-4 w-4 rounded" />
-              <Skeleton className="h-4 w-28" />
-              <Skeleton className="ml-1 h-4 w-12 rounded-full" />
-              <Skeleton className="ml-auto h-7 w-14 rounded-md" />
-            </div>
-            <Skeleton className="h-3 w-36" />
-          </div>
-          <div className="space-y-3 p-6">
-            <div>
-              <Skeleton className="mb-0.5 h-3 w-12" />
-              <Skeleton className="h-3 w-32" />
-            </div>
-            <div>
-              <Skeleton className="mb-0.5 h-3 w-20" />
-              <Skeleton className="h-3 w-48" />
-            </div>
-            <div>
-              <Skeleton className="mb-0.5 h-3 w-16" />
-              <Skeleton className="h-3 w-24" />
-            </div>
-          </div>
-        </div>
-
         {/* Usage & plan card */}
         <div className="rounded-xl border p-0">
           <div className="space-y-1 border-b px-6 py-4">
