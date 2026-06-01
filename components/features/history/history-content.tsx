@@ -86,15 +86,70 @@ function HistoryContent() {
 
   if (loading) {
     return (
-      <div className="flex h-[calc(100vh)] flex-col lg:-mx-5 lg:-mt-5 lg:flex-row">
-        <aside className="hidden w-full shrink-0 flex-col border-r border-sidebar-border bg-sidebar p-5 lg:flex lg:w-72">
-          <Skeleton className="mb-4 h-9 w-full" />
-          {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className="mb-2 h-14 w-full rounded-lg" />
-          ))}
-        </aside>
-        <div className="flex-1 p-5">
-          <Skeleton className="h-64 w-full rounded-xl" />
+      <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:-m-5 lg:flex-row">
+        <div className="hidden w-72 shrink-0 border-r border-sidebar-border bg-sidebar lg:flex lg:flex-col">
+          <div className="p-3">
+            <Skeleton className="h-9 w-full rounded-md" />
+          </div>
+          <div className="flex-1 space-y-5 overflow-y-auto p-3 pt-0">
+            {["Today", "Yesterday", "Previous 7 days"].map((group) => (
+              <div key={group}>
+                <Skeleton className="mb-2 h-3 w-16" />
+                <div className="space-y-1">
+                  {Array.from({ length: group === "Today" ? 3 : 2 }).map((_, i) => (
+                    <div key={i} className="rounded-lg p-2.5">
+                      <div className="flex items-center gap-2">
+                        <Skeleton className="h-2 w-2 rounded-full" />
+                        <Skeleton className="h-3 w-28" />
+                      </div>
+                      <div className="mt-1.5 flex items-center justify-between">
+                        <Skeleton className="h-3 w-20" />
+                        <div className="flex items-center gap-1.5">
+                          <Skeleton className="h-3 w-10" />
+                          <Skeleton className="h-4 w-12 rounded-full" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex-1 overflow-y-auto p-5">
+          <div className="space-y-5">
+            <div className="flex flex-col gap-5 lg:flex-row">
+              <div className="flex-1 rounded-xl border p-5">
+                <Skeleton className="mb-4 h-4 w-24" />
+                <Skeleton className="mb-2 h-3 w-10" />
+                <Skeleton className="mb-4 h-20 w-full rounded-lg" />
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} className="space-y-1.5">
+                      <Skeleton className="h-3 w-14" />
+                      <div className="flex gap-1">
+                        <Skeleton className="h-5 w-16 rounded-full" />
+                        <Skeleton className="h-5 w-14 rounded-full" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="hidden w-80 shrink-0 lg:block">
+                <div className="rounded-xl border p-5">
+                  <Skeleton className="mb-4 h-4 w-24" />
+                  <div className="space-y-2">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <div key={i} className="flex items-start gap-2">
+                        <Skeleton className="mt-0.5 h-3.5 w-3.5 shrink-0 rounded-sm" />
+                        <Skeleton className="h-3 w-full" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )
@@ -142,8 +197,37 @@ function HistoryContent() {
 
         {detailLoading ? (
           <div className="space-y-5">
-            <Skeleton className="h-64 w-full rounded-xl" />
-            <Skeleton className="h-48 w-full rounded-xl" />
+            <div className="flex flex-col gap-5 lg:flex-row">
+              <div className="flex-1 rounded-xl border p-5">
+                <Skeleton className="mb-4 h-4 w-24" />
+                <Skeleton className="mb-2 h-3 w-10" />
+                <Skeleton className="mb-4 h-20 w-full rounded-lg" />
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} className="space-y-1.5">
+                      <Skeleton className="h-3 w-14" />
+                      <div className="flex gap-1">
+                        <Skeleton className="h-5 w-16 rounded-full" />
+                        <Skeleton className="h-5 w-14 rounded-full" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="hidden w-80 shrink-0 lg:block">
+                <div className="rounded-xl border p-5">
+                  <Skeleton className="mb-4 h-4 w-24" />
+                  <div className="space-y-2">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <div key={i} className="flex items-start gap-2">
+                        <Skeleton className="mt-0.5 h-3.5 w-3.5 shrink-0 rounded-sm" />
+                        <Skeleton className="h-3 w-full" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         ) : detailEntry ? (
           <HistoryDetail entry={detailEntry} />
