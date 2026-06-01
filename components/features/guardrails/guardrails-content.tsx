@@ -63,13 +63,29 @@ function RuleSection({
     return (
       <Card>
         <CardHeader>
-          <Skeleton className="h-4 w-32" />
-          <Skeleton className="h-3 w-48" />
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-5 w-5 rounded" />
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="ml-auto h-5 w-16 rounded-full" />
+          </div>
+          <Skeleton className="h-3 w-40" />
         </CardHeader>
         <CardContent className="space-y-2">
-          {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-8 w-full" />
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-3 rounded-lg border px-3 py-2"
+            >
+              <Skeleton className="h-4 w-6" />
+              <Skeleton className="h-3 flex-1" />
+              <Skeleton className="h-5 w-5 rounded" />
+              <Skeleton className="h-5 w-5 rounded" />
+            </div>
           ))}
+          <div className="flex gap-2 pt-2">
+            <Skeleton className="h-8 flex-1 rounded-md" />
+            <Skeleton className="h-8 w-16 rounded-md" />
+          </div>
         </CardContent>
       </Card>
     )
