@@ -10,7 +10,6 @@ import {
   fetchWorkspace,
   selectQuotaUsed,
   selectQuotaLimit,
-  selectBrandName,
 } from "@/store/slices/workspace.slice"
 import {
   fetchTrendingPrefs,
@@ -44,7 +43,6 @@ function AppShell({ children }: AppShellProps) {
 
   const quotaUsed = useAppSelector(selectQuotaUsed)
   const quotaLimit = useAppSelector(selectQuotaLimit)
-  const brandName = useAppSelector(selectBrandName)
   const trendingCount = useAppSelector(selectTrendingCount)
   const trendingPrefs = useAppSelector(selectTrendingPrefs)
 
@@ -92,7 +90,6 @@ function AppShell({ children }: AppShellProps) {
         onSelect={handleSelect}
         used={quotaUsed}
         limit={quotaLimit}
-        brandName={brandName}
         streakDays={4}
         weeklyGoal={5}
         weeklyProgress={3}

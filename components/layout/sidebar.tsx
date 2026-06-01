@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { NavGroup, PlanQuotaCard, BrandCard, StreakWidget, MotivationTip } from "@/components/shared"
+import { NavGroup, PlanQuotaCard, StreakWidget, MotivationTip } from "@/components/shared"
 import { IconPlus, IconSparkles, IconClock } from "@tabler/icons-react"
 import { NAV_MAIN, NAV_CONFIG, NAV_ACCOUNT } from "@/lib/constants"
 import { formatNextRun } from "@/modules/trending/trending-schedule"
@@ -13,7 +13,6 @@ interface SidebarProps {
   onSelect: (id: string) => void
   used?: number
   limit?: number
-  brandName?: string
   streakDays?: number
   weeklyGoal?: number
   weeklyProgress?: number
@@ -21,7 +20,7 @@ interface SidebarProps {
   trendingPrefs?: TrendingPrefs
 }
 
-function Sidebar({ active, onSelect, used, limit, brandName, streakDays = 0, weeklyGoal = 5, weeklyProgress = 0, trendingCount = 0, trendingPrefs }: SidebarProps) {
+function Sidebar({ active, onSelect, used, limit, streakDays = 0, weeklyGoal = 5, weeklyProgress = 0, trendingCount = 0, trendingPrefs }: SidebarProps) {
   return (
     <aside className="hidden w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar md:flex">
       <div className="flex h-14 items-center gap-2 border-b border-sidebar-border px-5">
@@ -72,7 +71,6 @@ function Sidebar({ active, onSelect, used, limit, brandName, streakDays = 0, wee
             </p>
           </div>
         )}
-        <BrandCard name={brandName} />
       </div>
     </aside>
   )
