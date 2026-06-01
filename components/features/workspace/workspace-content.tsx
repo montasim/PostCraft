@@ -455,35 +455,6 @@ function WorkspaceContent() {
             <div className="space-y-1 border-b px-6 py-4">
               <div className="flex items-center gap-2">
                 <Skeleton className="h-4 w-4" />
-                <Skeleton className="h-4 w-20" />
-                <Skeleton className="ml-auto h-4 w-16 rounded-full" />
-              </div>
-              <Skeleton className="h-3 w-52" />
-            </div>
-            <div className="space-y-4 p-6">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Skeleton className="h-3 w-28" />
-                  <Skeleton className="h-3 w-16" />
-                </div>
-                <Skeleton className="h-2 w-full rounded-full" />
-              </div>
-              <Skeleton className="h-px w-full" />
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <Skeleton className="h-3 w-28" />
-                  <Skeleton className="h-2.5 w-24" />
-                </div>
-                <Skeleton className="h-7 w-28 rounded-md" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="space-y-5">
-          <div className="rounded-xl border p-0">
-            <div className="space-y-1 border-b px-6 py-4">
-              <div className="flex items-center gap-2">
-                <Skeleton className="h-4 w-4" />
                 <Skeleton className="h-4 w-24" />
                 <Skeleton className="ml-1 h-4 w-20 rounded-full" />
                 <Skeleton className="ml-auto h-7 w-14 rounded-md" />
@@ -508,6 +479,35 @@ function WorkspaceContent() {
                 </div>
               ))}
               <Skeleton className="h-7 w-28 rounded-md" />
+            </div>
+          </div>
+        </div>
+        <div className="space-y-5">
+          <div className="rounded-xl border p-0">
+            <div className="space-y-1 border-b px-6 py-4">
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-4 w-4" />
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="ml-auto h-4 w-16 rounded-full" />
+              </div>
+              <Skeleton className="h-3 w-52" />
+            </div>
+            <div className="space-y-4 p-6">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Skeleton className="h-3 w-28" />
+                  <Skeleton className="h-3 w-16" />
+                </div>
+                <Skeleton className="h-2 w-full rounded-full" />
+              </div>
+              <Skeleton className="h-px w-full" />
+              <div className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <Skeleton className="h-3 w-28" />
+                  <Skeleton className="h-2.5 w-24" />
+                </div>
+                <Skeleton className="h-7 w-28 rounded-md" />
+              </div>
             </div>
           </div>
           <div className="rounded-xl border p-0">
