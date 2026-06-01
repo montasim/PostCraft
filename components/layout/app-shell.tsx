@@ -5,7 +5,10 @@ import { usePathname, useRouter } from "next/navigation"
 import { Sidebar } from "@/components/layout/sidebar"
 import { Header } from "@/components/layout/header"
 import { MobileSidebar } from "@/components/layout/mobile-sidebar"
-import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
+import { fetchWorkspace, selectQuotaUsed, selectQuotaLimit, selectBrandName } from "@/store/slices/workspace.slice"
+import { fetchTrendingPrefs, selectTrendingCount, selectTrendingPrefs, setTrendingCount } from "@/store/slices/trending-prefs.slice"
+import { fetchProfile } from "@/store/slices/profile.slice"
 
 const ROUTE_MAP: Record<string, string> = {
   generate: "/",
@@ -25,43 +28,20 @@ interface AppShellProps {
 function AppShell({ children }: AppShellProps) {
   const pathname = usePathname()
   const router = useRouter()
+  const dispatch = useAppDispatch()
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [sidebarData, setSidebarData] = useState<{
-    used: number
-    limit: number
-    brandName: string
-  }>()
-  const [trendingPrefs, setTrendingPrefs] = useState<TrendingPrefs>()
-  const [trendingCount, setTrendingCount] = useState(0)
+
+  const quotaUsed = useAppSelector(selectQuotaUsed)
+  const quotaLimit = useAppSelector(selectQuotaLimit)
+  const brandName = useAppSelector(selectBrandName)
+  const trendingCount = useAppSelector(selectTrendingCount)
+  const trendingPrefs = useAppSelector(selectTrendingPrefs)
 
   useEffect(() => {
-    fetch("/api/workspace")
-      .then((r) => r.json())
-      .then((res) => {
-        if (res.success) {
-          setSidebarData({
-            used: res.data.usage.used,
-            limit: res.data.usage.limit,
-            brandName: res.data.profile.name,
-          })
-        }
-      })
-      .catch(() => {})
-
-    fetch("/api/prefs/trending")
-      .then((r) => r.json())
-      .then((res) => {
-        if (res.success && res.data) setTrendingPrefs(res.data)
-      })
-      .catch(() => {})
-
-    fetch("/api/trending")
-      .then((r) => r.json())
-      .then((res) => {
-        if (res.success && res.data) setTrendingCount(res.data.unreadCount ?? 0)
-      })
-      .catch(() => {})
-  }, [])
+    dispatch(fetchWorkspace())
+    dispatch(fetchTrendingPrefs())
+    dispatch(fetchProfile())
+  }, [dispatch])
 
   const active =
     pathname === "/trending"
@@ -87,24 +67,24 @@ function AppShell({ children }: AppShellProps) {
 
   useEffect(() => {
     if (pathname === "/trending") {
-      setTrendingCount(0)
+      dispatch(setTrendingCount(0))
       fetch("/api/trending/dismiss-all", { method: "PATCH" }).catch(() => {})
     }
-  }, [pathname])
+  }, [pathname, dispatch])
 
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar
         active={active}
         onSelect={handleSelect}
-        used={sidebarData?.used}
-        limit={sidebarData?.limit}
-        brandName={sidebarData?.brandName}
+        used={quotaUsed}
+        limit={quotaLimit}
+        brandName={brandName}
         streakDays={4}
         weeklyGoal={5}
         weeklyProgress={3}
         trendingCount={trendingCount}
-        trendingPrefs={trendingPrefs}
+        trendingPrefs={trendingPrefs ?? undefined}
       />
       <MobileSidebar
         open={mobileOpen}

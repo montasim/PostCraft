@@ -1,8 +1,15 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
+import {
+  selectProfile,
+  selectProfileStats,
+  selectProfileStatus,
+  updateProfile,
+  fetchProfile,
+} from "@/store/slices/profile.slice"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -10,17 +17,11 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
-import { cn } from "@/lib/utils"
 import {
   IconUser,
   IconPencil,
   IconCheck,
   IconX,
-  IconFlame,
-  IconTrophy,
-  IconMedal,
-  IconStar,
-  IconLock,
   IconMapPin,
   IconWorld,
   IconBrandTwitter,
@@ -29,7 +30,7 @@ import {
   IconTarget,
 } from "@tabler/icons-react"
 import { toast } from "sonner"
-import type { UserProfile, ProfileStats } from "@/types"
+import type { UserProfile } from "@/types"
 
 // ─── Profile Header Card ──────────────────────────────────────────
 
@@ -368,32 +369,22 @@ function ProfileCompletionCard({ profile }: { profile: UserProfile }) {
 // ─── Orchestrator ──────────────────────────────────────────────────
 
 function ProfileContent() {
-  const [profile, setProfile] = useState<UserProfile | null>(null)
-  const [stats, setStats] = useState<ProfileStats | null>(null)
-  const [loading, setLoading] = useState(true)
+  const dispatch = useAppDispatch()
+  const profile = useAppSelector(selectProfile)
+  const profileStatus = useAppSelector(selectProfileStatus)
+  const stats = useAppSelector(selectProfileStats)
+
+  const loading = profileStatus === "idle" || profileStatus === "loading"
 
   useEffect(() => {
-    async function fetchProfile() {
-      try {
-        const res = await fetch("/api/profile")
-        const result = await res.json()
-        if (result.success) {
-          setProfile(result.data.profile)
-          setStats(result.data.stats)
-        }
-      } catch {
-        toast.error("Failed to load profile")
-      } finally {
-        setLoading(false)
-      }
+    if (profileStatus === "idle") {
+      dispatch(fetchProfile())
     }
-    fetchProfile()
-  }, [])
+  }, [profileStatus, dispatch])
 
   const saveProfile = async (updates: Record<string, string>) => {
     if (!profile) return
-    const previous = profile
-    setProfile((prev) => prev ? { ...prev, ...updates } : prev)
+    dispatch(updateProfile(updates))
 
     try {
       const res = await fetch("/api/profile", {
@@ -403,11 +394,11 @@ function ProfileContent() {
       })
       const result = await res.json()
       if (!result.success) {
-        setProfile(previous)
+        dispatch(fetchProfile())
         toast.error("Failed to save")
       }
     } catch {
-      setProfile(previous)
+      dispatch(fetchProfile())
       toast.error("Failed to save")
     }
   }

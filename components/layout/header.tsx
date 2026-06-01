@@ -1,11 +1,12 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/layout/theme-toggle"
 import { UserDropdown } from "@/components/layout/user-dropdown"
 import { PageBreadcrumb } from "@/components/layout/page-breadcrumb"
 import { IconMenu2 } from "@tabler/icons-react"
+import { useAppSelector } from "@/store/hooks"
+import { selectTotalPosts } from "@/store/slices/profile.slice"
 
 function formatNumber(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
@@ -18,16 +19,7 @@ interface HeaderProps {
 }
 
 function Header({ onMobileMenuOpen }: HeaderProps) {
-  const [totalPosts, setTotalPosts] = useState<number | null>(null)
-
-  useEffect(() => {
-    fetch("/api/stats")
-      .then((r) => r.json())
-      .then((res) => {
-        if (res.success) setTotalPosts(res.data.totalPosts)
-      })
-      .catch(() => {})
-  }, [])
+  const totalPosts = useAppSelector(selectTotalPosts)
 
   return (
     <header className="z-10 flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-5">

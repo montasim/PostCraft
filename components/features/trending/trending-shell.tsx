@@ -12,28 +12,52 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import type { SelectOption } from "@/components/shared/multi-select"
 import type { ITrendingRun, TrendingGenerationPreview } from "@/modules/trending/trending.types"
-import { TRENDING_PREFS_DEFAULTS, type TrendingPrefs } from "@/modules/prefs/prefs.schema"
+import { type TrendingPrefs } from "@/modules/prefs/prefs.schema"
 import { IconArrowLeft, IconTrendingUp } from "@tabler/icons-react"
 import { toast } from "sonner"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
+import {
+  selectTrendingPrefs,
+  setTrendingPrefs,
+} from "@/store/slices/trending-prefs.slice"
+import {
+  selectWorkspace,
+  selectQuotaExceeded,
+} from "@/store/slices/workspace.slice"
 
 function TrendingShell() {
+  const dispatch = useAppDispatch()
   const [runs, setRuns] = useState<ITrendingRun[]>([])
   const [generations, setGenerations] = useState<TrendingGenerationPreview[]>([])
-  const [prefs, setPrefs] = useState<TrendingPrefs>({ ...TRENDING_PREFS_DEFAULTS })
   const [settingsPanelOpen, setSettingsPanelOpen] = useState(false)
   const [isRunning, setIsRunning] = useState(false)
-  const [quotaExceeded, setQuotaExceeded] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [selectedRunId, setSelectedRunId] = useState<string | null>(null)
-  const [personaOptions, setPersonaOptions] = useState<{
+  const isDesktop = useMediaQuery("(min-width: 1024px)")
+
+  const prefs = useAppSelector(selectTrendingPrefs)
+  const workspace = useAppSelector(selectWorkspace)
+  const quotaExceeded = useAppSelector(selectQuotaExceeded)
+
+  const personaOptions: {
     audiences: SelectOption[]
     languages: SelectOption[]
     topics: SelectOption[]
     industries: SelectOption[]
-  }>({ audiences: [], languages: [], topics: [], industries: [] })
-  const isDesktop = useMediaQuery("(min-width: 1024px)")
+  } = (() => {
+    if (!workspace?.persona) return { audiences: [], languages: [], topics: [], industries: [] }
+    const toOptions = (items: { value: string; label: string; description?: string }[]) =>
+      items.map((i) => ({ value: i.value, label: i.label, description: i.description }))
+    const p = workspace.persona
+    return {
+      audiences: toOptions(p.targetAudiences ?? []),
+      languages: toOptions(p.language ?? []),
+      topics: toOptions(p.topics ?? []),
+      industries: toOptions(p.industry ?? []),
+    }
+  })()
 
-  const hasConfig = prefs.enabled && prefs.platforms.length > 0
+  const hasConfig = !!(prefs?.enabled && (prefs?.platforms?.length ?? 0) > 0)
 
   const loadTrending = useCallback(async () => {
     try {
@@ -64,35 +88,6 @@ function TrendingShell() {
     loadTrending()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    fetch("/api/prefs/trending")
-      .then((r) => r.json())
-      .then((res) => {
-        if (res.success && res.data) setPrefs(res.data)
-      })
-      .catch(() => {})
-
-    fetch("/api/workspace")
-      .then((r) => r.json())
-      .then((res) => {
-        if (res.success && res.data.persona) {
-          if (res.data.usage.used >= res.data.usage.limit) {
-            setQuotaExceeded(true)
-          }
-          const persona = res.data.persona
-          const toOptions = (items: { value: string; label: string; description?: string }[]) =>
-            items.map((i) => ({ value: i.value, label: i.label, description: i.description }))
-          setPersonaOptions({
-            audiences: toOptions(persona.targetAudiences ?? []),
-            languages: toOptions(persona.language ?? []),
-            topics: toOptions(persona.topics ?? []),
-            industries: toOptions(persona.industry ?? []),
-          })
-        }
-      })
-      .catch(() => {})
-  }, [])
-
   async function handleRunNow() {
     setIsRunning(true)
     try {
@@ -117,7 +112,7 @@ function TrendingShell() {
       })
       const result = await res.json()
       if (result.success && result.data) {
-        setPrefs(result.data)
+        dispatch(setTrendingPrefs(result.data))
         toast.success("Settings saved")
       }
     } catch {
@@ -143,7 +138,7 @@ function TrendingShell() {
       <div className="flex flex-col gap-6">
         <TrendingHeader
           enabled={false}
-          prefs={prefs}
+          prefs={prefs!}
           isRunning={isRunning}
           quotaExceeded={quotaExceeded}
           onOpenSettings={() => setSettingsPanelOpen(true)}
@@ -152,7 +147,7 @@ function TrendingShell() {
         <TrendingEmptyState onConfigure={() => setSettingsPanelOpen(true)} />
         <TrendingSettingsPanel
           open={settingsPanelOpen}
-          prefs={prefs}
+          prefs={prefs!}
           onClose={() => setSettingsPanelOpen(false)}
           onSave={handleSave}
           audienceOptions={personaOptions.audiences}
@@ -191,7 +186,7 @@ function TrendingShell() {
         <div className="mb-12">
           <TrendingHeader
             enabled={hasConfig}
-            prefs={prefs}
+            prefs={prefs!}
             isRunning={isRunning}
             quotaExceeded={quotaExceeded}
             onOpenSettings={() => setSettingsPanelOpen(true)}
@@ -235,7 +230,7 @@ function TrendingShell() {
 
       <TrendingSettingsPanel
         open={settingsPanelOpen}
-        prefs={prefs}
+        prefs={prefs!}
         onClose={() => setSettingsPanelOpen(false)}
         onSave={handleSave}
         audienceOptions={personaOptions.audiences}

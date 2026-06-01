@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useCallback } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -18,7 +18,6 @@ import {
   AUDIENCE_OPTIONS,
   TONE_OPTIONS,
   LANGUAGE_OPTIONS,
-  PLAN_LIMIT,
 } from "@/lib/constants"
 import {
   IconBuilding,
@@ -34,6 +33,13 @@ import { toast } from "sonner"
 import Link from "next/link"
 import type { WorkspaceProfile, BrandPersona, PersonaOption } from "@/types"
 import type { SelectOption } from "@/components/shared/multi-select"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
+import {
+  selectWorkspace,
+  selectWorkspaceStatus,
+  updateWorkspace,
+  fetchWorkspace,
+} from "@/store/slices/workspace.slice"
 
 function TrendingToggleCard() {
   const [enabled, setEnabled] = useState(true)
@@ -411,35 +417,16 @@ function UsagePlanCard({ used, limit }: { used: number; limit: number }) {
 
 // ─── Orchestrator ──────────────────────────────────────────────────
 
-interface WorkspaceData {
-  profile: WorkspaceProfile
-  persona: BrandPersona
-  usage: { used: number; limit: number; totalGenerated: number }
-}
-
 function WorkspaceContent() {
-  const [data, setData] = useState<WorkspaceData | null>(null)
-  const [loading, setLoading] = useState(true)
+  const dispatch = useAppDispatch()
+  const data = useAppSelector(selectWorkspace)
+  const status = useAppSelector(selectWorkspaceStatus)
 
-  useEffect(() => {
-    async function fetchWorkspace() {
-      try {
-        const res = await fetch("/api/workspace")
-        const result = await res.json()
-        if (result.success) setData(result.data)
-      } catch {
-        toast.error("Failed to load workspace")
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchWorkspace()
-  }, [])
+  const loading = status === "idle" || status === "loading"
 
   const saveWorkspace = useCallback(async (updates: { profile?: WorkspaceProfile; persona?: BrandPersona }) => {
     if (!data) return
-    const previous = data
-    setData((prev) => prev ? { ...prev, ...updates } : prev)
+    dispatch(updateWorkspace(updates))
 
     try {
       const res = await fetch("/api/workspace", {
@@ -449,14 +436,14 @@ function WorkspaceContent() {
       })
       const result = await res.json()
       if (!result.success) {
-        setData(previous)
+        dispatch(fetchWorkspace())
         toast.error("Failed to save")
       }
     } catch {
-      setData(previous)
+      dispatch(fetchWorkspace())
       toast.error("Failed to save")
     }
-  }, [data])
+  }, [data, dispatch])
 
   const handleProfileSave = (profile: WorkspaceProfile) => {
     saveWorkspace({ profile })

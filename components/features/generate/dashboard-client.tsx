@@ -11,6 +11,9 @@ import { toast } from "sonner"
 import { consumeRefineData } from "@/lib/refine-store"
 import { sendBrowserNotification, requestNotificationPermission } from "@/lib/browser-notification"
 import { GENERATION_PREFS_DEFAULTS, type GenerationPrefs } from "@/modules/prefs/prefs.schema"
+import { useAppSelector } from "@/store/hooks"
+import { selectQuotaExceeded, selectPersona } from "@/store/slices/workspace.slice"
+import { selectUserName } from "@/store/slices/profile.slice"
 
 type GenerationStatus =
   | "idle"
@@ -35,48 +38,30 @@ function DashboardClient() {
   const [status, setStatus] = useState<GenerationStatus>("idle")
   const [variants, setVariants] = useState<Variant[]>([])
   const [error, setError] = useState<string | null>(null)
-  const [userName, setUserName] = useState<string>("")
-  const [quotaExceeded, setQuotaExceeded] = useState(false)
   const [upgradeOpen, setUpgradeOpen] = useState(false)
   const [generationPrefs, setGenerationPrefs] = useState<GenerationPrefs>({ ...GENERATION_PREFS_DEFAULTS })
   const [refineData] = useState(() => consumeRefineData())
-  const [personaOptions, setPersonaOptions] = useState<{
-    audiences: SelectOption[]
-    tones: SelectOption[]
-    languages: SelectOption[]
-  }>({ audiences: [], tones: [], languages: [] })
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const notifiedRef = useRef<string | null>(null)
 
+  const quotaExceededFromStore = useAppSelector(selectQuotaExceeded)
+  const persona = useAppSelector(selectPersona)
+  const userName = useAppSelector(selectUserName)
+
+  const [quotaExceeded, setQuotaExceeded] = useState(quotaExceededFromStore)
+
+  const personaOptions: { audiences: SelectOption[]; tones: SelectOption[]; languages: SelectOption[] } = (() => {
+    if (!persona) return { audiences: [], tones: [], languages: [] }
+    const toOptions = (items: { value: string; label: string; description?: string }[]) =>
+      items.map((i) => ({ value: i.value, label: i.label, description: i.description }))
+    return {
+      audiences: toOptions(persona.targetAudiences ?? []),
+      tones: toOptions(persona.preferredTones ?? []),
+      languages: toOptions(persona.language ?? []),
+    }
+  })()
+
   useEffect(() => {
-    fetch("/api/profile")
-      .then((r) => r.json())
-      .then((res) => {
-        if (res.success) setUserName(res.data.profile.fullName)
-      })
-      .catch(() => {})
-
-    fetch("/api/workspace")
-      .then((r) => r.json())
-      .then((res) => {
-        if (res.success) {
-          if (res.data.usage.used >= res.data.usage.limit) {
-            setQuotaExceeded(true)
-          }
-          const persona = res.data.persona
-          if (persona) {
-            const toOptions = (items: { value: string; label: string; description?: string }[]) =>
-              items.map((i) => ({ value: i.value, label: i.label, description: i.description }))
-            setPersonaOptions({
-              audiences: toOptions(persona.targetAudiences ?? []),
-              tones: toOptions(persona.preferredTones ?? []),
-              languages: toOptions(persona.language ?? []),
-            })
-          }
-        }
-      })
-      .catch(() => {})
-
     fetch("/api/prefs/generation")
       .then((r) => r.json())
       .then((res) => {
@@ -201,7 +186,7 @@ function DashboardClient() {
       setError("Failed to submit. Please try again.")
       toast.error("Failed to submit")
     }
-  }, [])
+  }, [quotaExceeded])
 
   const handleRetry = useCallback(() => {
     setGenerationId(null)
