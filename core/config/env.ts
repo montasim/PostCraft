@@ -4,6 +4,19 @@ const envSchema = z.object({
   MONGODB_URI: z.string().min(1),
   GEMINI_API_KEY: z.string().min(1),
   GEMINI_MODEL: z.string().default("gemini-2.5-flash"),
+  ZAI_API_KEY: z.string().optional(),
+  ZAI_BASE_URL: z.string().default("https://open.bigmodel.cn/api/paas/v4"),
+  ZAI_MODEL: z.string().default("glm-4.5-air"),
+
+  // Groq
+  GROQ_API_KEY: z.string().optional(),
+  GROQ_MODEL: z.string().default("llama-3.3-70b-versatile"),
+
+  // OpenRouter
+  OPENROUTER_API_KEY: z.string().optional(),
+  OPENROUTER_MODEL: z.string().default("deepseek/deepseek-v3:free"),
+  OPENROUTER_SITE_URL: z.string().default("https://linkediq.onrender.com"),
+  OPENROUTER_SITE_NAME: z.string().default("linkedIQ"),
   INNGEST_EVENT_KEY: z.string().optional(),
   INNGEST_SIGNING_KEY: z.string().optional(),
   APP_URL: z.string().optional().default("http://localhost:3000"),
