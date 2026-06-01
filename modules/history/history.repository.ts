@@ -1,5 +1,6 @@
 import { VariantModel } from "@/modules/variant/variant.model"
 import { GenerationModel } from "@/modules/generation/generation.model"
+import type { PipelineStage } from "mongoose"
 
 export interface HistoryListFilters {
   search?: string
@@ -70,8 +71,7 @@ export const historyRepository = {
       limit = 6,
     } = filters
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pipeline: any[] = []
+    const pipeline: PipelineStage[] = []
 
     // Base match: completed generations only
     pipeline.push({ $match: { workspaceId, status: "completed" } })
@@ -95,8 +95,7 @@ export const historyRepository = {
     })
 
     // Post-lookup filters
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const postFilters: any[] = []
+    const postFilters: Record<string, unknown>[] = []
     if (search) {
       postFilters.push({ topic: { $regex: search, $options: "i" } })
     }
@@ -222,14 +221,14 @@ export const historyRepository = {
     const check = new Date()
     check.setHours(0, 0, 0, 0)
 
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
+    let iterating = true
+    while (iterating) {
       const dayStr = check.toISOString().slice(0, 10)
       if (activeDays.has(dayStr)) {
         streak++
         check.setDate(check.getDate() - 1)
       } else {
-        break
+        iterating = false
       }
     }
 

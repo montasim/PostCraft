@@ -65,7 +65,7 @@ function TrendingShell() {
       const result = await res.json()
       if (result.success && result.data) {
         setRuns(
-          (result.data.runs ?? []).map((r: any) => ({
+          (result.data.runs ?? []).map((r: Omit<ITrendingRun, "ranAt" | "createdAt" | "updatedAt"> & { ranAt: string; createdAt: string; updatedAt: string }) => ({
             ...r,
             ranAt: new Date(r.ranAt),
             createdAt: new Date(r.createdAt),
@@ -86,7 +86,7 @@ function TrendingShell() {
 
   useEffect(() => {
     loadTrending()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [loadTrending])
 
   async function handleRunNow() {
     setIsRunning(true)
@@ -145,16 +145,16 @@ function TrendingShell() {
           onRunNow={handleRunNow}
         />
         <TrendingEmptyState onConfigure={() => setSettingsPanelOpen(true)} />
-        <TrendingSettingsPanel
+        {prefs && <TrendingSettingsPanel
           open={settingsPanelOpen}
-          prefs={prefs!}
+          prefs={prefs}
           onClose={() => setSettingsPanelOpen(false)}
           onSave={handleSave}
           audienceOptions={personaOptions.audiences}
           languageOptions={personaOptions.languages}
           topicOptions={personaOptions.topics}
           industryOptions={personaOptions.industries}
-        />
+        />}
       </div>
     )
   }
@@ -228,16 +228,16 @@ function TrendingShell() {
         )}
       </div>
 
-      <TrendingSettingsPanel
+      {prefs && <TrendingSettingsPanel
         open={settingsPanelOpen}
-        prefs={prefs!}
+        prefs={prefs}
         onClose={() => setSettingsPanelOpen(false)}
         onSave={handleSave}
         audienceOptions={personaOptions.audiences}
         languageOptions={personaOptions.languages}
         topicOptions={personaOptions.topics}
         industryOptions={personaOptions.industries}
-      />
+      />}
     </div>
   )
 }

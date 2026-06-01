@@ -106,8 +106,8 @@ function useHistoryFilters() {
     today.setHours(0, 0, 0, 0)
     let streakDays = 0
     const checkDate = new Date(today)
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
+    let iterating = true
+    while (iterating) {
       const dayStr = checkDate.toISOString().slice(0, 10)
       const hasPost = HISTORY_ENTRIES.some(
         (e) => e.createdAt.slice(0, 10) === dayStr
@@ -116,7 +116,7 @@ function useHistoryFilters() {
         streakDays++
         checkDate.setDate(checkDate.getDate() - 1)
       } else {
-        break
+        iterating = false
       }
     }
 
