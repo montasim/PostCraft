@@ -1,11 +1,9 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
 import { NavGroup, PlanQuotaCard, StreakWidget, MotivationTip } from "@/components/shared"
-import { IconPlus, IconSparkles, IconClock } from "@tabler/icons-react"
+import { IconSparkles, IconClock } from "@tabler/icons-react"
 import { NAV_MAIN, NAV_CONFIG, NAV_ACCOUNT } from "@/lib/constants"
 import { formatNextRun } from "@/modules/trending/trending-schedule"
-import Link from "next/link"
 import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
 
 interface SidebarProps {
@@ -30,12 +28,6 @@ function Sidebar({ active, onSelect, used, limit, streakDays = 0, weeklyGoal = 5
         <span className="brand-gradient-text text-base font-bold">LinkedIQ</span>
       </div>
       <div className="flex-1 space-y-5 overflow-y-auto p-5">
-        <Button variant="outline" className="h-9 w-full gap-2" asChild>
-          <Link href="/?new=true">
-            <IconPlus className="h-4 w-4" />
-            Create a post
-          </Link>
-        </Button>
         <NavGroup
           label="Main"
           items={NAV_MAIN}
