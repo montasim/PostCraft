@@ -48,7 +48,7 @@ function VariantCard({
       )}
     >
       {isTop && (
-        <Badge className="absolute -top-3 left-6 grid-flow-col items-center gap-1 rounded-full brand-gradient px-2.5 py-1 text-[10px] leading-none font-bold tracking-wider text-primary-foreground uppercase shadow">
+        <Badge className="absolute -top-3 left-6 grid-flow-col items-center gap-1 rounded-full px-2.5 py-1 text-[10px] leading-none font-bold tracking-wider text-primary-foreground uppercase shadow brand-gradient">
           <IconStar className="h-3 w-3 fill-current" />
           {badgeLabel}
         </Badge>
@@ -61,27 +61,46 @@ function VariantCard({
             headerIcon
               ? headerIconClassName
               : isTop
-                ? "brand-gradient text-primary-foreground"
+                ? "text-primary-foreground brand-gradient"
                 : "bg-muted text-muted-foreground"
           )}
         >
-          {headerIcon ?? (
-            variant.rank === 1 ? (
+          {headerIcon ??
+            (variant.rank === 1 ? (
               <IconTrophy className="h-5 w-5" />
             ) : variant.rank === 2 ? (
               <IconMedal className="h-5 w-5" />
             ) : (
               <IconAward className="h-5 w-5" />
-            )
-          )}
+            ))}
         </div>
         <div className="flex items-center justify-between">
           <span className="text-sm font-semibold">#{variant.rank}</span>
           <div className="flex flex-wrap gap-1.5">
-            <ScorePill label="Score" short="S" value={variant.score} color="chart-5" />
-            <ScorePill label="Engagement" short="E" value={variant.engagement} color="chart-2" />
-            <ScorePill label="Clarity" short="C" value={variant.clarity} color="chart-3" />
-            <ScorePill label="Formatting" short="F" value={variant.formatting} color="primary" />
+            <ScorePill
+              label="Score"
+              short="S"
+              value={variant.score}
+              color="chart-5"
+            />
+            <ScorePill
+              label="Engagement"
+              short="E"
+              value={variant.engagement}
+              color="chart-2"
+            />
+            <ScorePill
+              label="Clarity"
+              short="C"
+              value={variant.clarity}
+              color="chart-3"
+            />
+            <ScorePill
+              label="Formatting"
+              short="F"
+              value={variant.formatting}
+              color="primary"
+            />
           </div>
         </div>
         <div className="flex items-center justify-between">
@@ -115,7 +134,11 @@ function VariantCard({
         <p className="text-sm font-medium">{variant.cta}</p>
         <div className="flex flex-wrap gap-1.5 pt-1">
           {variant.hashtags.map((tag) => (
-            <Badge key={tag} variant="secondary" className="text-xs font-normal">
+            <Badge
+              key={tag}
+              variant="secondary"
+              className="text-xs font-normal"
+            >
               {tag}
             </Badge>
           ))}
@@ -124,32 +147,31 @@ function VariantCard({
 
       <Separator className="my-4" />
 
-      <div className="flex items-center justify-between gap-3">
-        <p className="text-xs text-muted-foreground italic">
-          {variant.reasoning}
-        </p>
-        <div className="flex shrink-0 items-center gap-1.5">
-          {extraActions}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onCopy}
-            className={cn(
-              "gap-1.5 text-xs",
-              isTop && "border-primary/40 bg-primary/10 text-primary hover:bg-primary/20"
-            )}
-          >
-            {copied ? (
-              <>
-                <IconCheck className="h-3.5 w-3.5" /> Copied
-              </>
-            ) : (
-              <>
-                <IconCopy className="h-3.5 w-3.5" /> Copy
-              </>
-            )}
-          </Button>
-        </div>
+      <p className="mb-3 text-xs text-muted-foreground italic">
+        {variant.reasoning}
+      </p>
+      <div className="flex items-center gap-1.5">
+        {extraActions}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onCopy}
+          className={cn(
+            "gap-1.5 text-xs",
+            isTop &&
+              "border-primary/40 bg-primary/10 text-primary hover:bg-primary/20"
+          )}
+        >
+          {copied ? (
+            <>
+              <IconCheck className="h-3.5 w-3.5" /> Copied
+            </>
+          ) : (
+            <>
+              <IconCopy className="h-3.5 w-3.5" /> Copy
+            </>
+          )}
+        </Button>
       </div>
     </Card>
   )
