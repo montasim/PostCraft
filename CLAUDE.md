@@ -121,6 +121,7 @@ types/                # Global TypeScript types
 - **No editing `components/ui/`** manually — use `npx shadcn add` or `npx shadcn diff`
 - **No `console.log`** — use `core/logger`
 - **No `any` types** — TypeScript strict means strict
+- **No `eslint-disable` comments** — fix the underlying issue instead of suppressing lint warnings
 
 ## Before You Write Code
 
