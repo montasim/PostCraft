@@ -1,17 +1,24 @@
 import { NextResponse } from "next/server"
 import { connectDB } from "@/core/config/database"
 import { handleApiError } from "@/core/errors/error-handler"
-import { ValidationError } from "@/core/errors/app-error"
+import { QuotaExceededError, ValidationError } from "@/core/errors/app-error"
 import { getWorkspaceId, getUserId } from "@/core/auth/workspace"
 import { prefsService } from "@/modules/prefs"
+import { analyticsRepository } from "@/modules/analytics/analytics.repository"
 import { createRun } from "@/modules/trending/trending.repository"
 import { inngest } from "@/core/queue/client"
+import { PLAN_LIMIT } from "@/lib/constants"
 
 export async function POST() {
   try {
     await connectDB()
     const workspaceId = await getWorkspaceId()
     const userId = await getUserId()
+
+    const overview = await analyticsRepository.getOverview(workspaceId)
+    if (overview.completedGenerations >= PLAN_LIMIT) {
+      throw new QuotaExceededError()
+    }
 
     const prefs = await prefsService.getTrendingPrefs(userId)
     if (!prefs.platforms || prefs.platforms.length === 0) {
