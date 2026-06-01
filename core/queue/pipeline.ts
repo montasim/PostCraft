@@ -65,7 +65,9 @@ export async function runGenerationPipeline(generationId: string, workspaceId: s
     logger.info({ generationId }, "Pipeline: completed")
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error"
-    await generationService.updateStatus(generationId, workspaceId, "failed", message).catch(() => {})
+    await generationService.updateStatus(generationId, workspaceId, "failed", message).catch((statusErr) => {
+      logger.error({ err: statusErr, generationId }, "Pipeline: failed to update status")
+    })
     logger.error({ err: error, generationId }, "Pipeline: failed")
     throw error
   }
