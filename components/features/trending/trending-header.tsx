@@ -13,9 +13,35 @@ interface TrendingHeaderProps {
   onRunNow: () => void
 }
 
-function TrendingHeader({ enabled, prefs, isRunning, quotaExceeded, onOpenSettings, onRunNow }: TrendingHeaderProps) {
+function TrendingHeader({
+  enabled,
+  prefs,
+  isRunning,
+  quotaExceeded,
+  onOpenSettings,
+  onRunNow,
+}: TrendingHeaderProps) {
+  function formatSchedule(): string {
+    if (!enabled) return "Not scheduled"
+    const time = prefs.scheduledTime
+      ? new Date(`2000-01-01T${prefs.scheduledTime}`).toLocaleTimeString(
+          "en-US",
+          {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+          }
+        )
+      : ""
+    if (prefs.scheduleType === "hourly") return "Every hour"
+    if (prefs.scheduleType === "weekly")
+      return `weekly on ${prefs.scheduledDay} at ${time}`
+    return `daily at ${time}`
+  }
+
   return (
-     <div className="flex gap-4">
+    <div className="flex items-center gap-4">
+      <div className="flex gap-4">
         {enabled && (
           <Button
             variant="outline"
@@ -42,6 +68,10 @@ function TrendingHeader({ enabled, prefs, isRunning, quotaExceeded, onOpenSettin
           Settings
         </Button>
       </div>
+      <p className="ml-auto text-xs text-muted-foreground">
+        Next run: {formatSchedule()}
+      </p>
+    </div>
   )
 }
 
