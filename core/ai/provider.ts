@@ -87,14 +87,16 @@ const openrouterProvider = (model: string): AIProvider => ({
     if (!client) throw new Error("OpenRouter client not configured")
 
     const response = await client.chat.send({
-      model,
-      messages: [
-        { role: "system", content: params.system },
-        { role: "user", content: params.user },
-      ],
-      temperature: params.temperature,
-      max_tokens: params.maxTokens,
-      response_format: { type: "json_object" },
+      chatRequest: {
+        model,
+        messages: [
+          { role: "system", content: params.system },
+          { role: "user", content: params.user },
+        ],
+        temperature: params.temperature,
+        maxTokens: params.maxTokens,
+        responseFormat: { type: "json_object" },
+      },
     })
     return response.choices[0]?.message?.content ?? ""
   },
