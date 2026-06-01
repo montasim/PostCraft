@@ -83,7 +83,8 @@ function buildEmailHtml(insights: TrendingRunInsights): string {
       </div>`
     : ""
 
-  return buildEmailLayout(`
+  return buildEmailLayout(
+    `
     <h1 style="font-size:22px;font-weight:700;color:${EMAIL_BRAND.TEXT_HEX};margin:0 0 4px;">Your trending posts are ready</h1>
     <p style="font-size:14px;color:${EMAIL_BRAND.MUTED_HEX};margin:0 0 24px;">
       Scheduled run completed at ${insights.runTime.toLocaleString()}
@@ -130,7 +131,9 @@ function buildEmailHtml(insights: TrendingRunInsights): string {
     ${buildEmailDivider()}
 
     ${buildEmailButton(`${getEnv().APP_URL}/trending`, EMAIL_BUTTON.VIEW_TRENDING)}
-  `)
+  `,
+    getEnv().APP_URL
+  )
 }
 
 export async function sendTrendingCompletionEmail(

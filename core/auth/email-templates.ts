@@ -11,7 +11,7 @@ const {
   MAX_WIDTH,
 } = EMAIL_BRAND
 
-export function buildEmailLayout(content: string): string {
+export function buildEmailLayout(content: string, appUrl: string): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,7 +70,7 @@ export function buildEmailLayout(content: string): string {
                   <td align="center" style="font-size:12px;color:${MUTED_HEX};line-height:1.6;">
                     <p style="margin:0 0 4px;">Sent by LinkedIQ — AI-powered LinkedIn content</p>
                     <p style="margin:0;">
-                      <a href="{{APP_URL}}" style="color:${PRIMARY_HEX};text-decoration:none;">linkediq.dev</a>
+                      <a href="${appUrl}" style="color:${PRIMARY_HEX};text-decoration:none;">${appUrl.replace(/^https?:\/\//, "")}</a>
                     </p>
                   </td>
                 </tr>
