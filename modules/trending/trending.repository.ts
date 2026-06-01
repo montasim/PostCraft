@@ -36,6 +36,11 @@ export async function dismissRun(runId: string, workspaceId: string): Promise<vo
   await TrendingRun.updateOne({ _id: runId, workspaceId }, { $set: { dismissed: true } })
 }
 
+export async function dismissAllRuns(workspaceId: string): Promise<void> {
+  await connectDB()
+  await TrendingRun.updateMany({ workspaceId, dismissed: false }, { $set: { dismissed: true } })
+}
+
 export async function countUndismissedRuns(workspaceId: string): Promise<number> {
   await connectDB()
   return TrendingRun.countDocuments({ workspaceId, dismissed: false, status: "completed" })

@@ -85,6 +85,13 @@ function AppShell({ children }: AppShellProps) {
     setMobileOpen(false)
   }
 
+  useEffect(() => {
+    if (pathname === "/trending") {
+      setTrendingCount(0)
+      fetch("/api/trending/dismiss-all", { method: "PATCH" }).catch(() => {})
+    }
+  }, [pathname])
+
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar
