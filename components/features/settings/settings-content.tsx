@@ -51,6 +51,11 @@ function NotificationSettingsCard({
       description: "Get notified when a post is generated",
     },
     {
+      key: "emailTrendingComplete" as const,
+      label: "Scheduled trending",
+      description: "Get email with insights when trending posts are generated",
+    },
+    {
       key: "emailWeeklyDigest" as const,
       label: "Weekly digest",
       description: "Receive a weekly summary of activity",
@@ -475,7 +480,7 @@ function SettingsContent() {
 
   const handleReset = () => {
     saveSettings({
-      notifications: { emailGenerationComplete: true, emailWeeklyDigest: true, emailProductUpdates: false, pushPostReminder: true },
+      notifications: { emailGenerationComplete: true, emailTrendingComplete: false, emailWeeklyDigest: true, emailProductUpdates: false, pushPostReminder: true },
       account: { twoFactorEnabled: false, sessionTimeout: 30, dataExportFormat: "json" },
     })
   }
