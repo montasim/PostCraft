@@ -3,7 +3,7 @@
 import { NavGroup, PlanQuotaCard, StreakWidget, MotivationTip } from "@/components/shared"
 import { IconSparkles, IconClock } from "@tabler/icons-react"
 import { NAV_MAIN, NAV_CONFIG, NAV_ACCOUNT } from "@/lib/constants"
-import { formatNextRun } from "@/modules/trending/trending-schedule"
+import { computeNextRunAt, formatNextRun } from "@/modules/trending/trending-schedule"
 import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
 
 interface SidebarProps {
@@ -57,9 +57,11 @@ function Sidebar({ active, onSelect, used, limit, streakDays = 0, weeklyGoal = 5
               Trending
             </div>
             <p className="mt-1 text-[11px] text-muted-foreground">
-              Next run: {formatNextRun(null)}
-              <span className="mx-1">·</span>
-              {trendingPrefs.scheduleType} at {trendingPrefs.scheduledTime}
+              Next run: {formatNextRun(computeNextRunAt({
+                scheduleType: trendingPrefs.scheduleType,
+                scheduledTime: trendingPrefs.scheduledTime,
+                scheduledDay: trendingPrefs.scheduledDay,
+              }))}
             </p>
           </div>
         )}

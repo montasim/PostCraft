@@ -1,6 +1,8 @@
 import { prefsRepository } from "./prefs.repository"
 import { generationPrefsSchema, trendingPrefsSchema, GENERATION_PREFS_DEFAULTS, TRENDING_PREFS_DEFAULTS, type GenerationPrefs, type TrendingPrefs } from "./prefs.schema"
 import { ValidationError } from "@/core/errors/app-error"
+import { inngest } from "@/core/queue/client"
+import { WORKSPACE_ID_PREFIX } from "@/lib/constants"
 
 export const prefsService = {
   async getGenerationPrefs(userId: string): Promise<GenerationPrefs> {
@@ -32,6 +34,16 @@ export const prefsService = {
     }
 
     const updated = await prefsRepository.upsertTrending(userId, parsed.data)
+
+    const eventName = parsed.data.enabled
+      ? "trending/schedule-set"
+      : "trending/schedule-cancel"
+
+    await inngest.send({
+      name: eventName,
+      data: { userId, workspaceId: `${WORKSPACE_ID_PREFIX}${userId}` },
+    })
+
     return updated.trending
   },
 }
