@@ -4,21 +4,21 @@ AI-powered LinkedIn post generator. Solo professionals create, refine, and sched
 
 ## Stack
 
-| Layer | Tech |
-|---|---|
-| Framework | Next.js 16 (App Router, Turbopack) |
-| Language | TypeScript (strict mode) |
-| Frontend | React 19, Tailwind CSS 4, shadcn/ui, Radix |
-| State | Redux Toolkit (workspace, profile, trending prefs) |
-| DB | MongoDB + Mongoose 9 |
-| Auth | better-auth |
-| AI | OpenAI, Google Gemini, OpenRouter (all via `core/ai/`) |
-| Jobs | Inngest (background pipelines) |
-| Email | Resend |
-| Validation | Zod |
-| Logging | Pino |
-| Formatting | ESLint + Prettier |
-| Deploy | Vercel |
+| Layer      | Tech                                                   |
+| ---------- | ------------------------------------------------------ |
+| Framework  | Next.js 16 (App Router, Turbopack)                     |
+| Language   | TypeScript (strict mode)                               |
+| Frontend   | React 19, Tailwind CSS 4, shadcn/ui, Radix             |
+| State      | Redux Toolkit (workspace, profile, trending prefs)     |
+| DB         | MongoDB + Mongoose 9                                   |
+| Auth       | better-auth                                            |
+| AI         | OpenAI, Google Gemini, OpenRouter (all via `core/ai/`) |
+| Jobs       | Inngest (background pipelines)                         |
+| Email      | Resend                                                 |
+| Validation | Zod                                                    |
+| Logging    | Pino                                                   |
+| Formatting | ESLint + Prettier                                      |
+| Deploy     | Vercel                                                 |
 
 ## Folder Structure
 
@@ -98,6 +98,38 @@ types/                # Global TypeScript types
 - Components read shared state from Redux via `useSelector`
 - Local component state for UI-only concerns (modals, toggles, form inputs)
 
+## Constants Convention
+
+All shared constants live in `lib/constants/` organized by domain:
+
+| File         | Contents                                                                 |
+| ------------ | ------------------------------------------------------------------------ |
+| `status.ts`  | Status enums (generation, trending, guardrail, draft)                    |
+| `regex.ts`   | Reusable regex patterns (markdown fences, heuristic scorers)             |
+| `api.ts`     | API endpoints, external URLs, HTTP status codes, cache headers           |
+| `errors.ts`  | Error codes, error messages, retryable error patterns                    |
+| `numeric.ts` | Magic numbers, score thresholds, length limits, retry defaults           |
+| `time.ts`    | Time constants (ms, seconds), session/OTP/cron config                    |
+| `ai.ts`      | AI provider config, model names, temperatures, token limits              |
+| `ui.ts`      | UI option data (nav items, audience/tone/language options, score ranges) |
+| `mock.ts`    | Mock/demo data for development                                           |
+| `index.ts`   | Barrel re-export of all modules                                          |
+
+Rules:
+
+- **Single source of truth** — Zod schemas define enums, constants re-export them
+- **No magic values** — every number, string, regex in business logic is a named constant
+- **No duplication** — if a value appears in 2+ places, it belongs in `lib/constants/`
+- **No raw status strings** — always use `GENERATION_STATUS`, `RUN_STATUS`, `GUARDRAIL_CATEGORY`, etc.
+- **No inline API paths** — use `API.WORKSPACE`, `API.PROFILE`, etc.
+- **No raw error messages** — use `ERROR_MESSAGES.*` and `ERROR_CODES.*`
+- **No inline HTTP codes** — use `HTTP_STATUS.*`
+- **No inline AI config** — use `AI_TEMPERATURE.*`, `AI_MAX_TOKENS.*`, etc.
+- **No raw time values** — use `MILLISECONDS.*`, `SECONDS.*`, `SESSION.*`, `AUTH_TOKEN.*`, `OTP.*`
+- UI strings used only once can stay inline in components
+- Mock data in `mock.ts`, never mixed with production constants
+- Add new domain file if constants span a distinct concern
+
 ## DO
 
 - Use Zod to validate all inputs at service boundaries
@@ -109,6 +141,7 @@ types/                # Global TypeScript types
 - Follow conventional commits: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`
 - Lazy load heavy components (AI results, charts, editors)
 - Use semantic HTML and basic ARIA attributes
+- Extract all hardcoded values to `lib/constants/` following the Constants Convention
 - Run `pnpm lint` and `pnpm typecheck` before considering work done
 
 ## DON'T
