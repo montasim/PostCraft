@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { TrendingHeader } from "./trending-header"
 import { TrendingEmptyState } from "./trending-empty-state"
@@ -13,20 +13,17 @@ import { cn } from "@/lib/utils"
 import type { SelectOption } from "@/components/shared/multi-select"
 import type { ITrendingRun, TrendingGenerationPreview } from "@/modules/trending/trending.types"
 import { TRENDING_PREFS_DEFAULTS, type TrendingPrefs } from "@/modules/prefs/prefs.schema"
-import { MOCK_RUNS, MOCK_GENERATIONS } from "@/modules/trending/trending.mock"
 import { IconArrowLeft, IconTrendingUp } from "@tabler/icons-react"
 import { toast } from "sonner"
 
-interface TrendingShellProps {
-  runs?: ITrendingRun[]
-  generations?: TrendingGenerationPreview[]
-}
-
-function TrendingShell({ runs = MOCK_RUNS, generations = MOCK_GENERATIONS }: TrendingShellProps) {
+function TrendingShell() {
+  const [runs, setRuns] = useState<ITrendingRun[]>([])
+  const [generations, setGenerations] = useState<TrendingGenerationPreview[]>([])
   const [prefs, setPrefs] = useState<TrendingPrefs>({ ...TRENDING_PREFS_DEFAULTS })
   const [settingsPanelOpen, setSettingsPanelOpen] = useState(false)
   const [isRunning, setIsRunning] = useState(false)
-  const [selectedRunId, setSelectedRunId] = useState<string | null>(runs[0]?._id ?? null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [selectedRunId, setSelectedRunId] = useState<string | null>(null)
   const [personaOptions, setPersonaOptions] = useState<{
     audiences: SelectOption[]
     languages: SelectOption[]
@@ -36,6 +33,35 @@ function TrendingShell({ runs = MOCK_RUNS, generations = MOCK_GENERATIONS }: Tre
   const isDesktop = useMediaQuery("(min-width: 1024px)")
 
   const hasConfig = prefs.enabled && prefs.platforms.length > 0
+
+  const loadTrending = useCallback(async () => {
+    try {
+      const res = await fetch("/api/trending")
+      const result = await res.json()
+      if (result.success && result.data) {
+        setRuns(
+          (result.data.runs ?? []).map((r: any) => ({
+            ...r,
+            ranAt: new Date(r.ranAt),
+            createdAt: new Date(r.createdAt),
+            updatedAt: new Date(r.updatedAt),
+          }))
+        )
+        setGenerations(result.data.generations ?? [])
+        if (!selectedRunId && result.data.runs?.length > 0) {
+          setSelectedRunId(result.data.runs[0]._id)
+        }
+      }
+    } catch {
+      toast.error("Failed to load trending data")
+    } finally {
+      setIsLoading(false)
+    }
+  }, [selectedRunId])
+
+  useEffect(() => {
+    loadTrending()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     fetch("/api/prefs/trending")
@@ -63,9 +89,19 @@ function TrendingShell({ runs = MOCK_RUNS, generations = MOCK_GENERATIONS }: Tre
       .catch(() => {})
   }, [])
 
-  function handleRunNow() {
+  async function handleRunNow() {
     setIsRunning(true)
-    setTimeout(() => setIsRunning(false), 3000)
+    try {
+      const res = await fetch("/api/trending/run-now", { method: "POST" })
+      const result = await res.json()
+      if (!result.success) throw new Error(result.error ?? "Failed to start run")
+      toast.success("Run started — posts will appear shortly")
+      setTimeout(loadTrending, 15_000)
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to start run")
+    } finally {
+      setIsRunning(false)
+    }
   }
 
   async function handleSave(newPrefs: TrendingPrefs) {
@@ -91,9 +127,12 @@ function TrendingShell({ runs = MOCK_RUNS, generations = MOCK_GENERATIONS }: Tre
     ? generations.filter((g) => g.runId === selectedRunId)
     : []
 
-  // Mobile: show sidebar or detail based on selection
   const showDetail = selectedRunId && !isDesktop
   const showSidebar = !showDetail
+
+  if (isLoading) {
+    return null
+  }
 
   if (runs.length === 0 && !hasConfig) {
     return (
@@ -122,7 +161,6 @@ function TrendingShell({ runs = MOCK_RUNS, generations = MOCK_GENERATIONS }: Tre
 
   return (
     <div className="flex h-[calc(100vh-3.5rem)] overflow-hidden flex-col lg:flex-row lg:-m-5">
-      {/* Sidebar */}
       <div
         className={cn(
           "shrink-0 border-r border-sidebar-border bg-sidebar",
@@ -139,7 +177,6 @@ function TrendingShell({ runs = MOCK_RUNS, generations = MOCK_GENERATIONS }: Tre
         </div>
       </div>
 
-      {/* Detail */}
       <div
         className={cn(
           "flex-1 overflow-y-auto",

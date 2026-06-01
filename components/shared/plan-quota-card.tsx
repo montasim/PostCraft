@@ -36,9 +36,6 @@ function PlanQuotaCard({
                 ? `${remaining} AI generations left`
                 : "All posts used this period"}
             </p>
-            <p className="mt-0.5 text-[11px] text-muted-foreground">
-              {getQuotaMessage(used, limit)}
-            </p>
           </div>
         </div>
       </div>

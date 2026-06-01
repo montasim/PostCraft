@@ -32,6 +32,7 @@ function AppShell({ children }: AppShellProps) {
     brandName: string
   }>()
   const [trendingPrefs, setTrendingPrefs] = useState<TrendingPrefs>()
+  const [trendingCount, setTrendingCount] = useState(0)
 
   useEffect(() => {
     fetch("/api/workspace")
@@ -51,6 +52,13 @@ function AppShell({ children }: AppShellProps) {
       .then((r) => r.json())
       .then((res) => {
         if (res.success && res.data) setTrendingPrefs(res.data)
+      })
+      .catch(() => {})
+
+    fetch("/api/trending")
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.success && res.data) setTrendingCount(res.data.unreadCount ?? 0)
       })
       .catch(() => {})
   }, [])
@@ -88,7 +96,7 @@ function AppShell({ children }: AppShellProps) {
         streakDays={4}
         weeklyGoal={5}
         weeklyProgress={3}
-        trendingCount={3}
+        trendingCount={trendingCount}
         trendingPrefs={trendingPrefs}
       />
       <MobileSidebar
