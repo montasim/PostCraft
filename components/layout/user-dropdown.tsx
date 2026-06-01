@@ -40,7 +40,7 @@ function UserDropdown() {
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-48">
+        <DropdownMenuContent align="end" className="w-72">
           <DropdownMenuLabel>
             <p className="text-sm font-medium">{user?.name ?? "User"}</p>
             <p className="text-xs text-muted-foreground">{user?.email ?? ""}</p>
