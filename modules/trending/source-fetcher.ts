@@ -2,6 +2,34 @@ import type { SourceItem } from "./trending.types"
 import type { TrendingPrefs } from "../prefs/prefs.schema"
 import { logger } from "@/core/logger"
 
+interface HNHit {
+  title: string
+  url?: string
+  points?: number
+}
+
+interface DevToArticle {
+  title: string
+  url: string
+  positive_reactions_count?: number
+  comments_count?: number
+}
+
+interface GitHubRepo {
+  full_name: string
+  html_url: string
+  stargazers_count?: number
+}
+
+interface RedditChild {
+  data: {
+    title: string
+    permalink: string
+    score?: number
+    is_self?: boolean
+  }
+}
+
 export function buildSourceKeywords(config: TrendingPrefs): string[] {
   const raw = [
     ...(config.topics ?? []),
@@ -19,8 +47,8 @@ export async function fetchHackerNews(keywords: string[], count: number): Promis
     if (!res.ok) throw new Error(`HN API ${res.status}`)
     const data = await res.json()
     return (data.hits ?? [])
-      .filter((h: any) => h.url)
-      .map((h: any) => ({
+      .filter((h: HNHit) => h.url)
+      .map((h: HNHit) => ({
         source: "hackernews" as const,
         title: h.title,
         url: h.url,
@@ -40,7 +68,7 @@ export async function fetchDevTo(keywords: string[], count: number): Promise<Sou
     const res = await fetch(url)
     if (!res.ok) throw new Error(`Dev.to API ${res.status}`)
     const articles = await res.json()
-    return (articles ?? []).map((a: any) => ({
+    return (articles ?? []).map((a: DevToArticle) => ({
       source: "devto" as const,
       title: a.title,
       url: a.url,
@@ -72,7 +100,7 @@ export async function fetchGitHub(keywords: string[], count: number): Promise<So
     }
     if (!res.ok) throw new Error(`GitHub API ${res.status}`)
     const data = await res.json()
-    return (data.items ?? []).map((r: any) => ({
+    return (data.items ?? []).map((r: GitHubRepo) => ({
       source: "github" as const,
       title: r.full_name,
       url: r.html_url,
@@ -115,8 +143,8 @@ export async function fetchReddit(keywords: string[], count: number): Promise<So
     if (!res.ok) throw new Error(`Reddit API ${res.status}`)
     const data = await res.json()
     return (data?.data?.children ?? [])
-      .filter((c: any) => !c.data.is_self)
-      .map((c: any) => ({
+      .filter((c: RedditChild) => !c.data.is_self)
+      .map((c: RedditChild) => ({
         source: "reddit" as const,
         title: c.data.title,
         url: `https://reddit.com${c.data.permalink}`,
