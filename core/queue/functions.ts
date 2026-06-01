@@ -8,6 +8,8 @@ import { sendTrendingCompletionEmail } from "@/modules/trending/trending-email"
 import { saveGlobalTopics, saveGlobalTopicsFailure } from "@/modules/trending/global-topics.repository"
 import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
 import { connectDB } from "@/core/config/database"
+import { analyticsRepository } from "@/modules/analytics/analytics.repository"
+import { PLAN_LIMIT } from "@/lib/constants"
 import { logger } from "@/core/logger"
 
 export const generatePosts = inngest.createFunction(
@@ -42,6 +44,14 @@ export const runTrendingPipeline = inngest.createFunction(
     }
 
     try {
+      await connectDB()
+      const overview = await analyticsRepository.getOverview(workspaceId)
+      if (overview.completedGenerations >= PLAN_LIMIT) {
+        await updateRunStatus(runId, "failed", "Quota exceeded")
+        logger.info({ workspaceId, runId }, "Trending pipeline skipped — quota exceeded")
+        return
+      }
+
       const rawItems = await fetchTrendingSources(config)
       const rankedItems = rankSourceItems(rawItems)
       await updateRunSourceItems(runId, rankedItems)
