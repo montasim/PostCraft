@@ -1,10 +1,10 @@
 import { serve } from "inngest/next"
 import { inngest } from "@/core/queue/client"
-import { generatePosts, runTrendingPipeline } from "@/core/queue/functions"
+import { generatePosts, runTrendingPipeline, fetchGlobalTrendingTopics } from "@/core/queue/functions"
 
 const handler = serve({
   client: inngest,
-  functions: [generatePosts, runTrendingPipeline],
+  functions: [generatePosts, runTrendingPipeline, fetchGlobalTrendingTopics],
 })
 
 export const GET = handler
