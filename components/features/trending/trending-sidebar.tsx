@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
-import { DatePicker } from "@/components/ui/date-picker"
+import { DatePicker } from "@/components/shared/date-picker"
 import { IconClock } from "@tabler/icons-react"
 import type { ITrendingRun, TrendingPlatform } from "@/modules/trending/trending.types"
 

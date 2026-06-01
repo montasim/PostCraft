@@ -15,7 +15,7 @@ import { MultiSelect, type SelectOption } from "@/components/shared/multi-select
 import { Switch } from "@/components/ui/switch"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip"
-import { TimePicker } from "@/components/ui/time-picker"
+import { TimePicker } from "@/components/shared/time-picker"
 import { IconInfoCircle } from "@tabler/icons-react"
 import { toast } from "sonner"
 import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"

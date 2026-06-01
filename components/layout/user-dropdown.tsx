@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ConfirmDialog } from "@/components/ui/confirm-dialog"
+import { ConfirmDialog } from "@/components/shared/confirm-dialog"
 import { IconUser, IconSettings, IconLogout } from "@tabler/icons-react"
 import { authClient } from "@/core/auth/auth-client"
 
