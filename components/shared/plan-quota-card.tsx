@@ -33,7 +33,7 @@ function PlanQuotaCard({
           <div>
             <p className="text-sm leading-none">
               {remaining > 0
-                ? `${remaining} ideas left to bring to life`
+                ? `${remaining} AI generations left`
                 : "All posts used this period"}
             </p>
             <p className="mt-0.5 text-[11px] text-muted-foreground">
