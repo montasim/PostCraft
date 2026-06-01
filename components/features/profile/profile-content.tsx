@@ -38,7 +38,7 @@ function ProfileHeaderCard({
   onUpdate,
 }: {
   profile: UserProfile
-  onUpdate: (field: keyof UserProfile, value: string) => void
+  onUpdate: (updates: Partial<UserProfile>) => void
 }) {
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState({
@@ -48,9 +48,7 @@ function ProfileHeaderCard({
   })
 
   const handleSave = () => {
-    onUpdate("fullName", draft.fullName)
-    onUpdate("title", draft.title)
-    onUpdate("company", draft.company)
+    onUpdate({ fullName: draft.fullName, title: draft.title, company: draft.company })
     setEditing(false)
   }
 
@@ -175,7 +173,7 @@ function ProfileDetailsCard({
   onUpdate,
 }: {
   profile: UserProfile
-  onUpdate: (field: keyof UserProfile, value: string) => void
+  onUpdate: (updates: Partial<UserProfile>) => void
 }) {
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState({
@@ -187,11 +185,7 @@ function ProfileDetailsCard({
   })
 
   const handleSave = () => {
-    onUpdate("bio", draft.bio)
-    onUpdate("location", draft.location)
-    onUpdate("website", draft.website)
-    onUpdate("twitterHandle", draft.twitterHandle)
-    onUpdate("linkedInSlug", draft.linkedInSlug)
+    onUpdate({ bio: draft.bio, location: draft.location, website: draft.website, twitterHandle: draft.twitterHandle, linkedInSlug: draft.linkedInSlug })
     setEditing(false)
   }
 
@@ -242,6 +236,7 @@ function ProfileDetailsCard({
                 onChange={(e) =>
                   setDraft((d) => ({ ...d, bio: e.target.value }))
                 }
+                placeholder="Share what drives your work, your expertise, and what makes your perspective unique..."
                 className="min-h-20 text-xs"
                 rows={3}
               />
@@ -253,6 +248,7 @@ function ProfileDetailsCard({
                 onChange={(e) =>
                   setDraft((d) => ({ ...d, location: e.target.value }))
                 }
+                placeholder="Your city or region"
                 className="h-8 text-xs"
               />
             </div>
@@ -263,27 +259,30 @@ function ProfileDetailsCard({
                 onChange={(e) =>
                   setDraft((d) => ({ ...d, website: e.target.value }))
                 }
+                placeholder="https://yourwebsite.com"
                 className="h-8 text-xs"
               />
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div className="space-y-1.5">
-                <Label className="text-xs">Twitter</Label>
+                <Label className="text-xs">X</Label>
                 <Input
                   value={draft.twitterHandle}
                   onChange={(e) =>
                     setDraft((d) => ({ ...d, twitterHandle: e.target.value }))
                   }
+                  placeholder="x.com/yourprofile"
                   className="h-8 text-xs"
                 />
               </div>
               <div className="space-y-1.5">
-                <Label className="text-xs">LinkedIn slug</Label>
+                <Label className="text-xs">LinkedIn</Label>
                 <Input
                   value={draft.linkedInSlug}
                   onChange={(e) =>
                     setDraft((d) => ({ ...d, linkedInSlug: e.target.value }))
                   }
+                  placeholder="linkedin.com/in/yourprofile"
                   className="h-8 text-xs"
                 />
               </div>
@@ -330,78 +329,6 @@ function ProfileDetailsCard({
   )
 }
 
-// ─── Profile Stats Card ───────────────────────────────────────────
-
-function ProfileStatsCard({ stats }: { stats: ProfileStats }) {
-  const statItems = [
-    {
-      icon: IconTrophy,
-      value: stats.postsGenerated,
-      label: "Posts crafted",
-    },
-    {
-      icon: IconFlame,
-      value: stats.currentStreak,
-      label: "Current streak",
-      highlight: true,
-    },
-    {
-      icon: IconMedal,
-      value: stats.longestStreak,
-      label: "Best streak",
-    },
-    {
-      icon: IconStar,
-      value: stats.avgScore,
-      label: "Avg score",
-    },
-  ]
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-          <IconFlame className="h-4 w-4 text-primary" />
-          Your impact
-          <Badge variant="secondary" className="ml-auto gap-1 text-[10px]">
-            Top {stats.topPercentile}% of creators — your consistency pays off
-          </Badge>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-2 gap-3">
-          {statItems.map((item) => (
-            <div
-              key={item.label}
-              className="flex items-center gap-2.5 rounded-lg border px-3 py-2.5"
-            >
-              <div
-                className={cn(
-                  "flex h-8 w-8 items-center justify-center rounded-md bg-muted",
-                  item.highlight && "bg-chart-4/10 text-chart-4"
-                )}
-              >
-                <item.icon
-                  className={cn(
-                    "h-4 w-4",
-                    item.highlight ? "text-chart-4" : "text-muted-foreground"
-                  )}
-                />
-              </div>
-              <div>
-                <p className="text-sm font-semibold">{item.value}</p>
-                <p className="text-[10px] text-muted-foreground">
-                  {item.label}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
-
 // ─── Profile Completion Card ───────────────────────────────────────
 
 function ProfileCompletionCard({ profile }: { profile: UserProfile }) {
@@ -435,83 +362,6 @@ function ProfileCompletionCard({ profile }: { profile: UserProfile }) {
       </div>
       <Progress value={percent} className="h-2 w-32" />
     </div>
-  )
-}
-
-// ─── Profile Achievements Card ─────────────────────────────────────
-
-function ProfileAchievementsCard({ stats }: { stats: ProfileStats }) {
-  const badges = [
-    {
-      icon: IconTrophy,
-      label: "First Post",
-      description: "You published your first post",
-      active: stats.postsGenerated >= 1,
-    },
-    {
-      icon: IconFlame,
-      label: "10 Streak",
-      description: "You showed up 10 days in a row",
-      active: stats.longestStreak >= 10,
-    },
-    {
-      icon: IconStar,
-      label: "Top 10%",
-      description: "You outperform 90% of creators",
-      active: stats.topPercentile <= 10,
-    },
-    {
-      icon: IconMedal,
-      label: "50 Posts",
-      description: "50 posts crafted and counting",
-      active: stats.postsGenerated >= 50,
-    },
-  ]
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-          <IconMedal className="h-4 w-4 text-primary" />
-          Achievements
-          <Badge variant="secondary" className="ml-auto text-[10px]">
-            {badges.filter((b) => b.active).length} of {badges.length} earned
-          </Badge>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-2 gap-3">
-          {badges.map((badge) => (
-            <div
-              key={badge.label}
-              className={cn(
-                "flex items-center gap-2.5 rounded-lg border px-3 py-2.5",
-                !badge.active && "opacity-50"
-              )}
-            >
-              <div
-                className={cn(
-                  "flex h-8 w-8 items-center justify-center rounded-md",
-                  badge.active ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
-                )}
-              >
-                {badge.active ? (
-                  <badge.icon className="h-4 w-4" />
-                ) : (
-                  <IconLock className="h-4 w-4" />
-                )}
-              </div>
-              <div>
-                <p className="text-xs font-medium">{badge.label}</p>
-                <p className="text-[10px] text-muted-foreground">
-                  {badge.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
   )
 }
 
@@ -562,8 +412,8 @@ function ProfileContent() {
     }
   }
 
-  const handleUpdate = (field: keyof UserProfile, value: string) => {
-    saveProfile({ [field]: value })
+  const handleUpdate = (updates: Partial<UserProfile>) => {
+    saveProfile(updates as Record<string, string>)
   }
 
   if (loading || !profile || !stats) {
@@ -589,11 +439,6 @@ function ProfileContent() {
         <div className="w-full lg:w-[60%] [&_>div]:h-full">
           <ProfileDetailsCard profile={profile} onUpdate={handleUpdate} />
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-3 sm:gap-5 lg:grid-cols-2">
-        <ProfileStatsCard stats={stats} />
-        <ProfileAchievementsCard stats={stats} />
       </div>
     </div>
   )
