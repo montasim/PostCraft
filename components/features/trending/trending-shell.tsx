@@ -22,6 +22,7 @@ function TrendingShell() {
   const [prefs, setPrefs] = useState<TrendingPrefs>({ ...TRENDING_PREFS_DEFAULTS })
   const [settingsPanelOpen, setSettingsPanelOpen] = useState(false)
   const [isRunning, setIsRunning] = useState(false)
+  const [quotaExceeded, setQuotaExceeded] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [selectedRunId, setSelectedRunId] = useState<string | null>(null)
   const [personaOptions, setPersonaOptions] = useState<{
@@ -75,6 +76,9 @@ function TrendingShell() {
       .then((r) => r.json())
       .then((res) => {
         if (res.success && res.data.persona) {
+          if (res.data.usage.used >= res.data.usage.limit) {
+            setQuotaExceeded(true)
+          }
           const persona = res.data.persona
           const toOptions = (items: { value: string; label: string; description?: string }[]) =>
             items.map((i) => ({ value: i.value, label: i.label, description: i.description }))
@@ -141,6 +145,7 @@ function TrendingShell() {
           enabled={false}
           prefs={prefs}
           isRunning={isRunning}
+          quotaExceeded={quotaExceeded}
           onOpenSettings={() => setSettingsPanelOpen(true)}
           onRunNow={handleRunNow}
         />
@@ -188,6 +193,7 @@ function TrendingShell() {
             enabled={hasConfig}
             prefs={prefs}
             isRunning={isRunning}
+            quotaExceeded={quotaExceeded}
             onOpenSettings={() => setSettingsPanelOpen(true)}
             onRunNow={handleRunNow}
           />
