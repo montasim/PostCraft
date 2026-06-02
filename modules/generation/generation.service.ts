@@ -91,8 +91,8 @@ export const generationService = {
     workspaceId: string,
     userId: string
   ) {
-    const overview = await insightsRepository.getOverview(workspaceId)
-    const totalGenerated = overview.totalPostsGenerated ?? 0
+    const dailyUsage = await insightsRepository.getDailyUsage(workspaceId)
+    const totalGenerated = dailyUsage.totalPostsGenerated
     const requestedPosts = data.postCount ?? POST_COUNT_DEFAULT
     if (totalGenerated + requestedPosts > PLAN_LIMIT) {
       throw new QuotaExceededError()

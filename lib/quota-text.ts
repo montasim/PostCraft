@@ -8,5 +8,5 @@ export function getQuotaMessage(used: number, limit: number): string {
 }
 
 export function getQuotaFooter(used: number, limit: number): string {
-  return `${used} of ${limit} posts brought to life this period`
+  return `${used} of ${limit} posts used today`
 }

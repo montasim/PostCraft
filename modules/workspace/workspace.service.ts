@@ -38,14 +38,14 @@ export const workspaceService = {
         : [],
     }
 
-    const overview = await insightsRepository.getOverview(workspaceId)
+    const dailyUsage = await insightsRepository.getDailyUsage(workspaceId)
 
     return {
       persona,
       usage: {
-        used: overview.totalPostsGenerated,
+        used: dailyUsage.totalPostsGenerated,
         limit: PLAN_LIMIT,
-        totalGenerated: overview.totalPostsGenerated,
+        totalGenerated: dailyUsage.totalPostsGenerated,
       },
     }
   },

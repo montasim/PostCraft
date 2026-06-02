@@ -59,6 +59,40 @@ export const insightsRepository = {
       completedGenerations: g.completed,
     }
   },
+  async getDailyUsage(workspaceId: string) {
+    const now = new Date()
+    const startOfDayUTC = new Date(
+      Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
+    )
+    const startOfNextDayUTC = new Date(
+      Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1)
+    )
+
+    const [result] = await GenerationModel.aggregate([
+      {
+        $match: {
+          workspaceId,
+          createdAt: { $gte: startOfDayUTC, $lt: startOfNextDayUTC },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalPostsGenerated: {
+            $sum: {
+              $cond: [
+                { $eq: ["$status", "completed"] },
+                { $ifNull: ["$postCount", 3] },
+                0,
+              ],
+            },
+          },
+        },
+      },
+    ])
+
+    return { totalPostsGenerated: result?.totalPostsGenerated ?? 0 }
+  },
 
   async getScoreDistribution(workspaceId: string) {
     const ranges = [
