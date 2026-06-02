@@ -25,13 +25,20 @@ import {
   IconUsers,
   IconMessageCircle,
   IconGlobe,
+  IconHash,
+  IconDeviceMobile,
 } from "@tabler/icons-react"
 import {
   AUDIENCE_OPTIONS,
   TONE_OPTIONS,
   LANGUAGE_OPTIONS,
+  PLATFORM_OPTIONS,
   TOPIC_MAX_LENGTH,
   TOPIC_WARNING_THRESHOLD,
+  POST_COUNT_DEFAULT,
+  POST_COUNT_MIN,
+  POST_COUNT_MAX,
+  HASHTAG_COUNT_DEFAULT,
 } from "@/lib/constants"
 import type { GenerationPrefs } from "@/modules/prefs/prefs.schema"
 import { API } from "@/lib/constants"
@@ -68,6 +75,9 @@ interface PostCreationFormProps {
     tones: string[]
     languages: string[]
     includeEmoji: boolean
+    postCount: number
+    platforms: string[]
+    hashtagCount: number
   }) => void
   isSubmitting?: boolean
   quotaExceeded?: boolean
@@ -77,6 +87,7 @@ interface PostCreationFormProps {
   audienceOptions?: (string | SelectOption)[]
   toneOptions?: (string | SelectOption)[]
   languageOptions?: (string | SelectOption)[]
+  platformOptions?: SelectOption[]
 }
 
 function PostCreationFormInner({
@@ -89,6 +100,7 @@ function PostCreationFormInner({
   audienceOptions = AUDIENCE_OPTIONS,
   toneOptions = TONE_OPTIONS,
   languageOptions = LANGUAGE_OPTIONS,
+  platformOptions = PLATFORM_OPTIONS,
 }: PostCreationFormProps) {
   const searchParams = useSearchParams()
   const refine = initialRefine ?? consumeRefineData()
@@ -109,6 +121,9 @@ function PostCreationFormInner({
       : (initialPrefs?.languages ?? ["EN"])
   )
   const [emoji, setEmoji] = useState(initialPrefs?.emoji ?? true)
+  const [postCount, setPostCount] = useState(POST_COUNT_DEFAULT)
+  const [hashtagCount, setHashtagCount] = useState(HASHTAG_COUNT_DEFAULT)
+  const [platforms, setPlatforms] = useState<string[]>([])
   const [isFocused, setIsFocused] = useState(false)
   const [topicSuggestions, setTopicSuggestions] = useState<string[]>([])
   const [suggestionsLoading, setSuggestionsLoading] = useState(true)
@@ -161,12 +176,16 @@ function PostCreationFormInner({
   }, [])
 
   const handleSubmit = () => {
+    const activePlatforms = platforms.length > 0 ? platforms : ["linkedin"]
     onGenerate({
       topic,
       audiences: audience,
       tones,
       languages,
       includeEmoji: emoji,
+      postCount,
+      platforms: activePlatforms,
+      hashtagCount,
     })
   }
 
@@ -216,7 +235,8 @@ function PostCreationFormInner({
             What&apos;s on your mind, {userName || "creator"}?
           </CardTitle>
           <Badge variant="secondary" className="text-[10px] font-medium">
-            <IconSparkles className="mr-1 h-3 w-3" />3 posts in ~12 seconds
+            <IconSparkles className="mr-1 h-3 w-3" />
+            {postCount} post{postCount > 1 ? "s" : ""} in ~{postCount * 4}s
           </Badge>
         </div>
       </CardHeader>
@@ -373,6 +393,59 @@ function PostCreationFormInner({
               />
             </div>
           </div>
+
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="space-y-1.5">
+              <Label className="flex items-center gap-1 text-xs font-medium">
+                <IconHash className="h-3 w-3 text-muted-foreground" />
+                Number of posts
+              </Label>
+              <input
+                type="number"
+                min={POST_COUNT_MIN}
+                max={POST_COUNT_MAX}
+                value={postCount}
+                onChange={(e) => {
+                  const v = parseInt(e.target.value, 10)
+                  if (!isNaN(v))
+                    setPostCount(
+                      Math.max(POST_COUNT_MIN, Math.min(POST_COUNT_MAX, v))
+                    )
+                }}
+                className="flex min-h-[44px] w-full rounded-lg border border-border/60 bg-transparent px-3 py-1 text-xs shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-primary focus-visible:outline-none"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="flex items-center gap-1 text-xs font-medium">
+                <IconHash className="h-3 w-3 text-muted-foreground" />
+                Hashtags per post
+              </Label>
+              <input
+                type="number"
+                min={1}
+                max={10}
+                value={hashtagCount}
+                onChange={(e) => {
+                  const v = parseInt(e.target.value, 10)
+                  if (!isNaN(v)) setHashtagCount(Math.max(1, Math.min(10, v)))
+                }}
+                className="flex min-h-[44px] w-full rounded-lg border border-border/60 bg-transparent px-3 py-1 text-xs shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-primary focus-visible:outline-none"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="flex items-center gap-1 text-xs font-medium">
+                <IconDeviceMobile className="h-3 w-3 text-muted-foreground" />
+                Platforms
+              </Label>
+              <MultiSelect
+                options={platformOptions}
+                selected={platforms}
+                onChange={setPlatforms}
+                placeholder="Select platforms..."
+                maxVisible={3}
+              />
+            </div>
+          </div>
         </div>
       </CardContent>
 
@@ -401,7 +474,7 @@ function PostCreationFormInner({
             ? "Writing your posts..."
             : quotaExceeded
               ? "Upgrade to Continue"
-              : "Generate 3 Posts"}
+              : `Generate ${postCount} Post${postCount > 1 ? "s" : ""}`}
         </Button>
       </CardFooter>
     </Card>

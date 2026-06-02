@@ -66,8 +66,10 @@ function DashboardClient() {
     audiences: SelectOption[]
     tones: SelectOption[]
     languages: SelectOption[]
+    platforms: SelectOption[]
   } = (() => {
-    if (!persona) return { audiences: [], tones: [], languages: [] }
+    if (!persona)
+      return { audiences: [], tones: [], languages: [], platforms: [] }
     const toOptions = (
       items: { value: string; label: string; description?: string }[]
     ) =>
@@ -80,6 +82,7 @@ function DashboardClient() {
       audiences: toOptions(persona.targetAudiences ?? []),
       tones: toOptions(persona.preferredTones ?? []),
       languages: toOptions(persona.language ?? []),
+      platforms: toOptions(persona.platforms ?? []),
     }
   })()
 
@@ -167,7 +170,7 @@ function DashboardClient() {
         const granted = await requestNotificationPermission()
         if (!granted) return
         sendBrowserNotification("Your posts are ready", {
-          body: "3 versions ranked and waiting for you.",
+          body: "Your posts are ranked and waiting for you.",
         })
       } catch {
         // Non-critical: notification permission/settings check failed
@@ -183,6 +186,9 @@ function DashboardClient() {
       tones: string[]
       languages: string[]
       includeEmoji: boolean
+      postCount: number
+      platforms: string[]
+      hashtagCount: number
     }) => {
       if (quotaExceeded) {
         setUpgradeOpen(true)
@@ -248,6 +254,7 @@ function DashboardClient() {
           audienceOptions={personaOptions.audiences}
           toneOptions={personaOptions.tones}
           languageOptions={personaOptions.languages}
+          platformOptions={personaOptions.platforms}
         />
         <BrandGuardPanel />
       </div>

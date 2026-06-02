@@ -17,6 +17,7 @@ import {
   AUDIENCE_OPTIONS,
   TONE_OPTIONS,
   LANGUAGE_OPTIONS,
+  PLATFORM_OPTIONS,
 } from "@/lib/constants"
 import {
   IconCrown,
@@ -163,6 +164,11 @@ function BrandPersonaCard({
           <Badge variant="secondary" className="text-[10px]">
             {persona.targetAudiences.length} audiences
           </Badge>
+          {(persona.platforms ?? []).length > 0 && (
+            <Badge variant="secondary" className="text-[10px]">
+              {(persona.platforms ?? []).length} platforms
+            </Badge>
+          )}
           <Button
             variant="ghost"
             size="sm"
@@ -271,6 +277,21 @@ function BrandPersonaCard({
                 creatable
               />
             </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Platforms</Label>
+              <MultiSelect
+                options={PLATFORM_OPTIONS}
+                selected={toValues(draft.platforms ?? [])}
+                onChange={(v) =>
+                  setDraft((d) => ({
+                    ...d,
+                    platforms: fromValues(v, PLATFORM_OPTIONS),
+                  }))
+                }
+                placeholder="Select platforms..."
+                creatable
+              />
+            </div>
             <Button
               size="sm"
               className="h-7 gap-1 text-xs"
@@ -371,6 +392,24 @@ function BrandPersonaCard({
                       className="text-[10px]"
                     >
                       {i.label}
+                    </Badge>
+                  ))
+                ) : (
+                  <p className="text-xs">—</p>
+                )}
+              </div>
+            </div>
+            <div>
+              <p className="mb-0.5 text-xs text-muted-foreground">Platforms</p>
+              <div className="flex flex-wrap gap-1">
+                {(persona.platforms ?? []).length > 0 ? (
+                  (persona.platforms ?? []).map((p) => (
+                    <Badge
+                      key={p.value}
+                      variant="secondary"
+                      className="text-[10px]"
+                    >
+                      {p.label}
                     </Badge>
                   ))
                 ) : (
@@ -509,6 +548,7 @@ function WorkspaceContent() {
                 "Language",
                 "Topics / Keywords",
                 "Industry",
+                "Platforms",
               ].map((_, i) => (
                 <div key={i} className="space-y-1.5">
                   <Skeleton className="h-3 w-24" />
