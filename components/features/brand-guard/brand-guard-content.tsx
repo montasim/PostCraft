@@ -20,7 +20,19 @@ import {
   IconRuler,
   IconSparkles,
   IconBan,
+  IconInfoCircle,
 } from "@tabler/icons-react"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {
+  ACTIVE_TONE_RULES_MAX,
+  ACTIVE_FORMAT_RULES_MAX,
+  ACTIVE_CUSTOM_RULES_MAX,
+  ACTIVE_BANNED_WORDS_MAX,
+} from "@/lib/constants"
 
 interface Rule {
   id: string
@@ -38,6 +50,7 @@ interface RuleSectionProps {
   onRemove: (id: string) => void
   onAdd: (text: string) => void
   loading?: boolean
+  maxActive: number
 }
 
 function RuleSection({
@@ -49,6 +62,7 @@ function RuleSection({
   onRemove,
   onAdd,
   loading,
+  maxActive,
 }: RuleSectionProps) {
   const [newRule, setNewRule] = useState("")
 
@@ -97,6 +111,19 @@ function RuleSection({
         <CardTitle className="flex items-center gap-2 text-sm font-semibold">
           <Icon className="h-4 w-4 text-primary" />
           {title}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                className="cursor-help text-muted-foreground hover:text-foreground"
+              >
+                <IconInfoCircle className="h-3.5 w-3.5" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="top" className="max-w-48">
+              Max {maxActive} rules can be active at a time
+            </TooltipContent>
+          </Tooltip>
           <Badge variant="secondary" className="ml-auto text-[10px]">
             {rules.filter((r) => r.active).length}/{rules.length} active
           </Badge>
@@ -167,12 +194,14 @@ function BannedWordsCard({
   onRemove,
   onAdd,
   loading,
+  maxActive,
 }: {
   rules: Rule[]
   onToggle: (id: string) => void
   onRemove: (id: string) => void
   onAdd: (text: string) => void
   loading?: boolean
+  maxActive: number
 }) {
   const [newWord, setNewWord] = useState("")
 
@@ -209,6 +238,19 @@ function BannedWordsCard({
         <CardTitle className="flex items-center gap-2 text-sm font-semibold">
           <IconBan className="h-4 w-4 text-destructive" />
           Words to avoid
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                className="cursor-help text-muted-foreground hover:text-foreground"
+              >
+                <IconInfoCircle className="h-3.5 w-3.5" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="top" className="max-w-48">
+              Max {maxActive} words can be active at a time
+            </TooltipContent>
+          </Tooltip>
           <Badge variant="secondary" className="ml-auto text-[10px]">
             {activeCount}/{rules.length} active
           </Badge>
@@ -405,12 +447,17 @@ function BrandGuardContent() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ isActive: newActive }),
         })
-        if (!res.ok) throw new Error()
-      } catch {
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}))
+          throw new Error(body.error || "Failed to toggle rule")
+        }
+      } catch (err) {
         setRules((prev) =>
           prev.map((r) => (r.id === id ? { ...r, active: !newActive } : r))
         )
-        toast.error("Failed to toggle rule")
+        toast.error(
+          err instanceof Error ? err.message : "Failed to toggle rule"
+        )
       }
     },
     [rules]
@@ -422,11 +469,18 @@ function BrandGuardContent() {
       setRules((cur) => cur.filter((r) => r.id !== id))
 
       try {
-        const res = await fetch(`${API.BRAND_GUARD}/${id}`, { method: "DELETE" })
-        if (!res.ok) throw new Error()
-      } catch {
+        const res = await fetch(`${API.BRAND_GUARD}/${id}`, {
+          method: "DELETE",
+        })
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}))
+          throw new Error(body.error || "Failed to remove rule")
+        }
+      } catch (err) {
         setRules(prev)
-        toast.error("Failed to remove rule")
+        toast.error(
+          err instanceof Error ? err.message : "Failed to remove rule"
+        )
       }
     },
     [rules]
@@ -441,7 +495,7 @@ function BrandGuardContent() {
           body: JSON.stringify({ category, rule: text, isActive: true }),
         })
         const data = await res.json()
-        if (!data.success) throw new Error()
+        if (!data.success) throw new Error(data.error || "Failed to add rule")
 
         setRules((prev) => [
           ...prev,
@@ -453,8 +507,8 @@ function BrandGuardContent() {
           },
         ])
         toast.success("Rule locked.")
-      } catch {
-        toast.error("Failed to add rule")
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : "Failed to add rule")
       }
     },
     []
@@ -481,6 +535,7 @@ function BrandGuardContent() {
             onRemove={handleRemove}
             onAdd={handleAdd("tone")}
             loading={loading}
+            maxActive={ACTIVE_TONE_RULES_MAX}
           />
           <RuleSection
             title="Format rules"
@@ -491,6 +546,7 @@ function BrandGuardContent() {
             onRemove={handleRemove}
             onAdd={handleAdd("format")}
             loading={loading}
+            maxActive={ACTIVE_FORMAT_RULES_MAX}
           />
           <RuleSection
             title="Custom rules"
@@ -501,6 +557,7 @@ function BrandGuardContent() {
             onRemove={handleRemove}
             onAdd={handleAdd("custom")}
             loading={loading}
+            maxActive={ACTIVE_CUSTOM_RULES_MAX}
           />
         </div>
         <div className="space-y-4">
@@ -510,6 +567,7 @@ function BrandGuardContent() {
             onRemove={handleRemove}
             onAdd={handleAdd("banned")}
             loading={loading}
+            maxActive={ACTIVE_BANNED_WORDS_MAX}
           />
           <PreviewCard
             toneRules={toneRules}
