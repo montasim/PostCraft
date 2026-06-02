@@ -1,3 +1,3 @@
-export { historyService } from "./history.service"
-export { historyRepository } from "./history.repository"
-export type { HistoryListFilters } from "./history.repository"
+export { libraryService } from "./library.service"
+export { libraryRepository } from "./library.repository"
+export type { LibraryListFilters } from "./library.repository"

@@ -1,30 +1,30 @@
-import { analyticsRepository } from "./analytics.repository"
-import { ANALYTICS_MONTHLY_GOAL } from "@/lib/constants"
+import { insightsRepository } from "./insights.repository"
+import { INSIGHTS_MONTHLY_GOAL } from "@/lib/constants"
 import type {
-  AnalyticsOverview,
+  InsightsOverview,
   ScoreDistribution,
   StylePerformance,
   TrendDataPoint,
   TopPerformingPost,
 } from "@/types"
 
-export interface AnalyticsDashboard {
-  overview: AnalyticsOverview
+export interface InsightsDashboard {
+  overview: InsightsOverview
   scoreDistribution: ScoreDistribution[]
   stylePerformance: StylePerformance[]
   trendData: TrendDataPoint[]
   topPosts: TopPerformingPost[]
 }
 
-export const analyticsService = {
-  async getDashboard(workspaceId: string): Promise<AnalyticsDashboard> {
+export const insightsService = {
+  async getDashboard(workspaceId: string): Promise<InsightsDashboard> {
     const [overview, scoreDistribution, stylePerformance, trendData, topPosts] =
       await Promise.all([
-        analyticsRepository.getOverview(workspaceId),
-        analyticsRepository.getScoreDistribution(workspaceId),
-        analyticsRepository.getStylePerformance(workspaceId),
-        analyticsRepository.getTrendData(workspaceId),
-        analyticsRepository.getTopPosts(workspaceId),
+        insightsRepository.getOverview(workspaceId),
+        insightsRepository.getScoreDistribution(workspaceId),
+        insightsRepository.getStylePerformance(workspaceId),
+        insightsRepository.getTrendData(workspaceId),
+        insightsRepository.getTopPosts(workspaceId),
       ])
 
     const bestStyle = stylePerformance.length > 0 ? stylePerformance[0] : null
@@ -49,7 +49,7 @@ export const analyticsService = {
               )
             : 0,
         monthlyGoalProgress: overview.completedGenerations,
-        monthlyGoal: ANALYTICS_MONTHLY_GOAL,
+        monthlyGoal: INSIGHTS_MONTHLY_GOAL,
         topPercentile: bestStyle ? bestStyle.avgScore : 0,
       },
       scoreDistribution,

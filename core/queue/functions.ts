@@ -21,7 +21,7 @@ import { prefsRepository } from "@/modules/prefs/prefs.repository"
 import { computeNextRunAt } from "@/modules/trending/trending-schedule"
 import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
 import { connectDB } from "@/core/config/database"
-import { analyticsRepository } from "@/modules/analytics/analytics.repository"
+import { insightsRepository } from "@/modules/insights/insights.repository"
 import {
   PLAN_LIMIT,
   GENERATION_EVENT,
@@ -65,7 +65,7 @@ export const runTrendingPipeline = inngest.createFunction(
 
     try {
       await connectDB()
-      const overview = await analyticsRepository.getOverview(workspaceId)
+      const overview = await insightsRepository.getOverview(workspaceId)
       if (overview.completedGenerations >= PLAN_LIMIT) {
         await updateRunStatus(runId, RUN_STATUS.FAILED, "Quota exceeded")
         logger.info(
@@ -215,7 +215,7 @@ export const scheduledTrendingRunner = inngest.createFunction(
 
     const quotaCheck = await step.run("check-quota", async () => {
       await connectDB()
-      const overview = await analyticsRepository.getOverview(workspaceId)
+      const overview = await insightsRepository.getOverview(workspaceId)
       return overview.completedGenerations < PLAN_LIMIT
     })
 

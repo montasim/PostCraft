@@ -1,7 +1,7 @@
 import { VariantModel } from "@/modules/variant/variant.model"
 import { GenerationModel } from "@/modules/generation/generation.model"
 
-export const analyticsRepository = {
+export const insightsRepository = {
   async getOverview(workspaceId: string) {
     const [variantStats, generationStats] = await Promise.all([
       VariantModel.aggregate([

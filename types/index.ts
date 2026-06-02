@@ -23,7 +23,7 @@ export interface NavItem {
 
 export type PostStatus = "published" | "draft" | "archived"
 
-export interface HistoryEntry {
+export interface LibraryEntry {
   id: string
   variants: Variant[]
   topic: string
@@ -35,7 +35,7 @@ export interface HistoryEntry {
   status: PostStatus
 }
 
-export interface HistoryFilterState {
+export interface LibraryFilterState {
   search: string
   styles: string[]
   languages: string[]
@@ -55,7 +55,7 @@ export interface ScoreRange {
   max: number
 }
 
-export interface AnalyticsOverview {
+export interface InsightsOverview {
   totalPosts: number
   avgScore: number
   avgEngagement: number

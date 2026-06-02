@@ -1,3 +1,3 @@
-export { analyticsService } from "./analytics.service"
-export type { AnalyticsDashboard } from "./analytics.service"
-export { analyticsRepository } from "./analytics.repository"
+export { insightsService } from "./insights.service"
+export type { InsightsDashboard } from "./insights.service"
+export { insightsRepository } from "./insights.repository"

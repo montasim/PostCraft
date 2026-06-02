@@ -1,10 +1,10 @@
-import { historyRepository, type HistoryListFilters } from "./history.repository"
+import { libraryRepository, type LibraryListFilters } from "./library.repository"
 import { generationService } from "@/modules/generation/generation.service"
 import { variantService } from "@/modules/variant/variant.service"
 import { variantRepository } from "@/modules/variant/variant.repository"
 import { generationRepository } from "@/modules/generation/generation.repository"
 import { guardrailRepository } from "@/modules/guardrail"
-import type { HistoryEntry, Variant } from "@/types"
+import type { LibraryEntry, Variant } from "@/types"
 
 export interface GuardrailDetail {
   id: string
@@ -65,7 +65,7 @@ function mapEntry(generation: {
     hashtags: string[]
     judgeReasoning: string
   }>
-}): HistoryEntry {
+}): LibraryEntry {
   return {
     id: typeof generation._id === "string" ? generation._id : generation._id.toString(),
     topic: generation.topic,
@@ -82,9 +82,9 @@ function mapEntry(generation: {
   }
 }
 
-export const historyService = {
-  async listEntries(workspaceId: string, filters: HistoryListFilters) {
-    const result = await historyRepository.listHistoryEntries(
+export const libraryService = {
+  async listEntries(workspaceId: string, filters: LibraryListFilters) {
+    const result = await libraryRepository.listLibraryEntries(
       workspaceId,
       filters
     )
@@ -97,18 +97,18 @@ export const historyService = {
   },
 
   async getStats(workspaceId: string) {
-    return historyRepository.getHistoryStats(workspaceId)
+    return libraryRepository.getHistoryStats(workspaceId)
   },
 
   async getHeatmapData(workspaceId: string) {
-    return historyRepository.getActivityHeatmap(workspaceId)
+    return libraryRepository.getActivityHeatmap(workspaceId)
   },
 
   async getStreakDays(workspaceId: string) {
-    return historyRepository.getStreakDays(workspaceId)
+    return libraryRepository.getStreakDays(workspaceId)
   },
 
-  async getBestEntry(workspaceId: string): Promise<HistoryEntry | null> {
+  async getBestEntry(workspaceId: string): Promise<LibraryEntry | null> {
     const topVariants = await variantRepository.findTopByWorkspace(
       workspaceId,
       1
@@ -140,7 +140,7 @@ export const historyService = {
   async getEntryDetail(
     generationId: string,
     workspaceId: string
-  ): Promise<HistoryEntry & { guardrails: GuardrailDetail[] }> {
+  ): Promise<LibraryEntry & { guardrails: GuardrailDetail[] }> {
     const generation = await generationService.getGenerationStatus(generationId, workspaceId)
     const variants = await variantService.getVariantsByTrend(
       generationId,

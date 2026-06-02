@@ -43,11 +43,11 @@ export const PASSWORD_MIN_LENGTH = 8
 export const PASSWORD_MAX_LENGTH = 128
 export const BCRYPT_SALT_ROUNDS = 10
 
-export const HISTORY_DEFAULT_LIMIT = 6
-export const HISTORY_DEFAULT_PAGE = 1
-export const HISTORY_THIS_WEEK_DAYS = 7
-export const HISTORY_12_WEEKS_DAYS = 84
-export const HISTORY_FUZZY_THRESHOLD = 0.5
+export const LIBRARY_DEFAULT_LIMIT = 6
+export const LIBRARY_DEFAULT_PAGE = 1
+export const LIBRARY_THIS_WEEK_DAYS = 7
+export const LIBRARY_12_WEEKS_DAYS = 84
+export const LIBRARY_FUZZY_THRESHOLD = 0.5
 
 export const TRENDING_RUN_LIMIT = 50
 export const TRENDING_TOP_N = 6
@@ -55,7 +55,7 @@ export const TRENDING_KEYWORDS_MAX = 5
 export const TRENDING_SUBREDDITS_MAX = 5
 export const TRENDING_POSTS_DEFAULT = 5
 
-export const ANALYTICS_MONTHLY_GOAL = 20
+export const INSIGHTS_MONTHLY_GOAL = 20
 
 export const SCORE_WEIGHTS = {
   heuristic: 0.4,

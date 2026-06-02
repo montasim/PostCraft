@@ -65,7 +65,8 @@ export const prefsService = {
 
   async getPreviewConfig(userId: string): Promise<PreviewConfig> {
     const doc = await prefsRepository.findByUserId(userId)
-    return doc?.preview ?? { ...PREVIEW_CONFIG_DEFAULTS }
+    if (!doc?.preview) return { ...PREVIEW_CONFIG_DEFAULTS }
+    return previewConfigSchema.parse(doc.preview)
   },
 
   async savePreviewConfig(
@@ -79,6 +80,6 @@ export const prefsService = {
     }
 
     const updated = await prefsRepository.upsertPreview(userId, parsed.data)
-    return updated.preview
+    return previewConfigSchema.parse(updated.preview)
   },
 }

@@ -2,7 +2,7 @@ import { VariantModel } from "@/modules/variant/variant.model"
 import { GenerationModel } from "@/modules/generation/generation.model"
 import type { PipelineStage } from "mongoose"
 
-export interface HistoryListFilters {
+export interface LibraryListFilters {
   search?: string
   styles?: string[]
   languages?: string[]
@@ -12,7 +12,7 @@ export interface HistoryListFilters {
   limit?: number
 }
 
-export interface HistoryListResult {
+export interface LibraryListResult {
   entries: GenerationWithVariants[]
   total: number
   hasMore: boolean
@@ -56,11 +56,11 @@ const SORT_MAP: SortMap = {
   "most-engaging": { bestEngagement: -1 },
 }
 
-export const historyRepository = {
-  async listHistoryEntries(
+export const libraryRepository = {
+  async listLibraryEntries(
     workspaceId: string,
-    filters: HistoryListFilters = {}
-  ): Promise<HistoryListResult> {
+    filters: LibraryListFilters = {}
+  ): Promise<LibraryListResult> {
     const {
       search,
       styles,

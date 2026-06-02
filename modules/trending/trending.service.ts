@@ -9,7 +9,7 @@ import { inngest } from "@/core/queue/client"
 import { QuotaExceededError, ValidationError } from "@/core/errors/app-error"
 import { generationRepository } from "@/modules/generation/generation.repository"
 import { variantRepository } from "@/modules/variant/variant.repository"
-import { analyticsRepository } from "@/modules/analytics/analytics.repository"
+import { insightsRepository } from "@/modules/insights/insights.repository"
 import { prefsService } from "@/modules/prefs"
 import {
   PLAN_LIMIT,
@@ -137,7 +137,7 @@ export async function dismissAllRuns(workspaceId: string): Promise<void> {
 }
 
 export async function triggerRun(workspaceId: string, userId: string) {
-  const overview = await analyticsRepository.getOverview(workspaceId)
+  const overview = await insightsRepository.getOverview(workspaceId)
   if (overview.completedGenerations >= PLAN_LIMIT) {
     throw new QuotaExceededError()
   }

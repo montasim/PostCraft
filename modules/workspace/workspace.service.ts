@@ -1,5 +1,5 @@
 import { workspaceRepository } from "./workspace.repository"
-import { analyticsRepository } from "@/modules/analytics/analytics.repository"
+import { insightsRepository } from "@/modules/insights/insights.repository"
 import { guardrailRepository } from "@/modules/guardrail/guardrail.repository"
 import { generationRepository } from "@/modules/generation/generation.repository"
 import { variantRepository } from "@/modules/variant/variant.repository"
@@ -34,7 +34,7 @@ export const workspaceService = {
       industry: Array.isArray(rawPersona.industry) ? rawPersona.industry : [],
     }
 
-    const overview = await analyticsRepository.getOverview(workspaceId)
+    const overview = await insightsRepository.getOverview(workspaceId)
 
     return {
       persona,

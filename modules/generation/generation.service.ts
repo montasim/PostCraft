@@ -10,7 +10,7 @@ import {
   type GenerationStatus,
 } from "./generation.schema"
 import { generationRepository } from "./generation.repository"
-import { analyticsRepository } from "@/modules/analytics/analytics.repository"
+import { insightsRepository } from "@/modules/insights/insights.repository"
 import { inngest } from "@/core/queue/client"
 import {
   AIServiceError,
@@ -87,7 +87,7 @@ export const generationService = {
     workspaceId: string,
     userId: string
   ) {
-    const overview = await analyticsRepository.getOverview(workspaceId)
+    const overview = await insightsRepository.getOverview(workspaceId)
     if (overview.completedGenerations >= PLAN_LIMIT) {
       throw new QuotaExceededError()
     }

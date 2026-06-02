@@ -1,7 +1,7 @@
 import { profileRepository } from "./profile.repository"
 import { updateProfileSchema, type UpdateProfileInput } from "./profile.schema"
-import { analyticsRepository } from "@/modules/analytics/analytics.repository"
-import { historyRepository } from "@/modules/history/history.repository"
+import { insightsRepository } from "@/modules/insights/insights.repository"
+import { libraryRepository } from "@/modules/library/library.repository"
 import { getAuthDb } from "@/core/auth/auth-db"
 import { ObjectId } from "mongodb"
 import { ValidationError } from "@/core/errors/app-error"
@@ -30,9 +30,9 @@ export const profileService = {
 
   async getProfileStats(workspaceId: string): Promise<ProfileStats> {
     const [overview, currentStreak, longestStreak] = await Promise.all([
-      analyticsRepository.getOverview(workspaceId),
-      historyRepository.getStreakDays(workspaceId),
-      historyRepository.getLongestStreak(workspaceId),
+      insightsRepository.getOverview(workspaceId),
+      libraryRepository.getStreakDays(workspaceId),
+      libraryRepository.getLongestStreak(workspaceId),
     ])
 
     const avgScore = overview.avgScore
