@@ -261,6 +261,9 @@ export async function generatePostsFromTrends(
           : ["english"]
         ).map((l) => LANGUAGE_TO_CODE[l.toLowerCase()] ?? "en"),
         includeEmoji: true,
+        postCount: 3,
+        platforms: ["linkedin"],
+        hashtagCount: 3,
       },
       workspaceId,
       userId

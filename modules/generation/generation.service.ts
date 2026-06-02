@@ -27,6 +27,7 @@ import {
   AI_TEMPERATURE,
   AI_MAX_TOKENS,
   ERROR_MESSAGES,
+  POST_COUNT_DEFAULT,
 } from "@/lib/constants"
 import { MARKDOWN_FENCE_OPEN, MARKDOWN_FENCE_CLOSE } from "@/lib/constants"
 
@@ -36,6 +37,9 @@ interface GenerationData {
   tones: string[]
   languages: string[]
   includeEmoji: boolean
+  postCount: number
+  platforms: string[]
+  hashtagCount: number
 }
 
 interface GuardrailData {
@@ -101,6 +105,9 @@ export const generationService = {
     const doc = await generationRepository.create({
       ...parsed.data,
       languages: parsed.data.languages.map((l) => l.toLowerCase()),
+      postCount: parsed.data.postCount ?? POST_COUNT_DEFAULT,
+      platforms: parsed.data.platforms ?? ["linkedin"],
+      hashtagCount: parsed.data.hashtagCount ?? 3,
       workspaceId,
       createdBy: userId,
       status: GENERATION_STATUS.QUEUED,
@@ -131,6 +138,9 @@ export const generationService = {
       tones: doc.tones,
       languages: doc.languages,
       includeEmoji: doc.includeEmoji,
+      postCount: doc.postCount ?? POST_COUNT_DEFAULT,
+      platforms: doc.platforms ?? ["linkedin"],
+      hashtagCount: doc.hashtagCount ?? 3,
       status: doc.status,
       errorMessage: doc.errorMessage,
       guardrailIds: doc.guardrailIds ?? [],

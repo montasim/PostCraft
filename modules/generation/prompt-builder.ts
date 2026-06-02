@@ -11,6 +11,9 @@ interface GenerationData {
   tones: string[]
   languages: string[]
   includeEmoji: boolean
+  postCount: number
+  platforms: string[]
+  hashtagCount: number
 }
 
 interface GuardrailData {
@@ -29,14 +32,17 @@ export function buildGenerationPrompt(
     tones: generation.tones,
     languages: generation.languages,
     includeEmoji: generation.includeEmoji,
+    postCount: generation.postCount,
+    platforms: generation.platforms,
+    hashtagCount: generation.hashtagCount,
     toneRules: guardrails.toneRules,
     formatRules: guardrails.formatRules,
     bannedWords: guardrails.bannedWords,
   }
 
   return {
-    system: buildSystemPrompt(),
+    system: buildSystemPrompt(generation.platforms),
     developer: buildDeveloperPrompt(data),
-    user: buildUserPrompt(generation.topic),
+    user: buildUserPrompt(generation.topic, generation.postCount),
   }
 }

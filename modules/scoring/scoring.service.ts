@@ -20,6 +20,7 @@ interface ScoringInput extends RawVariant {
 interface ScoredVariantOutput {
   language: string
   styleType: string
+  platform: string
   hook: string
   body: string
   cta: string
@@ -87,6 +88,7 @@ export const scoringService = {
       results.push({
         language: variant.language,
         styleType: variant.styleType,
+        platform: variant.platform,
         hook: variant.hook,
         body: variant.body,
         cta: variant.cta,

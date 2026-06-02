@@ -7,12 +7,17 @@ export const variantService = {
     workspaceId: string,
     variants: ScoredVariant[]
   ) {
-    const saved = await variantRepository.createMany(variants, trendId, workspaceId)
+    const saved = await variantRepository.createMany(
+      variants,
+      trendId,
+      workspaceId
+    )
     return saved.map((v) => ({
       id: v._id.toString(),
       trendId: v.trendId.toString(),
       language: v.language,
       styleType: v.styleType,
+      platform: v.platform,
       hook: v.hook,
       body: v.body,
       cta: v.cta,
@@ -35,6 +40,7 @@ export const variantService = {
       rank: v.overallRank,
       style: v.styleType,
       language: v.language,
+      platform: v.platform,
       score: v.overallScore,
       engagement: v.engagementScore,
       clarity: v.clarityScore,
