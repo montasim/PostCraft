@@ -7,7 +7,7 @@ import { VariantCard } from "@/components/shared/variant-card"
 import { VariantCarousel } from "@/components/shared/variant-carousel"
 import { BrandGuardPanel } from "@/components/features/generate/brand-guard-panel"
 import type { HistoryEntry } from "@/types"
-import { IconTrophy } from "@tabler/icons-react"
+import { IconTrophy, IconFileText } from "@tabler/icons-react"
 
 function formatVariantText(v: {
   hook: string
@@ -22,7 +22,10 @@ function OriginalInputCard({ entry }: { entry: HistoryEntry }) {
   return (
     <Card className="flex-1">
       <CardHeader>
-        <CardTitle className="text-sm font-semibold">Original input</CardTitle>
+        <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+          <IconFileText className="h-4 w-4 text-primary" />
+          Original input
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Topic */}
@@ -69,9 +72,7 @@ function OriginalInputCard({ entry }: { entry: HistoryEntry }) {
           </div>
 
           <div className="space-y-1.5">
-            <p className="text-xs font-semibold text-muted-foreground">
-              Emoji
-            </p>
+            <p className="text-xs font-semibold text-muted-foreground">Emoji</p>
             <Badge variant="secondary" className="text-[10px]">
               {entry.includeEmoji ? "Enabled" : "Disabled"}
             </Badge>
@@ -82,7 +83,11 @@ function OriginalInputCard({ entry }: { entry: HistoryEntry }) {
   )
 }
 
-function VariantCardWrapper({ variant }: { variant: import("@/types").Variant }) {
+function VariantCardWrapper({
+  variant,
+}: {
+  variant: import("@/types").Variant
+}) {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = async () => {
@@ -94,13 +99,28 @@ function VariantCardWrapper({ variant }: { variant: import("@/types").Variant })
   return <VariantCard variant={variant} copied={copied} onCopy={handleCopy} />
 }
 
-function HistoryDetail({ entry }: { entry: HistoryEntry & { guardrails?: { id: string; category: "tone" | "format" | "banned" | "custom"; rule: string; isActive: boolean }[] } }) {
+function HistoryDetail({
+  entry,
+}: {
+  entry: HistoryEntry & {
+    guardrails?: {
+      id: string
+      category: "tone" | "format" | "banned" | "custom"
+      rule: string
+      isActive: boolean
+    }[]
+  }
+}) {
   return (
     <div className="space-y-4">
       {/* Two-column: input card + brand guard */}
       <div className="flex flex-col gap-4 lg:flex-row">
         <OriginalInputCard entry={entry} />
-        <BrandGuardPanel showButton={false} title="Used Brand Guard" guardrails={entry.guardrails} />
+        <BrandGuardPanel
+          showButton={false}
+          title="Used Brand Guard"
+          guardrails={entry.guardrails}
+        />
       </div>
 
       {/* Ranked variants carousel */}

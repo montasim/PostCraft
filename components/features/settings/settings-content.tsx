@@ -17,6 +17,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { ConfirmDialog } from "@/components/shared/confirm-dialog"
+import { PasswordInput } from "@/components/shared/password-input"
 import {
   IconBell,
   IconShield,
@@ -25,6 +26,8 @@ import {
   IconKey,
   IconClock,
   IconRefresh,
+  IconSend,
+  IconShieldCheck,
 } from "@tabler/icons-react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
@@ -130,7 +133,6 @@ function AccountSecurityCard({
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
-
         <ChangePasswordRow />
       </CardContent>
     </Card>
@@ -242,9 +244,10 @@ function ChangePasswordRow() {
               <div className="py-4">
                 <Button
                   onClick={handleSendOtp}
-                  className="w-full"
+                  className="w-full gap-2"
                   disabled={loading}
                 >
+                  <IconSend className="h-4 w-4" />
                   {loading ? "Sending..." : "Send verification code"}
                 </Button>
               </div>
@@ -272,8 +275,7 @@ function ChangePasswordRow() {
                 </div>
                 <div className="space-y-1.5">
                   <Label className="text-xs">New password</Label>
-                  <Input
-                    type="password"
+                  <PasswordInput
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="Min. 8 characters"
@@ -282,8 +284,7 @@ function ChangePasswordRow() {
                 </div>
                 <div className="space-y-1.5">
                   <Label className="text-xs">Confirm new password</Label>
-                  <Input
-                    type="password"
+                  <PasswordInput
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     className="h-8 text-xs"
@@ -295,12 +296,15 @@ function ChangePasswordRow() {
                 <Button
                   variant="outline"
                   size="sm"
+                  className="gap-1.5"
                   onClick={() => setStep("send")}
                 >
+                  <IconRefresh className="h-3.5 w-3.5" />
                   Resend code
                 </Button>
                 <Button
                   size="sm"
+                  className="gap-1.5"
                   onClick={handleChangePassword}
                   disabled={
                     loading ||
@@ -309,6 +313,7 @@ function ChangePasswordRow() {
                     !confirmPassword
                   }
                 >
+                  <IconShieldCheck className="h-3.5 w-3.5" />
                   {loading ? "Changing..." : "Change password"}
                 </Button>
               </DialogFooter>

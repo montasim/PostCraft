@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "sonner"
 import { IconArrowLeft } from "@tabler/icons-react"
+import { QuotaAlert } from "@/components/shared/quota-alert"
 import { API } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 import type { HistoryEntry } from "@/types"
@@ -86,7 +87,7 @@ function HistoryContent() {
 
   if (loading) {
     return (
-      <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden -m-4 lg:flex-row">
+      <div className="-m-4 flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:flex-row">
         <div className="hidden w-72 shrink-0 border-r border-sidebar-border bg-sidebar lg:flex lg:flex-col">
           <div className="p-4">
             <Skeleton className="h-9 w-full rounded-md" />
@@ -96,21 +97,23 @@ function HistoryContent() {
               <div key={group}>
                 <Skeleton className="mb-2 h-3 w-16" />
                 <div className="space-y-1">
-                  {Array.from({ length: group === "Today" ? 3 : 2 }).map((_, i) => (
-                    <div key={i} className="rounded-lg p-2.5">
-                      <div className="flex items-center gap-2">
-                        <Skeleton className="h-2 w-2 rounded-full" />
-                        <Skeleton className="h-3 w-28" />
-                      </div>
-                      <div className="mt-1.5 flex items-center justify-between">
-                        <Skeleton className="h-3 w-20" />
-                        <div className="flex items-center gap-1.5">
-                          <Skeleton className="h-3 w-10" />
-                          <Skeleton className="h-4 w-12 rounded-full" />
+                  {Array.from({ length: group === "Today" ? 3 : 2 }).map(
+                    (_, i) => (
+                      <div key={i} className="rounded-lg p-2.5">
+                        <div className="flex items-center gap-2">
+                          <Skeleton className="h-2 w-2 rounded-full" />
+                          <Skeleton className="h-3 w-28" />
+                        </div>
+                        <div className="mt-1.5 flex items-center justify-between">
+                          <Skeleton className="h-3 w-20" />
+                          <div className="flex items-center gap-1.5">
+                            <Skeleton className="h-3 w-10" />
+                            <Skeleton className="h-4 w-12 rounded-full" />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    )
+                  )}
                 </div>
               </div>
             ))}
@@ -160,7 +163,7 @@ function HistoryContent() {
   const showList = !showDetail
 
   return (
-    <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden -m-4 lg:flex-row">
+    <div className="-m-4 flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:flex-row">
       {/* Sidebar / List */}
       <div
         className={cn(
@@ -183,6 +186,9 @@ function HistoryContent() {
           showList && !isDesktop ? "hidden" : "block p-4"
         )}
       >
+        <div className="mb-4">
+          <QuotaAlert />
+        </div>
         {detailLoading ? (
           <div className="space-y-4">
             <div className="flex flex-col gap-4 lg:flex-row">

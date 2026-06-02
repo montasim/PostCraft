@@ -15,21 +15,19 @@ function HistoryEmpty({ hasFilters }: HistoryEmptyProps) {
         <IconInbox className="h-8 w-8 text-muted-foreground" />
       </div>
       <h3 className="text-sm font-semibold">
-        {hasFilters ? "No matching posts" : "No posts yet"}
+        {hasFilters ? "No matching posts" : "Your library is empty"}
       </h3>
       <p className="mt-1 text-xs text-muted-foreground">
         {hasFilters
           ? "Try adjusting your filters to find what you're looking for."
-          : "Generate your first LinkedIn post to see it here."}
+          : "Every post you create lives here — ranked, searchable, ready to reuse."}
       </p>
       {!hasFilters && (
         <Button
           asChild
           className="mt-4 gap-2 bg-linear-to-br from-primary to-chart-2 text-primary-foreground shadow-lg shadow-primary/30"
         >
-          <Link href="/">
-            Generate your first post
-          </Link>
+          <Link href="/">Write your first post</Link>
         </Button>
       )}
     </div>

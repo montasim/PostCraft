@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
+import { IconChevronDown } from "@tabler/icons-react"
 import { HistoryCard } from "@/components/features/history/history-card"
 import { HistoryEmpty } from "@/components/features/history/history-empty"
 import type { HistoryEntry, HistoryFilterState } from "@/types"
@@ -53,8 +54,9 @@ function HistoryGrid({
             variant="outline"
             size="sm"
             onClick={onLoadMore}
-            className="text-xs"
+            className="gap-1.5 text-xs"
           >
+            <IconChevronDown className="h-3.5 w-3.5" />
             Load more ({totalCount - entries.length} remaining)
           </Button>
         </div>

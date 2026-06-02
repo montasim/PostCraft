@@ -28,6 +28,7 @@ import {
   IconBrandLinkedin,
   IconCalendar,
   IconTarget,
+  IconShare,
 } from "@tabler/icons-react"
 import { toast } from "sonner"
 import { API } from "@/lib/constants"
@@ -219,7 +220,7 @@ function ProfileDetailsCard({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-          <IconTarget className="h-4 w-4 text-primary" />
+          <IconShare className="h-4 w-4 text-primary" />
           Your presence
           <Button
             variant="ghost"
