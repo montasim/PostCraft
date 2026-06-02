@@ -22,7 +22,7 @@ function BestPostHighlight({ entry, copied, onCopy }: BestPostHighlightProps) {
   return (
     <Card
       className={cn(
-        "relative overflow-visible p-5",
+        "relative overflow-visible p-4",
         "border-primary/40 ring-1 ring-primary/20"
       )}
     >

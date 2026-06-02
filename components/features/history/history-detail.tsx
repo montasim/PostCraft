@@ -96,9 +96,9 @@ function VariantCardWrapper({ variant }: { variant: import("@/types").Variant })
 
 function HistoryDetail({ entry }: { entry: HistoryEntry & { guardrails?: { id: string; category: "tone" | "format" | "banned" | "custom"; rule: string; isActive: boolean }[] } }) {
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       {/* Two-column: input card + brand guard */}
-      <div className="flex flex-col gap-5 lg:flex-row">
+      <div className="flex flex-col gap-4 lg:flex-row">
         <OriginalInputCard entry={entry} />
         <BrandGuardPanel showButton={false} title="Used Brand Guard" guardrails={entry.guardrails} />
       </div>
