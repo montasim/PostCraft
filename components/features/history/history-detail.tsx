@@ -4,9 +4,8 @@ import { useState } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { VariantCard } from "@/components/shared/variant-card"
+import { VariantCarousel } from "@/components/shared/variant-carousel"
 import { BrandGuardPanel } from "@/components/features/generate/brand-guard-panel"
-import { CarouselNavigation } from "@/components/features/generate/carousel-navigation"
-import { useCarousel } from "@/hooks/use-carousel"
 import type { HistoryEntry } from "@/types"
 import { IconTrophy } from "@tabler/icons-react"
 
@@ -96,8 +95,6 @@ function VariantCardWrapper({ variant }: { variant: import("@/types").Variant })
 }
 
 function HistoryDetail({ entry }: { entry: HistoryEntry & { guardrails?: { id: string; category: "tone" | "format" | "banned" | "custom"; rule: string; isActive: boolean }[] } }) {
-  const { ref, scrollLeft, scrollRight } = useCarousel()
-
   return (
     <div className="space-y-5">
       {/* Two-column: input card + brand guard */}
@@ -143,25 +140,16 @@ function HistoryDetail({ entry }: { entry: HistoryEntry & { guardrails?: { id: s
             </span>
           </div>
         </div>
-        <div className="group relative">
-          <div
-            ref={ref}
-            className="flex snap-x snap-mandatory scrollbar-none gap-4 overflow-x-auto px-px py-5 [&::-webkit-scrollbar]:hidden"
-          >
-            {entry.variants.map((variant) => (
-              <div
-                key={variant.rank}
-                className="w-[90%] shrink-0 snap-start md:w-[400px] lg:w-[410px]"
-              >
-                <VariantCardWrapper variant={variant} />
-              </div>
-            ))}
-          </div>
-          <CarouselNavigation
-            onScrollLeft={scrollLeft}
-            onScrollRight={scrollRight}
-          />
-        </div>
+        <VariantCarousel>
+          {entry.variants.map((variant) => (
+            <div
+              key={variant.rank}
+              className="w-[90%] shrink-0 snap-start md:w-[400px] lg:w-[410px]"
+            >
+              <VariantCardWrapper variant={variant} />
+            </div>
+          ))}
+        </VariantCarousel>
       </section>
     </div>
   )
