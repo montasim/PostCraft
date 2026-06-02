@@ -38,28 +38,28 @@ const BREADCRUMB_CONFIG: Record<string, BreadcrumbConfig> = {
     icon: IconTrendingUp,
     page: "Discover what's trending",
   },
-  "/history": {
+  "/library": {
     label: "Library",
     icon: IconHistory,
     page: "Your content library",
   },
-  "/analytics": {
+  "/insights": {
     label: "Insights",
     icon: IconChartBar,
     page: "Performance insights",
   },
-  "/guardrails": {
+  "/brand-guard": {
     label: "Brand Guard",
     icon: IconShield,
     page: "Protect your brand voice",
   },
-  "/workspace": {
+  "/brand-voice": {
     label: "Brand Voice",
     icon: IconBuilding,
     page: "Your brand profile",
   },
   "/profile": {
-    label: "You",
+    label: "Profile",
     icon: IconUser,
     page: "Your personal information",
   },

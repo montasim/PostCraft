@@ -24,10 +24,10 @@ import { fetchProfile } from "@/store/slices/profile.slice"
 const ROUTE_MAP: Record<string, string> = {
   generate: "/",
   trending: "/trending",
-  history: "/history",
-  analytics: "/analytics",
-  guardrails: "/guardrails",
-  workspace: "/workspace",
+  library: "/library",
+  insights: "/insights",
+  "brand-guard": "/brand-guard",
+  "brand-voice": "/brand-voice",
   profile: "/profile",
   settings: "/settings",
 }
@@ -56,14 +56,14 @@ function AppShell({ children }: AppShellProps) {
   const active =
     pathname === "/trending"
       ? "trending"
-      : pathname === "/history"
-        ? "history"
-        : pathname === "/analytics"
-          ? "analytics"
-          : pathname === "/guardrails"
-            ? "guardrails"
-            : pathname === "/workspace"
-              ? "workspace"
+      : pathname === "/library"
+        ? "library"
+        : pathname === "/insights"
+          ? "insights"
+          : pathname === "/brand-guard"
+            ? "brand-guard"
+            : pathname === "/brand-voice"
+              ? "brand-voice"
               : pathname === "/profile"
                 ? "profile"
                 : pathname === "/settings"
@@ -106,7 +106,7 @@ function AppShell({ children }: AppShellProps) {
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header onMobileMenuOpen={() => setMobileOpen(true)} />
         <main className="flex-1 overflow-y-auto p-4">
-          {active !== "history" && active !== "trending" && (
+          {active !== "library" && active !== "trending" && (
             <div className="mb-4">
               <QuotaAlert />
             </div>

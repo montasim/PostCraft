@@ -14,17 +14,17 @@ import type { SelectOption } from "@/components/shared/multi-select"
 export const NAV_MAIN: NavItem[] = [
   { id: "generate", label: "New Post", icon: IconSparkles },
   { id: "trending", label: "Trending", icon: IconTrendingUp },
-  { id: "history", label: "Library", icon: IconHistory },
-  { id: "analytics", label: "Insights", icon: IconChartBar },
+  { id: "library", label: "Library", icon: IconHistory },
+  { id: "insights", label: "Insights", icon: IconChartBar },
 ]
 
 export const NAV_CONFIG: NavItem[] = [
-  { id: "guardrails", label: "Brand Guard", icon: IconShield },
-  { id: "workspace", label: "Brand Voice", icon: IconBuilding },
+  { id: "brand-guard", label: "Brand Guard", icon: IconShield },
+  { id: "brand-voice", label: "Brand Voice", icon: IconBuilding },
 ]
 
 export const NAV_ACCOUNT: NavItem[] = [
-  { id: "profile", label: "You", icon: IconUser },
+  { id: "profile", label: "Profile", icon: IconUser },
   { id: "settings", label: "Settings", icon: IconSettings },
 ]
 

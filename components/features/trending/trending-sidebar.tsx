@@ -2,9 +2,8 @@
 
 import { useState, useMemo } from "react"
 import { cn } from "@/lib/utils"
-import { Badge } from "@/components/ui/badge"
 import { DatePicker } from "@/components/shared/date-picker"
-import { IconClock, IconFilterOff } from "@tabler/icons-react"
+import { IconFilterOff } from "@tabler/icons-react"
 import type {
   ITrendingRun,
   TrendingPlatform,
@@ -17,10 +16,10 @@ const PLATFORM_ABBREV: Record<TrendingPlatform, string> = {
   reddit: "Reddit",
 }
 
-const STATUS_STYLES: Record<string, string> = {
-  completed: "bg-emerald-500/10 text-emerald-600",
-  running: "bg-blue-500/10 text-blue-600 animate-pulse",
-  failed: "bg-red-500/10 text-red-600",
+const STATUS_DOT: Record<string, string> = {
+  completed: "bg-emerald-500",
+  running: "bg-blue-500",
+  failed: "bg-red-500",
 }
 
 interface DateGroup {
@@ -151,7 +150,7 @@ function TrendingSidebar({ runs, selectedId, onSelect }: TrendingSidebarProps) {
                 >
                   <div className="flex w-full justify-between gap-4">
                     <div className="flex items-center gap-2">
-                      <IconClock className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                      <span className={cn("h-2 w-2 shrink-0 rounded-full", STATUS_DOT[run.status])} />
                       <span className="text-xs font-medium">{datetime}</span>
                     </div>
                     <span className="text-xs">
@@ -162,13 +161,6 @@ function TrendingSidebar({ runs, selectedId, onSelect }: TrendingSidebarProps) {
                   <div className="mt-1.5 flex w-full items-center gap-2 text-[10px] text-muted-foreground">
                     <span className="text-muted-foreground/30">·</span>
                     <span>{platforms}</span>
-                    <span className="text-muted-foreground/30">·</span>
-                    <Badge
-                      variant="secondary"
-                      className={cn("text-[10px]", STATUS_STYLES[run.status])}
-                    >
-                      {run.status}
-                    </Badge>
                   </div>
                 </button>
               )

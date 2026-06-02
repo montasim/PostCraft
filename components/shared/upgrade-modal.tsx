@@ -29,7 +29,7 @@ function UpgradeModal({ open, onOpenChange }: UpgradeModalProps) {
           </DialogTitle>
           <DialogDescription>
             10 posts is a solid run. Go Pro for unlimited generations, priority
-            AI, and advanced guardrails.
+            AI, and advanced brand guard.
           </DialogDescription>
         </DialogHeader>
 
