@@ -38,6 +38,9 @@ export async function runGenerationPipeline(
     const bannedWords = allGuardrails
       .filter((g) => g.category === "banned")
       .map((g) => g.rule)
+    const customRules = allGuardrails
+      .filter((g) => g.category === "custom")
+      .map((g) => g.rule)
 
     // 2b. Save guardrail IDs used for this generation
     const guardrailIds = allGuardrails.map((g) => g._id.toString())
@@ -61,7 +64,7 @@ export async function runGenerationPipeline(
         platforms: generation.platforms,
         hashtagCount: generation.hashtagCount,
       },
-      { toneRules, formatRules, bannedWords }
+      { toneRules, formatRules, bannedWords, customRules }
     )
 
     // 4. Score

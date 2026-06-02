@@ -4,6 +4,12 @@ import {
   buildUserPrompt,
   type GenerationPromptData,
 } from "@/core/ai/prompts/generate"
+import {
+  ACTIVE_TONE_RULES_MAX,
+  ACTIVE_FORMAT_RULES_MAX,
+  ACTIVE_CUSTOM_RULES_MAX,
+  ACTIVE_BANNED_WORDS_MAX,
+} from "@/lib/constants"
 
 interface GenerationData {
   topic: string
@@ -20,6 +26,7 @@ interface GuardrailData {
   toneRules: string[]
   formatRules: string[]
   bannedWords: string[]
+  customRules: string[]
 }
 
 export function buildGenerationPrompt(
@@ -35,9 +42,10 @@ export function buildGenerationPrompt(
     postCount: generation.postCount,
     platforms: generation.platforms,
     hashtagCount: generation.hashtagCount,
-    toneRules: guardrails.toneRules,
-    formatRules: guardrails.formatRules,
-    bannedWords: guardrails.bannedWords,
+    toneRules: guardrails.toneRules.slice(0, ACTIVE_TONE_RULES_MAX),
+    formatRules: guardrails.formatRules.slice(0, ACTIVE_FORMAT_RULES_MAX),
+    bannedWords: guardrails.bannedWords.slice(0, ACTIVE_BANNED_WORDS_MAX),
+    customRules: guardrails.customRules.slice(0, ACTIVE_CUSTOM_RULES_MAX),
   }
 
   return {

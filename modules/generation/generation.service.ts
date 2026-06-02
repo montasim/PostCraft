@@ -29,7 +29,13 @@ import {
   ERROR_MESSAGES,
   POST_COUNT_DEFAULT,
 } from "@/lib/constants"
-import { MARKDOWN_FENCE_OPEN, MARKDOWN_FENCE_CLOSE } from "@/lib/constants"
+import {
+  MARKDOWN_FENCE_OPEN,
+  MARKDOWN_FENCE_CLOSE,
+  PROMPT_INJECTION_PATTERNS,
+  PROFANITY_PATTERNS,
+  HATE_SPEECH_PATTERNS,
+} from "@/lib/constants"
 
 interface GenerationData {
   topic: string
@@ -46,6 +52,7 @@ interface GuardrailData {
   toneRules: string[]
   formatRules: string[]
   bannedWords: string[]
+  customRules: string[]
 }
 
 function stripMarkdownFences(text: string): string {
@@ -91,6 +98,10 @@ export const generationService = {
     workspaceId: string,
     userId: string
   ) {
+    if (PROMPT_INJECTION_PATTERNS.test(data.topic)) {
+      throw new ValidationError("Topic contains prohibited patterns")
+    }
+
     const dailyUsage = await insightsRepository.getDailyUsage(workspaceId)
     const totalGenerated = dailyUsage.totalPostsGenerated
     const requestedPosts = data.postCount ?? POST_COUNT_DEFAULT
@@ -205,11 +216,28 @@ export const generationService = {
         language: resolveLanguage(v.language),
       }))
 
+      const filtered = variants.filter((v) => {
+        const fullPost = `${v.hook} ${v.body} ${v.cta} ${v.hashtags.join(" ")}`
+        if (PROFANITY_PATTERNS.test(fullPost)) {
+          logger.warn({ style: v.styleType }, "Variant discarded: profanity")
+          return false
+        }
+        if (HATE_SPEECH_PATTERNS.test(fullPost)) {
+          logger.warn({ style: v.styleType }, "Variant discarded: hate speech")
+          return false
+        }
+        return true
+      })
+
+      if (filtered.length === 0) {
+        throw new AIServiceError("All variants failed content safety checks")
+      }
+
       logger.info(
-        { count: variants.length, provider },
-        "Variants generated successfully"
+        { total: variants.length, kept: filtered.length, provider },
+        "Variants filtered"
       )
-      return variants
+      return filtered
     } catch (error) {
       if (error instanceof AIServiceError) throw error
       logger.error({ err: error }, "AI generation failed")

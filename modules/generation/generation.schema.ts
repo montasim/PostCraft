@@ -3,15 +3,28 @@ import {
   TOPIC_MAX_LENGTH,
   GENERATION_STATUSES,
   LANGUAGE_MAP,
+  AUDIENCE_OPTIONS,
+  TONE_OPTIONS,
+  LANGUAGE_OPTIONS,
 } from "@/lib/constants"
+
+const VALID_AUDIENCES = AUDIENCE_OPTIONS.map((o) => o.value) as [
+  string,
+  ...string[],
+]
+const VALID_TONES = TONE_OPTIONS.map((o) => o.value) as [string, ...string[]]
+const VALID_LANGUAGES = LANGUAGE_OPTIONS.map((o) => o.value) as [
+  string,
+  ...string[],
+]
 
 // ─── Generation Input ─────────────────────────────────────────────
 
 export const createGenerationSchema = z.object({
   topic: z.string().min(1).max(TOPIC_MAX_LENGTH),
-  audiences: z.array(z.string()).min(1),
-  tones: z.array(z.string()).min(1),
-  languages: z.array(z.string()).min(1),
+  audiences: z.array(z.enum(VALID_AUDIENCES)).min(1),
+  tones: z.array(z.enum(VALID_TONES)).min(1),
+  languages: z.array(z.enum(VALID_LANGUAGES)).min(1),
   includeEmoji: z.boolean().default(true),
   postCount: z.number().min(1).max(10).default(3),
   platforms: z.array(z.string()).default(["linkedin"]),
