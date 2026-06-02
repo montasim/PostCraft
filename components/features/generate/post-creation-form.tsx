@@ -473,7 +473,7 @@ function PostCreationFormInner({
           {isSubmitting
             ? "Writing your posts..."
             : quotaExceeded
-              ? "Upgrade to Continue"
+              ? "Daily Limit Reached"
               : `Generate ${postCount} Post${postCount > 1 ? "s" : ""}`}
         </Button>
       </CardFooter>

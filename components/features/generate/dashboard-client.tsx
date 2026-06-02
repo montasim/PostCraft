@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, useRef } from "react"
 import { PostCreationForm } from "./post-creation-form"
 import { BrandGuardPanel } from "./brand-guard-panel"
 import { PostVariantsCarousel } from "./post-variants-carousel"
-import { UpgradeModal } from "@/components/shared/upgrade-modal"
 import type { Variant } from "@/types"
 import type { SelectOption } from "@/components/shared/multi-select"
 import { toast } from "sonner"
@@ -18,8 +17,9 @@ import {
   type GenerationPrefs,
 } from "@/modules/prefs/prefs.schema"
 import { API } from "@/lib/constants"
-import { useAppSelector } from "@/store/hooks"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import {
+  fetchWorkspace,
   selectQuotaExceeded,
   selectPersona,
 } from "@/store/slices/workspace.slice"
@@ -44,11 +44,11 @@ const STATUS_LABELS: Record<string, string> = {
 }
 
 function DashboardClient() {
+  const dispatch = useAppDispatch()
   const [generationId, setGenerationId] = useState<string | null>(null)
   const [status, setStatus] = useState<GenerationStatus>("idle")
   const [variants, setVariants] = useState<Variant[]>([])
   const [error, setError] = useState<string | null>(null)
-  const [upgradeOpen, setUpgradeOpen] = useState(false)
   const [generationPrefs, setGenerationPrefs] = useState<GenerationPrefs>({
     ...GENERATION_PREFS_DEFAULTS,
   })
@@ -137,6 +137,7 @@ function DashboardClient() {
         if (generationStatus === "completed") {
           setVariants(data.data.variants)
           stopPolling()
+          dispatch(fetchWorkspace())
         } else if (generationStatus === "failed") {
           setError(data.data.generation.errorMessage ?? "Generation failed")
           stopPolling()
@@ -191,7 +192,7 @@ function DashboardClient() {
       hashtagCount: number
     }) => {
       if (quotaExceeded) {
-        setUpgradeOpen(true)
+        toast.error("Daily limit reached — resets at UTC midnight")
         return
       }
 
@@ -212,7 +213,7 @@ function DashboardClient() {
         if (!data.success) {
           if (data.code === "QUOTA_EXCEEDED") {
             setQuotaExceeded(true)
-            setUpgradeOpen(true)
+            toast.error("Daily limit reached — resets at UTC midnight")
             setStatus("idle")
             return
           }
@@ -264,7 +265,6 @@ function DashboardClient() {
         error={error}
         onRetry={handleRetry}
       />
-      <UpgradeModal open={upgradeOpen} onOpenChange={setUpgradeOpen} />
     </div>
   )
 }

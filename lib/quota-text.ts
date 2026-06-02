@@ -1,10 +1,9 @@
 export function getQuotaMessage(used: number, limit: number): string {
   const remaining = limit - used
   if (used === 0) return "Your first post is free. Make it count."
-  if (remaining > 2) return `Posted ${used}x. Your audience is watching.`
-  if (remaining > 0)
-    return `${remaining} left — your best posts are still ahead`
-  return "You're out of posts. Upgrade to keep your streak alive."
+  if (remaining > 1) return `Posted ${used}x. Your audience is watching.`
+  if (remaining > 0) return `${remaining} left — make it your best one yet`
+  return "Daily limit reached — resets at UTC midnight"
 }
 
 export function getQuotaFooter(used: number, limit: number): string {

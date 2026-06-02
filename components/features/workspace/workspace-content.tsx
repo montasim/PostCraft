@@ -460,9 +460,14 @@ function UsagePlanCard({ used, limit }: { used: number; limit: number }) {
             </span>
           </div>
           <Progress value={percent} className="h-2" />
-          {remaining <= 2 && (
+          {remaining <= 2 && remaining > 0 && (
             <p className="text-[10px] text-destructive">
-              Running low on posts. Upgrade to keep your streak going.
+              Only {remaining} left today
+            </p>
+          )}
+          {remaining <= 0 && (
+            <p className="text-[10px] text-destructive">
+              Daily limit reached — resets at UTC midnight
             </p>
           )}
         </div>
@@ -472,14 +477,8 @@ function UsagePlanCard({ used, limit }: { used: number; limit: number }) {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs font-medium">{used} posts generated</p>
-            <p className="text-[10px] text-muted-foreground">
-              Since you started
-            </p>
+            <p className="text-[10px] text-muted-foreground">Today</p>
           </div>
-          <Button size="sm" className="h-7 gap-1 text-xs">
-            <IconCrown className="h-3.5 w-3.5" />
-            Upgrade Plan
-          </Button>
         </div>
       </CardContent>
     </Card>
