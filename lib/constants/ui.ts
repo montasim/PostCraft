@@ -12,19 +12,19 @@ import type { NavItem, SortOption, ScoreRange } from "@/types"
 import type { SelectOption } from "@/components/shared/multi-select"
 
 export const NAV_MAIN: NavItem[] = [
-  { id: "generate", label: "Generate", icon: IconSparkles },
+  { id: "generate", label: "New Post", icon: IconSparkles },
   { id: "trending", label: "Trending", icon: IconTrendingUp },
-  { id: "history", label: "History", icon: IconHistory },
-  { id: "analytics", label: "Analytics", icon: IconChartBar },
+  { id: "history", label: "Library", icon: IconHistory },
+  { id: "analytics", label: "Insights", icon: IconChartBar },
 ]
 
 export const NAV_CONFIG: NavItem[] = [
-  { id: "guardrails", label: "Guardrails", icon: IconShield },
-  { id: "workspace", label: "Workspace", icon: IconBuilding },
+  { id: "guardrails", label: "Brand Guard", icon: IconShield },
+  { id: "workspace", label: "Brand Voice", icon: IconBuilding },
 ]
 
 export const NAV_ACCOUNT: NavItem[] = [
-  { id: "profile", label: "Profile", icon: IconUser },
+  { id: "profile", label: "You", icon: IconUser },
   { id: "settings", label: "Settings", icon: IconSettings },
 ]
 

@@ -1,8 +1,6 @@
 import { inngest } from "./client"
 import { runGenerationPipeline } from "./pipeline"
-import {
-  fetchTrendingSources,
-} from "@/modules/trending/source-fetcher"
+import { fetchTrendingSources } from "@/modules/trending/source-fetcher"
 import { rankSourceItems } from "@/modules/trending/trending-ranker"
 import {
   createRun,
@@ -72,7 +70,7 @@ export const runTrendingPipeline = inngest.createFunction(
         await updateRunStatus(runId, RUN_STATUS.FAILED, "Quota exceeded")
         logger.info(
           { workspaceId, runId },
-          "Trending pipeline skipped — quota exceeded"
+          "Skipped — quota exhausted. Scheduling resumes on upgrade."
         )
         return
       }
@@ -257,7 +255,10 @@ export const scheduledTrendingRunner = inngest.createFunction(
         })
       })
     } else {
-      logger.info({ workspaceId }, "Scheduled run skipped — quota exceeded")
+      logger.info(
+        { workspaceId },
+        "Skipped — quota exhausted. Scheduling resumes on upgrade."
+      )
     }
 
     await step.sendEvent("schedule-next", {
@@ -298,7 +299,10 @@ export const recoverScheduledTrending = inngest.createFunction(
       }))
     )
 
-    logger.info({ count: enabledUsers.length }, "Recovered scheduled trending chains")
+    logger.info(
+      { count: enabledUsers.length },
+      "Recovered scheduled trending chains"
+    )
     return { recovered: enabledUsers.length }
   }
 )
