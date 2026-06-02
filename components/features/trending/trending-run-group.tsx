@@ -98,7 +98,7 @@ function TrendingRunGroup({
       <p className="mb-3 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
         {dateLabel}
       </p>
-      <div className="space-y-3">
+      <div className="space-y-4">
         {runs.map((run) => (
           <RunItem
             key={run._id}

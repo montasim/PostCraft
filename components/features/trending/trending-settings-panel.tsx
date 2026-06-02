@@ -116,7 +116,7 @@ function TrendingSettingsPanel({ open, prefs, onClose, onSave, audienceOptions, 
             <SheetDescription>Configure how and when trending posts are generated.</SheetDescription>
           </SheetHeader>
 
-          <div className="p-4 space-y-6">
+          <div className="p-4 space-y-4">
             {/* Platforms */}
             <div>
               <Label className="mb-2 block text-xs font-medium">Platforms</Label>

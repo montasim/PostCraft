@@ -44,7 +44,7 @@ function TrendingRunsList({ runs, generations }: TrendingRunsListProps) {
     : null
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {entries.map(([dateLabel, groupRuns], index) => (
         <TrendingRunGroup
           key={dateLabel}
