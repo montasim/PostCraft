@@ -16,7 +16,7 @@ import {
   GENERATION_PREFS_DEFAULTS,
   type GenerationPrefs,
 } from "@/modules/prefs/prefs.schema"
-import { API } from "@/lib/constants"
+import { API, POST_COUNT_DEFAULT } from "@/lib/constants"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import {
   fetchWorkspace,
@@ -61,6 +61,7 @@ function DashboardClient() {
   const userName = useAppSelector(selectUserName)
 
   const [quotaExceeded, setQuotaExceeded] = useState(quotaExceededFromStore)
+  const [postCount, setPostCount] = useState(POST_COUNT_DEFAULT)
 
   const personaOptions: {
     audiences: SelectOption[]
@@ -199,6 +200,7 @@ function DashboardClient() {
       setStatus("submitting")
       setError(null)
       setVariants([])
+      setPostCount(formData.postCount)
       notifiedRef.current = null
 
       try {
@@ -263,6 +265,7 @@ function DashboardClient() {
         variants={variants}
         status={status}
         error={error}
+        postCount={postCount}
         onRetry={handleRetry}
       />
     </div>

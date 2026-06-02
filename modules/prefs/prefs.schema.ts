@@ -10,8 +10,8 @@ export const generationPrefsSchema = z.object({
 export type GenerationPrefs = z.infer<typeof generationPrefsSchema>
 
 export const GENERATION_PREFS_DEFAULTS: GenerationPrefs = {
-  audiences: ["Founders"],
-  tones: ["Thought leader", "Story"],
+  audiences: ["Startup Founders"],
+  tones: ["Thought Leadership", "Storytelling"],
   languages: ["EN"],
   emoji: true,
 }

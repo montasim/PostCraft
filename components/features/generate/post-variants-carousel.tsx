@@ -31,7 +31,6 @@ const STATUS_MESSAGES: Record<string, string> = {
 
 const STATUS_HEADERS: Record<string, string> = {
   queued: "Added to queue",
-  generating: "Writing variant 1 of 3",
   scoring: "Scoring engagement",
   ranking: "Picking the winner",
   submitting: "Finishing up",
@@ -40,6 +39,7 @@ const STATUS_HEADERS: Record<string, string> = {
 interface PostVariantsCarouselProps {
   variants: Variant[]
   status: string
+  postCount: number
   error?: string | null
   onRetry?: () => void
 }
@@ -47,6 +47,7 @@ interface PostVariantsCarouselProps {
 function PostVariantsCarousel({
   variants,
   status,
+  postCount,
   error,
   onRetry,
 }: PostVariantsCarouselProps) {
@@ -108,11 +109,13 @@ function PostVariantsCarousel({
         <div className="mb-2 flex items-center justify-between">
           <h2 className="flex items-center gap-2 text-lg font-semibold">
             <IconLoader2 className="h-5 w-5 animate-spin text-primary" />
-            {STATUS_HEADERS[status] ?? "Processing"}
+            {status === "generating"
+              ? `Writing variant 1 of ${postCount}`
+              : STATUS_HEADERS[status] ?? "Processing"}
           </h2>
         </div>
         <div className="flex gap-4 overflow-hidden px-px py-4">
-          {[1, 2, 3].map((i) => (
+          {Array.from({ length: postCount }, (_, i) => i + 1).map((i) => (
             <Card key={i} className="w-[410px] shrink-0 space-y-4 p-4">
               <Skeleton className="h-6 w-20" />
               <Skeleton className="h-4 w-full" />
@@ -162,10 +165,10 @@ function PostVariantsCarousel({
         <IconSparkles className="h-5 w-5 text-primary" />
         <div>
           <p className="text-sm font-semibold text-foreground">
-            3 posts, ready for your audience
+            {postCount} post{postCount !== 1 ? "s" : ""}, ready for your audience
           </p>
           <p className="text-[11px] text-muted-foreground">
-            {variants.length} versions ranked by engagement score. Version #1 is
+            {variants.length} version{variants.length !== 1 ? "s" : ""} ranked by engagement score. Version #1 is
             your strongest.
           </p>
         </div>
