@@ -154,7 +154,7 @@ function TrendingShell() {
 
   if (isLoading) {
     return (
-      <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:-m-4 lg:flex-row">
+      <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden -m-4 lg:flex-row">
         <div className="hidden w-72 shrink-0 border-r border-sidebar-border bg-sidebar lg:flex lg:flex-col">
           <div className="flex-1 p-4">
             <div className="mb-4 space-y-2">
@@ -255,7 +255,7 @@ function TrendingShell() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:-m-4 lg:flex-row">
+    <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden -m-4 lg:flex-row">
       <div
         className={cn(
           "shrink-0 border-r border-sidebar-border bg-sidebar",
@@ -275,7 +275,7 @@ function TrendingShell() {
       <div
         className={cn(
           "flex-1 overflow-y-auto",
-          showSidebar && !isDesktop ? "hidden" : "block md:p-4"
+          showSidebar && !isDesktop ? "hidden" : "block p-4"
         )}
       >
         <div className="mb-12">
