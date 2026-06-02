@@ -72,3 +72,14 @@ export class QuotaExceededError extends AppError {
     this.name = "QuotaExceededError"
   }
 }
+
+export class GuardrailLimitExceededError extends AppError {
+  constructor(category: string, max: number) {
+    super(
+      `Maximum ${max} active ${category} rules allowed. Deactivate one first.`,
+      HTTP_STATUS.BAD_REQUEST,
+      ERROR_CODES.VALIDATION_ERROR
+    )
+    this.name = "GuardrailLimitExceededError"
+  }
+}

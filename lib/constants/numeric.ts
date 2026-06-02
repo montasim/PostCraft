@@ -68,3 +68,8 @@ export const SCORE_WEIGHTS = {
 } as const
 
 export const SESSION_TIMEOUT_DEFAULT = 30
+
+export const ACTIVE_TONE_RULES_MAX = 5
+export const ACTIVE_FORMAT_RULES_MAX = 5
+export const ACTIVE_CUSTOM_RULES_MAX = 5
+export const ACTIVE_BANNED_WORDS_MAX = 10
