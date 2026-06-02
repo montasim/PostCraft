@@ -25,6 +25,7 @@ import {
   IconUsers,
   IconMessageCircle,
   IconGlobe,
+  IconArticle,
   IconHash,
   IconDeviceMobile,
 } from "@tabler/icons-react"
@@ -397,7 +398,7 @@ function PostCreationFormInner({
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div className="space-y-1.5">
               <Label className="flex items-center gap-1 text-xs font-medium">
-                <IconHash className="h-3 w-3 text-muted-foreground" />
+                <IconArticle className="h-3 w-3 text-muted-foreground" />
                 Number of posts
               </Label>
               <input
