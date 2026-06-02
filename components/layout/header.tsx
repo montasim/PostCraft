@@ -22,7 +22,7 @@ function Header({ onMobileMenuOpen }: HeaderProps) {
   const totalPosts = useAppSelector(selectTotalPosts)
 
   return (
-    <header className="z-10 flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-5">
+    <header className="z-10 flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-4">
       <div className="flex items-center gap-3">
         <Button
           variant="outline"

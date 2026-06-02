@@ -21,13 +21,13 @@ interface SidebarProps {
 function Sidebar({ active, onSelect, used, limit, streakDays = 0, weeklyGoal = 5, weeklyProgress = 0, trendingCount = 0, trendingPrefs }: SidebarProps) {
   return (
     <aside className="hidden w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar md:flex">
-      <div className="flex h-14 items-center gap-2 border-b border-sidebar-border px-5">
+      <div className="flex h-14 items-center gap-2 border-b border-sidebar-border px-4">
         <div className="flex h-7 w-7 items-center justify-center rounded-lg brand-gradient">
           <IconSparkles className="h-4 w-4 text-primary-foreground" />
         </div>
         <span className="brand-gradient-text text-base font-bold">LinkedIQ</span>
       </div>
-      <div className="flex-1 space-y-5 overflow-y-auto p-5">
+      <div className="flex-1 space-y-4 overflow-y-auto p-4">
         <NavGroup
           label="Main"
           items={NAV_MAIN}
@@ -48,7 +48,7 @@ function Sidebar({ active, onSelect, used, limit, streakDays = 0, weeklyGoal = 5
           onSelect={onSelect}
         />
       </div>
-      <div className="space-y-5 p-5">
+      <div className="space-y-4 p-4">
         <PlanQuotaCard used={used} limit={limit} />
         {trendingPrefs?.enabled && (
           <div className="rounded-lg border bg-card px-3 py-2.5">
