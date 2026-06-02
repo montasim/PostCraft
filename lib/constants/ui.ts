@@ -169,6 +169,25 @@ export const INDUSTRY_OPTIONS: SelectOption[] = [
   { value: "Other", label: "Other" },
 ]
 
+export const PLATFORM_OPTIONS: SelectOption[] = [
+  {
+    value: "linkedin",
+    label: "LinkedIn",
+    description:
+      "Professional posts with authority, long-form industry insight",
+  },
+  {
+    value: "twitter",
+    label: "Twitter / X",
+    description: "Concise quick updates, punchy, under 280 characters",
+  },
+  {
+    value: "facebook",
+    label: "Facebook",
+    description: "Conversational, community-oriented, storytelling",
+  },
+]
+
 export const TOPIC_OPTIONS: SelectOption[] = [
   { value: "react", label: "React" },
   { value: "typescript", label: "TypeScript" },
