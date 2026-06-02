@@ -2,6 +2,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * Color tokens — mirror lib/constants/colors.ts.
+ * Keep both files in sync when changing theme colors.
+ */
 :root {
   --background: oklch(0.9751 0.0127 244.2507);
   --foreground: oklch(0.3729 0.0306 259.7328);
