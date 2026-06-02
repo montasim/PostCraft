@@ -177,3 +177,57 @@ Rules:
 - **Unvalidated external input** — every API boundary gets Zod validation
 - **Hardcoded secrets** — env vars only, validated at boot
 - **Catch-all error swallowing** — `catch (e) {}` is forbidden. Log or rethrow
+
+## New Component Checklist
+
+When creating a **new component or page**, follow these rules before writing any code:
+
+### UI Psychology & Engagement
+
+- Apply psychology-driven design: use micro-copy that motivates action (not generic labels)
+- Icons must reinforce meaning — choose Tabler icons that visually communicate the action
+- Use color intentionally: `brand-gradient` for primary CTAs, muted tones for secondary actions
+- Empty states must feel encouraging, not barren — include a clear next step
+- Error states must be specific and actionable, not alarming
+- Loading states must feel fast — use skeleton loaders that match real content shape
+
+### SEO & Metadata (new pages only)
+
+- Every `page.tsx` must export a `Metadata` object with `title` and `description`
+- Title format: `"{Feature} — LinkedIQ"` or descriptive standalone title
+- Description: 120-160 characters, includes relevant keywords, human-readable
+- Use Open Graph and Twitter Card metadata for social sharing pages
+- Set canonical URLs where appropriate
+
+### Loading Skeletons
+
+- Every page with a `loading.tsx` must mirror the real content layout exactly
+- Skeleton shape = real content shape: same grid columns, same card structure, same spacing
+- Skeleton spacing must match the rendered component spacing (`p-4`, `gap-4`, `space-y-4`)
+- Use `Skeleton` from `components/ui/skeleton` — never plain `div` placeholders
+
+### Code Quality
+
+- **Clean code**: functions < 50 lines, components < 200 lines, single responsibility
+- **SOLID principles**: one reason to change per module/component, open for extension via composition
+- **Modular approach**: extract reusable logic into shared hooks/utils, feature-specific stays in feature folder
+- **Next.js best practices**: server components by default, `'use client'` at leaf boundary only, streaming with `Suspense` where beneficial
+- **Type safety**: no `any`, no type assertions unless unavoidable, derive types from Zod schemas
+
+### Spacing Standard
+
+- Container/section-level: `p-4`, `gap-4`, `space-y-4`, `m-4` — **always `*-4`**
+- Component-internal micro-spacing: `gap-1`, `gap-2`, `px-2`, `py-1` for icon-to-text, badges, tight groups
+- Negative margins to break out of parent padding: `-m-4` (not `lg:-m-4` unless layout requires it)
+- Large breathing room: `py-8`, `py-10`, `py-20` only for intentional spacers
+- Never mix `p-5`, `p-6`, `space-y-5`, `space-y-6` at container level
+
+### Mobile Responsiveness
+
+- All new components must work on screens 320px–1920px
+- Use Tailwind responsive prefixes: mobile-first (`sm:`, `md:`, `lg:`, `xl:`)
+- Horizontal overflow is forbidden — use `overflow-x-auto` with `shrink-0` children for scrollable content
+- Card grids: single column mobile, multi-column desktop (`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3`)
+- Split layouts (sidebar + detail): stack on mobile, side-by-side on desktop
+- Touch targets: minimum 44px tap area for interactive elements
+- Test every new page/component at 375px (iPhone SE) before marking done
