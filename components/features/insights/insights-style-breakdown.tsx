@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { IconPalette } from "@tabler/icons-react"
 import type { StylePerformance } from "@/types"
 
-function AnalyticsStyleBreakdown({ data }: { data: StylePerformance[] }) {
+function InsightsStyleBreakdown({ data }: { data: StylePerformance[] }) {
   const sorted = [...data].sort((a, b) => b.avgScore - a.avgScore)
   const maxScore = 100
 
@@ -71,4 +71,4 @@ function AnalyticsStyleBreakdown({ data }: { data: StylePerformance[] }) {
   )
 }
 
-export { AnalyticsStyleBreakdown }
+export { InsightsStyleBreakdown }

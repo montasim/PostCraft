@@ -3,7 +3,7 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { IconChartBar, IconSparkles } from "@tabler/icons-react"
 
-function AnalyticsHeader() {
+function InsightsHeader() {
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2.5">
@@ -11,7 +11,7 @@ function AnalyticsHeader() {
         <div>
           <p className="text-sm font-semibold">Performance</p>
           <p className="text-xs text-muted-foreground">
-            Your content analytics
+            Your content insights
           </p>
         </div>
       </div>
@@ -19,4 +19,4 @@ function AnalyticsHeader() {
   )
 }
 
-export { AnalyticsHeader }
+export { InsightsHeader }

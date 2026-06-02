@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react"
 import { API, PAGE_SIZE, SCORE_RANGES } from "@/lib/constants"
-import type { HistoryEntry, HistoryFilterState } from "@/types"
+import type { LibraryEntry, LibraryFilterState } from "@/types"
 
-const DEFAULT_FILTERS: HistoryFilterState = {
+const DEFAULT_FILTERS: LibraryFilterState = {
   search: "",
   styles: [],
   languages: [],
@@ -12,7 +12,7 @@ const DEFAULT_FILTERS: HistoryFilterState = {
   sort: "newest",
 }
 
-interface HistoryStats {
+interface LibraryStats {
   totalCount: number
   thisWeekCount: number
   bestScore: number
@@ -20,11 +20,11 @@ interface HistoryStats {
   streakDays: number
 }
 
-function useHistoryFilters() {
-  const [filters, setFilters] = useState<HistoryFilterState>(DEFAULT_FILTERS)
-  const [allEntries, setAllEntries] = useState<HistoryEntry[]>([])
-  const [bestEntry, setBestEntry] = useState<HistoryEntry | null>(null)
-  const [stats, setStats] = useState<HistoryStats>({
+function useLibraryFilters() {
+  const [filters, setFilters] = useState<LibraryFilterState>(DEFAULT_FILTERS)
+  const [allEntries, setAllEntries] = useState<LibraryEntry[]>([])
+  const [bestEntry, setBestEntry] = useState<LibraryEntry | null>(null)
+  const [stats, setStats] = useState<LibraryStats>({
     totalCount: 0,
     thisWeekCount: 0,
     bestScore: 0,
@@ -65,12 +65,12 @@ function useHistoryFilters() {
         setLoading(true)
         setError(null)
         const params = buildParams(pageNum)
-        const res = await fetch(`${API.HISTORY}?${params}`)
+        const res = await fetch(`${API.LIBRARY}?${params}`)
         if (!res.ok) throw new Error("Failed to fetch history")
         const json = await res.json()
         if (!json.success) throw new Error("Failed to fetch history")
         return json.data as {
-          entries: HistoryEntry[]
+          entries: LibraryEntry[]
           total: number
           hasMore: boolean
         }
@@ -87,7 +87,7 @@ function useHistoryFilters() {
 
   const fetchStats = useCallback(async () => {
     try {
-      const res = await fetch(`${API.HISTORY}/stats`)
+      const res = await fetch(`${API.LIBRARY}/stats`)
       if (!res.ok) return
       const json = await res.json()
       if (!json.success) return
@@ -160,4 +160,4 @@ function useHistoryFilters() {
   }
 }
 
-export { useHistoryFilters }
+export { useLibraryFilters }

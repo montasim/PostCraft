@@ -3,25 +3,25 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { IconChevronDown } from "@tabler/icons-react"
-import { HistoryCard } from "@/components/features/history/history-card"
-import { HistoryEmpty } from "@/components/features/history/history-empty"
-import type { HistoryEntry, HistoryFilterState } from "@/types"
+import { LibraryCard } from "@/components/features/library/library-card"
+import { LibraryEmpty } from "@/components/features/library/library-empty"
+import type { LibraryEntry, LibraryFilterState } from "@/types"
 
-interface HistoryGridProps {
-  entries: HistoryEntry[]
+interface LibraryGridProps {
+  entries: LibraryEntry[]
   hasMore: boolean
   onLoadMore: () => void
-  filters: HistoryFilterState
+  filters: LibraryFilterState
   totalCount: number
 }
 
-function HistoryGrid({
+function LibraryGrid({
   entries,
   hasMore,
   onLoadMore,
   filters,
   totalCount,
-}: HistoryGridProps) {
+}: LibraryGridProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null)
 
   if (entries.length === 0) {
@@ -31,14 +31,14 @@ function HistoryGrid({
       filters.languages.length > 0 ||
       filters.scoreRange !== "all"
 
-    return <HistoryEmpty hasFilters={hasFilters} />
+    return <LibraryEmpty hasFilters={hasFilters} />
   }
 
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {entries.map((entry) => (
-          <HistoryCard
+          <LibraryCard
             key={entry.id}
             entry={entry}
             expanded={expandedId === entry.id}
@@ -65,4 +65,4 @@ function HistoryGrid({
   )
 }
 
-export { HistoryGrid }
+export { LibraryGrid }

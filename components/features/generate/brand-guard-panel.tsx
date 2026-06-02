@@ -173,7 +173,7 @@ function BrandGuardPanel({
 
     async function fetchGuardrails() {
       try {
-        const res = await fetch(API.GUARDRAILS + "?active=true")
+        const res = await fetch(API.BRAND_GUARD + "?active=true")
         const data = await res.json()
         if (data.success) {
           setGuardrails(data.data)
@@ -208,7 +208,7 @@ function BrandGuardPanel({
           </div>
           {showButton && (
             <Button variant="ghost" size="icon" className="h-7 w-7" asChild>
-              <Link href="/guardrails" title="Protect your brand">
+              <Link href="/brand-guard" title="Protect your brand">
                 <IconSettings className="h-4 w-4" />
               </Link>
             </Button>

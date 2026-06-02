@@ -4,26 +4,29 @@ import { useState, useMemo } from "react"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { IconSearch } from "@tabler/icons-react"
-import type { HistoryEntry } from "@/types"
+import type { LibraryEntry } from "@/types"
 
-interface HistorySidebarProps {
-  entries: HistoryEntry[]
+interface LibrarySidebarProps {
+  entries: LibraryEntry[]
   selectedId: string
   onSelect: (id: string) => void
 }
 
 const STATUS_DOT: Record<string, string> = {
-  published: "bg-chart-2",
+  completed: "bg-emerald-500",
+  failed: "bg-red-500",
+  error: "bg-red-500",
   draft: "bg-chart-3",
+  published: "bg-emerald-500",
   archived: "bg-muted-foreground",
 }
 
 interface DateGroup {
   label: string
-  entries: HistoryEntry[]
+  entries: LibraryEntry[]
 }
 
-function groupByDate(entries: HistoryEntry[]): DateGroup[] {
+function groupByDate(entries: LibraryEntry[]): DateGroup[] {
   const now = new Date()
   const today = now.toISOString().slice(0, 10)
   const yesterday = new Date(now.getTime() - 86400000).toISOString().slice(0, 10)
@@ -47,7 +50,7 @@ function groupByDate(entries: HistoryEntry[]): DateGroup[] {
   return groups.filter((g) => g.entries.length > 0)
 }
 
-function HistorySidebar({ entries, selectedId, onSelect }: HistorySidebarProps) {
+function LibrarySidebar({ entries, selectedId, onSelect }: LibrarySidebarProps) {
   const [search, setSearch] = useState("")
 
   const filtered = useMemo(() => {
@@ -111,8 +114,6 @@ function HistorySidebar({ entries, selectedId, onSelect }: HistorySidebarProps) 
                       {entry.variants.length} variant
                       {entry.variants.length !== 1 && "s"}
                     </span>
-                    <span className="text-muted-foreground/30">·</span>
-                    <span>{entry.status}</span>
                   </div>
                 </button>
               )
@@ -124,4 +125,4 @@ function HistorySidebar({ entries, selectedId, onSelect }: HistorySidebarProps) 
   )
 }
 
-export { HistorySidebar }
+export { LibrarySidebar }

@@ -6,7 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import type { HistoryEntry } from "@/types"
+import type { LibraryEntry } from "@/types"
 
 interface HeatmapDay {
   date: string
@@ -14,7 +14,7 @@ interface HeatmapDay {
 }
 
 interface ActivityHeatmapProps {
-  entries: HistoryEntry[]
+  entries: LibraryEntry[]
   heatmapData?: HeatmapDay[]
 }
 

@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { VariantCard } from "@/components/shared/variant-card"
 import { VariantCarousel } from "@/components/shared/variant-carousel"
 import { BrandGuardPanel } from "@/components/features/generate/brand-guard-panel"
-import type { HistoryEntry } from "@/types"
+import type { LibraryEntry } from "@/types"
 import { IconTrophy, IconFileText } from "@tabler/icons-react"
 
 function formatVariantText(v: {
@@ -18,7 +18,7 @@ function formatVariantText(v: {
   return `${v.hook}\n\n${v.body}\n\n${v.cta}\n\n${v.hashtags.join(" ")}`
 }
 
-function OriginalInputCard({ entry }: { entry: HistoryEntry }) {
+function OriginalInputCard({ entry }: { entry: LibraryEntry }) {
   return (
     <Card className="flex-1">
       <CardHeader>
@@ -99,10 +99,10 @@ function VariantCardWrapper({
   return <VariantCard variant={variant} copied={copied} onCopy={handleCopy} />
 }
 
-function HistoryDetail({
+function LibraryDetail({
   entry,
 }: {
-  entry: HistoryEntry & {
+  entry: LibraryEntry & {
     guardrails?: {
       id: string
       category: "tone" | "format" | "banned" | "custom"
@@ -175,4 +175,4 @@ function HistoryDetail({
   )
 }
 
-export { HistoryDetail }
+export { LibraryDetail }

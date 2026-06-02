@@ -4,7 +4,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { IconTrendingUp } from "@tabler/icons-react"
 import type { TrendDataPoint } from "@/types"
 
-function AnalyticsTrendChart({ data }: { data: TrendDataPoint[] }) {
+function InsightsTrendChart({ data }: { data: TrendDataPoint[] }) {
   if (data.length === 0) {
     return (
       <Card>
@@ -153,4 +153,4 @@ function AnalyticsTrendChart({ data }: { data: TrendDataPoint[] }) {
   )
 }
 
-export { AnalyticsTrendChart }
+export { InsightsTrendChart }

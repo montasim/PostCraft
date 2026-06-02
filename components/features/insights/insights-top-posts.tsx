@@ -7,7 +7,7 @@ import { IconTrophy, IconMedal, IconAward } from "@tabler/icons-react"
 import { Separator } from "@/components/ui/separator"
 import type { TopPerformingPost } from "@/types"
 
-function AnalyticsTopPosts({ posts }: { posts: TopPerformingPost[] }) {
+function InsightsTopPosts({ posts }: { posts: TopPerformingPost[] }) {
   if (posts.length === 0) {
     return (
       <Card>
@@ -82,4 +82,4 @@ function AnalyticsTopPosts({ posts }: { posts: TopPerformingPost[] }) {
   )
 }
 
-export { AnalyticsTopPosts }
+export { InsightsTopPosts }

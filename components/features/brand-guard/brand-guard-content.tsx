@@ -356,14 +356,14 @@ interface ApiGuardrail {
   isActive: boolean
 }
 
-function GuardrailsContent() {
+function BrandGuardContent() {
   const [rules, setRules] = useState<Rule[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchGuardrails() {
       try {
-        const res = await fetch(API.GUARDRAILS)
+        const res = await fetch(API.BRAND_GUARD)
         const data = await res.json()
         if (data.success) {
           setRules(
@@ -400,7 +400,7 @@ function GuardrailsContent() {
       )
 
       try {
-        const res = await fetch(`${API.GUARDRAILS}/${id}`, {
+        const res = await fetch(`${API.BRAND_GUARD}/${id}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ isActive: newActive }),
@@ -422,7 +422,7 @@ function GuardrailsContent() {
       setRules((cur) => cur.filter((r) => r.id !== id))
 
       try {
-        const res = await fetch(`${API.GUARDRAILS}/${id}`, { method: "DELETE" })
+        const res = await fetch(`${API.BRAND_GUARD}/${id}`, { method: "DELETE" })
         if (!res.ok) throw new Error()
       } catch {
         setRules(prev)
@@ -435,7 +435,7 @@ function GuardrailsContent() {
   const handleAdd = useCallback(
     (category: string) => async (text: string) => {
       try {
-        const res = await fetch(API.GUARDRAILS, {
+        const res = await fetch(API.BRAND_GUARD, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ category, rule: text, isActive: true }),
@@ -536,4 +536,4 @@ function GuardrailsContent() {
   )
 }
 
-export { GuardrailsContent }
+export { BrandGuardContent }

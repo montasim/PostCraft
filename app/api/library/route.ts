@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server"
 import { connectDB } from "@/core/config/database"
 import { handleApiError } from "@/core/errors/error-handler"
-import { historyService } from "@/modules/history"
+import { libraryService } from "@/modules/library"
 import { getWorkspaceId } from "@/core/auth/workspace"
-import type { HistoryListFilters } from "@/modules/history"
+import type { LibraryListFilters } from "@/modules/library"
 
 export async function GET(request: NextRequest) {
   try {
@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     const workspaceId = await getWorkspaceId()
     const sp = request.nextUrl.searchParams
 
-    const filters: HistoryListFilters = {
+    const filters: LibraryListFilters = {
       search: sp.get("search") || undefined,
       styles: sp.get("styles")?.split(",").filter(Boolean) || undefined,
       languages:
@@ -24,12 +24,12 @@ export async function GET(request: NextRequest) {
             }
           : undefined,
       sort:
-        (sp.get("sort") as HistoryListFilters["sort"]) || "newest",
+        (sp.get("sort") as LibraryListFilters["sort"]) || "newest",
       page: Number(sp.get("page")) || 1,
       limit: Number(sp.get("limit")) || 6,
     }
 
-    const data = await historyService.listEntries(
+    const data = await libraryService.listEntries(
       workspaceId,
       filters
     )

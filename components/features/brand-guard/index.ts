@@ -1,1 +1,1 @@
-export { GuardrailsContent } from "@/components/features/guardrails/guardrails-content"
+export { BrandGuardContent } from "@/components/features/brand-guard/brand-guard-content"

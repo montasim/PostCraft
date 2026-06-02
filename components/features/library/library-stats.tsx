@@ -36,7 +36,7 @@ function StatCard({ label, value, icon: Icon, color }: StatCardProps) {
   )
 }
 
-interface HistoryStatsProps {
+interface LibraryStatsProps {
   stats: {
     totalCount: number
     thisWeekCount: number
@@ -45,7 +45,7 @@ interface HistoryStatsProps {
   }
 }
 
-function HistoryStats({ stats }: HistoryStatsProps) {
+function LibraryStats({ stats }: LibraryStatsProps) {
   return (
     <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
       <StatCard
@@ -76,4 +76,4 @@ function HistoryStats({ stats }: HistoryStatsProps) {
   )
 }
 
-export { HistoryStats }
+export { LibraryStats }

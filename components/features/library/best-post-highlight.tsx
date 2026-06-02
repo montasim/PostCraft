@@ -6,10 +6,10 @@ import { Button } from "@/components/ui/button"
 import { ScorePill } from "@/components/shared/score-pill"
 import { cn } from "@/lib/utils"
 import { IconTrophy, IconCopy, IconCheck } from "@tabler/icons-react"
-import type { HistoryEntry } from "@/types"
+import type { LibraryEntry } from "@/types"
 
 interface BestPostHighlightProps {
-  entry: HistoryEntry
+  entry: LibraryEntry
   copied: boolean
   onCopy: () => void
 }

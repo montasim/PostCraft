@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button"
 import { IconInbox } from "@tabler/icons-react"
 import Link from "next/link"
 
-interface HistoryEmptyProps {
+interface LibraryEmptyProps {
   hasFilters: boolean
 }
 
-function HistoryEmpty({ hasFilters }: HistoryEmptyProps) {
+function LibraryEmpty({ hasFilters }: LibraryEmptyProps) {
   return (
     <div className="flex flex-col items-center justify-center py-20">
       <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
@@ -34,4 +34,4 @@ function HistoryEmpty({ hasFilters }: HistoryEmptyProps) {
   )
 }
 
-export { HistoryEmpty }
+export { LibraryEmpty }

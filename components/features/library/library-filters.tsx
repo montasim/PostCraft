@@ -24,19 +24,19 @@ import {
 import { IconSearch, IconArrowsSort, IconScoreboard } from "@tabler/icons-react"
 import { SORT_OPTIONS, SCORE_RANGES } from "@/lib/constants"
 import { TONE_OPTIONS, LANGUAGE_OPTIONS } from "@/lib/constants"
-import type { HistoryFilterState } from "@/types"
+import type { LibraryFilterState } from "@/types"
 
-interface HistoryFiltersProps {
-  filters: HistoryFilterState
-  onFiltersChange: (filters: HistoryFilterState) => void
+interface LibraryFiltersProps {
+  filters: LibraryFilterState
+  onFiltersChange: (filters: LibraryFilterState) => void
   resultCount: number
 }
 
-function HistoryFilters({
+function LibraryFilters({
   filters,
   onFiltersChange,
   resultCount,
-}: HistoryFiltersProps) {
+}: LibraryFiltersProps) {
   return (
     <div className="flex flex-wrap items-center gap-3">
       <div className="relative flex-1 min-w-[200px]">
@@ -120,4 +120,4 @@ function HistoryFilters({
   )
 }
 
-export { HistoryFilters }
+export { LibraryFilters }

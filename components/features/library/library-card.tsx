@@ -7,7 +7,7 @@ import { ScorePill } from "@/components/shared/score-pill"
 import { VariantCard } from "@/components/shared/variant-card"
 import { cn } from "@/lib/utils"
 import { IconChevronDown, IconStack2 } from "@tabler/icons-react"
-import type { HistoryEntry } from "@/types"
+import type { LibraryEntry } from "@/types"
 
 const STATUS_STYLES: Record<string, string> = {
   published: "bg-chart-2/15 text-chart-2",
@@ -28,13 +28,13 @@ function formatRelativeDate(dateStr: string): string {
   return `${Math.floor(diffDays / 30)}mo ago`
 }
 
-interface HistoryCardProps {
-  entry: HistoryEntry
+interface LibraryCardProps {
+  entry: LibraryEntry
   expanded: boolean
   onToggle: () => void
 }
 
-function HistoryCard({ entry, expanded, onToggle }: HistoryCardProps) {
+function LibraryCard({ entry, expanded, onToggle }: LibraryCardProps) {
   const bestVariant = entry.variants.reduce((best, v) =>
     v.score > best.score ? v : best
   )
@@ -108,4 +108,4 @@ function VariantCardWrapper({ variant }: { variant: import("@/types").Variant })
   return <VariantCard variant={variant} copied={copied} onCopy={handleCopy} />
 }
 
-export { HistoryCard }
+export { LibraryCard }

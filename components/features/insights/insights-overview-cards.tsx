@@ -10,13 +10,13 @@ import {
   IconCalendarMonth,
 } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
-import type { AnalyticsOverview, StylePerformance } from "@/types"
+import type { InsightsOverview, StylePerformance } from "@/types"
 
-function AnalyticsOverviewCards({
+function InsightsOverviewCards({
   overview,
   styles,
 }: {
-  overview: AnalyticsOverview
+  overview: InsightsOverview
   styles: StylePerformance[]
 }) {
   const bestStyle =
@@ -127,4 +127,4 @@ function MetricCard({
   )
 }
 
-export { AnalyticsOverviewCards }
+export { InsightsOverviewCards }

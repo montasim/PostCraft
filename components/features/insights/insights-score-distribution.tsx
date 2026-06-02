@@ -12,7 +12,7 @@ const RANGE_COLORS: Record<string, string> = {
   "Below 70": "bg-chart-4",
 }
 
-function AnalyticsScoreDistribution({ data }: { data: ScoreDistribution[] }) {
+function InsightsScoreDistribution({ data }: { data: ScoreDistribution[] }) {
   return (
     <Card>
       <CardHeader>
@@ -43,4 +43,4 @@ function AnalyticsScoreDistribution({ data }: { data: ScoreDistribution[] }) {
   )
 }
 
-export { AnalyticsScoreDistribution }
+export { InsightsScoreDistribution }

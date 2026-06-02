@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { connectDB } from "@/core/config/database"
 import { handleApiError } from "@/core/errors/error-handler"
-import { historyService } from "@/modules/history"
+import { libraryService } from "@/modules/library"
 import { getWorkspaceId } from "@/core/auth/workspace"
 
 export async function GET() {
@@ -10,10 +10,10 @@ export async function GET() {
     const workspaceId = await getWorkspaceId()
 
     const [stats, heatmap, streakDays, bestEntry] = await Promise.all([
-      historyService.getStats(workspaceId),
-      historyService.getHeatmapData(workspaceId),
-      historyService.getStreakDays(workspaceId),
-      historyService.getBestEntry(workspaceId),
+      libraryService.getStats(workspaceId),
+      libraryService.getHeatmapData(workspaceId),
+      libraryService.getStreakDays(workspaceId),
+      libraryService.getBestEntry(workspaceId),
     ])
 
     return NextResponse.json({

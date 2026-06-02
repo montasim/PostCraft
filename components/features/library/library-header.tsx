@@ -3,12 +3,12 @@
 import { Badge } from "@/components/ui/badge"
 import { IconBooks, IconFlame } from "@tabler/icons-react"
 
-interface HistoryHeaderProps {
+interface LibraryHeaderProps {
   totalCount: number
   streakDays: number
 }
 
-function HistoryHeader({ totalCount, streakDays }: HistoryHeaderProps) {
+function LibraryHeader({ totalCount, streakDays }: LibraryHeaderProps) {
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2.5">
@@ -30,4 +30,4 @@ function HistoryHeader({ totalCount, streakDays }: HistoryHeaderProps) {
   )
 }
 
-export { HistoryHeader }
+export { LibraryHeader }

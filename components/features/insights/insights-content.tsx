@@ -1,32 +1,32 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { AnalyticsHeader } from "@/components/features/analytics/analytics-header"
-import { AnalyticsOverviewCards } from "@/components/features/analytics/analytics-overview-cards"
-import { AnalyticsTrendChart } from "@/components/features/analytics/analytics-trend-chart"
-import { AnalyticsScoreDistribution } from "@/components/features/analytics/analytics-score-distribution"
-import { AnalyticsStyleBreakdown } from "@/components/features/analytics/analytics-style-breakdown"
-import { AnalyticsTopPosts } from "@/components/features/analytics/analytics-top-posts"
+import { InsightsHeader } from "@/components/features/insights/insights-header"
+import { InsightsOverviewCards } from "@/components/features/insights/insights-overview-cards"
+import { InsightsTrendChart } from "@/components/features/insights/insights-trend-chart"
+import { InsightsScoreDistribution } from "@/components/features/insights/insights-score-distribution"
+import { InsightsStyleBreakdown } from "@/components/features/insights/insights-style-breakdown"
+import { InsightsTopPosts } from "@/components/features/insights/insights-top-posts"
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "sonner"
 import { API } from "@/lib/constants"
 import type {
-  AnalyticsOverview,
+  InsightsOverview,
   ScoreDistribution,
   StylePerformance,
   TrendDataPoint,
   TopPerformingPost,
 } from "@/types"
 
-interface AnalyticsData {
-  overview: AnalyticsOverview
+interface InsightsData {
+  overview: InsightsOverview
   scoreDistribution: ScoreDistribution[]
   stylePerformance: StylePerformance[]
   trendData: TrendDataPoint[]
   topPosts: TopPerformingPost[]
 }
 
-const EMPTY_DATA: AnalyticsData = {
+const EMPTY_DATA: InsightsData = {
   overview: {
     totalPosts: 0,
     avgScore: 0,
@@ -45,25 +45,25 @@ const EMPTY_DATA: AnalyticsData = {
   topPosts: [],
 }
 
-function AnalyticsContent() {
-  const [data, setData] = useState<AnalyticsData>(EMPTY_DATA)
+function InsightsContent() {
+  const [data, setData] = useState<InsightsData>(EMPTY_DATA)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    async function fetchAnalytics() {
+    async function fetchInsights() {
       try {
-        const res = await fetch(API.ANALYTICS)
+        const res = await fetch(API.INSIGHTS)
         const result = await res.json()
         if (result.success) {
           setData(result.data)
         }
       } catch {
-        toast.error("Failed to load analytics")
+        toast.error("Failed to load insights")
       } finally {
         setLoading(false)
       }
     }
-    fetchAnalytics()
+    fetchInsights()
   }, [])
 
   if (loading) {
@@ -196,21 +196,21 @@ function AnalyticsContent() {
 
   return (
     <div className="space-y-4">
-      <AnalyticsOverviewCards
+      <InsightsOverviewCards
         overview={data.overview}
         styles={data.stylePerformance}
       />
-      <AnalyticsHeader />
+      <InsightsHeader />
       <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2">
-        <AnalyticsTrendChart data={data.trendData} />
-        <AnalyticsScoreDistribution data={data.scoreDistribution} />
+        <InsightsTrendChart data={data.trendData} />
+        <InsightsScoreDistribution data={data.scoreDistribution} />
       </div>
       <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2">
-        <AnalyticsStyleBreakdown data={data.stylePerformance} />
-        <AnalyticsTopPosts posts={data.topPosts} />
+        <InsightsStyleBreakdown data={data.stylePerformance} />
+        <InsightsTopPosts posts={data.topPosts} />
       </div>
     </div>
   )
 }
 
-export { AnalyticsContent }
+export { InsightsContent }

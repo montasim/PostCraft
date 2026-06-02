@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { useMediaQuery } from "@/hooks/use-media-query"
-import { HistorySidebar } from "@/components/features/history/history-sidebar"
-import { HistoryDetail } from "@/components/features/history/history-detail"
+import { LibrarySidebar } from "@/components/features/library/library-sidebar"
+import { LibraryDetail } from "@/components/features/library/library-detail"
 import { EmptyState } from "@/components/shared"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -12,19 +12,19 @@ import { IconArrowLeft } from "@tabler/icons-react"
 import { QuotaAlert } from "@/components/shared/quota-alert"
 import { API } from "@/lib/constants"
 import { cn } from "@/lib/utils"
-import type { HistoryEntry } from "@/types"
+import type { LibraryEntry } from "@/types"
 
-function HistoryContent() {
-  const [entries, setEntries] = useState<HistoryEntry[]>([])
+function LibraryContent() {
+  const [entries, setEntries] = useState<LibraryEntry[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const [detailEntry, setDetailEntry] = useState<HistoryEntry | null>(null)
+  const [detailEntry, setDetailEntry] = useState<LibraryEntry | null>(null)
   const [loading, setLoading] = useState(true)
   const [detailLoading, setDetailLoading] = useState(false)
   const isDesktop = useMediaQuery("(min-width: 1024px)")
 
   // Fetch sidebar entries on mount
   useEffect(() => {
-    fetch(API.HISTORY + "?limit=100")
+    fetch(API.LIBRARY + "?limit=100")
       .then((r) => r.json())
       .then((result) => {
         if (result.success) {
@@ -34,7 +34,7 @@ function HistoryContent() {
           }
         }
       })
-      .catch(() => toast.error("Failed to load history"))
+      .catch(() => toast.error("Failed to load library"))
       .finally(() => setLoading(false))
   }, [])
 
@@ -56,7 +56,7 @@ function HistoryContent() {
 
       if (!cancelled) setDetailLoading(true)
       try {
-        const res = await fetch(`${API.HISTORY}/${selectedId}`)
+        const res = await fetch(`${API.LIBRARY}/${selectedId}`)
         const result = await res.json()
         if (!cancelled) {
           setDetailEntry(result.success ? result.data : null)
@@ -172,7 +172,7 @@ function HistoryContent() {
           "lg:flex lg:w-72 lg:overflow-y-auto"
         )}
       >
-        <HistorySidebar
+        <LibrarySidebar
           entries={entries}
           selectedId={selectedId ?? ""}
           onSelect={handleSelect}
@@ -224,7 +224,7 @@ function HistoryContent() {
             </div>
           </div>
         ) : detailEntry ? (
-          <HistoryDetail entry={detailEntry} />
+          <LibraryDetail entry={detailEntry} />
         ) : (
           <EmptyState
             variant="centered"
@@ -237,4 +237,4 @@ function HistoryContent() {
   )
 }
 
-export { HistoryContent }
+export { LibraryContent }
