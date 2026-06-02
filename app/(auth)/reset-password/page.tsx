@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
+import { Suspense } from "react"
 import { ResetPasswordForm } from "@/components/features/auth"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export const metadata: Metadata = {
   title: "Reset Password",
@@ -7,5 +9,9 @@ export const metadata: Metadata = {
 }
 
 export default function ResetPasswordPage() {
-  return <ResetPasswordForm />
+  return (
+    <Suspense fallback={<Skeleton className="h-96 w-full max-w-md" />}>
+      <ResetPasswordForm />
+    </Suspense>
+  )
 }
