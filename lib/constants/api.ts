@@ -13,6 +13,7 @@ export const API = {
   GUARDRAILS: "/api/guardrails",
   ANALYTICS: "/api/analytics",
   PREFS_GENERATION: "/api/prefs/generation",
+  PREVIEW_PREFS: "/api/prefs/preview",
   AUTH_SEND_OTP: "/api/auth/send-otp",
   AUTH_VERIFY_OTP: "/api/auth/verify-otp-and-change",
   AUTH_RESET_PASSWORD: "/api/auth/request-password-reset",

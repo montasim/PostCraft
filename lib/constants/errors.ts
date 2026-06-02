@@ -11,18 +11,20 @@ export const ERROR_CODES = {
 } as const
 
 export const ERROR_MESSAGES = {
-  FETCH_WORKSPACE: "Failed to fetch workspace",
-  FETCH_PROFILE: "Failed to fetch profile",
-  FETCH_TRENDING_PREFS: "Failed to fetch trending prefs",
-  AUTH_REQUIRED: "Authentication required",
-  INTERNAL_SERVER: "Internal server error",
+  FETCH_WORKSPACE: "Could not load your workspace",
+  FETCH_PROFILE: "Could not load your profile",
+  FETCH_TRENDING_PREFS: "Could not load trending settings",
+  AUTH_REQUIRED: "Sign in to continue",
+  INTERNAL_SERVER: "Something went wrong on our end.",
   QUOTA_EXCEEDED: "Free plan quota exceeded. Upgrade to generate more posts.",
   AI_VALIDATION_FAILED: "AI output validation failed: %s",
   GENERATION_FAILED: "Generation failed",
   UNAUTHORIZED: "Unauthorized",
   FORBIDDEN: "Forbidden",
-  NOT_AUTHENTICATED: "Not authenticated",
+  NOT_AUTHENTICATED: "Session expired. Sign in again.",
   PASSWORD_MIN_LENGTH: "Password must be at least 8 characters",
+  FETCH_PREVIEW: "Could not load platform preview settings",
+  UPDATE_PREVIEW: "Could not update platform preview settings",
 } as const
 
 export const RETRYABLE_ERROR_PATTERNS = [
