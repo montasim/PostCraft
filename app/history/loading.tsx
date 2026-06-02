@@ -35,8 +35,8 @@ function HistoryLoading() {
       </div>
 
       {/* Detail area skeleton */}
-      <div className="flex-1 overflow-y-auto p-5">
-        <div className="space-y-5">
+      <div className="flex-1 overflow-y-auto p-4">
+        <div className="space-y-4">
           {/* Input card + Brand guard panel row */}
           <div className="flex flex-col gap-5 lg:flex-row">
             <div className="flex-1 rounded-xl border p-5">
