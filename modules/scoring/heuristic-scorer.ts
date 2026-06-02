@@ -8,6 +8,8 @@ import {
   DATA_PATTERNS,
   LIST_PATTERNS,
   LINE_SPLIT,
+  AI_CLICHE_PATTERNS,
+  SLANG_PATTERNS,
 } from "@/lib/constants"
 import {
   HOOK_MAX_LENGTH,
@@ -119,22 +121,43 @@ function scoreBannedWords(fullPost: string, bannedWords: string[]): number {
   return violations.length * -15
 }
 
+function scoreAICliche(fullPost: string): number {
+  const matches = fullPost.match(AI_CLICHE_PATTERNS)
+  return matches ? matches.length * -10 : 0
+}
+
+function scoreSlangUsage(fullPost: string): number {
+  const matches = fullPost.match(SLANG_PATTERNS)
+  return matches ? matches.length * -5 : 0
+}
+
 export function calculateHeuristicScore(
   variant: HeuristicInput,
   bannedWords: string[] = []
 ): HeuristicResult {
   const fullPost = `${variant.hook}\n${variant.body}\n${variant.cta}`
   const bannedPenalty = scoreBannedWords(fullPost, bannedWords)
+  const clichePenalty = scoreAICliche(fullPost)
+  const slangPenalty = scoreSlangUsage(fullPost)
 
   const engagement = clamp(
     scoreHookStrength(variant.hook) +
       scoreCTAClarity(variant.cta) +
-      bannedPenalty
+      bannedPenalty +
+      clichePenalty +
+      slangPenalty
   )
-  const clarity = clamp(scoreReadability(variant.body) + bannedPenalty)
+  const clarity = clamp(
+    scoreReadability(variant.body) +
+      bannedPenalty +
+      clichePenalty +
+      slangPenalty
+  )
   const formatting = clamp(
     scoreFormatting(variant.body, variant.hook, variant.hashtags) +
-      bannedPenalty
+      bannedPenalty +
+      clichePenalty +
+      slangPenalty
   )
 
   return { engagement, clarity, formatting }
