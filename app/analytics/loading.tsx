@@ -2,9 +2,9 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 function AnalyticsLoading() {
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       {/* Overview metric cards — 5 columns */}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5 lg:gap-5">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5 lg:gap-4">
         {Array.from({ length: 5 }).map((_, i) => (
           <div key={i} className="rounded-xl border">
             <div className="flex items-center gap-3 p-3 lg:p-4">
@@ -43,8 +43,8 @@ function AnalyticsLoading() {
       </div>
 
       {/* Charts row 1 — trend chart + score distribution */}
-      <div className="grid grid-cols-1 gap-3 sm:gap-5 lg:grid-cols-2">
-        <div className="rounded-xl border p-5">
+      <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2">
+        <div className="rounded-xl border p-4">
           <div className="mb-4 flex items-center justify-between">
             <Skeleton className="h-4 w-32" />
             <div className="flex gap-3">
@@ -72,9 +72,9 @@ function AnalyticsLoading() {
             </div>
           </div>
         </div>
-        <div className="rounded-xl border p-5">
+        <div className="rounded-xl border p-4">
           <Skeleton className="mb-4 h-4 w-32" />
-          <div className="space-y-3">
+          <div className="space-y-4">
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="space-y-1.5">
                 <div className="flex items-center justify-between">
@@ -89,8 +89,8 @@ function AnalyticsLoading() {
       </div>
 
       {/* Charts row 2 — style breakdown + top posts */}
-      <div className="grid grid-cols-1 gap-3 sm:gap-5 lg:grid-cols-2">
-        <div className="rounded-xl border p-5">
+      <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2">
+        <div className="rounded-xl border p-4">
           <Skeleton className="mb-4 h-4 w-28" />
           <div className="space-y-4">
             {Array.from({ length: 4 }).map((_, i) => (
@@ -107,9 +107,9 @@ function AnalyticsLoading() {
             ))}
           </div>
         </div>
-        <div className="rounded-xl border p-5">
+        <div className="rounded-xl border p-4">
           <Skeleton className="mb-4 h-4 w-24" />
-          <div className="space-y-3">
+          <div className="space-y-4">
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="flex gap-3">
                 <Skeleton className="h-7 w-7 shrink-0 rounded-full" />

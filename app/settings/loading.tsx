@@ -2,19 +2,19 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 function SettingsLoading() {
   return (
-    <div className="space-y-5">
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {/* Left — Notification settings card */}
-        <div className="space-y-5">
+        <div className="space-y-4">
           <div className="rounded-xl border p-0">
-            <div className="space-y-1 border-b px-6 py-4">
+            <div className="space-y-1 border-b px-4 py-4">
               <div className="flex items-center gap-2">
                 <Skeleton className="h-4 w-4 rounded" />
                 <Skeleton className="h-4 w-24" />
               </div>
               <Skeleton className="h-3 w-44" />
             </div>
-            <div className="space-y-5 p-6">
+            <div className="space-y-4 p-4">
               {["Generation complete", "Scheduled trending", "Weekly digest", "Product updates", "Post reminder"].map(
                 (_, i) => (
                   <div key={i} className="flex items-center justify-between">
@@ -31,17 +31,17 @@ function SettingsLoading() {
         </div>
 
         {/* Right — Account security + Danger zone */}
-        <div className="space-y-5">
+        <div className="space-y-4">
           {/* Account security card */}
           <div className="rounded-xl border p-0">
-            <div className="space-y-1 border-b px-6 py-4">
+            <div className="space-y-1 border-b px-4 py-4">
               <div className="flex items-center gap-2">
                 <Skeleton className="h-4 w-4 rounded" />
                 <Skeleton className="h-4 w-28" />
               </div>
               <Skeleton className="h-3 w-48" />
             </div>
-            <div className="space-y-5 p-6">
+            <div className="space-y-4 p-4">
               {/* 2FA toggle */}
               <div className="flex items-center justify-between">
                 <div className="flex items-start gap-2">
@@ -80,14 +80,14 @@ function SettingsLoading() {
 
           {/* Danger zone card */}
           <div className="rounded-xl border border-destructive/30 p-0">
-            <div className="space-y-1 border-b px-6 py-4">
+            <div className="space-y-1 border-b px-4 py-4">
               <div className="flex items-center gap-2">
                 <Skeleton className="h-4 w-4 rounded" />
                 <Skeleton className="h-4 w-24" />
               </div>
               <Skeleton className="h-3 w-56" />
             </div>
-            <div className="space-y-4 p-6">
+            <div className="space-y-4 p-4">
               {["Delete workspace", "Reset settings"].map((_, i) => (
                 <div
                   key={i}

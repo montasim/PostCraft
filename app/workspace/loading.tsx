@@ -2,12 +2,12 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 function WorkspaceLoading() {
   return (
-    <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
       {/* Left column */}
-      <div className="space-y-5">
+      <div className="space-y-4">
         {/* Brand persona card */}
         <div className="rounded-xl border p-0">
-          <div className="space-y-1 border-b px-6 py-4">
+          <div className="space-y-1 border-b px-4 py-4">
             <div className="flex items-center gap-2">
               <Skeleton className="h-4 w-4 rounded" />
               <Skeleton className="h-4 w-24" />
@@ -16,7 +16,7 @@ function WorkspaceLoading() {
             </div>
             <Skeleton className="h-3 w-48" />
           </div>
-          <div className="space-y-3 p-6">
+          <div className="space-y-4 p-4">
             {["Target audiences", "Preferred tones", "Language", "Topics / Keywords", "Industry"].map(
               (label) => (
                 <div key={label}>
@@ -34,10 +34,10 @@ function WorkspaceLoading() {
       </div>
 
       {/* Right column */}
-      <div className="space-y-5">
+      <div className="space-y-4">
         {/* Usage & plan card */}
         <div className="rounded-xl border p-0">
-          <div className="space-y-1 border-b px-6 py-4">
+          <div className="space-y-1 border-b px-4 py-4">
             <div className="flex items-center gap-2">
               <Skeleton className="h-4 w-4 rounded" />
               <Skeleton className="h-4 w-20" />
@@ -45,7 +45,7 @@ function WorkspaceLoading() {
             </div>
             <Skeleton className="h-3 w-48" />
           </div>
-          <div className="space-y-4 p-6">
+          <div className="space-y-4 p-4">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Skeleton className="h-3 w-28" />
@@ -66,14 +66,14 @@ function WorkspaceLoading() {
 
         {/* Trending toggle card */}
         <div className="rounded-xl border p-0">
-          <div className="flex items-center justify-between border-b px-6 py-4">
+          <div className="flex items-center justify-between border-b px-4 py-4">
             <div className="flex items-center gap-2">
               <Skeleton className="h-4 w-4 rounded" />
               <Skeleton className="h-4 w-24" />
             </div>
             <Skeleton className="h-5 w-9 rounded-full" />
           </div>
-          <div className="p-6">
+          <div className="p-4">
             <Skeleton className="mb-2 h-3 w-full" />
             <Skeleton className="mb-3 h-3 w-3/4" />
             <div className="flex items-center gap-1.5">

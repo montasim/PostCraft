@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 function TrendingLoading() {
   return (
-    <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:-m-5 lg:flex-row">
+    <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:-m-4 lg:flex-row">
       {/* Sidebar skeleton */}
       <div className="hidden w-72 shrink-0 border-r border-sidebar-border bg-sidebar lg:flex lg:flex-col">
         <div className="flex-1 p-4">
@@ -39,7 +39,7 @@ function TrendingLoading() {
       </div>
 
       {/* Content area skeleton */}
-      <div className="flex-1 overflow-y-auto p-5">
+      <div className="flex-1 overflow-y-auto p-4">
         {/* Header skeleton */}
         <div className="mb-12">
           <div className="flex justify-end gap-4">
