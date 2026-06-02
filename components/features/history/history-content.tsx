@@ -86,12 +86,12 @@ function HistoryContent() {
 
   if (loading) {
     return (
-      <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:-m-5 lg:flex-row">
+      <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:-m-4 lg:flex-row">
         <div className="hidden w-72 shrink-0 border-r border-sidebar-border bg-sidebar lg:flex lg:flex-col">
-          <div className="p-3">
+          <div className="p-4">
             <Skeleton className="h-9 w-full rounded-md" />
           </div>
-          <div className="flex-1 space-y-5 overflow-y-auto p-3 pt-0">
+          <div className="flex-1 space-y-4 overflow-y-auto p-4 pt-0">
             {["Today", "Yesterday", "Previous 7 days"].map((group) => (
               <div key={group}>
                 <Skeleton className="mb-2 h-3 w-16" />
@@ -116,10 +116,10 @@ function HistoryContent() {
             ))}
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto p-5">
-          <div className="space-y-5">
-            <div className="flex flex-col gap-5 lg:flex-row">
-              <div className="flex-1 rounded-xl border p-5">
+        <div className="flex-1 overflow-y-auto p-4">
+          <div className="space-y-4">
+            <div className="flex flex-col gap-4 lg:flex-row">
+              <div className="flex-1 rounded-xl border p-4">
                 <Skeleton className="mb-4 h-4 w-24" />
                 <Skeleton className="mb-2 h-3 w-10" />
                 <Skeleton className="mb-4 h-20 w-full rounded-lg" />
@@ -136,7 +136,7 @@ function HistoryContent() {
                 </div>
               </div>
               <div className="hidden w-80 shrink-0 lg:block">
-                <div className="rounded-xl border p-5">
+                <div className="rounded-xl border p-4">
                   <Skeleton className="mb-4 h-4 w-24" />
                   <div className="space-y-2">
                     {Array.from({ length: 6 }).map((_, i) => (
@@ -160,7 +160,7 @@ function HistoryContent() {
   const showList = !showDetail
 
   return (
-    <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:-m-5 lg:flex-row">
+    <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:-m-4 lg:flex-row">
       {/* Sidebar / List */}
       <div
         className={cn(
@@ -180,7 +180,7 @@ function HistoryContent() {
       <div
         className={cn(
           "flex-1 overflow-y-auto",
-          showList && !isDesktop ? "hidden" : "block p-5"
+          showList && !isDesktop ? "hidden" : "block p-4"
         )}
       >
         {!isDesktop && selectedId && (
@@ -196,9 +196,9 @@ function HistoryContent() {
         )}
 
         {detailLoading ? (
-          <div className="space-y-5">
-            <div className="flex flex-col gap-5 lg:flex-row">
-              <div className="flex-1 rounded-xl border p-5">
+          <div className="space-y-4">
+            <div className="flex flex-col gap-4 lg:flex-row">
+              <div className="flex-1 rounded-xl border p-4">
                 <Skeleton className="mb-4 h-4 w-24" />
                 <Skeleton className="mb-2 h-3 w-10" />
                 <Skeleton className="mb-4 h-20 w-full rounded-lg" />
@@ -215,7 +215,7 @@ function HistoryContent() {
                 </div>
               </div>
               <div className="hidden w-80 shrink-0 lg:block">
-                <div className="rounded-xl border p-5">
+                <div className="rounded-xl border p-4">
                   <Skeleton className="mb-4 h-4 w-24" />
                   <div className="space-y-2">
                     {Array.from({ length: 6 }).map((_, i) => (

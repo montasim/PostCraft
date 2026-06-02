@@ -154,7 +154,7 @@ function TrendingShell() {
 
   if (isLoading) {
     return (
-      <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:-m-5 lg:flex-row">
+      <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:-m-4 lg:flex-row">
         <div className="hidden w-72 shrink-0 border-r border-sidebar-border bg-sidebar lg:flex lg:flex-col">
           <div className="flex-1 p-4">
             <div className="mb-4 space-y-2">
@@ -185,7 +185,7 @@ function TrendingShell() {
             ))}
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto p-5">
+        <div className="flex-1 overflow-y-auto p-4">
           <div className="mb-12">
             <div className="flex justify-end gap-4">
               <Skeleton className="h-7 w-20 rounded-md" />
@@ -228,7 +228,7 @@ function TrendingShell() {
 
   if (runs.length === 0 && !hasConfig) {
     return (
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4">
         <TrendingHeader
           enabled={false}
           prefs={prefs!}
@@ -255,7 +255,7 @@ function TrendingShell() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:-m-5 lg:flex-row">
+    <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:-m-4 lg:flex-row">
       <div
         className={cn(
           "shrink-0 border-r border-sidebar-border bg-sidebar",
@@ -275,7 +275,7 @@ function TrendingShell() {
       <div
         className={cn(
           "flex-1 overflow-y-auto",
-          showSidebar && !isDesktop ? "hidden" : "block md:p-5"
+          showSidebar && !isDesktop ? "hidden" : "block md:p-4"
         )}
       >
         <div className="mb-12">
