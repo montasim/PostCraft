@@ -2,7 +2,7 @@
 
 import { PageError } from "@/components/shared"
 
-export default function HistoryError({
+export default function InsightsError({
   error,
   reset,
 }: {
@@ -10,6 +10,6 @@ export default function HistoryError({
   reset: () => void
 }) {
   return (
-    <PageError title="Library failed to load" error={error} reset={reset} />
+    <PageError title="Insights failed to load" error={error} reset={reset} />
   )
 }

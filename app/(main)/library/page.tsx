@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { HistoryContent } from "@/components/features/history"
+import { LibraryContent } from "@/components/features/library"
 
 export const metadata: Metadata = {
   title: "Your Content Library",
@@ -7,6 +7,6 @@ export const metadata: Metadata = {
     "Browse every post you have crafted. Revisit top performers, copy proven content, and track what resonates with your audience.",
 }
 
-export default function HistoryPage() {
-  return <HistoryContent />
+export default function LibraryPage() {
+  return <LibraryContent />
 }

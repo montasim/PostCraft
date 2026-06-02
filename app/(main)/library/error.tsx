@@ -2,7 +2,7 @@
 
 import { PageError } from "@/components/shared"
 
-export default function GuardrailsError({
+export default function LibraryError({
   error,
   reset,
 }: {
@@ -10,6 +10,6 @@ export default function GuardrailsError({
   reset: () => void
 }) {
   return (
-    <PageError title="Brand Guard failed to load" error={error} reset={reset} />
+    <PageError title="Library failed to load" error={error} reset={reset} />
   )
 }

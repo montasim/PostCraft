@@ -12,19 +12,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${url}/history`,
+      url: `${url}/library`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.7,
     },
     {
-      url: `${url}/analytics`,
+      url: `${url}/insights`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.7,
     },
     {
-      url: `${url}/guardrails`,
+      url: `${url}/brand-guard`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.5,

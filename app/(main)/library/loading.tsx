@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton"
 
-function HistoryLoading() {
+function LibraryLoading() {
   return (
     <div className="flex h-full flex-col overflow-hidden lg:flex-row">
       {/* Sidebar skeleton — search + date-grouped list items */}
@@ -117,4 +117,4 @@ function HistoryLoading() {
   )
 }
 
-export default HistoryLoading
+export default LibraryLoading

@@ -315,7 +315,6 @@ function ProfileDetailsCard({
         ) : (
           <>
             <div>
-              <p className="mb-1 text-xs text-muted-foreground">Bio</p>
               <p className="text-xs leading-relaxed">{profile.bio}</p>
             </div>
             <div className="flex items-center gap-2 text-xs">
@@ -324,19 +323,36 @@ function ProfileDetailsCard({
             </div>
             <div className="flex items-center gap-2 text-xs">
               <IconWorld className="h-3 w-3 text-muted-foreground" />
-              <span className="cursor-pointer text-primary hover:underline">
+              <a
+                href={profile.website?.startsWith("http") ? profile.website : `https://${profile.website}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
                 {profile.website}
-              </span>
+              </a>
             </div>
             <div className="flex items-center gap-2 text-xs">
               <IconBrandTwitter className="h-3 w-3 text-muted-foreground" />
-              <span>{profile.twitterHandle}</span>
+              <a
+                href={profile.twitterHandle?.startsWith("http") ? profile.twitterHandle : `https://x.com/${profile.twitterHandle?.replace("@", "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                x.com/{profile.twitterHandle?.replace("@", "")}
+              </a>
             </div>
             <div className="flex items-center gap-2 text-xs">
               <IconBrandLinkedin className="h-3 w-3 text-muted-foreground" />
-              <span className="cursor-pointer text-primary hover:underline">
+              <a
+                href={`https://linkedin.com/in/${profile.linkedInSlug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
                 linkedin.com/in/{profile.linkedInSlug}
-              </span>
+              </a>
             </div>
           </>
         )}

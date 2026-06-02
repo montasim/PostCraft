@@ -2,7 +2,7 @@
 
 import { PageError } from "@/components/shared"
 
-export default function AnalyticsError({
+export default function BrandGuardError({
   error,
   reset,
 }: {
@@ -10,6 +10,6 @@ export default function AnalyticsError({
   reset: () => void
 }) {
   return (
-    <PageError title="Insights failed to load" error={error} reset={reset} />
+    <PageError title="Brand Guard failed to load" error={error} reset={reset} />
   )
 }

@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton"
 
-function AnalyticsLoading() {
+function InsightsLoading() {
   return (
     <div className="space-y-4">
       {/* Overview metric cards — 5 columns */}
@@ -129,4 +129,4 @@ function AnalyticsLoading() {
   )
 }
 
-export default AnalyticsLoading
+export default InsightsLoading

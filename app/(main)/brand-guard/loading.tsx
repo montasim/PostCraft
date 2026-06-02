@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton"
 
-function GuardrailsLoading() {
+function BrandGuardLoading() {
   return (
     <div className="space-y-4">
       {/* Header bar — shield icon + title + brand shield progress */}
@@ -121,4 +121,4 @@ function GuardrailsLoading() {
   )
 }
 
-export default GuardrailsLoading
+export default BrandGuardLoading
