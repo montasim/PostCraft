@@ -13,6 +13,9 @@ export const createGenerationSchema = z.object({
   tones: z.array(z.string()).min(1),
   languages: z.array(z.string()).min(1),
   includeEmoji: z.boolean().default(true),
+  postCount: z.number().min(1).max(10).default(3),
+  platforms: z.array(z.string()).default(["linkedin"]),
+  hashtagCount: z.number().min(1).max(10).default(3),
 })
 
 export type CreateGenerationInput = z.infer<typeof createGenerationSchema>
@@ -26,6 +29,7 @@ export type GenerationStatus = z.infer<typeof generationStatusSchema>
 export const rawVariantSchema = z.object({
   language: z.string(),
   styleType: z.string(),
+  platform: z.string().default("linkedin"),
   hook: z.string(),
   body: z.string(),
   cta: z.string(),

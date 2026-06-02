@@ -18,6 +18,7 @@ const DEFAULT_PERSONA: BrandPersona = {
   language: [{ value: "EN", label: "English" }],
   topics: [],
   industry: [],
+  platforms: [],
 }
 
 export const workspaceService = {
@@ -32,6 +33,9 @@ export const workspaceService = {
         : DEFAULT_PERSONA.language,
       topics: Array.isArray(rawPersona.topics) ? rawPersona.topics : [],
       industry: Array.isArray(rawPersona.industry) ? rawPersona.industry : [],
+      platforms: Array.isArray(rawPersona.platforms)
+        ? rawPersona.platforms
+        : [],
     }
 
     const overview = await insightsRepository.getOverview(workspaceId)
@@ -64,6 +68,9 @@ export const workspaceService = {
           : DEFAULT_PERSONA.language,
         topics: Array.isArray(rawPersona.topics) ? rawPersona.topics : [],
         industry: Array.isArray(rawPersona.industry) ? rawPersona.industry : [],
+        platforms: Array.isArray(rawPersona.platforms)
+          ? rawPersona.platforms
+          : [],
       },
     }
   },

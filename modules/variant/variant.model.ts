@@ -5,6 +5,7 @@ export interface IVariant extends Document {
   workspaceId: string
   language: string
   styleType: string
+  platform: string
   hook: string
   body: string
   cta: string
@@ -22,10 +23,15 @@ export interface IVariant extends Document {
 
 const variantSchema = new mongoose.Schema<IVariant>(
   {
-    trendId: { type: mongoose.Schema.Types.ObjectId, required: true, index: true },
+    trendId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      index: true,
+    },
     workspaceId: { type: String, required: true },
     language: { type: String, required: true },
     styleType: { type: String, required: true },
+    platform: { type: String, default: "linkedin" },
     hook: { type: String, required: true },
     body: { type: String, required: true },
     cta: { type: String, required: true },

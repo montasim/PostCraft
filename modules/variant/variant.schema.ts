@@ -5,6 +5,7 @@ export const variantOutputSchema = z.object({
     z.object({
       language: z.string(),
       styleType: z.string(),
+      platform: z.string().default("linkedin"),
       hook: z.string(),
       body: z.string(),
       cta: z.string(),
@@ -18,6 +19,7 @@ export type VariantOutput = z.infer<typeof variantOutputSchema>
 export const scoredVariantSchema = z.object({
   language: z.string(),
   styleType: z.string(),
+  platform: z.string().default("linkedin"),
   hook: z.string(),
   body: z.string(),
   cta: z.string(),

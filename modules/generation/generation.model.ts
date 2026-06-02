@@ -13,6 +13,9 @@ export interface IGeneration extends Document {
   tones: string[]
   languages: string[]
   includeEmoji: boolean
+  postCount: number
+  platforms: string[]
+  hashtagCount: number
   status: GenerationStatus
   errorMessage?: string
   guardrailIds?: string[]
@@ -29,6 +32,9 @@ const generationSchema = new Schema<IGeneration>(
     tones: { type: [String], required: true },
     languages: { type: [String], required: true },
     includeEmoji: { type: Boolean, default: true },
+    postCount: { type: Number, default: 3 },
+    platforms: { type: [String], default: ["linkedin"] },
+    hashtagCount: { type: Number, default: 3 },
     status: {
       type: String,
       enum: GENERATION_STATUSES,

@@ -13,6 +13,7 @@ export interface Variant {
   cta: string
   hashtags: string[]
   reasoning: string
+  platform?: string
 }
 
 export interface NavItem {
@@ -107,6 +108,7 @@ export interface BrandPersona {
   language: PersonaOption[]
   topics: PersonaOption[]
   industry: PersonaOption[]
+  platforms: PersonaOption[]
 }
 
 export interface UserProfile {

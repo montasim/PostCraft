@@ -12,6 +12,7 @@ export interface IBrandPersona {
   language: IPersonaOption[]
   topics: IPersonaOption[]
   industry: IPersonaOption[]
+  platforms: IPersonaOption[]
 }
 
 export interface IWorkspace extends Document {
@@ -34,9 +35,13 @@ const brandPersonaSchema = new mongoose.Schema<IBrandPersona>(
   {
     targetAudiences: { type: [personaOptionSchema], default: [] },
     preferredTones: { type: [personaOptionSchema], default: [] },
-    language: { type: [personaOptionSchema], default: [{ value: "EN", label: "English" }] },
+    language: {
+      type: [personaOptionSchema],
+      default: [{ value: "EN", label: "English" }],
+    },
     topics: { type: [personaOptionSchema], default: [] },
     industry: { type: [personaOptionSchema], default: [] },
+    platforms: { type: [personaOptionSchema], default: [] },
   },
   { _id: false }
 )
