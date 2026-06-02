@@ -130,44 +130,6 @@ function AccountSecurityCard({
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-start gap-2">
-            <IconKey className="mt-0.5 h-3 w-3 text-muted-foreground" />
-            <div className="space-y-1.5">
-              <p className="text-xs font-medium">Two-factor authentication</p>
-              <p className="text-[10px] text-muted-foreground">
-                {settings.twoFactorEnabled
-                  ? "Extra security layer is enabled"
-                  : "Add an extra layer of security to your account"}
-              </p>
-            </div>
-          </div>
-          <Switch
-            checked={settings.twoFactorEnabled}
-            onCheckedChange={(v) => onUpdate("twoFactorEnabled", v)}
-          />
-        </div>
-
-        <div className="flex items-center justify-between">
-          <div className="flex items-start gap-2">
-            <IconClock className="mt-0.5 h-3 w-3 text-muted-foreground" />
-            <div className="space-y-1.5">
-              <p className="text-xs font-medium">Session timeout</p>
-              <p className="text-[10px] text-muted-foreground">
-                Automatically sign out after inactivity
-              </p>
-            </div>
-          </div>
-          <select
-            value={settings.sessionTimeout}
-            onChange={(e) => onUpdate("sessionTimeout", Number(e.target.value))}
-            className="flex h-8 rounded-lg border border-input bg-transparent px-3 text-xs ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none dark:bg-input/30"
-          >
-            <option value={15}>15 mins</option>
-            <option value={30}>30 mins</option>
-            <option value={60}>60 mins</option>
-          </select>
-        </div>
 
         <ChangePasswordRow />
       </CardContent>
