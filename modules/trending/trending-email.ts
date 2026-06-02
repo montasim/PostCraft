@@ -69,41 +69,41 @@ function buildEmailHtml(insights: TrendingRunInsights): string {
     .map(
       (s) =>
         `<tr>
-          <td class="email-source-table" style="padding:8px 12px;border-bottom:1px solid ${EMAIL_BRAND.BORDER_HEX};font-size:13px;color:${EMAIL_BRAND.TEXT_HEX};">${s.title}</td>
-          <td class="email-source-table" style="padding:8px 12px;border-bottom:1px solid ${EMAIL_BRAND.BORDER_HEX};font-size:13px;color:${EMAIL_BRAND.MUTED_HEX};text-transform:capitalize;">${s.source}</td>
-          <td class="email-source-table" style="padding:8px 12px;border-bottom:1px solid ${EMAIL_BRAND.BORDER_HEX};font-size:13px;font-weight:600;color:${EMAIL_BRAND.TEXT_HEX};">${s.score}</td>
+          <td class="email-source-table" style="padding:8px 12px;border-bottom:1px solid ${EMAIL_BRAND.LIGHT.border};font-size:13px;color:${EMAIL_BRAND.LIGHT.foreground};">${s.title}</td>
+          <td class="email-source-table" style="padding:8px 12px;border-bottom:1px solid ${EMAIL_BRAND.LIGHT.border};font-size:13px;color:${EMAIL_BRAND.LIGHT.mutedForeground};text-transform:capitalize;">${s.source}</td>
+          <td class="email-source-table" style="padding:8px 12px;border-bottom:1px solid ${EMAIL_BRAND.LIGHT.border};font-size:13px;font-weight:600;color:${EMAIL_BRAND.LIGHT.foreground};">${s.score}</td>
         </tr>`
     )
     .join("")
 
   const previewBlock = insights.topPostPreview
-    ? `<div style="margin-top:20px;padding:16px;background:${EMAIL_BRAND.PRIMARY_LIGHT_HEX};border-radius:8px;border-left:3px solid ${EMAIL_BRAND.PRIMARY_HEX};">
-        <p style="margin:0 0 4px;font-size:12px;color:${EMAIL_BRAND.MUTED_HEX};">Top post for "${insights.topPostPreview.topic}"</p>
-        <p style="margin:0;font-size:14px;color:${EMAIL_BRAND.TEXT_HEX};line-height:1.5;">${insights.topPostPreview.hook}</p>
+    ? `<div style="margin-top:20px;padding:16px;background:${EMAIL_BRAND.LIGHT.primaryLight};border-radius:8px;border-left:3px solid ${EMAIL_BRAND.LIGHT.primary};">
+        <p style="margin:0 0 4px;font-size:12px;color:${EMAIL_BRAND.LIGHT.mutedForeground};">Top post for "${insights.topPostPreview.topic}"</p>
+        <p style="margin:0;font-size:14px;color:${EMAIL_BRAND.LIGHT.foreground};line-height:1.5;">${insights.topPostPreview.hook}</p>
       </div>`
     : ""
 
   return buildEmailLayout(
     `
-    <h1 style="font-size:22px;font-weight:700;color:${EMAIL_BRAND.TEXT_HEX};margin:0 0 4px;">Your trending posts are ready</h1>
-    <p style="font-size:14px;color:${EMAIL_BRAND.MUTED_HEX};margin:0 0 24px;">
+    <h1 style="font-size:22px;font-weight:700;color:${EMAIL_BRAND.LIGHT.foreground};margin:0 0 4px;">Your trending posts are ready</h1>
+    <p style="font-size:14px;color:${EMAIL_BRAND.LIGHT.mutedForeground};margin:0 0 24px;">
       Scheduled run completed at ${insights.runTime.toLocaleString()}
     </p>
 
     <!-- Stats summary -->
     <table class="email-stats-table" role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom:20px;">
       <tr>
-        <td width="33.33%" style="padding:12px;background:${EMAIL_BRAND.SURFACE_HEX};border-radius:8px 0 0 8px;text-align:center;">
-          <p style="margin:0;font-size:20px;font-weight:700;color:${EMAIL_BRAND.PRIMARY_HEX};">${insights.platforms.length}</p>
-          <p style="margin:4px 0 0;font-size:12px;color:${EMAIL_BRAND.MUTED_HEX};">Platforms</p>
+        <td width="33.33%" style="padding:12px;background:${EMAIL_BRAND.LIGHT.surface};border-radius:8px 0 0 8px;text-align:center;">
+          <p style="margin:0;font-size:20px;font-weight:700;color:${EMAIL_BRAND.LIGHT.primary};">${insights.platforms.length}</p>
+          <p style="margin:4px 0 0;font-size:12px;color:${EMAIL_BRAND.LIGHT.mutedForeground};">Platforms</p>
         </td>
-        <td width="33.33%" style="padding:12px;background:${EMAIL_BRAND.SURFACE_HEX};text-align:center;">
-          <p style="margin:0;font-size:20px;font-weight:700;color:${EMAIL_BRAND.PRIMARY_HEX};">${insights.topicCount}</p>
-          <p style="margin:4px 0 0;font-size:12px;color:${EMAIL_BRAND.MUTED_HEX};">Topics analyzed</p>
+        <td width="33.33%" style="padding:12px;background:${EMAIL_BRAND.LIGHT.surface};text-align:center;">
+          <p style="margin:0;font-size:20px;font-weight:700;color:${EMAIL_BRAND.LIGHT.primary};">${insights.topicCount}</p>
+          <p style="margin:4px 0 0;font-size:12px;color:${EMAIL_BRAND.LIGHT.mutedForeground};">Topics analyzed</p>
         </td>
-        <td width="33.33%" style="padding:12px;background:${EMAIL_BRAND.SURFACE_HEX};border-radius:0 8px 8px 0;text-align:center;">
-          <p style="margin:0;font-size:20px;font-weight:700;color:${EMAIL_BRAND.PRIMARY_HEX};">${insights.postsGenerated}</p>
-          <p style="margin:4px 0 0;font-size:12px;color:${EMAIL_BRAND.MUTED_HEX};">Posts generated</p>
+        <td width="33.33%" style="padding:12px;background:${EMAIL_BRAND.LIGHT.surface};border-radius:0 8px 8px 0;text-align:center;">
+          <p style="margin:0;font-size:20px;font-weight:700;color:${EMAIL_BRAND.LIGHT.primary};">${insights.postsGenerated}</p>
+          <p style="margin:4px 0 0;font-size:12px;color:${EMAIL_BRAND.LIGHT.mutedForeground};">Posts generated</p>
         </td>
       </tr>
     </table>
@@ -111,13 +111,13 @@ function buildEmailHtml(insights: TrendingRunInsights): string {
     ${
       insights.topSources.length > 0
         ? `
-      <h2 style="font-size:15px;font-weight:600;color:${EMAIL_BRAND.TEXT_HEX};margin:0 0 8px;">Top trending sources</h2>
+      <h2 style="font-size:15px;font-weight:600;color:${EMAIL_BRAND.LIGHT.foreground};margin:0 0 8px;">Top trending sources</h2>
       <table class="email-source-table" role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;margin-bottom:8px;">
         <thead>
-          <tr style="background:${EMAIL_BRAND.SURFACE_HEX};">
-            <th style="padding:8px 12px;text-align:left;font-size:12px;font-weight:600;color:${EMAIL_BRAND.MUTED_HEX};">Title</th>
-            <th style="padding:8px 12px;text-align:left;font-size:12px;font-weight:600;color:${EMAIL_BRAND.MUTED_HEX};">Source</th>
-            <th style="padding:8px 12px;text-align:left;font-size:12px;font-weight:600;color:${EMAIL_BRAND.MUTED_HEX};">Score</th>
+          <tr style="background:${EMAIL_BRAND.LIGHT.surface};">
+            <th style="padding:8px 12px;text-align:left;font-size:12px;font-weight:600;color:${EMAIL_BRAND.LIGHT.mutedForeground};">Title</th>
+            <th style="padding:8px 12px;text-align:left;font-size:12px;font-weight:600;color:${EMAIL_BRAND.LIGHT.mutedForeground};">Source</th>
+            <th style="padding:8px 12px;text-align:left;font-size:12px;font-weight:600;color:${EMAIL_BRAND.LIGHT.mutedForeground};">Score</th>
           </tr>
         </thead>
         <tbody>${sourceRows}</tbody>
