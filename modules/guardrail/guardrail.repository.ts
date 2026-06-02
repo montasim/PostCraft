@@ -46,6 +46,17 @@ export const guardrailRepository = {
     await GuardrailModel.deleteMany({ workspaceId })
   },
 
+  async countActiveByCategory(
+    workspaceId: string,
+    category: GuardrailCategory
+  ): Promise<number> {
+    return GuardrailModel.countDocuments({
+      workspaceId,
+      category,
+      isActive: true,
+    })
+  },
+
   async exists(workspaceId: string): Promise<boolean> {
     const count = await GuardrailModel.countDocuments({ workspaceId })
     return count > 0
