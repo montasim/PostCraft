@@ -9,7 +9,16 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { IconSparkles, IconHistory, IconChartBar, IconShield, IconBuilding, IconUser, IconSettings } from "@tabler/icons-react"
+import {
+  IconSparkles,
+  IconHistory,
+  IconChartBar,
+  IconShield,
+  IconBuilding,
+  IconUser,
+  IconSettings,
+  IconTrendingUp,
+} from "@tabler/icons-react"
 import type { ComponentType } from "react"
 
 interface BreadcrumbConfig {
@@ -20,37 +29,37 @@ interface BreadcrumbConfig {
 
 const BREADCRUMB_CONFIG: Record<string, BreadcrumbConfig> = {
   "/": {
-    label: "Create",
+    label: "New Post",
     icon: IconSparkles,
     page: "Your next post",
   },
   "/trending": {
     label: "Trending",
-    icon: IconHistory,
+    icon: IconTrendingUp,
     page: "Discover what's trending",
   },
   "/history": {
-    label: "History",
+    label: "Library",
     icon: IconHistory,
-    page: "Review your activities",
+    page: "Your content library",
   },
   "/analytics": {
-    label: "Analytics",
+    label: "Insights",
     icon: IconChartBar,
     page: "Performance insights",
   },
   "/guardrails": {
-    label: "Guardrails",
+    label: "Brand Guard",
     icon: IconShield,
     page: "Protect your brand voice",
   },
   "/workspace": {
-    label: "Workspace",
+    label: "Brand Voice",
     icon: IconBuilding,
-    page: "Manage your workspace",
+    page: "Your brand profile",
   },
   "/profile": {
-    label: "Profile",
+    label: "You",
     icon: IconUser,
     page: "Your personal information",
   },

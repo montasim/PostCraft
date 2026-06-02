@@ -23,7 +23,12 @@ function UserDropdown() {
 
   const user = session?.user
   const initials = user?.name
-    ? user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
+    ? user.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
     : "??"
 
   async function handleLogout() {
@@ -49,7 +54,7 @@ function UserDropdown() {
           <DropdownMenuItem className="gap-2" asChild>
             <Link href="/profile">
               <IconUser className="h-4 w-4" />
-              Profile
+              You
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="gap-2" asChild>
@@ -59,7 +64,10 @@ function UserDropdown() {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="gap-2" onClick={() => setLogoutOpen(true)}>
+          <DropdownMenuItem
+            className="gap-2"
+            onClick={() => setLogoutOpen(true)}
+          >
             <IconLogout className="h-4 w-4" />
             Logout
           </DropdownMenuItem>

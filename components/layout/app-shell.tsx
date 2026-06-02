@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { Sidebar } from "@/components/layout/sidebar"
+import { QuotaAlert } from "@/components/shared/quota-alert"
 import { Header } from "@/components/layout/header"
 import { MobileSidebar } from "@/components/layout/mobile-sidebar"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
@@ -104,7 +105,14 @@ function AppShell({ children }: AppShellProps) {
       />
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header onMobileMenuOpen={() => setMobileOpen(true)} />
-        <main className="flex-1 overflow-y-auto p-4">{children}</main>
+        <main className="flex-1 overflow-y-auto p-4">
+          {active !== "history" && active !== "trending" && (
+            <div className="mb-4">
+              <QuotaAlert />
+            </div>
+          )}
+          {children}
+        </main>
       </div>
     </div>
   )
