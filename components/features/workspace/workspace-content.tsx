@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -25,6 +25,8 @@ import {
   IconX,
   IconFlame,
   IconArrowRight,
+  IconTrendingUp,
+  IconUserCircle,
 } from "@tabler/icons-react"
 import { toast } from "sonner"
 import Link from "next/link"
@@ -38,17 +40,50 @@ import {
   updateWorkspace,
   fetchWorkspace,
 } from "@/store/slices/workspace.slice"
+import {
+  selectTrendingPrefs,
+  setTrendingPrefs,
+} from "@/store/slices/trending-prefs.slice"
+import { fetchPreviewPrefs } from "@/store/slices/preview-prefs.slice"
+import { PreviewConfigCard } from "@/components/features/workspace/preview-config-card"
+import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
 
 function TrendingToggleCard() {
-  const [enabled, setEnabled] = useState(true)
+  const dispatch = useAppDispatch()
+  const trendingPrefs = useAppSelector(selectTrendingPrefs)
+  const enabled = trendingPrefs?.enabled ?? false
+
+  async function handleToggle() {
+    if (!trendingPrefs) return
+    const updated: TrendingPrefs = { ...trendingPrefs, enabled: !enabled }
+    await savePrefs(updated)
+  }
+
+  async function savePrefs(prefs: TrendingPrefs) {
+    try {
+      const res = await fetch(API.TRENDING_PREFS, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(prefs),
+      })
+      const result = await res.json()
+      if (result.success && result.data) {
+        dispatch(setTrendingPrefs(result.data))
+        toast.success(enabled ? "Trending turned off" : "Trending turned on")
+      }
+    } catch {
+      toast.error("Failed to update trending")
+    }
+  }
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <div className="flex items-center gap-2">
-          <IconFlame className="h-4 w-4 text-orange-500" />
+          <IconTrendingUp className="h-4 w-4 text-primary" />
           <CardTitle className="text-sm">Trending Posts</CardTitle>
         </div>
-        <Switch checked={enabled} onCheckedChange={setEnabled} />
+        <Switch checked={enabled} onCheckedChange={handleToggle} />
       </CardHeader>
       <CardContent>
         <p className="text-xs text-muted-foreground">
@@ -123,6 +158,7 @@ function BrandPersonaCard({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+          <IconUserCircle className="h-4 w-4 text-primary" />
           Brand persona
           <Badge variant="secondary" className="text-[10px]">
             {persona.targetAudiences.length} audiences
@@ -402,6 +438,7 @@ function UsagePlanCard({ used, limit }: { used: number; limit: number }) {
             </p>
           </div>
           <Button size="sm" className="h-7 gap-1 text-xs">
+            <IconCrown className="h-3.5 w-3.5" />
             Upgrade Plan
           </Button>
         </div>
@@ -446,6 +483,10 @@ function WorkspaceContent() {
   const handlePersonaSave = (persona: BrandPersona) => {
     saveWorkspace({ persona })
   }
+
+  useEffect(() => {
+    dispatch(fetchPreviewPrefs())
+  }, [dispatch])
 
   if (loading || !data) {
     return (
@@ -529,6 +570,31 @@ function WorkspaceContent() {
               </div>
             </div>
           </div>
+
+          {/* Preview config skeleton */}
+          <div className="rounded-xl border p-0">
+            <div className="border-b px-4 py-4">
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-4 w-4" />
+                <Skeleton className="h-4 w-24" />
+              </div>
+            </div>
+            <div className="space-y-3 p-4">
+              <Skeleton className="h-3 w-48" />
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="flex items-center justify-between rounded-lg border px-3 py-2.5"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Skeleton className="h-4 w-4" />
+                    <Skeleton className="h-4 w-20" />
+                  </div>
+                  <Skeleton className="h-5 w-9 rounded-full" />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     )
@@ -542,6 +608,7 @@ function WorkspaceContent() {
       <div className="space-y-4">
         <UsagePlanCard used={data.usage.used} limit={data.usage.limit} />
         <TrendingToggleCard />
+        <PreviewConfigCard />
       </div>
     </div>
   )
