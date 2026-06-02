@@ -43,7 +43,7 @@ function VariantCard({
   return (
     <Card
       className={cn(
-        "relative overflow-visible p-5 transition hover:shadow-md",
+        "relative overflow-visible p-4 transition hover:shadow-md",
         isTop && "border-primary/40 ring-1 ring-primary/20"
       )}
     >
