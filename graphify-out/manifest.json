@@ -20,14 +20,14 @@
     "semantic_hash": "e1d9058aa2a6dc5a0285b359c5bd1a28"
   },
   "/home/r3tr0/Personal/linkedIQ/app/(auth)/login/page.tsx": {
-    "mtime": 1779808599.2936792,
-    "ast_hash": "53baa8f5565e8e070fcd92298bbb529b",
-    "semantic_hash": "53baa8f5565e8e070fcd92298bbb529b"
+    "mtime": 1780405317.7887516,
+    "ast_hash": "abddf6714217c830e3c1a22cb4c431f1",
+    "semantic_hash": "abddf6714217c830e3c1a22cb4c431f1"
   },
   "/home/r3tr0/Personal/linkedIQ/app/(auth)/reset-password/page.tsx": {
-    "mtime": 1779808600.3499436,
-    "ast_hash": "b0ddf6503a3fda7eb90a3806e53c345d",
-    "semantic_hash": "b0ddf6503a3fda7eb90a3806e53c345d"
+    "mtime": 1780405168.4778006,
+    "ast_hash": "0028c6abbd745181b328eb4239130c49",
+    "semantic_hash": "0028c6abbd745181b328eb4239130c49"
   },
   "/home/r3tr0/Personal/linkedIQ/app/(auth)/signup/page.tsx": {
     "mtime": 1779808599.5939488,
@@ -39,25 +39,125 @@
     "ast_hash": "d6c6b9cec4b2d30373dbfea914ebb093",
     "semantic_hash": "d6c6b9cec4b2d30373dbfea914ebb093"
   },
-  "/home/r3tr0/Personal/linkedIQ/app/analytics/error.tsx": {
-    "mtime": 1779455425.5773482,
-    "ast_hash": "4ec0254bfa812fb862edf6151c189729",
-    "semantic_hash": "4ec0254bfa812fb862edf6151c189729"
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/brand-guard/error.tsx": {
+    "mtime": 1780403806.9672105,
+    "ast_hash": "3ded6b1262bd28c8d2a32add94dff433",
+    "semantic_hash": "3ded6b1262bd28c8d2a32add94dff433"
   },
-  "/home/r3tr0/Personal/linkedIQ/app/analytics/loading.tsx": {
-    "mtime": 1780375692.9224045,
-    "ast_hash": "a0000b1d2d52c05e7934bed554e02357",
-    "semantic_hash": "a0000b1d2d52c05e7934bed554e02357"
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/brand-guard/loading.tsx": {
+    "mtime": 1780403806.6162078,
+    "ast_hash": "0ea1c088a268d21c773be3f6c690c8d8",
+    "semantic_hash": "0ea1c088a268d21c773be3f6c690c8d8"
   },
-  "/home/r3tr0/Personal/linkedIQ/app/analytics/page.tsx": {
-    "mtime": 1779808569.0755854,
-    "ast_hash": "b7548b6736e0a505f4e56e682897dc30",
-    "semantic_hash": "b7548b6736e0a505f4e56e682897dc30"
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/brand-guard/page.tsx": {
+    "mtime": 1780403830.4073837,
+    "ast_hash": "a5c60a0ac9177db9efb0563e4ebc6f52",
+    "semantic_hash": "a5c60a0ac9177db9efb0563e4ebc6f52"
   },
-  "/home/r3tr0/Personal/linkedIQ/app/api/analytics/route.ts": {
-    "mtime": 1779517183.204291,
-    "ast_hash": "463e03586d2714fe615497a7179bd832",
-    "semantic_hash": "463e03586d2714fe615497a7179bd832"
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/brand-voice/error.tsx": {
+    "mtime": 1780393575.76591,
+    "ast_hash": "e3c18de7a26f596f0aaa3dcc9770f6d5",
+    "semantic_hash": "e3c18de7a26f596f0aaa3dcc9770f6d5"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/brand-voice/loading.tsx": {
+    "mtime": 1780395826.9724767,
+    "ast_hash": "ab32c579bd8b9683a4044bb206c4b878",
+    "semantic_hash": "ab32c579bd8b9683a4044bb206c4b878"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/brand-voice/page.tsx": {
+    "mtime": 1780393571.7470133,
+    "ast_hash": "3d2cae1a3247561bbeccdea2df895e9a",
+    "semantic_hash": "3d2cae1a3247561bbeccdea2df895e9a"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/insights/error.tsx": {
+    "mtime": 1780403805.3136466,
+    "ast_hash": "17e454bab71258de87198c6ef9fbc479",
+    "semantic_hash": "17e454bab71258de87198c6ef9fbc479"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/insights/loading.tsx": {
+    "mtime": 1780403804.8201947,
+    "ast_hash": "c7ee4db636a08625924a59935377b706",
+    "semantic_hash": "c7ee4db636a08625924a59935377b706"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/insights/page.tsx": {
+    "mtime": 1780403829.5828202,
+    "ast_hash": "0dd708b648f3f907f792dcee4774e863",
+    "semantic_hash": "0dd708b648f3f907f792dcee4774e863"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/layout.tsx": {
+    "mtime": 1780389457.8208625,
+    "ast_hash": "772a01e2b8bec1f6f45f4e9f6655029f",
+    "semantic_hash": "772a01e2b8bec1f6f45f4e9f6655029f"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/library/error.tsx": {
+    "mtime": 1780403802.7751799,
+    "ast_hash": "a65ca76f9da400ac1522b575fe5c66e2",
+    "semantic_hash": "a65ca76f9da400ac1522b575fe5c66e2"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/library/loading.tsx": {
+    "mtime": 1780403802.1961758,
+    "ast_hash": "67b526c41d844bddb0bf660b6163806c",
+    "semantic_hash": "67b526c41d844bddb0bf660b6163806c"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/library/page.tsx": {
+    "mtime": 1780403829.084279,
+    "ast_hash": "6f73e2ac1bc02accc15913f00e9d6a07",
+    "semantic_hash": "6f73e2ac1bc02accc15913f00e9d6a07"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/loading.tsx": {
+    "mtime": 1780389523.9283566,
+    "ast_hash": "287a8079a595969d8e728de3a8eff350",
+    "semantic_hash": "287a8079a595969d8e728de3a8eff350"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/page.tsx": {
+    "mtime": 1780389477.0159907,
+    "ast_hash": "e634ce95cf8e160914108263d92b9ce9",
+    "semantic_hash": "e634ce95cf8e160914108263d92b9ce9"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/profile/error.tsx": {
+    "mtime": 1780393578.1258495,
+    "ast_hash": "07ccea115e78245d41f4ef809d8cc016",
+    "semantic_hash": "07ccea115e78245d41f4ef809d8cc016"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/profile/loading.tsx": {
+    "mtime": 1780389530.794416,
+    "ast_hash": "bad30de05131d4e54964ad5ebc5be6b8",
+    "semantic_hash": "bad30de05131d4e54964ad5ebc5be6b8"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/profile/page.tsx": {
+    "mtime": 1780397956.7382817,
+    "ast_hash": "f818382f86cdb07848a856d4443f513a",
+    "semantic_hash": "f818382f86cdb07848a856d4443f513a"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/settings/error.tsx": {
+    "mtime": 1779455428.407438,
+    "ast_hash": "ba132d37dab72c205ab4664091533af8",
+    "semantic_hash": "ba132d37dab72c205ab4664091533af8"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/settings/loading.tsx": {
+    "mtime": 1780389531.8944256,
+    "ast_hash": "508e2ad1e455983a5cd4956452e623f5",
+    "semantic_hash": "508e2ad1e455983a5cd4956452e623f5"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/settings/page.tsx": {
+    "mtime": 1780389485.6490526,
+    "ast_hash": "63dc8d21a7c8583d9610a8e4cc61de5a",
+    "semantic_hash": "63dc8d21a7c8583d9610a8e4cc61de5a"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/trending/error.tsx": {
+    "mtime": 1780340313.5871437,
+    "ast_hash": "7a016fe925e2340fdac0c3aca7d3fd7e",
+    "semantic_hash": "7a016fe925e2340fdac0c3aca7d3fd7e"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/trending/loading.tsx": {
+    "mtime": 1780389532.5724316,
+    "ast_hash": "4cd2f8dda28e99634a8568eb7db685d5",
+    "semantic_hash": "4cd2f8dda28e99634a8568eb7db685d5"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/(main)/trending/page.tsx": {
+    "mtime": 1780389482.0690267,
+    "ast_hash": "9ce734b3718778fd72c87ae80798d944",
+    "semantic_hash": "9ce734b3718778fd72c87ae80798d944"
   },
   "/home/r3tr0/Personal/linkedIQ/app/api/auth/[...all]/route.ts": {
     "mtime": 1779513932.756732,
@@ -65,14 +165,24 @@
     "semantic_hash": "f393fd8fad1a77daf115e5232a12ffba"
   },
   "/home/r3tr0/Personal/linkedIQ/app/api/auth/send-otp/route.ts": {
-    "mtime": 1780340168.2395124,
-    "ast_hash": "f8e73ce8c383909f79ba6764ccfb367c",
-    "semantic_hash": "f8e73ce8c383909f79ba6764ccfb367c"
+    "mtime": 1780407795.9072862,
+    "ast_hash": "79054b3083b9a7d8f1d0042428d274a5",
+    "semantic_hash": "79054b3083b9a7d8f1d0042428d274a5"
   },
   "/home/r3tr0/Personal/linkedIQ/app/api/auth/verify-otp-and-change/route.ts": {
-    "mtime": 1780335760.532055,
-    "ast_hash": "203fc857d39c5568a87ad226263a0cdf",
-    "semantic_hash": "203fc857d39c5568a87ad226263a0cdf"
+    "mtime": 1780407820.6720245,
+    "ast_hash": "245566bfea3067982181f35dbacf17e2",
+    "semantic_hash": "245566bfea3067982181f35dbacf17e2"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/api/brand-guard/[id]/route.ts": {
+    "mtime": 1779517136.373676,
+    "ast_hash": "1d89d8641a641e237daa4a34dd9fb76a",
+    "semantic_hash": "1d89d8641a641e237daa4a34dd9fb76a"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/api/brand-guard/route.ts": {
+    "mtime": 1779517136.0497065,
+    "ast_hash": "f1b795f7024d88eaca57e700da6fd4a6",
+    "semantic_hash": "f1b795f7024d88eaca57e700da6fd4a6"
   },
   "/home/r3tr0/Personal/linkedIQ/app/api/generations/[generationId]/route.ts": {
     "mtime": 1779567295.6169147,
@@ -84,40 +194,40 @@
     "ast_hash": "40637999741e33318579811e49558570",
     "semantic_hash": "40637999741e33318579811e49558570"
   },
-  "/home/r3tr0/Personal/linkedIQ/app/api/guardrails/[id]/route.ts": {
-    "mtime": 1779517136.373676,
-    "ast_hash": "1d89d8641a641e237daa4a34dd9fb76a",
-    "semantic_hash": "1d89d8641a641e237daa4a34dd9fb76a"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/api/guardrails/route.ts": {
-    "mtime": 1779517136.0497065,
-    "ast_hash": "f1b795f7024d88eaca57e700da6fd4a6",
-    "semantic_hash": "f1b795f7024d88eaca57e700da6fd4a6"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/api/history/[generationId]/route.ts": {
-    "mtime": 1779567314.0724497,
-    "ast_hash": "2d648a927a90a79c7dbeb48eb491295e",
-    "semantic_hash": "2d648a927a90a79c7dbeb48eb491295e"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/api/history/route.ts": {
-    "mtime": 1780329196.0134037,
-    "ast_hash": "25268301e04ebbccdff557f6ea21a5f9",
-    "semantic_hash": "25268301e04ebbccdff557f6ea21a5f9"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/api/history/stats/route.ts": {
-    "mtime": 1779517279.056374,
-    "ast_hash": "5c73d8d69fed57e9c336bee2587c2c14",
-    "semantic_hash": "5c73d8d69fed57e9c336bee2587c2c14"
-  },
   "/home/r3tr0/Personal/linkedIQ/app/api/inngest/route.ts": {
     "mtime": 1780347202.5186977,
     "ast_hash": "7892b2c92007667b3ea5deba198ae882",
     "semantic_hash": "7892b2c92007667b3ea5deba198ae882"
   },
+  "/home/r3tr0/Personal/linkedIQ/app/api/insights/route.ts": {
+    "mtime": 1780403694.1333084,
+    "ast_hash": "f43c8887d25787d8882db2a95a276755",
+    "semantic_hash": "f43c8887d25787d8882db2a95a276755"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/api/library/[generationId]/route.ts": {
+    "mtime": 1780403694.1283221,
+    "ast_hash": "74adec3fd0a271589082868899baf5d9",
+    "semantic_hash": "74adec3fd0a271589082868899baf5d9"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/api/library/route.ts": {
+    "mtime": 1780403694.129789,
+    "ast_hash": "5633b52d81ae5ac821e2ef87f61a047a",
+    "semantic_hash": "5633b52d81ae5ac821e2ef87f61a047a"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/api/library/stats/route.ts": {
+    "mtime": 1780403694.1284277,
+    "ast_hash": "233856491318c8e88c70a09e310ed580",
+    "semantic_hash": "233856491318c8e88c70a09e310ed580"
+  },
   "/home/r3tr0/Personal/linkedIQ/app/api/prefs/generation/route.ts": {
     "mtime": 1780243864.0467334,
     "ast_hash": "4b90e7240d86b9bfb1ffe3ae8e072827",
     "semantic_hash": "4b90e7240d86b9bfb1ffe3ae8e072827"
+  },
+  "/home/r3tr0/Personal/linkedIQ/app/api/prefs/preview/route.ts": {
+    "mtime": 1780395715.694539,
+    "ast_hash": "1356182576def3c0a04180f509966b1e",
+    "semantic_hash": "1356182576def3c0a04180f509966b1e"
   },
   "/home/r3tr0/Personal/linkedIQ/app/api/prefs/trending/route.ts": {
     "mtime": 1780282559.9918344,
@@ -175,49 +285,14 @@
     "semantic_hash": "186498e88ea210ecfe19bc63b7ab113f"
   },
   "/home/r3tr0/Personal/linkedIQ/app/global-error.tsx": {
-    "mtime": 1779455543.138883,
-    "ast_hash": "36ab2b1a737b3e6d8c0ab448897ef677",
-    "semantic_hash": "36ab2b1a737b3e6d8c0ab448897ef677"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/guardrails/error.tsx": {
-    "mtime": 1779455426.9955454,
-    "ast_hash": "3593ea4cdbfa7b6edc9ecf757d79461c",
-    "semantic_hash": "3593ea4cdbfa7b6edc9ecf757d79461c"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/guardrails/loading.tsx": {
-    "mtime": 1780375324.1222904,
-    "ast_hash": "6a9a08778ee7c82b7f9c25fd52150976",
-    "semantic_hash": "6a9a08778ee7c82b7f9c25fd52150976"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/guardrails/page.tsx": {
-    "mtime": 1779808569.5936754,
-    "ast_hash": "323bd48c28aacdd4821537b22979c7a6",
-    "semantic_hash": "323bd48c28aacdd4821537b22979c7a6"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/history/error.tsx": {
-    "mtime": 1779455426.1933677,
-    "ast_hash": "1458200854b69236e250e2f62b9bfa6a",
-    "semantic_hash": "1458200854b69236e250e2f62b9bfa6a"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/history/loading.tsx": {
-    "mtime": 1780377163.0764513,
-    "ast_hash": "a11eef29cdc01be529fa7c98ec2b7c6a",
-    "semantic_hash": "a11eef29cdc01be529fa7c98ec2b7c6a"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/history/page.tsx": {
-    "mtime": 1779808568.61158,
-    "ast_hash": "69ec9d230074b273ac4155f33fc1add6",
-    "semantic_hash": "69ec9d230074b273ac4155f33fc1add6"
+    "mtime": 1780389928.8935285,
+    "ast_hash": "cb4ff6e993d6e4f01a793896aed1b543",
+    "semantic_hash": "cb4ff6e993d6e4f01a793896aed1b543"
   },
   "/home/r3tr0/Personal/linkedIQ/app/layout.tsx": {
-    "mtime": 1780329280.4091604,
-    "ast_hash": "db972d6e42b229b785911dab6746a57c",
-    "semantic_hash": "db972d6e42b229b785911dab6746a57c"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/loading.tsx": {
-    "mtime": 1780375167.6314268,
-    "ast_hash": "287a8079a595969d8e728de3a8eff350",
-    "semantic_hash": "287a8079a595969d8e728de3a8eff350"
+    "mtime": 1780392493.1911204,
+    "ast_hash": "cf34659f8f8a647b9110e17053fa0d0e",
+    "semantic_hash": "cf34659f8f8a647b9110e17053fa0d0e"
   },
   "/home/r3tr0/Personal/linkedIQ/app/not-found.tsx": {
     "mtime": 1779455542.5538664,
@@ -229,125 +304,20 @@
     "ast_hash": "882270343ae1c1544f553749d23d5e68",
     "semantic_hash": "882270343ae1c1544f553749d23d5e68"
   },
-  "/home/r3tr0/Personal/linkedIQ/app/page.tsx": {
-    "mtime": 1780317325.4641137,
-    "ast_hash": "efe5ff40aa5ed6c614d670fba36971df",
-    "semantic_hash": "efe5ff40aa5ed6c614d670fba36971df"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/profile/error.tsx": {
-    "mtime": 1779455427.8574204,
-    "ast_hash": "76509c432e2950f7099eff51681aa575",
-    "semantic_hash": "76509c432e2950f7099eff51681aa575"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/profile/loading.tsx": {
-    "mtime": 1780375445.378607,
-    "ast_hash": "bad30de05131d4e54964ad5ebc5be6b8",
-    "semantic_hash": "bad30de05131d4e54964ad5ebc5be6b8"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/profile/page.tsx": {
-    "mtime": 1779808570.0229998,
-    "ast_hash": "8b90fca1d141933578ac81d2d2ee6b00",
-    "semantic_hash": "8b90fca1d141933578ac81d2d2ee6b00"
-  },
   "/home/r3tr0/Personal/linkedIQ/app/robots.ts": {
-    "mtime": 1780329279.9681754,
-    "ast_hash": "6d6d32b41edc6e2462b9dcba1491d319",
-    "semantic_hash": "6d6d32b41edc6e2462b9dcba1491d319"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/settings/error.tsx": {
-    "mtime": 1779455428.407438,
-    "ast_hash": "ba132d37dab72c205ab4664091533af8",
-    "semantic_hash": "ba132d37dab72c205ab4664091533af8"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/settings/loading.tsx": {
-    "mtime": 1780375381.8615844,
-    "ast_hash": "d647e88c2c737a586d7ebfcf8e0cfee6",
-    "semantic_hash": "d647e88c2c737a586d7ebfcf8e0cfee6"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/settings/page.tsx": {
-    "mtime": 1779808571.14361,
-    "ast_hash": "05d6528581e7e94ac9ee93a35cc99d6d",
-    "semantic_hash": "05d6528581e7e94ac9ee93a35cc99d6d"
+    "mtime": 1780407697.8168666,
+    "ast_hash": "67b456aefa68773cf0913ff2533d6b50",
+    "semantic_hash": "67b456aefa68773cf0913ff2533d6b50"
   },
   "/home/r3tr0/Personal/linkedIQ/app/sitemap.ts": {
-    "mtime": 1780329279.4951918,
-    "ast_hash": "582cd5ae210dc0b7aa08ee3eb9bb05c6",
-    "semantic_hash": "582cd5ae210dc0b7aa08ee3eb9bb05c6"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/trending/error.tsx": {
-    "mtime": 1780340313.5871437,
-    "ast_hash": "7a016fe925e2340fdac0c3aca7d3fd7e",
-    "semantic_hash": "7a016fe925e2340fdac0c3aca7d3fd7e"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/trending/loading.tsx": {
-    "mtime": 1780377162.6810532,
-    "ast_hash": "44fc364056a508b11fab66ecc3594b06",
-    "semantic_hash": "44fc364056a508b11fab66ecc3594b06"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/trending/page.tsx": {
-    "mtime": 1780340318.592155,
-    "ast_hash": "705c9288cdef029e8949cb9acdf4d519",
-    "semantic_hash": "705c9288cdef029e8949cb9acdf4d519"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/workspace/error.tsx": {
-    "mtime": 1779455428.823451,
-    "ast_hash": "99678fd2958cf1e5e2e4f1f356178ecd",
-    "semantic_hash": "99678fd2958cf1e5e2e4f1f356178ecd"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/workspace/loading.tsx": {
-    "mtime": 1780375234.0995,
-    "ast_hash": "88ae977ea4b2d3ddc3ff5ef30a8028bb",
-    "semantic_hash": "88ae977ea4b2d3ddc3ff5ef30a8028bb"
-  },
-  "/home/r3tr0/Personal/linkedIQ/app/workspace/page.tsx": {
-    "mtime": 1779808570.5066023,
-    "ast_hash": "f95aed6241404f1c65ec0e321f8a432c",
-    "semantic_hash": "f95aed6241404f1c65ec0e321f8a432c"
+    "mtime": 1780407697.8922322,
+    "ast_hash": "0169f4c63bb8e4984282487835871c38",
+    "semantic_hash": "0169f4c63bb8e4984282487835871c38"
   },
   "/home/r3tr0/Personal/linkedIQ/components.json": {
     "mtime": 1779404240.9340165,
     "ast_hash": "f64e0417d599c868ab3f137c116cce16",
     "semantic_hash": "f64e0417d599c868ab3f137c116cce16"
-  },
-  "/home/r3tr0/Personal/linkedIQ/components/features/analytics/analytics-content.tsx": {
-    "mtime": 1780375839.0155005,
-    "ast_hash": "e2040a26d0655b3407fa8e47054c2f09",
-    "semantic_hash": "e2040a26d0655b3407fa8e47054c2f09"
-  },
-  "/home/r3tr0/Personal/linkedIQ/components/features/analytics/analytics-header.tsx": {
-    "mtime": 1779453156.3905916,
-    "ast_hash": "e2c54c2e85e43c6adcdc3a957ebea22e",
-    "semantic_hash": "e2c54c2e85e43c6adcdc3a957ebea22e"
-  },
-  "/home/r3tr0/Personal/linkedIQ/components/features/analytics/analytics-overview-cards.tsx": {
-    "mtime": 1780372422.9217129,
-    "ast_hash": "d493e1e028cee80876ff1308cc2d7067",
-    "semantic_hash": "d493e1e028cee80876ff1308cc2d7067"
-  },
-  "/home/r3tr0/Personal/linkedIQ/components/features/analytics/analytics-score-distribution.tsx": {
-    "mtime": 1779470350.214487,
-    "ast_hash": "1fd9a48eecfba7e1403f2d7f3c0e054b",
-    "semantic_hash": "1fd9a48eecfba7e1403f2d7f3c0e054b"
-  },
-  "/home/r3tr0/Personal/linkedIQ/components/features/analytics/analytics-style-breakdown.tsx": {
-    "mtime": 1779470372.5747278,
-    "ast_hash": "be2dd60d77b5a17e30de8bf11a4a16cc",
-    "semantic_hash": "be2dd60d77b5a17e30de8bf11a4a16cc"
-  },
-  "/home/r3tr0/Personal/linkedIQ/components/features/analytics/analytics-top-posts.tsx": {
-    "mtime": 1780382051.8506453,
-    "ast_hash": "2bf0cbef586749b8fc32a077b3d5be0b",
-    "semantic_hash": "2bf0cbef586749b8fc32a077b3d5be0b"
-  },
-  "/home/r3tr0/Personal/linkedIQ/components/features/analytics/analytics-trend-chart.tsx": {
-    "mtime": 1779470322.2191856,
-    "ast_hash": "b2a5987618f6364966e468ffeb06e3cb",
-    "semantic_hash": "b2a5987618f6364966e468ffeb06e3cb"
-  },
-  "/home/r3tr0/Personal/linkedIQ/components/features/analytics/index.ts": {
-    "mtime": 1780339549.8669474,
-    "ast_hash": "a612fe9bf9b1e078014eb866bd0ea60b",
-    "semantic_hash": "a612fe9bf9b1e078014eb866bd0ea60b"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/auth/index.ts": {
     "mtime": 1779516361.9154902,
@@ -355,24 +325,34 @@
     "semantic_hash": "ee4a173e285d221aca6f80cbd7a554ab"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/auth/login-form.tsx": {
-    "mtime": 1779516198.439347,
-    "ast_hash": "71c0777eba710425fab937e103c17e45",
-    "semantic_hash": "71c0777eba710425fab937e103c17e45"
+    "mtime": 1780390156.107453,
+    "ast_hash": "a4d99e0e6353c1468a92f4188431374c",
+    "semantic_hash": "a4d99e0e6353c1468a92f4188431374c"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/auth/signup-form.tsx": {
-    "mtime": 1779516226.6799874,
-    "ast_hash": "2b08df41a7d809fb1217926e7ccb792b",
-    "semantic_hash": "2b08df41a7d809fb1217926e7ccb792b"
+    "mtime": 1780390159.2983692,
+    "ast_hash": "9495905325e323bcd67d41e54076ce6f",
+    "semantic_hash": "9495905325e323bcd67d41e54076ce6f"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/auth/verify-email-content.tsx": {
     "mtime": 1780338956.839707,
     "ast_hash": "c56eb5771c4fe5a1311e445c1b875d1e",
     "semantic_hash": "c56eb5771c4fe5a1311e445c1b875d1e"
   },
+  "/home/r3tr0/Personal/linkedIQ/components/features/brand-guard/brand-guard-content.tsx": {
+    "mtime": 1780403800.89585,
+    "ast_hash": "6cec4fa56c86f9b612124796a43cd8f7",
+    "semantic_hash": "6cec4fa56c86f9b612124796a43cd8f7"
+  },
+  "/home/r3tr0/Personal/linkedIQ/components/features/brand-guard/index.ts": {
+    "mtime": 1780403767.2486556,
+    "ast_hash": "60a7d6c2321743edebcba4f13aeb54d1",
+    "semantic_hash": "60a7d6c2321743edebcba4f13aeb54d1"
+  },
   "/home/r3tr0/Personal/linkedIQ/components/features/generate/brand-guard-panel.tsx": {
-    "mtime": 1780344028.2503312,
-    "ast_hash": "50241e4bfe7de06a0681a05dd24472f6",
-    "semantic_hash": "50241e4bfe7de06a0681a05dd24472f6"
+    "mtime": 1780403843.7467818,
+    "ast_hash": "bd68a3dd0f48d98db279b5f0d6000b39",
+    "semantic_hash": "bd68a3dd0f48d98db279b5f0d6000b39"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/generate/carousel-navigation.tsx": {
     "mtime": 1779409070.927713,
@@ -380,9 +360,9 @@
     "semantic_hash": "93be7db33a9ca2d694a5fc9b7c0af4e7"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/generate/dashboard-client.tsx": {
-    "mtime": 1780374920.2381701,
-    "ast_hash": "e80a9fb4c15320bb10576452d1f24272",
-    "semantic_hash": "e80a9fb4c15320bb10576452d1f24272"
+    "mtime": 1780392473.7279034,
+    "ast_hash": "7319dc36e4e84271d67afbe960bb492a",
+    "semantic_hash": "7319dc36e4e84271d67afbe960bb492a"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/generate/index.ts": {
     "mtime": 1779461041.0950196,
@@ -390,84 +370,139 @@
     "semantic_hash": "cd91256eade47d20722d210a10918b9d"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/generate/post-creation-form.tsx": {
-    "mtime": 1780382249.3958426,
-    "ast_hash": "711fdbbfacafc32cfe73209bacc3fccf",
-    "semantic_hash": "711fdbbfacafc32cfe73209bacc3fccf"
+    "mtime": 1780397425.302788,
+    "ast_hash": "5dce9bed36bf91d179d346ec7b1f9e5f",
+    "semantic_hash": "5dce9bed36bf91d179d346ec7b1f9e5f"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/generate/post-variants-carousel.tsx": {
-    "mtime": 1780375013.863348,
-    "ast_hash": "fe0991331c57cbfa6d4f4e6da12acbc1",
-    "semantic_hash": "fe0991331c57cbfa6d4f4e6da12acbc1"
+    "mtime": 1780392496.9827795,
+    "ast_hash": "ef9780813a34d75f9b5b3ec5d40af870",
+    "semantic_hash": "ef9780813a34d75f9b5b3ec5d40af870"
   },
-  "/home/r3tr0/Personal/linkedIQ/components/features/guardrails/guardrails-content.tsx": {
-    "mtime": 1780376390.1277328,
-    "ast_hash": "28ae02892c5e91d3cf9e9fd30af5766f",
-    "semantic_hash": "28ae02892c5e91d3cf9e9fd30af5766f"
+  "/home/r3tr0/Personal/linkedIQ/components/features/insights/index.ts": {
+    "mtime": 1780403773.7799728,
+    "ast_hash": "4806dd298e467c8a6ba6bcea8b58bc9c",
+    "semantic_hash": "4806dd298e467c8a6ba6bcea8b58bc9c"
   },
-  "/home/r3tr0/Personal/linkedIQ/components/features/guardrails/index.ts": {
-    "mtime": 1779434042.3939786,
-    "ast_hash": "bd65f3647ef7616af20abfcbcbb86390",
-    "semantic_hash": "bd65f3647ef7616af20abfcbcbb86390"
+  "/home/r3tr0/Personal/linkedIQ/components/features/insights/insights-content.tsx": {
+    "mtime": 1780403953.5481117,
+    "ast_hash": "196d99675abe7b486d851ff8eb6e4664",
+    "semantic_hash": "196d99675abe7b486d851ff8eb6e4664"
   },
-  "/home/r3tr0/Personal/linkedIQ/components/features/history/activity-heatmap.tsx": {
-    "mtime": 1779473122.8610613,
-    "ast_hash": "606be522baa0e73ffa43b388a4bd421c",
-    "semantic_hash": "606be522baa0e73ffa43b388a4bd421c"
+  "/home/r3tr0/Personal/linkedIQ/components/features/insights/insights-header.tsx": {
+    "mtime": 1780403990.0893965,
+    "ast_hash": "c42d97b01777b8d17230ec631c4ce150",
+    "semantic_hash": "c42d97b01777b8d17230ec631c4ce150"
   },
-  "/home/r3tr0/Personal/linkedIQ/components/features/history/best-post-highlight.tsx": {
-    "mtime": 1780382049.131045,
-    "ast_hash": "e06bd67d95d93180a4705939f30d67ad",
-    "semantic_hash": "e06bd67d95d93180a4705939f30d67ad"
+  "/home/r3tr0/Personal/linkedIQ/components/features/insights/insights-overview-cards.tsx": {
+    "mtime": 1780404017.8300757,
+    "ast_hash": "032369f1bcb079ae18f1fb0686647e20",
+    "semantic_hash": "032369f1bcb079ae18f1fb0686647e20"
   },
-  "/home/r3tr0/Personal/linkedIQ/components/features/history/history-card.tsx": {
-    "mtime": 1780382053.753185,
-    "ast_hash": "f3d8471a15ae5829c47b736d3713572b",
-    "semantic_hash": "f3d8471a15ae5829c47b736d3713572b"
+  "/home/r3tr0/Personal/linkedIQ/components/features/insights/insights-score-distribution.tsx": {
+    "mtime": 1780404044.5031395,
+    "ast_hash": "3c0ba1593c62c293e40b6c63c5dbed97",
+    "semantic_hash": "3c0ba1593c62c293e40b6c63c5dbed97"
   },
-  "/home/r3tr0/Personal/linkedIQ/components/features/history/history-content.tsx": {
-    "mtime": 1780377307.3707545,
-    "ast_hash": "f92e4ca3e5f81e88204968e50c5401cb",
-    "semantic_hash": "f92e4ca3e5f81e88204968e50c5401cb"
+  "/home/r3tr0/Personal/linkedIQ/components/features/insights/insights-style-breakdown.tsx": {
+    "mtime": 1780404057.3532677,
+    "ast_hash": "ae7bb8c3fb3d0fdcb9ea0ee5ce5511e6",
+    "semantic_hash": "ae7bb8c3fb3d0fdcb9ea0ee5ce5511e6"
   },
-  "/home/r3tr0/Personal/linkedIQ/components/features/history/history-detail.tsx": {
-    "mtime": 1780374855.5335777,
-    "ast_hash": "2aa65facb20742eceb6de110e950691d",
-    "semantic_hash": "2aa65facb20742eceb6de110e950691d"
+  "/home/r3tr0/Personal/linkedIQ/components/features/insights/insights-top-posts.tsx": {
+    "mtime": 1780404065.5091543,
+    "ast_hash": "0362115700a497fcc194cfdccc7d393f",
+    "semantic_hash": "0362115700a497fcc194cfdccc7d393f"
   },
-  "/home/r3tr0/Personal/linkedIQ/components/features/history/history-empty.tsx": {
-    "mtime": 1780379694.7812579,
-    "ast_hash": "a6aeff1bd87cc5165804edaba2f5646a",
-    "semantic_hash": "a6aeff1bd87cc5165804edaba2f5646a"
+  "/home/r3tr0/Personal/linkedIQ/components/features/insights/insights-trend-chart.tsx": {
+    "mtime": 1780404031.9080288,
+    "ast_hash": "08af002fc2cf435bb7053ef1234dd3cf",
+    "semantic_hash": "08af002fc2cf435bb7053ef1234dd3cf"
   },
-  "/home/r3tr0/Personal/linkedIQ/components/features/history/history-filters.tsx": {
-    "mtime": 1779425068.3708963,
-    "ast_hash": "baa2ef5ffd213475821b5a1391f72b90",
-    "semantic_hash": "baa2ef5ffd213475821b5a1391f72b90"
+  "/home/r3tr0/Personal/linkedIQ/components/features/library/activity-heatmap.tsx": {
+    "mtime": 1780403883.4519856,
+    "ast_hash": "023d2c63f13b6670e387a4a0a3d4a576",
+    "semantic_hash": "023d2c63f13b6670e387a4a0a3d4a576"
   },
-  "/home/r3tr0/Personal/linkedIQ/components/features/history/history-grid.tsx": {
-    "mtime": 1779425927.6690462,
-    "ast_hash": "51ee9bae762ee1a1a5eb2967c45a64d0",
-    "semantic_hash": "51ee9bae762ee1a1a5eb2967c45a64d0"
+  "/home/r3tr0/Personal/linkedIQ/components/features/library/best-post-highlight.tsx": {
+    "mtime": 1780403884.1807966,
+    "ast_hash": "477c10acc9e444d04ccaf492868d1fc2",
+    "semantic_hash": "477c10acc9e444d04ccaf492868d1fc2"
   },
-  "/home/r3tr0/Personal/linkedIQ/components/features/history/history-header.tsx": {
-    "mtime": 1779424942.27375,
-    "ast_hash": "aeaf53f78dc343b4b7b12c2362cc60f0",
-    "semantic_hash": "aeaf53f78dc343b4b7b12c2362cc60f0"
+  "/home/r3tr0/Personal/linkedIQ/components/features/library/index.ts": {
+    "mtime": 1780403784.2350466,
+    "ast_hash": "a1c744238c3e0c6228f185ccf1a273e4",
+    "semantic_hash": "a1c744238c3e0c6228f185ccf1a273e4"
   },
-  "/home/r3tr0/Personal/linkedIQ/components/features/history/history-sidebar.tsx": {
-    "mtime": 1780290982.4880605,
-    "ast_hash": "a3b3f95f04a10e4f0bcf48eb6c662b05",
-    "semantic_hash": "a3b3f95f04a10e4f0bcf48eb6c662b05"
+  "/home/r3tr0/Personal/linkedIQ/components/features/library/library-card.tsx": {
+    "mtime": 1780403849.4534948,
+    "ast_hash": "bd5495934035206c7dd90ee58370084d",
+    "semantic_hash": "bd5495934035206c7dd90ee58370084d"
   },
-  "/home/r3tr0/Personal/linkedIQ/components/features/history/history-stats.tsx": {
-    "mtime": 1779424942.7677703,
-    "ast_hash": "62d6fe011032997e6c227b0336910fcc",
-    "semantic_hash": "62d6fe011032997e6c227b0336910fcc"
+  "/home/r3tr0/Personal/linkedIQ/components/features/library/library-content.tsx": {
+    "mtime": 1780403825.2906296,
+    "ast_hash": "6ed5464d9e43fd56e3e32d5a120929d6",
+    "semantic_hash": "6ed5464d9e43fd56e3e32d5a120929d6"
   },
-  "/home/r3tr0/Personal/linkedIQ/components/features/history/index.ts": {
-    "mtime": 1779427905.337784,
-    "ast_hash": "8877e9e5570936c867e13f1ff59022b4",
-    "semantic_hash": "8877e9e5570936c867e13f1ff59022b4"
+  "/home/r3tr0/Personal/linkedIQ/components/features/library/library-detail.tsx": {
+    "mtime": 1780403882.1777809,
+    "ast_hash": "0a0eac0cce07d75417dd18e0e09e0265",
+    "semantic_hash": "0a0eac0cce07d75417dd18e0e09e0265"
+  },
+  "/home/r3tr0/Personal/linkedIQ/components/features/library/library-empty.tsx": {
+    "mtime": 1780403854.3005645,
+    "ast_hash": "ea46ad83adc0db5d5356bc38b91c0f56",
+    "semantic_hash": "ea46ad83adc0db5d5356bc38b91c0f56"
+  },
+  "/home/r3tr0/Personal/linkedIQ/components/features/library/library-filters.tsx": {
+    "mtime": 1780403852.7145524,
+    "ast_hash": "740116b74a2bde2ee6ed9ce2edb54391",
+    "semantic_hash": "740116b74a2bde2ee6ed9ce2edb54391"
+  },
+  "/home/r3tr0/Personal/linkedIQ/components/features/library/library-grid.tsx": {
+    "mtime": 1780403851.1705406,
+    "ast_hash": "3c82d4e91e8298fc45c31b771f1f05a8",
+    "semantic_hash": "3c82d4e91e8298fc45c31b771f1f05a8"
+  },
+  "/home/r3tr0/Personal/linkedIQ/components/features/library/library-header.tsx": {
+    "mtime": 1780403851.6345441,
+    "ast_hash": "bfb4f3174b1c547b4beb5a5a6f87ef0b",
+    "semantic_hash": "bfb4f3174b1c547b4beb5a5a6f87ef0b"
+  },
+  "/home/r3tr0/Personal/linkedIQ/components/features/library/library-sidebar.tsx": {
+    "mtime": 1780403848.292881,
+    "ast_hash": "fbf2c88d3d916c57cc15e3bd86b94b41",
+    "semantic_hash": "fbf2c88d3d916c57cc15e3bd86b94b41"
+  },
+  "/home/r3tr0/Personal/linkedIQ/components/features/library/library-stats.tsx": {
+    "mtime": 1780403852.0822666,
+    "ast_hash": "06a2ed74f07397655bb429bdbdaa58b3",
+    "semantic_hash": "06a2ed74f07397655bb429bdbdaa58b3"
+  },
+  "/home/r3tr0/Personal/linkedIQ/components/features/preview/facebook-preview.tsx": {
+    "mtime": 1780395746.9901395,
+    "ast_hash": "3c504e42e77849c3532ecc17b54c4fdf",
+    "semantic_hash": "3c504e42e77849c3532ecc17b54c4fdf"
+  },
+  "/home/r3tr0/Personal/linkedIQ/components/features/preview/index.ts": {
+    "mtime": 1780395733.6424193,
+    "ast_hash": "1427179469b783b8ea0bc850f42c3558",
+    "semantic_hash": "1427179469b783b8ea0bc850f42c3558"
+  },
+  "/home/r3tr0/Personal/linkedIQ/components/features/preview/linkedin-preview.tsx": {
+    "mtime": 1780395739.217856,
+    "ast_hash": "0d1ff6e4de7ca345db8e864ef81aeb3c",
+    "semantic_hash": "0d1ff6e4de7ca345db8e864ef81aeb3c"
+  },
+  "/home/r3tr0/Personal/linkedIQ/components/features/preview/post-preview-dialog.tsx": {
+    "mtime": 1780395760.8460486,
+    "ast_hash": "a349d21a7d45701bbccbf7b27dd92fcb",
+    "semantic_hash": "a349d21a7d45701bbccbf7b27dd92fcb"
+  },
+  "/home/r3tr0/Personal/linkedIQ/components/features/preview/twitter-preview.tsx": {
+    "mtime": 1780395742.937503,
+    "ast_hash": "41b6818df036904ff9a3298c9d722bb7",
+    "semantic_hash": "41b6818df036904ff9a3298c9d722bb7"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/profile/index.ts": {
     "mtime": 1779443298.825931,
@@ -475,9 +510,9 @@
     "semantic_hash": "8e46c757ad8ddb58566d6a27ba500a7c"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/profile/profile-content.tsx": {
-    "mtime": 1780376475.1503088,
-    "ast_hash": "3a9d3df40912f645ac4998658671d51c",
-    "semantic_hash": "3a9d3df40912f645ac4998658671d51c"
+    "mtime": 1780398527.1495411,
+    "ast_hash": "a85a36bd20e1da7cff9edfae9dce9130",
+    "semantic_hash": "a85a36bd20e1da7cff9edfae9dce9130"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/settings/index.ts": {
     "mtime": 1779443318.8296154,
@@ -485,19 +520,19 @@
     "semantic_hash": "e05a23c8746047846a03beaa762f5040"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/settings/settings-content.tsx": {
-    "mtime": 1780381211.754012,
-    "ast_hash": "cc66b491f365d7cdd1083b9fda1f7ed9",
-    "semantic_hash": "cc66b491f365d7cdd1083b9fda1f7ed9"
+    "mtime": 1780390162.5562842,
+    "ast_hash": "c04af42ad3e4659897bfb63b671ac658",
+    "semantic_hash": "c04af42ad3e4659897bfb63b671ac658"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/trending/trending-empty-state.tsx": {
-    "mtime": 1780253873.0576553,
-    "ast_hash": "c694096507b4c40385886b1f2a81806c",
-    "semantic_hash": "c694096507b4c40385886b1f2a81806c"
+    "mtime": 1780392487.3156528,
+    "ast_hash": "7cd791e3ca6d588ed9492f0d3ff696e9",
+    "semantic_hash": "7cd791e3ca6d588ed9492f0d3ff696e9"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/trending/trending-header.tsx": {
-    "mtime": 1780373488.3386817,
-    "ast_hash": "fadb45823dc7357882a0f50115474fff",
-    "semantic_hash": "fadb45823dc7357882a0f50115474fff"
+    "mtime": 1780392486.5327241,
+    "ast_hash": "0efaaa38d4005a9fb97c2bf80d764f7e",
+    "semantic_hash": "0efaaa38d4005a9fb97c2bf80d764f7e"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/trending/trending-run-group.tsx": {
     "mtime": 1780374759.0546067,
@@ -510,34 +545,39 @@
     "semantic_hash": "e37591f9b143c7803ccb6ca0e028bc4a"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/trending/trending-settings-panel.tsx": {
-    "mtime": 1780380824.4511857,
-    "ast_hash": "acb0792a03f3c3454a4bd747bab2b7af",
-    "semantic_hash": "acb0792a03f3c3454a4bd747bab2b7af"
+    "mtime": 1780393336.3946323,
+    "ast_hash": "abdc80b59423c36d0757574bf15ac6a3",
+    "semantic_hash": "abdc80b59423c36d0757574bf15ac6a3"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/trending/trending-shell.tsx": {
-    "mtime": 1780377132.7543154,
-    "ast_hash": "e6305878b52bf9092fe2cb014dc61e34",
-    "semantic_hash": "e6305878b52bf9092fe2cb014dc61e34"
+    "mtime": 1780392493.8000655,
+    "ast_hash": "56b45cb8eb8ddd28f9ae64d7620ea9a9",
+    "semantic_hash": "56b45cb8eb8ddd28f9ae64d7620ea9a9"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/trending/trending-sidebar.tsx": {
-    "mtime": 1780331270.6950417,
-    "ast_hash": "613089f8fbcf9fb980423a609f5d24b9",
-    "semantic_hash": "613089f8fbcf9fb980423a609f5d24b9"
+    "mtime": 1780399098.2441452,
+    "ast_hash": "0802c6f52231adf793c68cd819088b91",
+    "semantic_hash": "0802c6f52231adf793c68cd819088b91"
   },
   "/home/r3tr0/Personal/linkedIQ/components/features/workspace/index.ts": {
     "mtime": 1779440370.825612,
     "ast_hash": "03f7073d2fb6a315863663d135f77bb5",
     "semantic_hash": "03f7073d2fb6a315863663d135f77bb5"
   },
+  "/home/r3tr0/Personal/linkedIQ/components/features/workspace/preview-config-card.tsx": {
+    "mtime": 1780395778.2699828,
+    "ast_hash": "10ad0f8f3692b8fbc2fd6be5c309784b",
+    "semantic_hash": "10ad0f8f3692b8fbc2fd6be5c309784b"
+  },
   "/home/r3tr0/Personal/linkedIQ/components/features/workspace/workspace-content.tsx": {
-    "mtime": 1780376366.6252656,
-    "ast_hash": "7caeb64c0bd03ed1177fbf158926a243",
-    "semantic_hash": "7caeb64c0bd03ed1177fbf158926a243"
+    "mtime": 1780395816.8766353,
+    "ast_hash": "e8d6ea45b1b4f504f4fc70b318838374",
+    "semantic_hash": "e8d6ea45b1b4f504f4fc70b318838374"
   },
   "/home/r3tr0/Personal/linkedIQ/components/layout/app-shell.tsx": {
-    "mtime": 1780374493.9571173,
-    "ast_hash": "972e5ceec8a339c142e05016e8b5ab12",
-    "semantic_hash": "972e5ceec8a339c142e05016e8b5ab12"
+    "mtime": 1780398093.99829,
+    "ast_hash": "0cb729fa5c1036e106c35771203e0d5c",
+    "semantic_hash": "0cb729fa5c1036e106c35771203e0d5c"
   },
   "/home/r3tr0/Personal/linkedIQ/components/layout/header.tsx": {
     "mtime": 1780374515.9040184,
@@ -545,7 +585,7 @@
     "semantic_hash": "4e81d62cce7c885ef39f0120b4885d88"
   },
   "/home/r3tr0/Personal/linkedIQ/components/layout/index.ts": {
-    "mtime": 1779405787.496525,
+    "mtime": 1780389563.6227174,
     "ast_hash": "62fc20c5f8d3f29706e2722978a4dbb9",
     "semantic_hash": "62fc20c5f8d3f29706e2722978a4dbb9"
   },
@@ -555,14 +595,14 @@
     "semantic_hash": "f4e30563bdde7864e35c5bde300516f0"
   },
   "/home/r3tr0/Personal/linkedIQ/components/layout/page-breadcrumb.tsx": {
-    "mtime": 1780340473.9617257,
-    "ast_hash": "b2b42be3edda0e6973b7f105de305c05",
-    "semantic_hash": "b2b42be3edda0e6973b7f105de305c05"
+    "mtime": 1780397623.094978,
+    "ast_hash": "4fee01f738cf73c9f1712edabb5921f3",
+    "semantic_hash": "4fee01f738cf73c9f1712edabb5921f3"
   },
   "/home/r3tr0/Personal/linkedIQ/components/layout/sidebar.tsx": {
-    "mtime": 1780379652.9470344,
-    "ast_hash": "40a8be6a0a2f4d3db25bcb739be1a2aa",
-    "semantic_hash": "40a8be6a0a2f4d3db25bcb739be1a2aa"
+    "mtime": 1780394128.347633,
+    "ast_hash": "49f843226592f9faba34a9fd25924247",
+    "semantic_hash": "49f843226592f9faba34a9fd25924247"
   },
   "/home/r3tr0/Personal/linkedIQ/components/layout/theme-toggle.tsx": {
     "mtime": 1780338958.1957576,
@@ -570,9 +610,9 @@
     "semantic_hash": "5e3796284fe4207c6a63422b988760cc"
   },
   "/home/r3tr0/Personal/linkedIQ/components/layout/user-dropdown.tsx": {
-    "mtime": 1780331270.691741,
-    "ast_hash": "f19d92ca7205b9d450e582c25759cd61",
-    "semantic_hash": "f19d92ca7205b9d450e582c25759cd61"
+    "mtime": 1780397975.9601078,
+    "ast_hash": "738195ae97ccb438766b73a59d2c9627",
+    "semantic_hash": "738195ae97ccb438766b73a59d2c9627"
   },
   "/home/r3tr0/Personal/linkedIQ/components/providers/redux-provider.tsx": {
     "mtime": 1780325204.071135,
@@ -580,9 +620,9 @@
     "semantic_hash": "a95b55e57d5fe87cd5db2897263eba25"
   },
   "/home/r3tr0/Personal/linkedIQ/components/shared/confirm-dialog.tsx": {
-    "mtime": 1779566190.8429625,
-    "ast_hash": "6fd119af7a3d47124c390316ca99e06f",
-    "semantic_hash": "6fd119af7a3d47124c390316ca99e06f"
+    "mtime": 1780389941.925936,
+    "ast_hash": "291fe072378c8cabb13e347e7064c09c",
+    "semantic_hash": "291fe072378c8cabb13e347e7064c09c"
   },
   "/home/r3tr0/Personal/linkedIQ/components/shared/date-picker.tsx": {
     "mtime": 1780293550.7041178,
@@ -600,9 +640,9 @@
     "semantic_hash": "e7bd1fe9a77ebd810fc5e27034952ecb"
   },
   "/home/r3tr0/Personal/linkedIQ/components/shared/motivation-tip.tsx": {
-    "mtime": 1779769392.6612077,
-    "ast_hash": "7907728c7885a969bac9c7eaf6b14726",
-    "semantic_hash": "7907728c7885a969bac9c7eaf6b14726"
+    "mtime": 1780392475.9946928,
+    "ast_hash": "d6cb7c8b74e1175abf80cd40fc0fe7bf",
+    "semantic_hash": "d6cb7c8b74e1175abf80cd40fc0fe7bf"
   },
   "/home/r3tr0/Personal/linkedIQ/components/shared/multi-select.tsx": {
     "mtime": 1779602182.5049813,
@@ -615,14 +655,19 @@
     "semantic_hash": "b173ce175e191b80f754fd914739a225"
   },
   "/home/r3tr0/Personal/linkedIQ/components/shared/page-error.tsx": {
-    "mtime": 1779455395.7203853,
-    "ast_hash": "3d44f228d692dc641b318df5ec34b6c1",
-    "semantic_hash": "3d44f228d692dc641b318df5ec34b6c1"
+    "mtime": 1780392472.9719737,
+    "ast_hash": "9bd46b0fec630403c2f36b6c273988c9",
+    "semantic_hash": "9bd46b0fec630403c2f36b6c273988c9"
   },
   "/home/r3tr0/Personal/linkedIQ/components/shared/plan-quota-card.tsx": {
-    "mtime": 1780297463.6720402,
-    "ast_hash": "4402f13b3fde3645b77775e9a0b58342",
-    "semantic_hash": "4402f13b3fde3645b77775e9a0b58342"
+    "mtime": 1780392740.8005557,
+    "ast_hash": "483c43b87a589e72090e88c582a2309a",
+    "semantic_hash": "483c43b87a589e72090e88c582a2309a"
+  },
+  "/home/r3tr0/Personal/linkedIQ/components/shared/quota-alert.tsx": {
+    "mtime": 1780392469.4862993,
+    "ast_hash": "d741b7a0bd916487d68ed643ac3c6448",
+    "semantic_hash": "d741b7a0bd916487d68ed643ac3c6448"
   },
   "/home/r3tr0/Personal/linkedIQ/components/shared/score-pill.tsx": {
     "mtime": 1780381517.4123921,
@@ -645,14 +690,14 @@
     "semantic_hash": "36a1c871e629358b24d5187320adb7c6"
   },
   "/home/r3tr0/Personal/linkedIQ/components/shared/upgrade-modal.tsx": {
-    "mtime": 1780379696.2676418,
-    "ast_hash": "6230d144149d27cc6a51a77c30b9ffe2",
-    "semantic_hash": "6230d144149d27cc6a51a77c30b9ffe2"
+    "mtime": 1780403843.2975738,
+    "ast_hash": "f2b3168419068783e04eeb4d3a31331c",
+    "semantic_hash": "f2b3168419068783e04eeb4d3a31331c"
   },
   "/home/r3tr0/Personal/linkedIQ/components/shared/variant-card.tsx": {
-    "mtime": 1780381985.1918325,
-    "ast_hash": "368818ea10f776e27c71451793e021ff",
-    "semantic_hash": "368818ea10f776e27c71451793e021ff"
+    "mtime": 1780396019.5041287,
+    "ast_hash": "c5b5e31515b1710c7b9b4f7f47682e47",
+    "semantic_hash": "c5b5e31515b1710c7b9b4f7f47682e47"
   },
   "/home/r3tr0/Personal/linkedIQ/components/shared/variant-carousel.tsx": {
     "mtime": 1780373070.1248176,
@@ -750,7 +795,7 @@
     "semantic_hash": "5a04c269a377e8176ebbf27ee8ac35bf"
   },
   "/home/r3tr0/Personal/linkedIQ/components/ui/separator.tsx": {
-    "mtime": 1779405533.1851141,
+    "mtime": 1780387665.3261542,
     "ast_hash": "f57449eae78fbd87d99e4edc45ab3c1e",
     "semantic_hash": "f57449eae78fbd87d99e4edc45ab3c1e"
   },
@@ -760,9 +805,9 @@
     "semantic_hash": "d2d7ec364e338d1549d953a7a80fe098"
   },
   "/home/r3tr0/Personal/linkedIQ/components/ui/skeleton.tsx": {
-    "mtime": 1779405534.3879254,
-    "ast_hash": "0e6e825c43d858d98c9903f4da975382",
-    "semantic_hash": "0e6e825c43d858d98c9903f4da975382"
+    "mtime": 1780389126.936133,
+    "ast_hash": "e117d01459cbcc9c085512e7e6176f99",
+    "semantic_hash": "e117d01459cbcc9c085512e7e6176f99"
   },
   "/home/r3tr0/Personal/linkedIQ/components/ui/switch.tsx": {
     "mtime": 1780380483.8967652,
@@ -835,14 +880,14 @@
     "semantic_hash": "bc7d4a7a03a6658d6bb69776bf76b364"
   },
   "/home/r3tr0/Personal/linkedIQ/core/auth/auth.ts": {
-    "mtime": 1780340130.271085,
-    "ast_hash": "0db2a7fe910f9ed8e4e99d88a03f1a56",
-    "semantic_hash": "0db2a7fe910f9ed8e4e99d88a03f1a56"
+    "mtime": 1780407785.1254437,
+    "ast_hash": "d4dbd33944715b7eb319c6bec53406f5",
+    "semantic_hash": "d4dbd33944715b7eb319c6bec53406f5"
   },
   "/home/r3tr0/Personal/linkedIQ/core/auth/email-templates.ts": {
-    "mtime": 1780340112.632876,
-    "ast_hash": "f881ada67f032bcbcc563fb071b66fe6",
-    "semantic_hash": "f881ada67f032bcbcc563fb071b66fe6"
+    "mtime": 1780407746.1982553,
+    "ast_hash": "fd057f3bedd4f49133751df62773c748",
+    "semantic_hash": "fd057f3bedd4f49133751df62773c748"
   },
   "/home/r3tr0/Personal/linkedIQ/core/auth/email.ts": {
     "mtime": 1779513872.28378,
@@ -870,7 +915,7 @@
     "semantic_hash": "33e4aef62fa3d17b2eaa52b401ad9968"
   },
   "/home/r3tr0/Personal/linkedIQ/core/config/env.ts": {
-    "mtime": 1780338913.9611402,
+    "mtime": 1780407702.1166933,
     "ast_hash": "bceb53b6b07c43c0356fe9f7d6a2fa87",
     "semantic_hash": "bceb53b6b07c43c0356fe9f7d6a2fa87"
   },
@@ -895,9 +940,9 @@
     "semantic_hash": "c8f5e1eb8c77cf900f0c8451137a1428"
   },
   "/home/r3tr0/Personal/linkedIQ/core/queue/functions.ts": {
-    "mtime": 1780347194.5875084,
-    "ast_hash": "0d7fb62d16ddaa3c7f867c49d3c65c67",
-    "semantic_hash": "0d7fb62d16ddaa3c7f867c49d3c65c67"
+    "mtime": 1780403666.4438126,
+    "ast_hash": "6d34e64b3eca880297df32f1778c26e0",
+    "semantic_hash": "6d34e64b3eca880297df32f1778c26e0"
   },
   "/home/r3tr0/Personal/linkedIQ/core/queue/pipeline.ts": {
     "mtime": 1780331187.5660114,
@@ -919,10 +964,10 @@
     "ast_hash": "6208f6ae690977c6f0df58b9c0280a0f",
     "semantic_hash": "6208f6ae690977c6f0df58b9c0280a0f"
   },
-  "/home/r3tr0/Personal/linkedIQ/hooks/use-history-filters.ts": {
-    "mtime": 1780339283.9719188,
-    "ast_hash": "7cecfaaac188a22a5539973547cb6e59",
-    "semantic_hash": "7cecfaaac188a22a5539973547cb6e59"
+  "/home/r3tr0/Personal/linkedIQ/hooks/use-library-filters.ts": {
+    "mtime": 1780403842.950478,
+    "ast_hash": "97ea2d089938a645adacea44554caf2a",
+    "semantic_hash": "97ea2d089938a645adacea44554caf2a"
   },
   "/home/r3tr0/Personal/linkedIQ/hooks/use-media-query.ts": {
     "mtime": 1779736394.596842,
@@ -945,29 +990,39 @@
     "semantic_hash": "67ca056c61a4e3659827622219df108b"
   },
   "/home/r3tr0/Personal/linkedIQ/lib/constants/api.ts": {
-    "mtime": 1780338899.0406117,
-    "ast_hash": "6944105275a4fde1dab7edeabf0560e3",
-    "semantic_hash": "6944105275a4fde1dab7edeabf0560e3"
+    "mtime": 1780403553.1096675,
+    "ast_hash": "8e84c57f116b9f52830a693a5bf2891d",
+    "semantic_hash": "8e84c57f116b9f52830a693a5bf2891d"
+  },
+  "/home/r3tr0/Personal/linkedIQ/lib/constants/colors.ts": {
+    "mtime": 1780406092.8045588,
+    "ast_hash": "18674e64d8c9286de1eebee86df35eb2",
+    "semantic_hash": "18674e64d8c9286de1eebee86df35eb2"
   },
   "/home/r3tr0/Personal/linkedIQ/lib/constants/email.ts": {
-    "mtime": 1780339868.0982888,
-    "ast_hash": "4b20f1903b94fd7cd375b4bcba6248a4",
-    "semantic_hash": "4b20f1903b94fd7cd375b4bcba6248a4"
+    "mtime": 1780406500.0634053,
+    "ast_hash": "e4b704602c09a3484d76050d68a40a62",
+    "semantic_hash": "e4b704602c09a3484d76050d68a40a62"
   },
   "/home/r3tr0/Personal/linkedIQ/lib/constants/errors.ts": {
-    "mtime": 1780335591.7926369,
-    "ast_hash": "6375074e075dd0057cac0c33c19345b1",
-    "semantic_hash": "6375074e075dd0057cac0c33c19345b1"
+    "mtime": 1780395642.2675433,
+    "ast_hash": "96d39cb88ba32eb16bbe08ad9abbc2ad",
+    "semantic_hash": "96d39cb88ba32eb16bbe08ad9abbc2ad"
   },
   "/home/r3tr0/Personal/linkedIQ/lib/constants/index.ts": {
-    "mtime": 1780339867.2812634,
-    "ast_hash": "dd4d19e9074f1ad1fbfeb72abf553d1a",
-    "semantic_hash": "dd4d19e9074f1ad1fbfeb72abf553d1a"
+    "mtime": 1780406092.8865604,
+    "ast_hash": "77c9ee03d6d80f451805c80b486f2d8d",
+    "semantic_hash": "77c9ee03d6d80f451805c80b486f2d8d"
   },
   "/home/r3tr0/Personal/linkedIQ/lib/constants/numeric.ts": {
-    "mtime": 1780335595.0469291,
-    "ast_hash": "54336e90a2b8b2875f49c18bdd021ad0",
-    "semantic_hash": "54336e90a2b8b2875f49c18bdd021ad0"
+    "mtime": 1780403554.024132,
+    "ast_hash": "b81e8a85518034d24989d7de28ee6e17",
+    "semantic_hash": "b81e8a85518034d24989d7de28ee6e17"
+  },
+  "/home/r3tr0/Personal/linkedIQ/lib/constants/preview.ts": {
+    "mtime": 1780395621.5022619,
+    "ast_hash": "a6969cd8e2f9de3d4482ff63951972cf",
+    "semantic_hash": "a6969cd8e2f9de3d4482ff63951972cf"
   },
   "/home/r3tr0/Personal/linkedIQ/lib/constants/regex.ts": {
     "mtime": 1780335590.1474893,
@@ -985,19 +1040,19 @@
     "semantic_hash": "86743fc6d0c731dde2b0cb45ab1b66cc"
   },
   "/home/r3tr0/Personal/linkedIQ/lib/constants/ui.ts": {
-    "mtime": 1780335618.5570478,
-    "ast_hash": "9d48bcea75a6fb9dc92c3811c2672f83",
-    "semantic_hash": "9d48bcea75a6fb9dc92c3811c2672f83"
+    "mtime": 1780398226.73739,
+    "ast_hash": "fdb318655120a0e7c467cd71a436cc5f",
+    "semantic_hash": "fdb318655120a0e7c467cd71a436cc5f"
   },
   "/home/r3tr0/Personal/linkedIQ/lib/metadata.ts": {
-    "mtime": 1780329279.1268926,
+    "mtime": 1780407699.6467922,
     "ast_hash": "da5e1493f4fbc2833a4026bc052f98ea",
     "semantic_hash": "da5e1493f4fbc2833a4026bc052f98ea"
   },
   "/home/r3tr0/Personal/linkedIQ/lib/quota-text.ts": {
-    "mtime": 1779788036.5347865,
-    "ast_hash": "6c2019bb45e45cd284c925458f8edde7",
-    "semantic_hash": "6c2019bb45e45cd284c925458f8edde7"
+    "mtime": 1780392471.3831217,
+    "ast_hash": "79f617176dd2c16bc59fde1b144bd7dd",
+    "semantic_hash": "79f617176dd2c16bc59fde1b144bd7dd"
   },
   "/home/r3tr0/Personal/linkedIQ/lib/refine-store.ts": {
     "mtime": 1780317731.20153,
@@ -1008,21 +1063,6 @@
     "mtime": 1779404250.0610697,
     "ast_hash": "5a6fd53fdcf2be529e9cc0b718fde352",
     "semantic_hash": "5a6fd53fdcf2be529e9cc0b718fde352"
-  },
-  "/home/r3tr0/Personal/linkedIQ/modules/analytics/analytics.repository.ts": {
-    "mtime": 1779567371.5351143,
-    "ast_hash": "b7ba8b8302c9ac406749478cc96e5544",
-    "semantic_hash": "b7ba8b8302c9ac406749478cc96e5544"
-  },
-  "/home/r3tr0/Personal/linkedIQ/modules/analytics/analytics.service.ts": {
-    "mtime": 1780335733.2265337,
-    "ast_hash": "46936fe408eb1798f45d2b0d646d3068",
-    "semantic_hash": "46936fe408eb1798f45d2b0d646d3068"
-  },
-  "/home/r3tr0/Personal/linkedIQ/modules/analytics/index.ts": {
-    "mtime": 1779470163.2504756,
-    "ast_hash": "66a04c9ba742718cc07fb94bcff9f7ed",
-    "semantic_hash": "66a04c9ba742718cc07fb94bcff9f7ed"
   },
   "/home/r3tr0/Personal/linkedIQ/modules/generation/generation.model.ts": {
     "mtime": 1780335734.6956692,
@@ -1040,9 +1080,9 @@
     "semantic_hash": "2bde5e188cbad831779016cb33513c30"
   },
   "/home/r3tr0/Personal/linkedIQ/modules/generation/generation.service.ts": {
-    "mtime": 1780335808.820527,
-    "ast_hash": "91df83bb479716739ec6bbfa5f3037d4",
-    "semantic_hash": "91df83bb479716739ec6bbfa5f3037d4"
+    "mtime": 1780403666.4429874,
+    "ast_hash": "74c59021936ef60165b18508f8cc305f",
+    "semantic_hash": "74c59021936ef60165b18508f8cc305f"
   },
   "/home/r3tr0/Personal/linkedIQ/modules/generation/index.ts": {
     "mtime": 1779567276.9388976,
@@ -1084,45 +1124,60 @@
     "ast_hash": "e00b2f9de1d2f4d64c8a060c9d500cf8",
     "semantic_hash": "e00b2f9de1d2f4d64c8a060c9d500cf8"
   },
-  "/home/r3tr0/Personal/linkedIQ/modules/history/history.repository.ts": {
-    "mtime": 1780331557.3408737,
-    "ast_hash": "71c79fee03afda2f98f4077a6f1a89f0",
-    "semantic_hash": "71c79fee03afda2f98f4077a6f1a89f0"
+  "/home/r3tr0/Personal/linkedIQ/modules/insights/index.ts": {
+    "mtime": 1780403641.352126,
+    "ast_hash": "5f7ca05e21e728837daa267fc9fa3cf8",
+    "semantic_hash": "5f7ca05e21e728837daa267fc9fa3cf8"
   },
-  "/home/r3tr0/Personal/linkedIQ/modules/history/history.service.ts": {
-    "mtime": 1779567391.7156835,
-    "ast_hash": "f69ad1cdd5a49ac5f6b61814e8ac4b18",
-    "semantic_hash": "f69ad1cdd5a49ac5f6b61814e8ac4b18"
+  "/home/r3tr0/Personal/linkedIQ/modules/insights/insights.repository.ts": {
+    "mtime": 1780403640.9191234,
+    "ast_hash": "4693e7378338f5bdcc618f1c40f40ca6",
+    "semantic_hash": "4693e7378338f5bdcc618f1c40f40ca6"
   },
-  "/home/r3tr0/Personal/linkedIQ/modules/history/index.ts": {
-    "mtime": 1780329187.942149,
-    "ast_hash": "35206da98ca9445b6c6fd17bb40d61be",
-    "semantic_hash": "35206da98ca9445b6c6fd17bb40d61be"
+  "/home/r3tr0/Personal/linkedIQ/modules/insights/insights.service.ts": {
+    "mtime": 1780403640.5211213,
+    "ast_hash": "b513144178668345b5ffe873c844b45b",
+    "semantic_hash": "b513144178668345b5ffe873c844b45b"
+  },
+  "/home/r3tr0/Personal/linkedIQ/modules/library/index.ts": {
+    "mtime": 1780403626.1360402,
+    "ast_hash": "cc7d30d4307cad15d106f77797439a25",
+    "semantic_hash": "cc7d30d4307cad15d106f77797439a25"
+  },
+  "/home/r3tr0/Personal/linkedIQ/modules/library/library.repository.ts": {
+    "mtime": 1780403601.0059047,
+    "ast_hash": "d5fe65b5b781d79d8daa8c4d4c4764db",
+    "semantic_hash": "d5fe65b5b781d79d8daa8c4d4c4764db"
+  },
+  "/home/r3tr0/Personal/linkedIQ/modules/library/library.service.ts": {
+    "mtime": 1780403625.727038,
+    "ast_hash": "799217333203346fd6f34d8c5dc4ab2f",
+    "semantic_hash": "799217333203346fd6f34d8c5dc4ab2f"
   },
   "/home/r3tr0/Personal/linkedIQ/modules/prefs/index.ts": {
-    "mtime": 1780244386.488604,
-    "ast_hash": "9255d09dd5d35b41c45ed5e68e717803",
-    "semantic_hash": "9255d09dd5d35b41c45ed5e68e717803"
+    "mtime": 1780395709.4963882,
+    "ast_hash": "30b4d86a1ff43242d2b9cc5bcd443447",
+    "semantic_hash": "30b4d86a1ff43242d2b9cc5bcd443447"
   },
   "/home/r3tr0/Personal/linkedIQ/modules/prefs/prefs.model.ts": {
-    "mtime": 1780283523.586539,
-    "ast_hash": "ec7999f30c74e0b38431bb47027c4a41",
-    "semantic_hash": "ec7999f30c74e0b38431bb47027c4a41"
+    "mtime": 1780395962.4792922,
+    "ast_hash": "457085eaed225ea3e606fc60a33622dc",
+    "semantic_hash": "457085eaed225ea3e606fc60a33622dc"
   },
   "/home/r3tr0/Personal/linkedIQ/modules/prefs/prefs.repository.ts": {
-    "mtime": 1780347107.1876001,
-    "ast_hash": "5ababed8d873eb9cd316f86933337849",
-    "semantic_hash": "5ababed8d873eb9cd316f86933337849"
+    "mtime": 1780395667.4670374,
+    "ast_hash": "7df6562bc416a4faf4cea02a8213e5b2",
+    "semantic_hash": "7df6562bc416a4faf4cea02a8213e5b2"
   },
   "/home/r3tr0/Personal/linkedIQ/modules/prefs/prefs.schema.ts": {
-    "mtime": 1780282511.6128252,
-    "ast_hash": "8ddc236aea8ec152725f30b6d762a439",
-    "semantic_hash": "8ddc236aea8ec152725f30b6d762a439"
+    "mtime": 1780395650.8171487,
+    "ast_hash": "4f6dfda7a579ed6c17fb6a194d78023b",
+    "semantic_hash": "4f6dfda7a579ed6c17fb6a194d78023b"
   },
   "/home/r3tr0/Personal/linkedIQ/modules/prefs/prefs.service.ts": {
-    "mtime": 1780347213.6418862,
-    "ast_hash": "ede30fbde04b28dbe3af14fef0751337",
-    "semantic_hash": "ede30fbde04b28dbe3af14fef0751337"
+    "mtime": 1780404979.2897053,
+    "ast_hash": "46f6ae61324c5ecead44ece3e2c4cc6b",
+    "semantic_hash": "46f6ae61324c5ecead44ece3e2c4cc6b"
   },
   "/home/r3tr0/Personal/linkedIQ/modules/profile/index.ts": {
     "mtime": 1779559669.987864,
@@ -1145,9 +1200,9 @@
     "semantic_hash": "10ab0397e192bd17f8bd35597e1891bf"
   },
   "/home/r3tr0/Personal/linkedIQ/modules/profile/profile.service.ts": {
-    "mtime": 1780322921.7291408,
-    "ast_hash": "a8aac9c5da8a6003c1dc8cf7aa791341",
-    "semantic_hash": "a8aac9c5da8a6003c1dc8cf7aa791341"
+    "mtime": 1780403677.9110584,
+    "ast_hash": "c831a2c3b1da7bd5c09a45345dde176c",
+    "semantic_hash": "c831a2c3b1da7bd5c09a45345dde176c"
   },
   "/home/r3tr0/Personal/linkedIQ/modules/ranking/index.ts": {
     "mtime": 1779460858.8606348,
@@ -1235,9 +1290,9 @@
     "semantic_hash": "e85068d25bcc57023416bd59183d377f"
   },
   "/home/r3tr0/Personal/linkedIQ/modules/trending/trending-email.ts": {
-    "mtime": 1780340179.403633,
-    "ast_hash": "386955c6d4f06b984e3b5fde80a042a0",
-    "semantic_hash": "386955c6d4f06b984e3b5fde80a042a0"
+    "mtime": 1780407810.7331133,
+    "ast_hash": "30f1cb30c6653be9bcc6f1ecef52b7c2",
+    "semantic_hash": "30f1cb30c6653be9bcc6f1ecef52b7c2"
   },
   "/home/r3tr0/Personal/linkedIQ/modules/trending/trending-ranker.ts": {
     "mtime": 1780296887.905358,
@@ -1260,9 +1315,9 @@
     "semantic_hash": "10bca7d3c0afc5be4d648e7f6281eddd"
   },
   "/home/r3tr0/Personal/linkedIQ/modules/trending/trending.service.ts": {
-    "mtime": 1780335853.355621,
-    "ast_hash": "c5ebf3ea264d38e99ba21443f371e571",
-    "semantic_hash": "c5ebf3ea264d38e99ba21443f371e571"
+    "mtime": 1780403666.4433825,
+    "ast_hash": "961f88fc819e1679a5255cf1b1d7e152",
+    "semantic_hash": "961f88fc819e1679a5255cf1b1d7e152"
   },
   "/home/r3tr0/Personal/linkedIQ/modules/trending/trending.types.ts": {
     "mtime": 1780288547.8896182,
@@ -1315,9 +1370,9 @@
     "semantic_hash": "289f0132603d92ebe226231d9bfff9c3"
   },
   "/home/r3tr0/Personal/linkedIQ/modules/workspace/workspace.service.ts": {
-    "mtime": 1780345000.7884912,
-    "ast_hash": "9f4c6ddda5f63603d257bce9a79bef5d",
-    "semantic_hash": "9f4c6ddda5f63603d257bce9a79bef5d"
+    "mtime": 1780403666.4427135,
+    "ast_hash": "c7d1cf0d78f851f09a7fa0342e942284",
+    "semantic_hash": "c7d1cf0d78f851f09a7fa0342e942284"
   },
   "/home/r3tr0/Personal/linkedIQ/next.config.mjs": {
     "mtime": 1779404229.1423478,
@@ -1355,9 +1410,14 @@
     "semantic_hash": "a2b722e62b5c135c6fdb00429229cfe2"
   },
   "/home/r3tr0/Personal/linkedIQ/store/index.ts": {
-    "mtime": 1780325181.891988,
-    "ast_hash": "d927b174d51f7d1a2c9fed2d0971054f",
-    "semantic_hash": "d927b174d51f7d1a2c9fed2d0971054f"
+    "mtime": 1780395687.0010407,
+    "ast_hash": "19670eeaa8dcb0d60da6a34acc823082",
+    "semantic_hash": "19670eeaa8dcb0d60da6a34acc823082"
+  },
+  "/home/r3tr0/Personal/linkedIQ/store/slices/preview-prefs.slice.ts": {
+    "mtime": 1780395625.4268875,
+    "ast_hash": "37ec4d79a6534f84c4b9c8cca5927bf7",
+    "semantic_hash": "37ec4d79a6534f84c4b9c8cca5927bf7"
   },
   "/home/r3tr0/Personal/linkedIQ/store/slices/profile.slice.ts": {
     "mtime": 1780335735.5107443,
@@ -1380,9 +1440,9 @@
     "semantic_hash": "38961e0217a147acea88790030fe0abf"
   },
   "/home/r3tr0/Personal/linkedIQ/types/index.ts": {
-    "mtime": 1780344976.7568204,
-    "ast_hash": "8c79ab25bb3f1a94c8b1b5fdeebd89e2",
-    "semantic_hash": "8c79ab25bb3f1a94c8b1b5fdeebd89e2"
+    "mtime": 1780403561.2237058,
+    "ast_hash": "2ec0e97c27eca99f50ab0ed117546e67",
+    "semantic_hash": "2ec0e97c27eca99f50ab0ed117546e67"
   },
   "/home/r3tr0/Personal/linkedIQ/.claude/CLAUDE.md": {
     "mtime": 1780383726.9849539,

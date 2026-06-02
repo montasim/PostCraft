@@ -1,339 +1,338 @@
 # Graph Report - .  (2026-06-02)
 
 ## Corpus Check
-- 286 files · ~76,707 words
+- 298 files · ~79,890 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1186 nodes · 3049 edges · 90 communities (64 shown, 26 thin omitted)
-- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 29 edges (avg confidence: 0.81)
+- 1254 nodes · 3232 edges · 92 communities (65 shown, 27 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 42 edges (avg confidence: 0.84)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
-- [[_COMMUNITY_AI Provider Layer|AI Provider Layer]]
 - [[_COMMUNITY_API Route Handlers|API Route Handlers]]
-- [[_COMMUNITY_History Data Layer|History Data Layer]]
-- [[_COMMUNITY_Post Creation UI|Post Creation UI]]
+- [[_COMMUNITY_AI Provider Clients|AI Provider Clients]]
+- [[_COMMUNITY_Error & Not Found Pages|Error & Not Found Pages]]
+- [[_COMMUNITY_Settings Page Components|Settings Page Components]]
+- [[_COMMUNITY_Package Dependencies|Package Dependencies]]
+- [[_COMMUNITY_Refinement & Trending Store|Refinement & Trending Store]]
+- [[_COMMUNITY_Workspace & App Shell|Workspace & App Shell]]
+- [[_COMMUNITY_Insights Dashboard|Insights Dashboard]]
+- [[_COMMUNITY_Preview Platform Constants|Preview Platform Constants]]
+- [[_COMMUNITY_Library Filters & Nav|Library Filters & Nav]]
+- [[_COMMUNITY_Generation Models & Status|Generation Models & Status]]
+- [[_COMMUNITY_Feature Error States|Feature Error States]]
+- [[_COMMUNITY_Auth Forms|Auth Forms]]
 - [[_COMMUNITY_Loading Skeletons|Loading Skeletons]]
-- [[_COMMUNITY_Project Dependencies|Project Dependencies]]
-- [[_COMMUNITY_Analytics Overview|Analytics Overview]]
-- [[_COMMUNITY_History UI Components|History UI Components]]
-- [[_COMMUNITY_Analytics Content|Analytics Content]]
-- [[_COMMUNITY_Brand Guard & Top Posts|Brand Guard & Top Posts]]
-- [[_COMMUNITY_Settings Feature UI|Settings Feature UI]]
-- [[_COMMUNITY_User Preferences Module|User Preferences Module]]
-- [[_COMMUNITY_Generation Stats API|Generation Stats API]]
-- [[_COMMUNITY_Component Configuration|Component Configuration]]
-- [[_COMMUNITY_AI Prompt & Shortlist|AI Prompt & Shortlist]]
-- [[_COMMUNITY_Error Boundaries|Error Boundaries]]
-- [[_COMMUNITY_App Shell Pages|App Shell Pages]]
-- [[_COMMUNITY_Guardrails API & UI|Guardrails API & UI]]
-- [[_COMMUNITY_Guardrail Domain Module|Guardrail Domain Module]]
+- [[_COMMUNITY_Component Aliases & Exports|Component Aliases & Exports]]
+- [[_COMMUNITY_Preferences Data Models|Preferences Data Models]]
+- [[_COMMUNITY_Guardrail Defaults & Schema|Guardrail Defaults & Schema]]
+- [[_COMMUNITY_Layout Shell & Quota|Layout Shell & Quota]]
+- [[_COMMUNITY_Library Sidebar & Utils|Library Sidebar & Utils]]
+- [[_COMMUNITY_Logger & Judge Prompts|Logger & Judge Prompts]]
 - [[_COMMUNITY_TypeScript Config|TypeScript Config]]
-- [[_COMMUNITY_Analytics Charts|Analytics Charts]]
-- [[_COMMUNITY_UI Option Constants|UI Option Constants]]
-- [[_COMMUNITY_Error Handling Classes|Error Handling Classes]]
-- [[_COMMUNITY_History Card Components|History Card Components]]
-- [[_COMMUNITY_Feature Pages|Feature Pages]]
-- [[_COMMUNITY_Trending Global Topics|Trending Global Topics]]
-- [[_COMMUNITY_Layout Dropdown|Layout Dropdown]]
-- [[_COMMUNITY_Settings Module|Settings Module]]
-- [[_COMMUNITY_Time Picker|Time Picker]]
-- [[_COMMUNITY_Activity Heatmap|Activity Heatmap]]
-- [[_COMMUNITY_Inngest & Logger|Inngest & Logger]]
-- [[_COMMUNITY_Profile & Workspace UI|Profile & Workspace UI]]
-- [[_COMMUNITY_History Filters & Grid|History Filters & Grid]]
-- [[_COMMUNITY_Dashboard Home Page|Dashboard Home Page]]
-- [[_COMMUNITY_Scoring Constants|Scoring Constants]]
-- [[_COMMUNITY_App Shell Layout|App Shell Layout]]
-- [[_COMMUNITY_Mobile Sidebar|Mobile Sidebar]]
+- [[_COMMUNITY_Profile Page & API|Profile Page & API]]
+- [[_COMMUNITY_Trending Prefs & Empty State|Trending Prefs & Empty State]]
+- [[_COMMUNITY_Date & Time Pickers|Date & Time Pickers]]
+- [[_COMMUNITY_App Error Classes|App Error Classes]]
+- [[_COMMUNITY_Brand Guard Panel UI|Brand Guard Panel UI]]
+- [[_COMMUNITY_AI Provider Fallback & Shortlist|AI Provider Fallback & Shortlist]]
+- [[_COMMUNITY_CLAUDE.md Architecture Docs|CLAUDE.md Architecture Docs]]
+- [[_COMMUNITY_Carousel & Post Variants|Carousel & Post Variants]]
+- [[_COMMUNITY_Generation Dashboard Client|Generation Dashboard Client]]
+- [[_COMMUNITY_Activity Heatmap & Multi-Select|Activity Heatmap & Multi-Select]]
+- [[_COMMUNITY_Settings Module Services|Settings Module Services]]
+- [[_COMMUNITY_Ranking & Variant Pipeline|Ranking & Variant Pipeline]]
+- [[_COMMUNITY_Trending Backend Pipeline|Trending Backend Pipeline]]
+- [[_COMMUNITY_Navigation & Mobile Sidebar|Navigation & Mobile Sidebar]]
+- [[_COMMUNITY_Design System & Psychology|Design System & Psychology]]
+- [[_COMMUNITY_Inngest Queue & Routes|Inngest Queue & Routes]]
+- [[_COMMUNITY_Library Repository Layer|Library Repository Layer]]
 - [[_COMMUNITY_Dev Dependencies|Dev Dependencies]]
-- [[_COMMUNITY_Multi-Select Component|Multi-Select Component]]
-- [[_COMMUNITY_UI Nav Constants|UI Nav Constants]]
-- [[_COMMUNITY_Build Scripts|Build Scripts]]
-- [[_COMMUNITY_Workspace Module|Workspace Module]]
-- [[_COMMUNITY_Trending Source Fetcher|Trending Source Fetcher]]
-- [[_COMMUNITY_App Layout & Fonts|App Layout & Fonts]]
-- [[_COMMUNITY_Status Enums|Status Enums]]
-- [[_COMMUNITY_Design System Docs|Design System Docs]]
-- [[_COMMUNITY_Header Component|Header Component]]
-- [[_COMMUNITY_Heuristic Scorer|Heuristic Scorer]]
-- [[_COMMUNITY_Profile Redux Slice|Profile Redux Slice]]
-- [[_COMMUNITY_AI Constants|AI Constants]]
+- [[_COMMUNITY_Brand Guard Content UI|Brand Guard Content UI]]
+- [[_COMMUNITY_UI Constants & Options|UI Constants & Options]]
+- [[_COMMUNITY_Breadcrumb Navigation|Breadcrumb Navigation]]
+- [[_COMMUNITY_Package Scripts|Package Scripts]]
+- [[_COMMUNITY_Global Topics Models|Global Topics Models]]
+- [[_COMMUNITY_Header & Theme Toggle|Header & Theme Toggle]]
+- [[_COMMUNITY_Profile Module Services|Profile Module Services]]
+- [[_COMMUNITY_Workspace Module Services|Workspace Module Services]]
+- [[_COMMUNITY_Sidebar & Schedule|Sidebar & Schedule]]
+- [[_COMMUNITY_Heuristic Scoring|Heuristic Scoring]]
+- [[_COMMUNITY_AI Config Constants|AI Config Constants]]
 - [[_COMMUNITY_Generation Prompt Builder|Generation Prompt Builder]]
-- [[_COMMUNITY_Judge Prompt|Judge Prompt]]
-- [[_COMMUNITY_Settings Model|Settings Model]]
-- [[_COMMUNITY_Workspace Redux Slice|Workspace Redux Slice]]
-- [[_COMMUNITY_Input Group UI|Input Group UI]]
-- [[_COMMUNITY_Sidebar Component|Sidebar Component]]
-- [[_COMMUNITY_Analytics Header & Tabs|Analytics Header & Tabs]]
-- [[_COMMUNITY_Workspace Model|Workspace Model]]
-- [[_COMMUNITY_Quota Text Utilities|Quota Text Utilities]]
-- [[_COMMUNITY_Empty State Component|Empty State Component]]
-- [[_COMMUNITY_Guardrails Page|Guardrails Page]]
-- [[_COMMUNITY_Package Metadata|Package Metadata]]
-- [[_COMMUNITY_NavGroup Component|NavGroup Component]]
+- [[_COMMUNITY_Settings Data Models|Settings Data Models]]
+- [[_COMMUNITY_Trending Settings Panel|Trending Settings Panel]]
+- [[_COMMUNITY_Trending Repository|Trending Repository]]
+- [[_COMMUNITY_Status Constants|Status Constants]]
+- [[_COMMUNITY_Insights Header & Tabs|Insights Header & Tabs]]
+- [[_COMMUNITY_Workspace Data Models|Workspace Data Models]]
+- [[_COMMUNITY_Quota UI Components|Quota UI Components]]
+- [[_COMMUNITY_Library Stats Display|Library Stats Display]]
+- [[_COMMUNITY_Settings Page Route|Settings Page Route]]
+- [[_COMMUNITY_Package Manifest|Package Manifest]]
+- [[_COMMUNITY_Graphify Skill & Subagents|Graphify Skill & Subagents]]
+- [[_COMMUNITY_Nav Group Component|Nav Group Component]]
+- [[_COMMUNITY_Redux Store Setup|Redux Store Setup]]
 - [[_COMMUNITY_OpenGraph Image|OpenGraph Image]]
-- [[_COMMUNITY_Claude Settings|Claude Settings]]
-- [[_COMMUNITY_Claude Permissions|Claude Permissions]]
-- [[_COMMUNITY_SOLID Design Docs|SOLID Design Docs]]
-- [[_COMMUNITY_Forgot Password|Forgot Password]]
+- [[_COMMUNITY_Claude Settings Hooks|Claude Settings Hooks]]
+- [[_COMMUNITY_Claude Local Permissions|Claude Local Permissions]]
+- [[_COMMUNITY_Chart Colors & Score Pill|Chart Colors & Score Pill]]
+- [[_COMMUNITY_Progress & Quota Cards|Progress & Quota Cards]]
+- [[_COMMUNITY_Forgot Password Page|Forgot Password Page]]
 - [[_COMMUNITY_Theme Hook|Theme Hook]]
-- [[_COMMUNITY_Login Page|Login Page]]
 - [[_COMMUNITY_Ranking Schema|Ranking Schema]]
-- [[_COMMUNITY_Reset Password|Reset Password]]
-- [[_COMMUNITY_Motivation Tip|Motivation Tip]]
 - [[_COMMUNITY_Signup Page|Signup Page]]
-- [[_COMMUNITY_Verify Email|Verify Email]]
-- [[_COMMUNITY_Psychology & VariantCard Docs|Psychology & VariantCard Docs]]
+- [[_COMMUNITY_Verify Email Page|Verify Email Page]]
+- [[_COMMUNITY_Graphify Integration|Graphify Integration]]
+- [[_COMMUNITY_Responsive Breakpoints|Responsive Breakpoints]]
+- [[_COMMUNITY_Spacing Standard|Spacing Standard]]
+- [[_COMMUNITY_State Management Docs|State Management Docs]]
 - [[_COMMUNITY_ESLint Config|ESLint Config]]
 - [[_COMMUNITY_Next.js Config|Next.js Config]]
 - [[_COMMUNITY_PostCSS Config|PostCSS Config]]
-- [[_COMMUNITY_Date & Time Pickers|Date & Time Pickers]]
-- [[_COMMUNITY_Color Token Doc|Color Token Doc]]
-- [[_COMMUNITY_Design System Doc|Design System Doc]]
-- [[_COMMUNITY_Frontend Spec Doc|Frontend Spec Doc]]
-- [[_COMMUNITY_State Strategy Doc|State Strategy Doc]]
-- [[_COMMUNITY_Requirements Doc|Requirements Doc]]
-- [[_COMMUNITY_Inngest GET Handler|Inngest GET Handler]]
-- [[_COMMUNITY_Inngest POST Handler|Inngest POST Handler]]
-- [[_COMMUNITY_Inngest PUT Handler|Inngest PUT Handler]]
-- [[_COMMUNITY_Multi-Select Option|Multi-Select Option]]
+- [[_COMMUNITY_Graphify Cache & Update|Graphify Cache & Update]]
+- [[_COMMUNITY_Typography Design|Typography Design]]
+- [[_COMMUNITY_Multi-Select Component|Multi-Select Component]]
+- [[_COMMUNITY_Inngest GET Route|Inngest GET Route]]
+- [[_COMMUNITY_Inngest POST Route|Inngest POST Route]]
+- [[_COMMUNITY_Inngest PUT Route|Inngest PUT Route]]
+- [[_COMMUNITY_README Template|README Template]]
+- [[_COMMUNITY_Requirements Data Models|Requirements Data Models]]
+- [[_COMMUNITY_Multi-Agent Pipeline|Multi-Agent Pipeline]]
+- [[_COMMUNITY_Caveman Mode|Caveman Mode]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `cn()` - 145 edges
-2. `connectDB()` - 50 edges
-3. `handleApiError()` - 49 edges
-4. `Button()` - 38 edges
-5. `getEnv()` - 37 edges
+2. `connectDB()` - 53 edges
+3. `handleApiError()` - 52 edges
+4. `Button()` - 40 edges
+5. `getEnv()` - 40 edges
 6. `getWorkspaceId()` - 35 edges
-7. `Card()` - 22 edges
-8. `Badge()` - 19 edges
-9. `Skeleton()` - 19 edges
-10. `API` - 19 edges
+7. `Card()` - 23 edges
+8. `useAppSelector()` - 22 edges
+9. `Skeleton()` - 21 edges
+10. `API` - 21 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `SaaS Workspace Isolation Rule` --semantically_similar_to--> `Module Isolation Architecture`  [INFERRED] [semantically similar]
+  docs/REQUIREMENTS.md → CLAUDE.md
+- `Spacing Standard` --semantically_similar_to--> `Spacing and Layout Tokens`  [INFERRED] [semantically similar]
+  CLAUDE.md → docs/DESIGN_SYSTEM.md
+- `OKLCH Color Format for Design Tokens` --semantically_similar_to--> `OKLCH Semantic Color System`  [INFERRED] [semantically similar]
+  .commandcode/taste/taste.md → docs/DESIGN_SYSTEM.md
+- `Tabler Icons Preference` --conceptually_related_to--> `Frontend Clone Specification`  [AMBIGUOUS]
+  .commandcode/taste/taste.md → docs/FRONTEND_CLONE_SPEC.md
 - `RootLayout()` --calls--> `cn()`  [EXTRACTED]
   app/layout.tsx → lib/utils.ts
-- `RunItem()` --calls--> `cn()`  [EXTRACTED]
-  components/features/trending/trending-run-group.tsx → lib/utils.ts
-- `SidebarProps` --references--> `TrendingPrefs`  [EXTRACTED]
-  components/layout/sidebar.tsx → modules/prefs/prefs.schema.ts
-- `CalendarDayButton()` --calls--> `cn()`  [EXTRACTED]
-  components/ui/calendar.tsx → lib/utils.ts
-- `CommandDialog()` --calls--> `cn()`  [EXTRACTED]
-  components/ui/command.tsx → lib/utils.ts
 
 ## Import Cycles
 - None detected.
 
 ## Hyperedges (group relationships)
-- **Score Display Components** — shared_scorepill_scorepill, shared_variantcard_variantcard, history_bestposthighlight_bestposthighlight [INFERRED 0.85]
-- **Tooltip-Powered UI Components** — shared_scorepill_scorepill, shared_multiselect_multiselect, history_activityheatmap_activityheatmap [EXTRACTED 1.00]
-- **Plan Quota and Upgrade Flow** — shared_planquotacard_planquotacard, shared_upgrademodal_upgrademodal, shared_index_barrelexport [INFERRED 0.75]
-- **LinkedIQ Core Generation Pipeline** — docs_requirements_ai_generation_pipeline, docs_requirements_scoring_system, docs_requirements_queue_system [EXTRACTED 1.00]
-- **Design System Documentation Triad** — docs_design_system_linkediq_design, docs_frontend_spec_clone_spec, docs_requirements_linkediq_saas [EXTRACTED 0.95]
-- **Psychology-Driven UI Cluster** — docs_design_system_consumer_psychology, docs_design_system_variant_card_pattern, docs_design_system_score_pill_pattern [EXTRACTED 0.95]
+- **Three-Document Architecture System** — requirements_service_layer, frontend_clone_spec, design_component_patterns [EXTRACTED 1.00]
+- **Trending Backend Pipeline Flow** — trending_source_fetcher, trending_keyword_builder, trending_ranker, trending_inngest_pipeline, trending_trending_run_model [EXTRACTED 1.00]
+- **Psychology-Driven UI System** — design_psychology_patterns, design_scarcity, design_social_proof, frontend_psychology_checklist, frontend_plan_quota_card [EXTRACTED 1.00]
 
-## Communities (90 total, 26 thin omitted)
+## Communities (92 total, 27 thin omitted)
 
-### Community 0 - "AI Provider Layer"
+### Community 0 - "API Route Handlers"
+Cohesion: 0.07
+Nodes (69): { GET, POST }, GET(), GET(), GET(), GET(), GET(), Auth, buildAuthConfig() (+61 more)
+
+### Community 1 - "AI Provider Clients"
 Cohesion: 0.06
-Nodes (62): getDefaultModel(), getGeminiClient(), getGroqClient(), getGroqModel(), hasGroq(), getOpenRouterClient(), getOpenRouterModel(), hasOpenRouter() (+54 more)
+Nodes (44): getDefaultModel(), getGeminiClient(), getGroqClient(), getGroqModel(), hasGroq(), getOpenRouterClient(), getOpenRouterModel(), hasOpenRouter() (+36 more)
 
-### Community 1 - "API Route Handlers"
-Cohesion: 0.12
-Nodes (39): GET(), GET(), GET(), GET(), GET(), GET(), Auth, requireAuth() (+31 more)
-
-### Community 2 - "History Data Layer"
-Cohesion: 0.10
-Nodes (23): GenerationWithVariants, HistoryListFilters, HistoryListResult, historyRepository, SORT_MAP, SortMap, VariantDoc, GuardrailDetail (+15 more)
-
-### Community 3 - "Post Creation UI"
+### Community 2 - "Error & Not Found Pages"
 Cohesion: 0.08
-Nodes (31): PostCreationFormInner(), PostCreationFormProps, consumeRefineData(), RefineData, setRefineData(), DatePicker(), PLATFORM_ABBREV, RunItem() (+23 more)
+Nodes (26): useMediaQuery(), ActivityHeatmapProps, BestPostHighlight(), BestPostHighlightProps, formatRelativeDate(), LibraryCard(), LibraryCardProps, STATUS_STYLES (+18 more)
 
-### Community 4 - "Loading Skeletons"
-Cohesion: 0.09
-Nodes (13): CarouselNavigation(), PostCreationForm(), PostVariantsCarousel(), PostVariantsCarouselProps, STATUS_HEADERS, STATUS_MESSAGES, useCarousel(), useClipboard() (+5 more)
+### Community 3 - "Settings Page Components"
+Cohesion: 0.13
+Nodes (24): cn(), SettingsData, ConfirmDialog(), ConfirmDialogProps, UpgradeModalProps, Checkbox(), Command(), CommandDialog() (+16 more)
 
-### Community 5 - "Project Dependencies"
+### Community 4 - "Package Dependencies"
 Cohesion: 0.06
 Nodes (32): dependencies, bcryptjs, better-auth, class-variance-authority, clsx, cmdk, date-fns, dotenv (+24 more)
 
-### Community 6 - "Analytics Overview"
-Cohesion: 0.13
-Nodes (23): MetricCard(), BREADCRUMB_CONFIG, BreadcrumbConfig, PageBreadcrumb(), cn(), Avatar(), AvatarBadge(), AvatarFallback() (+15 more)
+### Community 5 - "Refinement & Trending Store"
+Cohesion: 0.10
+Nodes (25): setRefineData(), PLATFORM_ABBREV, RunItem(), SOURCE_META, STATUS_STYLES, toVariant(), TrendingRunGroup(), TrendingRunGroupProps (+17 more)
 
-### Community 7 - "History UI Components"
+### Community 6 - "Workspace & App Shell"
 Cohesion: 0.11
-Nodes (19): ActivityHeatmapProps, BestPostHighlight(), BestPostHighlightProps, HistoryCardProps, HistoryContent(), HistoryDetail(), HistoryFilters(), HistoryGrid() (+11 more)
+Nodes (21): metadata, PREVIEW_CONFIG_DEFAULTS, AppShell(), fetchPreviewPrefs, initialState, previewPrefsSlice, PreviewPrefsState, selectEnabledPlatforms() (+13 more)
 
-### Community 8 - "Analytics Content"
-Cohesion: 0.19
-Nodes (19): AnalyticsContent(), AnalyticsData, EMPTY_DATA, AnalyticsHeader(), AnalyticsOverviewCards(), analyticsRepository, AnalyticsScoreDistribution(), AnalyticsDashboard (+11 more)
+### Community 7 - "Insights Dashboard"
+Cohesion: 0.16
+Nodes (20): EMPTY_DATA, InsightsContent(), InsightsData, InsightsOverviewCards(), MetricCard(), insightsRepository, InsightsScoreDistribution(), InsightsDashboard (+12 more)
 
-### Community 9 - "Brand Guard & Top Posts"
-Cohesion: 0.14
-Nodes (12): BannedWordsGroupProps, BrandGuardPanel(), BrandGuardPanelProps, GuardRule, RuleGroupProps, STATUS_STYLES, HistoryHeaderProps, ScorePill() (+4 more)
+### Community 8 - "Preview Platform Constants"
+Cohesion: 0.15
+Nodes (21): PLATFORM_DISPLAY_NAMES, PlatformId, PLATFORMS, FacebookPreview(), FacebookPreviewProps, LinkedInPreview(), LinkedInPreviewProps, PLATFORM_PREVIEWS (+13 more)
 
-### Community 10 - "Settings Feature UI"
+### Community 9 - "Library Filters & Nav"
+Cohesion: 0.11
+Nodes (18): SCORE_RANGES, DEFAULT_FILTERS, LibraryStats, LibraryFilters(), LibraryFiltersProps, LibraryGridProps, LibraryFilterState, DropdownMenu() (+10 more)
+
+### Community 10 - "Generation Models & Status"
 Cohesion: 0.17
-Nodes (12): SettingsContent(), SettingsData, ConfirmDialog(), ConfirmDialogProps, UpgradeModalProps, Dialog(), DialogContent(), DialogDescription() (+4 more)
+Nodes (16): GENERATION_STATUS, GENERATION_STATUSES, generationSchema, IGeneration, generationRepository, aiGenerationOutputSchema, CreateGenerationInput, createGenerationSchema (+8 more)
 
-### Community 11 - "User Preferences Module"
-Cohesion: 0.17
-Nodes (17): generationPrefsSubSchema, IGenerationPrefsDoc, IPrefs, ITrendingPrefsDoc, prefsSchema, trendingPrefsSubSchema, prefsRepository, GENERATION_PREFS_DEFAULTS (+9 more)
+### Community 11 - "Feature Error States"
+Cohesion: 0.12
+Nodes (5): MotivationTip(), TIPS, PageError(), SectionHeader(), SectionHeaderProps
 
-### Community 12 - "Generation Stats API"
-Cohesion: 0.19
-Nodes (13): generationSchema, IGeneration, generationRepository, aiGenerationOutputSchema, CreateGenerationInput, createGenerationSchema, GenerationStatus, generationStatusSchema (+5 more)
+### Community 12 - "Auth Forms"
+Cohesion: 0.22
+Nodes (13): authClient, LoginForm(), SignupForm(), VerifyEmailContent(), RANGE_COLORS, Card(), CardAction(), CardContent() (+5 more)
 
-### Community 13 - "Component Configuration"
+### Community 13 - "Loading Skeletons"
+Cohesion: 0.12
+Nodes (3): metadata, metadata, Skeleton()
+
+### Community 14 - "Component Aliases & Exports"
 Cohesion: 0.09
 Nodes (21): aliases, components, hooks, lib, ui, utils, iconLibrary, menuAccent (+13 more)
 
-### Community 14 - "AI Prompt & Shortlist"
-Cohesion: 0.19
-Nodes (17): callWithTaskFallback(), buildShortlistPrompt(), buildShortlistSystemPrompt(), getLatestGlobalTopics(), countUndismissedRuns(), createRun(), findRunsByWorkspace(), dismissAllRuns() (+9 more)
+### Community 15 - "Preferences Data Models"
+Cohesion: 0.18
+Nodes (17): generationPrefsSubSchema, IGenerationPrefsDoc, IPrefs, IPreviewConfigDoc, ITrendingPrefsDoc, prefsSchema, previewPrefsSubSchema, trendingPrefsSubSchema (+9 more)
 
-### Community 15 - "Error Boundaries"
-Cohesion: 0.14
-Nodes (3): PageError(), SectionHeader(), SectionHeaderProps
-
-### Community 16 - "App Shell Pages"
-Cohesion: 0.17
-Nodes (10): CarouselNavigationProps, formatRelativeDate(), HistoryCard(), HistoryEmpty(), HistoryEmptyProps, DatePickerProps, Button(), buttonVariants (+2 more)
-
-### Community 17 - "Guardrails API & UI"
-Cohesion: 0.15
-Nodes (8): API, ApiGuardrail, Rule, RuleSectionProps, StreakWidgetProps, Input(), Progress(), Textarea()
-
-### Community 18 - "Guardrail Domain Module"
+### Community 16 - "Guardrail Defaults & Schema"
 Cohesion: 0.21
 Nodes (11): GUARDRAIL_CATEGORIES, DEFAULT_GUARDRAILS, DefaultGuardrail, guardrailSchema, IGuardrail, guardrailRepository, CreateGuardrailInput, createGuardrailSchema (+3 more)
 
-### Community 19 - "TypeScript Config"
+### Community 17 - "Layout Shell & Quota"
+Cohesion: 0.13
+Nodes (18): AppShellProps, ROUTE_MAP, QuotaAlert(), fetchTrendingPrefs, selectTrendingCount(), fetchWorkspace, initialState, selectPersona() (+10 more)
+
+### Community 18 - "Library Sidebar & Utils"
+Cohesion: 0.14
+Nodes (13): STATUS_DOT, StreakWidget(), StreakWidgetProps, InputGroupAddon(), inputGroupAddonVariants, InputGroupButton(), inputGroupButtonVariants, InputGroupInput() (+5 more)
+
+### Community 19 - "Logger & Judge Prompts"
+Cohesion: 0.16
+Nodes (14): logger, buildJudgePrompt(), buildJudgeSystemPrompt(), JudgePromptData, judgeOutputSchema, JudgeResult, scoreWithJudge(), stripMarkdownFences() (+6 more)
+
+### Community 20 - "TypeScript Config"
 Cohesion: 0.10
 Nodes (20): compilerOptions, allowJs, baseUrl, esModuleInterop, incremental, isolatedModules, jsx, lib (+12 more)
 
-### Community 20 - "Analytics Charts"
-Cohesion: 0.28
-Nodes (10): RANGE_COLORS, authClient, LoginForm(), SignupForm(), VerifyEmailContent(), Card(), CardContent(), CardFooter() (+2 more)
+### Community 21 - "Profile Page & API"
+Cohesion: 0.15
+Nodes (12): API, metadata, ProfileContent(), fetchProfile, initialState, profileSlice, ProfileState, selectProfile() (+4 more)
 
-### Community 21 - "UI Option Constants"
-Cohesion: 0.18
-Nodes (11): AUDIENCE_OPTIONS, INDUSTRY_OPTIONS, LANGUAGE_OPTIONS, TONE_OPTIONS, TOPIC_OPTIONS, QUICK_PRESETS, SEED_PERSONA, Label() (+3 more)
+### Community 22 - "Trending Prefs & Empty State"
+Cohesion: 0.14
+Nodes (12): SidebarProps, TrendingPrefs, EmptyState(), initialState, selectTrendingPrefs(), trendingPrefsSlice, TrendingPrefsState, metadata (+4 more)
 
-### Community 22 - "Error Handling Classes"
+### Community 23 - "Date & Time Pickers"
+Cohesion: 0.16
+Nodes (14): DatePicker(), DatePickerProps, format12(), parseTime(), TimePicker(), TimePickerProps, Popover(), PopoverContent() (+6 more)
+
+### Community 24 - "App Error Classes"
 Cohesion: 0.15
 Nodes (9): AIServiceError, AppError, DatabaseError, ForbiddenError, NotFoundError, QueueError, QuotaExceededError, UnauthorizedError (+1 more)
 
-### Community 23 - "History Card Components"
-Cohesion: 0.13
-Nodes (19): BestPostHighlight, HistoryCard, VariantCardWrapper, HistoryContent, ConfirmDialog, EmptyState, SharedComponentsBarrel, MotivationTip (+11 more)
+### Community 25 - "Brand Guard Panel UI"
+Cohesion: 0.15
+Nodes (9): BannedWordsGroupProps, BrandGuardPanel(), BrandGuardPanelProps, GuardRule, RuleGroupProps, LibraryHeaderProps, Badge(), badgeVariants (+1 more)
 
-### Community 24 - "Feature Pages"
-Cohesion: 0.11
-Nodes (8): metadata, metadata, AppShell(), metadata, metadata, fetchProfile, fetchWorkspace, metadata
+### Community 26 - "AI Provider Fallback & Shortlist"
+Cohesion: 0.22
+Nodes (14): callWithTaskFallback(), buildShortlistPrompt(), buildShortlistSystemPrompt(), getLatestGlobalTopics(), createRun(), dismissAllRuns(), dismissRun(), generatePostsFromTrends() (+6 more)
 
-### Community 25 - "Trending Global Topics"
-Cohesion: 0.16
-Nodes (14): GlobalTrendingTopicSchema, IGlobalTrendingTopicDoc, saveGlobalTopics(), saveGlobalTopicsFailure(), ConfigSnapshotSchema, ISourceItemDoc, ITrendingRunDoc, SourceItemSchema (+6 more)
+### Community 27 - "CLAUDE.md Architecture Docs"
+Cohesion: 0.14
+Nodes (18): AI Provider Abstraction, App Router Route Structure, Constants Convention, Data Layer Pattern, Module File Convention, Module Isolation Architecture, Routing Strategy, Dark/Light Theme System (+10 more)
 
-### Community 26 - "Layout Dropdown"
-Cohesion: 0.16
-Nodes (11): DropdownMenu(), DropdownMenuCheckboxItem(), DropdownMenuContent(), DropdownMenuItem(), DropdownMenuLabel(), DropdownMenuRadioItem(), DropdownMenuSeparator(), DropdownMenuShortcut() (+3 more)
+### Community 28 - "Carousel & Post Variants"
+Cohesion: 0.19
+Nodes (11): CarouselNavigation(), CarouselNavigationProps, PostCreationForm(), PostVariantsCarousel(), PostVariantsCarouselProps, STATUS_HEADERS, STATUS_MESSAGES, useCarousel() (+3 more)
 
-### Community 27 - "Settings Module"
+### Community 29 - "Generation Dashboard Client"
+Cohesion: 0.17
+Nodes (13): DashboardClient(), GenerationStatus, STATUS_LABELS, PostCreationFormInner(), PostCreationFormProps, QUICK_PRESETS, requestNotificationPermission(), sendBrowserNotification() (+5 more)
+
+### Community 30 - "Activity Heatmap & Multi-Select"
+Cohesion: 0.21
+Nodes (11): ActivityHeatmap(), getDaysAgo(), HeatmapDay, MultiSelectProps, BG_MAP, COLOR_MAP, ScorePillProps, Tooltip() (+3 more)
+
+### Community 31 - "Settings Module Services"
 Cohesion: 0.20
 Nodes (13): settingsRepository, accountSettingsSchema, appearanceSettingsSchema, notificationSettingsSchema, UpdateSettingsInput, updateSettingsSchema, DEFAULT_ACCOUNT, DEFAULT_APPEARANCE (+5 more)
 
-### Community 28 - "Time Picker"
-Cohesion: 0.18
-Nodes (12): format12(), parseTime(), TimePicker(), TimePickerProps, Popover(), PopoverContent(), PopoverDescription(), PopoverHeader() (+4 more)
+### Community 32 - "Ranking & Variant Pipeline"
+Cohesion: 0.24
+Nodes (9): rankingService, IVariant, variantSchema, variantRepository, ScoredVariant, scoredVariantSchema, VariantOutput, variantOutputSchema (+1 more)
 
-### Community 29 - "Activity Heatmap"
-Cohesion: 0.25
-Nodes (12): ActivityHeatmap(), getDaysAgo(), HeatmapDay, ActivityHeatmap, MultiSelect, BG_MAP, COLOR_MAP, ScorePillProps (+4 more)
+### Community 33 - "Trending Backend Pipeline"
+Cohesion: 0.16
+Nodes (16): Trending API Routes (GET /api/trending, POST /api/trending/run-now), Trending Inngest Pipeline Function, Keyword Builder for Source Fetching, Source Item Ranker, buildSourceKeywords(), DevToArticle, fetchDevTo(), fetchGitHub() (+8 more)
 
-### Community 30 - "Inngest & Logger"
-Cohesion: 0.23
-Nodes (10): handler, logger, inngest, fetchGlobalTrendingTopics, generatePosts, recoverScheduledTrending, runTrendingPipeline, scheduledTrendingRunner (+2 more)
+### Community 34 - "Navigation & Mobile Sidebar"
+Cohesion: 0.16
+Nodes (11): NAV_ACCOUNT, NAV_MAIN, MobileSidebar(), MobileSidebarProps, Sheet(), SheetContent(), SheetDescription(), SheetFooter() (+3 more)
 
-### Community 31 - "Profile & Workspace UI"
+### Community 35 - "Design System & Psychology"
+Cohesion: 0.15
+Nodes (14): UI Psychology and Engagement, OKLCH Semantic Color System, Component Patterns, Modular Component Structure, Consumer Psychology Patterns, Scarcity Psychology Pattern, Social Proof Psychology Pattern, SOLID Principles in React (+6 more)
+
+### Community 36 - "Inngest Queue & Routes"
+Cohesion: 0.27
+Nodes (9): handler, inngest, fetchGlobalTrendingTopics, generatePosts, recoverScheduledTrending, runTrendingPipeline, scheduledTrendingRunner, runGenerationPipeline() (+1 more)
+
+### Community 37 - "Library Repository Layer"
 Cohesion: 0.22
-Nodes (8): ProfileContent(), useAppDispatch(), useAppSelector(), AppDispatch, RootState, metadata, TrendingShell(), WorkspaceContent()
+Nodes (8): GenerationWithVariants, LibraryListFilters, LibraryListResult, libraryRepository, SORT_MAP, SortMap, VariantDoc, GuardrailDetail
 
-### Community 32 - "History Filters & Grid"
-Cohesion: 0.20
-Nodes (12): HistoryFiltersProps, HistoryGridProps, HistoryFilterState, Command(), CommandDialog(), CommandEmpty(), CommandGroup(), CommandInput() (+4 more)
-
-### Community 33 - "Dashboard Home Page"
-Cohesion: 0.22
-Nodes (9): metadata, DashboardClient(), GenerationStatus, STATUS_LABELS, requestNotificationPermission(), sendBrowserNotification(), UpgradeModal(), selectPersona() (+1 more)
-
-### Community 34 - "Scoring Constants"
-Cohesion: 0.19
-Nodes (8): SCORE_WEIGHTS, RawVariant, ScoreComponents, scoreComponentsSchema, WEIGHTS, ScoredVariantOutput, ScoringInput, scoringService
-
-### Community 35 - "App Shell Layout"
-Cohesion: 0.19
-Nodes (9): AppShellProps, ROUTE_MAP, fetchTrendingPrefs, initialState, selectTrendingCount(), selectTrendingPrefs(), trendingPrefsSlice, selectQuotaLimit() (+1 more)
-
-### Community 36 - "Mobile Sidebar"
-Cohesion: 0.21
-Nodes (8): MobileSidebarProps, Sheet(), SheetContent(), SheetDescription(), SheetFooter(), SheetHeader(), SheetOverlay(), SheetTitle()
-
-### Community 37 - "Dev Dependencies"
+### Community 38 - "Dev Dependencies"
 Cohesion: 0.15
 Nodes (13): devDependencies, eslint, eslint-config-next, @eslint/eslintrc, postcss, prettier, prettier-plugin-tailwindcss, tailwindcss (+5 more)
 
-### Community 38 - "Multi-Select Component"
-Cohesion: 0.22
-Nodes (9): MultiSelect(), MultiSelectProps, SelectOption, DAYS, PLATFORMS, TrendingSettingsPanel(), TrendingSettingsPanelProps, RadioGroup() (+1 more)
+### Community 39 - "Brand Guard Content UI"
+Cohesion: 0.20
+Nodes (5): ApiGuardrail, BrandGuardContent(), Rule, RuleSectionProps, metadata
 
-### Community 39 - "UI Nav Constants"
-Cohesion: 0.17
-Nodes (9): NAV_ACCOUNT, NAV_CONFIG, NAV_MAIN, SCORE_RANGES, SORT_OPTIONS, DEFAULT_FILTERS, HistoryStats, ScoreRange (+1 more)
+### Community 40 - "UI Constants & Options"
+Cohesion: 0.23
+Nodes (9): AUDIENCE_OPTIONS, INDUSTRY_OPTIONS, LANGUAGE_OPTIONS, SORT_OPTIONS, TONE_OPTIONS, TOPIC_OPTIONS, SEED_PERSONA, ScoreRange (+1 more)
 
-### Community 40 - "Build Scripts"
+### Community 41 - "Breadcrumb Navigation"
+Cohesion: 0.26
+Nodes (10): BREADCRUMB_CONFIG, BreadcrumbConfig, PageBreadcrumb(), Breadcrumb(), BreadcrumbEllipsis(), BreadcrumbItem(), BreadcrumbLink(), BreadcrumbList() (+2 more)
+
+### Community 42 - "Package Scripts"
 Cohesion: 0.17
 Nodes (12): scripts, build, dev, dev:inngest, dev:next, format, lint, seed (+4 more)
 
-### Community 41 - "Workspace Module"
+### Community 43 - "Global Topics Models"
+Cohesion: 0.24
+Nodes (9): GlobalTrendingTopicSchema, IGlobalTrendingTopicDoc, saveGlobalTopics(), saveGlobalTopicsFailure(), ConfigSnapshotSchema, ISourceItemDoc, ITrendingRunDoc, SourceItemSchema (+1 more)
+
+### Community 44 - "Header & Theme Toggle"
+Cohesion: 0.29
+Nodes (6): formatNumber(), Header(), HeaderProps, ThemeToggle(), UserDropdown(), selectTotalPosts()
+
+### Community 45 - "Profile Module Services"
+Cohesion: 0.40
+Nodes (6): IProfile, profileSchema, profileRepository, UpdateProfileInput, updateProfileSchema, profileService
+
+### Community 46 - "Workspace Module Services"
 Cohesion: 0.38
 Nodes (7): workspaceRepository, brandPersonaSchema, personaOptionSchema, UpdateWorkspaceInput, updateWorkspaceSchema, DEFAULT_PERSONA, workspaceService
 
-### Community 42 - "Trending Source Fetcher"
-Cohesion: 0.27
-Nodes (10): buildSourceKeywords(), DevToArticle, fetchDevTo(), fetchGitHub(), fetchHackerNews(), fetchReddit(), fetchTrendingSources(), GitHubRepo (+2 more)
+### Community 47 - "Sidebar & Schedule"
+Cohesion: 0.29
+Nodes (7): MILLISECONDS, NAV_CONFIG, Sidebar(), computeNextRunAt(), formatNextRun(), TrendingSettingsPanel(), ScheduleType
 
-### Community 43 - "App Layout & Fonts"
-Cohesion: 0.24
-Nodes (7): fontMono, geist, metadata, RootLayout(), ThemeProvider(), ReduxProvider(), store
-
-### Community 44 - "Status Enums"
-Cohesion: 0.20
-Nodes (9): DRAFT_STATUS, DRAFT_STATUSES, EXPORT_FORMATS, GENERATION_STATUS, GENERATION_STATUSES, GUARDRAIL_CATEGORY, RUN_STATUS, RUN_STATUSES (+1 more)
-
-### Community 45 - "Design System Docs"
-Cohesion: 0.20
-Nodes (10): Modular Component Architecture, ScorePill Component Pattern, Frontend 7-Phase Build Order, AI Generation Pipeline, Multi-Agent Pipeline Architecture, Queue System, Scoring System, Service Layer Pattern (+2 more)
-
-### Community 46 - "Header Component"
-Cohesion: 0.33
-Nodes (7): formatNumber(), Header(), HeaderProps, MobileSidebar(), ThemeToggle(), UserDropdown(), selectTotalPosts()
-
-### Community 47 - "Heuristic Scorer"
+### Community 48 - "Heuristic Scoring"
 Cohesion: 0.42
 Nodes (9): calculateHeuristicScore(), clamp(), HeuristicInput, HeuristicResult, scoreBannedWords(), scoreCTAClarity(), scoreFormatting(), scoreHookStrength() (+1 more)
 
-### Community 48 - "Profile Redux Slice"
-Cohesion: 0.24
-Nodes (9): initialState, profileSlice, ProfileState, selectProfile(), selectProfileStats(), selectProfileStatus(), selectUserName(), ProfileStats (+1 more)
-
-### Community 49 - "AI Constants"
+### Community 49 - "AI Config Constants"
 Cohesion: 0.22
 Nodes (8): AI_CONFIG, AI_MAX_TOKENS, AI_TASKS, AI_TEMPERATURE, AITask, LANGUAGE_MAP, LANGUAGE_TO_CODE, TASK_PROVIDER_ORDER
 
@@ -341,73 +340,81 @@ Nodes (8): AI_CONFIG, AI_MAX_TOKENS, AI_TASKS, AI_TEMPERATURE, AITask, LANGUAGE_
 Cohesion: 0.42
 Nodes (7): buildGenerationPrompt(), GenerationData, GuardrailData, buildDeveloperPrompt(), buildSystemPrompt(), buildUserPrompt(), GenerationPromptData
 
-### Community 51 - "Judge Prompt"
-Cohesion: 0.39
-Nodes (7): buildJudgePrompt(), buildJudgeSystemPrompt(), JudgePromptData, judgeOutputSchema, JudgeResult, scoreWithJudge(), stripMarkdownFences()
-
-### Community 52 - "Settings Model"
+### Community 51 - "Settings Data Models"
 Cohesion: 0.22
 Nodes (8): accountSchema, appearanceSchema, IAccountSettings, IAppearanceSettings, INotificationSettings, ISettings, notificationSchema, settingsSchema
 
-### Community 53 - "Workspace Redux Slice"
+### Community 52 - "Trending Settings Panel"
+Cohesion: 0.31
+Nodes (7): MultiSelect(), SelectOption, DAYS, PLATFORMS, TrendingSettingsPanelProps, RadioGroup(), RadioGroupItem()
+
+### Community 53 - "Trending Repository"
 Cohesion: 0.25
-Nodes (8): initialState, selectWorkspace(), selectWorkspaceStatus(), WorkspaceData, workspaceSlice, WorkspaceState, BrandPersona, PersonaOption
+Nodes (8): countUndismissedRuns(), dismissAllRuns(), dismissRun(), findRunsByWorkspace(), updateRunGenerationIds(), updateRunSourceItems(), updateRunStatus(), getTrendingDashboard()
 
-### Community 54 - "Input Group UI"
-Cohesion: 0.28
-Nodes (8): InputGroup(), InputGroupAddon(), inputGroupAddonVariants, InputGroupButton(), inputGroupButtonVariants, InputGroupInput(), InputGroupText(), InputGroupTextarea()
+### Community 54 - "Status Constants"
+Cohesion: 0.25
+Nodes (7): DRAFT_STATUS, DRAFT_STATUSES, EXPORT_FORMATS, GUARDRAIL_CATEGORY, RUN_STATUS, RUN_STATUSES, THEME_OPTIONS
 
-### Community 55 - "Sidebar Component"
+### Community 55 - "Insights Header & Tabs"
 Cohesion: 0.39
-Nodes (5): Sidebar(), SidebarProps, StreakWidget(), computeNextRunAt(), formatNextRun()
+Nodes (6): InsightsHeader(), Tabs(), TabsContent(), TabsList(), tabsListVariants, TabsTrigger()
 
-### Community 56 - "Analytics Header & Tabs"
-Cohesion: 0.48
-Nodes (5): Tabs(), TabsContent(), TabsList(), tabsListVariants, TabsTrigger()
-
-### Community 57 - "Workspace Model"
+### Community 56 - "Workspace Data Models"
 Cohesion: 0.29
 Nodes (6): brandPersonaSchema, IBrandPersona, IPersonaOption, IWorkspace, personaOptionSchema, workspaceSchema
 
-### Community 58 - "Quota Text Utilities"
+### Community 57 - "Quota UI Components"
 Cohesion: 0.53
 Nodes (4): getQuotaFooter(), getQuotaMessage(), PlanQuotaCard(), PlanQuotaCardProps
 
-### Community 59 - "Empty State Component"
+### Community 58 - "Library Stats Display"
 Cohesion: 0.33
-Nodes (4): EmptyState(), EmptyStateProps, TrendingEmptyState(), TrendingEmptyStateProps
+Nodes (4): COLOR_MAP, LibraryStats(), LibraryStatsProps, StatCardProps
 
-### Community 61 - "Package Metadata"
+### Community 60 - "Package Manifest"
 Cohesion: 0.40
 Nodes (4): name, private, type, version
 
-### Community 62 - "NavGroup Component"
+### Community 61 - "Graphify Skill & Subagents"
+Cohesion: 0.40
+Nodes (5): AST Structural Extraction, Community Detection and Clustering, Graph Query Traversal, Semantic Extraction via LLM Subagents, Subagent-Driven Development Preference
+
+### Community 62 - "Nav Group Component"
 Cohesion: 0.67
 Nodes (3): NavGroup(), NavGroupProps, NavItem
 
-### Community 66 - "SOLID Design Docs"
+### Community 67 - "Chart Colors & Score Pill"
 Cohesion: 0.67
-Nodes (3): SOLID Principles in React, Server/Client Boundary Strategy, SOLID Engineering Constraints
+Nodes (3): Chart Color Tokens, ScorePill Component, VariantCard Ranked Content Component
+
+### Community 68 - "Progress & Quota Cards"
+Cohesion: 0.67
+Nodes (3): Segmented Progress Bar, PlanQuotaCard Component, Quota Text Psychology Generator
+
+## Ambiguous Edges - Review These
+- `Tabler Icons Preference` → `Frontend Clone Specification`  [AMBIGUOUS]
+  .commandcode/taste/taste.md · relation: conceptually_related_to
 
 ## Knowledge Gaps
-- **303 isolated node(s):** `PreToolUse`, `allow`, `metadata`, `metadata`, `metadata` (+298 more)
+- **323 isolated node(s):** `PreToolUse`, `allow`, `metadata`, `metadata`, `metadata` (+318 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **26 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **27 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `cn()` connect `Analytics Overview` to `Post Creation UI`, `Loading Skeletons`, `History UI Components`, `Analytics Content`, `Brand Guard & Top Posts`, `Settings Feature UI`, `Error Boundaries`, `App Shell Pages`, `Guardrails API & UI`, `Analytics Charts`, `UI Option Constants`, `Layout Dropdown`, `Time Picker`, `Activity Heatmap`, `Profile & Workspace UI`, `History Filters & Grid`, `Mobile Sidebar`, `Multi-Select Component`, `App Layout & Fonts`, `Input Group UI`, `Sidebar Component`, `Analytics Header & Tabs`, `Quota Text Utilities`, `Empty State Component`, `NavGroup Component`, `Motivation Tip`?**
-  _High betweenness centrality (0.130) - this node is a cross-community bridge._
-- **Why does `connectDB()` connect `API Route Handlers` to `AI Provider Layer`, `Trending Global Topics`, `Inngest & Logger`, `AI Prompt & Shortlist`?**
+- **What is the exact relationship between `Tabler Icons Preference` and `Frontend Clone Specification`?**
+  _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
+- **Why does `cn()` connect `Settings Page Components` to `AI Provider Clients`, `Error & Not Found Pages`, `Refinement & Trending Store`, `Workspace & App Shell`, `Insights Dashboard`, `Preview Platform Constants`, `Library Filters & Nav`, `Feature Error States`, `Auth Forms`, `Loading Skeletons`, `Library Sidebar & Utils`, `Trending Prefs & Empty State`, `Date & Time Pickers`, `Brand Guard Panel UI`, `Activity Heatmap & Multi-Select`, `Navigation & Mobile Sidebar`, `Brand Guard Content UI`, `Breadcrumb Navigation`, `Trending Settings Panel`, `Insights Header & Tabs`, `Quota UI Components`, `Nav Group Component`?**
+  _High betweenness centrality (0.128) - this node is a cross-community bridge._
+- **Why does `Button()` connect `Error & Not Found Pages` to `Settings Page Components`, `Refinement & Trending Store`, `Workspace & App Shell`, `Preview Platform Constants`, `Library Filters & Nav`, `Feature Error States`, `Auth Forms`, `Layout Shell & Quota`, `Library Sidebar & Utils`, `Profile Page & API`, `Trending Prefs & Empty State`, `Date & Time Pickers`, `Brand Guard Panel UI`, `Carousel & Post Variants`, `Generation Dashboard Client`, `Navigation & Mobile Sidebar`, `Brand Guard Content UI`, `Header & Theme Toggle`, `Sidebar & Schedule`, `Trending Settings Panel`?**
   _High betweenness centrality (0.023) - this node is a cross-community bridge._
-- **Why does `ScorePill` connect `History Card Components` to `Activity Heatmap`?**
+- **Why does `Skeleton()` connect `Loading Skeletons` to `Error & Not Found Pages`, `Settings Page Components`, `Workspace & App Shell`, `Insights Dashboard`, `Brand Guard Content UI`, `Profile Page & API`, `Trending Prefs & Empty State`, `Brand Guard Panel UI`, `Carousel & Post Variants`?**
   _High betweenness centrality (0.021) - this node is a cross-community bridge._
 - **Are the 5 inferred relationships involving `connectDB()` (e.g. with `GET()` and `GET()`) actually correct?**
   _`connectDB()` has 5 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 6 inferred relationships involving `handleApiError()` (e.g. with `GET()` and `GET()`) actually correct?**
   _`handleApiError()` has 6 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `PreToolUse`, `allow`, `metadata` to the rest of the system?**
-  _303 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `AI Provider Layer` be split into smaller, more focused modules?**
-  _Cohesion score 0.05506549051055867 - nodes in this community are weakly interconnected._
+  _325 weakly-connected nodes found - possible documentation gaps or missing edges._
