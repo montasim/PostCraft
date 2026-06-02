@@ -452,7 +452,7 @@ function GuardrailsContent() {
             category: data.data.category,
           },
         ])
-        toast.success("Rule added")
+        toast.success("Rule locked.")
       } catch {
         toast.error("Failed to add rule")
       }

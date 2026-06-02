@@ -16,7 +16,8 @@ function AnalyticsTrendChart({ data }: { data: TrendDataPoint[] }) {
         </CardHeader>
         <CardContent>
           <p className="py-8 text-center text-sm text-muted-foreground">
-            No trend data yet. Generate content to see trends.
+            Data starts after your first post. Generate one and come back — your
+            trends will show up here.
           </p>
         </CardContent>
       </Card>
@@ -34,7 +35,9 @@ function AnalyticsTrendChart({ data }: { data: TrendDataPoint[] }) {
   const toY = (v: number) => padY + plotH - (v / maxVal) * plotH
 
   const scorePoints = data.map((d, i) => `${toX(i)},${toY(d.score)}`).join(" ")
-  const engagementPoints = data.map((d, i) => `${toX(i)},${toY(d.engagement)}`).join(" ")
+  const engagementPoints = data
+    .map((d, i) => `${toX(i)},${toY(d.engagement)}`)
+    .join(" ")
 
   const yTicks = [0, 25, 50, 75, 100]
 
@@ -99,8 +102,18 @@ function AnalyticsTrendChart({ data }: { data: TrendDataPoint[] }) {
             {/* Data points */}
             {data.map((d, i) => (
               <g key={i}>
-                <circle cx={toX(i)} cy={toY(d.score)} r="3" fill="var(--chart-5)" />
-                <circle cx={toX(i)} cy={toY(d.engagement)} r="2.5" fill="var(--chart-2)" />
+                <circle
+                  cx={toX(i)}
+                  cy={toY(d.score)}
+                  r="3"
+                  fill="var(--chart-5)"
+                />
+                <circle
+                  cx={toX(i)}
+                  cy={toY(d.engagement)}
+                  r="2.5"
+                  fill="var(--chart-2)"
+                />
               </g>
             ))}
           </svg>
@@ -111,7 +124,10 @@ function AnalyticsTrendChart({ data }: { data: TrendDataPoint[] }) {
               <span
                 key={i}
                 className="text-[8px] text-muted-foreground"
-                style={{ display: i % 3 === 0 || i === data.length - 1 ? "inline" : "none" }}
+                style={{
+                  display:
+                    i % 3 === 0 || i === data.length - 1 ? "inline" : "none",
+                }}
               >
                 {d.date}
               </span>
@@ -127,7 +143,9 @@ function AnalyticsTrendChart({ data }: { data: TrendDataPoint[] }) {
           </div>
           <div className="flex items-center gap-1.5">
             <span className="h-0.5 w-4 rounded border-b border-dashed border-chart-2" />
-            <span className="text-[10px] text-muted-foreground">Engagement</span>
+            <span className="text-[10px] text-muted-foreground">
+              Engagement
+            </span>
           </div>
         </div>
       </CardContent>

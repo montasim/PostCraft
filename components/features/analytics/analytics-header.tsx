@@ -1,25 +1,19 @@
 "use client"
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { IconChartBar } from "@tabler/icons-react"
+import { IconChartBar, IconSparkles } from "@tabler/icons-react"
 
 function AnalyticsHeader() {
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2.5">
-        
-      </div>
-      <div className="flex items-center gap-4">
-        <p className="hidden text-xs text-muted-foreground sm:block">
-          Last updated: just now
-        </p>
-        <Tabs defaultValue="30d">
-          <TabsList className="h-8">
-            <TabsTrigger value="7d" className="text-xs">7d</TabsTrigger>
-            <TabsTrigger value="30d" className="text-xs">30d</TabsTrigger>
-            <TabsTrigger value="90d" className="text-xs">90d</TabsTrigger>
-          </TabsList>
-        </Tabs>
+        <IconSparkles className="h-5 w-5 text-primary" />
+        <div>
+          <p className="text-sm font-semibold">Performance</p>
+          <p className="text-xs text-muted-foreground">
+            Your content analytics
+          </p>
+        </div>
       </div>
     </div>
   )

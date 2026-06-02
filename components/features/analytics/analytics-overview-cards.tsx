@@ -2,14 +2,27 @@
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { IconTarget, IconTrendingUp, IconTrophy } from "@tabler/icons-react"
+import {
+  IconTarget,
+  IconTrendingUp,
+  IconTrophy,
+  IconPalette,
+  IconCalendarMonth,
+} from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
 import type { AnalyticsOverview, StylePerformance } from "@/types"
 
-function AnalyticsOverviewCards({ overview, styles }: { overview: AnalyticsOverview; styles: StylePerformance[] }) {
-  const bestStyle = styles.length > 0
-    ? styles.reduce((best, s) => s.avgScore > best.avgScore ? s : best)
-    : null
+function AnalyticsOverviewCards({
+  overview,
+  styles,
+}: {
+  overview: AnalyticsOverview
+  styles: StylePerformance[]
+}) {
+  const bestStyle =
+    styles.length > 0
+      ? styles.reduce((best, s) => (s.avgScore > best.avgScore ? s : best))
+      : null
   const goalPercent = Math.round(
     (overview.monthlyGoalProgress / overview.monthlyGoal) * 100
   )
@@ -43,8 +56,10 @@ function AnalyticsOverviewCards({ overview, styles }: { overview: AnalyticsOverv
 
       <MetricCard
         label="Your best style"
-        value={bestStyle ? `${bestStyle.style} · S:${bestStyle.avgScore}` : "N/A"}
-        icon={IconTrophy}
+        value={
+          bestStyle ? `${bestStyle.style} · S:${bestStyle.avgScore}` : "N/A"
+        }
+        icon={IconPalette}
         color="text-chart-2"
         bg="bg-chart-2/10"
       />
@@ -52,7 +67,7 @@ function AnalyticsOverviewCards({ overview, styles }: { overview: AnalyticsOverv
       <MetricCard
         label="Monthly progress"
         value={`${overview.monthlyGoalProgress}/${overview.monthlyGoal}`}
-        icon={IconTarget}
+        icon={IconCalendarMonth}
         color="text-chart-3"
         bg="bg-chart-3/10"
         change={goalPercent}
@@ -79,7 +94,12 @@ function MetricCard({
   return (
     <Card>
       <CardContent className="flex items-center gap-3 p-3 lg:p-4">
-        <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", bg)}>
+        <div
+          className={cn(
+            "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
+            bg
+          )}
+        >
           <Icon className={cn("h-5 w-5", color)} />
         </div>
         <div className="min-w-0">
@@ -96,7 +116,8 @@ function MetricCard({
                     : "bg-chart-4/15 text-chart-4"
                 )}
               >
-                {change >= 0 ? "+" : ""}{change}%
+                {change >= 0 ? "+" : ""}
+                {change}%
               </Badge>
             )}
           </div>

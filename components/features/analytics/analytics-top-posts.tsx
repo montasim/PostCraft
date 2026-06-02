@@ -19,7 +19,8 @@ function AnalyticsTopPosts({ posts }: { posts: TopPerformingPost[] }) {
         </CardHeader>
         <CardContent>
           <p className="py-8 text-center text-sm text-muted-foreground">
-            No posts yet. Generate content to see top performers.
+            Data starts after your first post. Generate one and come back — your
+            best performer will show up here.
           </p>
         </CardContent>
       </Card>
@@ -54,11 +55,23 @@ function AnalyticsTopPosts({ posts }: { posts: TopPerformingPost[] }) {
                   <Badge variant="secondary" className="text-[10px]">
                     {post.style}
                   </Badge>
-                  <span className="text-[10px] text-muted-foreground">{post.date}</span>
+                  <span className="text-[10px] text-muted-foreground">
+                    {post.date}
+                  </span>
                 </div>
                 <div className="mt-1.5 flex gap-1.5">
-                  <ScorePill label="Score" short="S" value={post.score} color="score" />
-                  <ScorePill label="Engagement" short="E" value={post.engagement} color="engagement" />
+                  <ScorePill
+                    label="Score"
+                    short="S"
+                    value={post.score}
+                    color="score"
+                  />
+                  <ScorePill
+                    label="Engagement"
+                    short="E"
+                    value={post.engagement}
+                    color="engagement"
+                  />
                 </div>
               </div>
             </div>
