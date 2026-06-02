@@ -44,19 +44,19 @@ function BestPostHighlight({ entry, copied, onCopy }: BestPostHighlightProps) {
               label="Score"
               short="S"
               value={bestVariant.score}
-              color="chart-5"
+              color="score"
             />
             <ScorePill
               label="Engagement"
               short="E"
               value={bestVariant.engagement}
-              color="chart-2"
+              color="engagement"
             />
             <ScorePill
               label="Clarity"
               short="C"
               value={bestVariant.clarity}
-              color="chart-3"
+              color="clarity"
             />
           </div>
           <Button

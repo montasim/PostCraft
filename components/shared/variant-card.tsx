@@ -81,25 +81,25 @@ function VariantCard({
               label="Score"
               short="S"
               value={variant.score}
-              color="chart-5"
+              color="score"
             />
             <ScorePill
               label="Engagement"
               short="E"
               value={variant.engagement}
-              color="chart-2"
+              color="engagement"
             />
             <ScorePill
               label="Clarity"
               short="C"
               value={variant.clarity}
-              color="chart-3"
+              color="clarity"
             />
             <ScorePill
               label="Formatting"
               short="F"
               value={variant.formatting}
-              color="primary"
+              color="formatting"
             />
           </div>
         </div>

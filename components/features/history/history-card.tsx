@@ -78,7 +78,7 @@ function HistoryCard({ entry, expanded, onToggle }: HistoryCardProps) {
             label="Best score"
             short="S"
             value={bestVariant.score}
-            color="chart-5"
+            color="score"
           />
         </div>
       </Card>

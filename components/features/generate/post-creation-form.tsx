@@ -261,8 +261,8 @@ function PostCreationFormInner({
 
           {/* Topic Suggestions */}
           {topic.trim().length === 0 && (
-            <div className="space-y-1.5">
-              <p className="text-[10px] font-medium tracking-wider text-muted-foreground uppercase">
+            <div className="space-y-1.5 mt-4">
+              <p className="text-[10px] font-medium tracking-wider text-xs text-foreground uppercase">
                 {suggestionsLoading
                   ? "Loading trending topics..."
                   : topicSuggestions.length > 0

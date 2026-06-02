@@ -57,8 +57,8 @@ function AnalyticsTopPosts({ posts }: { posts: TopPerformingPost[] }) {
                   <span className="text-[10px] text-muted-foreground">{post.date}</span>
                 </div>
                 <div className="mt-1.5 flex gap-1.5">
-                  <ScorePill label="Score" short="S" value={post.score} color="chart-5" />
-                  <ScorePill label="Engagement" short="E" value={post.engagement} color="chart-2" />
+                  <ScorePill label="Score" short="S" value={post.score} color="score" />
+                  <ScorePill label="Engagement" short="E" value={post.engagement} color="engagement" />
                 </div>
               </div>
             </div>
