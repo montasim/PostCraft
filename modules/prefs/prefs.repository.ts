@@ -1,5 +1,9 @@
 import { PrefsModel } from "./prefs.model"
-import type { GenerationPrefs, TrendingPrefs } from "./prefs.schema"
+import type {
+  GenerationPrefs,
+  TrendingPrefs,
+  PreviewConfig,
+} from "./prefs.schema"
 
 export const prefsRepository = {
   async findByUserId(userId: string) {
@@ -22,6 +26,14 @@ export const prefsRepository = {
     return PrefsModel.findOneAndUpdate(
       { userId },
       { $set: { trending: data } },
+      { upsert: true, returnDocument: "after", setDefaultsOnInsert: true }
+    ).lean()
+  },
+
+  async upsertPreview(userId: string, data: PreviewConfig) {
+    return PrefsModel.findOneAndUpdate(
+      { userId },
+      { $set: { preview: data } },
       { upsert: true, returnDocument: "after", setDefaultsOnInsert: true }
     ).lean()
   },

@@ -1,5 +1,15 @@
 import { prefsRepository } from "./prefs.repository"
-import { generationPrefsSchema, trendingPrefsSchema, GENERATION_PREFS_DEFAULTS, TRENDING_PREFS_DEFAULTS, type GenerationPrefs, type TrendingPrefs } from "./prefs.schema"
+import {
+  generationPrefsSchema,
+  trendingPrefsSchema,
+  previewConfigSchema,
+  GENERATION_PREFS_DEFAULTS,
+  TRENDING_PREFS_DEFAULTS,
+  PREVIEW_CONFIG_DEFAULTS,
+  type GenerationPrefs,
+  type TrendingPrefs,
+  type PreviewConfig,
+} from "./prefs.schema"
 import { ValidationError } from "@/core/errors/app-error"
 import { inngest } from "@/core/queue/client"
 import { WORKSPACE_ID_PREFIX } from "@/lib/constants"
@@ -10,7 +20,10 @@ export const prefsService = {
     return doc?.generation ?? { ...GENERATION_PREFS_DEFAULTS }
   },
 
-  async saveGenerationPrefs(userId: string, data: unknown): Promise<GenerationPrefs> {
+  async saveGenerationPrefs(
+    userId: string,
+    data: unknown
+  ): Promise<GenerationPrefs> {
     const parsed = generationPrefsSchema.safeParse(data)
     if (!parsed.success) {
       const errors = parsed.error.issues.map((i) => i.message).join(", ")
@@ -26,7 +39,10 @@ export const prefsService = {
     return doc?.trending ?? { ...TRENDING_PREFS_DEFAULTS }
   },
 
-  async saveTrendingPrefs(userId: string, data: unknown): Promise<TrendingPrefs> {
+  async saveTrendingPrefs(
+    userId: string,
+    data: unknown
+  ): Promise<TrendingPrefs> {
     const parsed = trendingPrefsSchema.safeParse(data)
     if (!parsed.success) {
       const errors = parsed.error.issues.map((i) => i.message).join(", ")
@@ -45,5 +61,24 @@ export const prefsService = {
     })
 
     return updated.trending
+  },
+
+  async getPreviewConfig(userId: string): Promise<PreviewConfig> {
+    const doc = await prefsRepository.findByUserId(userId)
+    return doc?.preview ?? { ...PREVIEW_CONFIG_DEFAULTS }
+  },
+
+  async savePreviewConfig(
+    userId: string,
+    data: unknown
+  ): Promise<PreviewConfig> {
+    const parsed = previewConfigSchema.safeParse(data)
+    if (!parsed.success) {
+      const errors = parsed.error.issues.map((i) => i.message).join(", ")
+      throw new ValidationError(errors)
+    }
+
+    const updated = await prefsRepository.upsertPreview(userId, parsed.data)
+    return updated.preview
   },
 }

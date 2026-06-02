@@ -33,6 +33,16 @@ export const trendingPrefsSchema = z.object({
 
 export type TrendingPrefs = z.infer<typeof trendingPrefsSchema>
 
+export const previewConfigSchema = z.object({
+  enabledPlatforms: z.array(z.enum(["linkedin", "twitter", "facebook"])),
+})
+
+export type PreviewConfig = z.infer<typeof previewConfigSchema>
+
+export const PREVIEW_CONFIG_DEFAULTS: PreviewConfig = {
+  enabledPlatforms: [],
+}
+
 export const TRENDING_PREFS_DEFAULTS: TrendingPrefs = {
   enabled: false,
   platforms: [],

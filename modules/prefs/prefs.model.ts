@@ -23,10 +23,15 @@ export interface ITrendingPrefsDoc {
   scheduledDay: string | null
 }
 
+export interface IPreviewConfigDoc {
+  enabledPlatforms: string[]
+}
+
 export interface IPrefs extends Document {
   userId: string
   generation: IGenerationPrefsDoc
   trending: ITrendingPrefsDoc
+  preview: IPreviewConfigDoc
   createdAt: Date
   updatedAt: Date
 }
@@ -52,9 +57,20 @@ const trendingPrefsSubSchema = new mongoose.Schema<ITrendingPrefsDoc>(
     postsPerPlatform: { type: Number, default: 5 },
     topPostsForAI: { type: Number, default: 5 },
     postsToGenerate: { type: Number, default: 3 },
-    scheduleType: { type: String, enum: ["hourly", "daily", "weekly"], default: "daily" },
+    scheduleType: {
+      type: String,
+      enum: ["hourly", "daily", "weekly"],
+      default: "daily",
+    },
     scheduledTime: { type: String, default: "09:00" },
     scheduledDay: { type: String, default: null },
+  },
+  { _id: false }
+)
+
+const previewPrefsSubSchema = new mongoose.Schema<IPreviewConfigDoc>(
+  {
+    enabledPlatforms: { type: [String], default: [] },
   },
   { _id: false }
 )
@@ -64,6 +80,7 @@ const prefsSchema = new mongoose.Schema<IPrefs>(
     userId: { type: String, required: true, unique: true, index: true },
     generation: { type: generationPrefsSubSchema, default: () => ({}) },
     trending: { type: trendingPrefsSubSchema, default: () => ({}) },
+    preview: { type: previewPrefsSubSchema, default: () => ({}) },
   },
   { timestamps: true }
 )
