@@ -24,16 +24,34 @@ export const insightsRepository = {
             completed: {
               $sum: { $cond: [{ $eq: ["$status", "completed"] }, 1, 0] },
             },
+            totalPostsGenerated: {
+              $sum: {
+                $cond: [
+                  { $eq: ["$status", "completed"] },
+                  { $ifNull: ["$postCount", 3] },
+                  0,
+                ],
+              },
+            },
           },
         },
       ]),
     ])
 
-    const v = variantStats[0] ?? { totalPosts: 0, avgScore: 0, avgEngagement: 0 }
-    const g = generationStats[0] ?? { total: 0, completed: 0 }
+    const v = variantStats[0] ?? {
+      totalPosts: 0,
+      avgScore: 0,
+      avgEngagement: 0,
+    }
+    const g = generationStats[0] ?? {
+      total: 0,
+      completed: 0,
+      totalPostsGenerated: 0,
+    }
 
     return {
-      totalPosts: g.completed,
+      totalPosts: g.totalPostsGenerated,
+      totalPostsGenerated: g.totalPostsGenerated,
       avgScore: Math.round(v.avgScore ?? 0),
       avgEngagement: Math.round(v.avgEngagement ?? 0),
       successRate: g.total > 0 ? Math.round((g.completed / g.total) * 100) : 0,

@@ -66,7 +66,7 @@ export const runTrendingPipeline = inngest.createFunction(
     try {
       await connectDB()
       const overview = await insightsRepository.getOverview(workspaceId)
-      if (overview.completedGenerations >= PLAN_LIMIT) {
+      if ((overview.totalPostsGenerated ?? 0) >= PLAN_LIMIT) {
         await updateRunStatus(runId, RUN_STATUS.FAILED, "Quota exceeded")
         logger.info(
           { workspaceId, runId },
@@ -216,7 +216,7 @@ export const scheduledTrendingRunner = inngest.createFunction(
     const quotaCheck = await step.run("check-quota", async () => {
       await connectDB()
       const overview = await insightsRepository.getOverview(workspaceId)
-      return overview.completedGenerations < PLAN_LIMIT
+      return (overview.totalPostsGenerated ?? 0) < PLAN_LIMIT
     })
 
     if (quotaCheck) {

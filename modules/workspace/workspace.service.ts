@@ -43,9 +43,9 @@ export const workspaceService = {
     return {
       persona,
       usage: {
-        used: overview.totalPosts,
+        used: overview.totalPostsGenerated,
         limit: PLAN_LIMIT,
-        totalGenerated: overview.totalPosts,
+        totalGenerated: overview.totalPostsGenerated,
       },
     }
   },
