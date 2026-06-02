@@ -53,7 +53,7 @@ function PostVariantsCarousel({ variants, status, error, onRetry }: PostVariants
             Your next post is one idea away
           </h2>
         </div>
-        <div className="relative overflow-hidden rounded-xl border border-dashed border-border/60 bg-muted/20 px-6 py-10">
+        <div className="relative overflow-hidden rounded-xl border border-dashed border-border/60 bg-muted/20 px-4 py-10">
           <div className="flex flex-col items-center text-center">
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
               <IconSparkles className="h-7 w-7 text-primary/60" />
@@ -90,9 +90,9 @@ function PostVariantsCarousel({ variants, status, error, onRetry }: PostVariants
             {STATUS_HEADERS[status] ?? "Processing"}
           </h2>
         </div>
-        <div className="flex gap-4 overflow-hidden px-px py-5">
+        <div className="flex gap-4 overflow-hidden px-px py-4">
           {[1, 2, 3].map((i) => (
-            <Card key={i} className="w-[410px] shrink-0 space-y-4 p-5">
+            <Card key={i} className="w-[410px] shrink-0 space-y-4 p-4">
               <Skeleton className="h-6 w-20" />
               <Skeleton className="h-4 w-full" />
               <Skeleton className="h-4 w-3/4" />

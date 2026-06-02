@@ -220,7 +220,7 @@ function PostCreationFormInner({
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-5">
+      <CardContent className="space-y-4">
         {/* Topic Input Section */}
         <div className="space-y-2">
           <div className="relative">
@@ -377,7 +377,7 @@ function PostCreationFormInner({
         </div>
       </CardContent>
 
-      <CardFooter className="flex items-center justify-between border-t bg-muted/20 px-6 py-4">
+      <CardFooter className="flex items-center justify-between border-t bg-muted/20 px-4 py-4">
         <div className="flex items-center gap-2">
           <Switch
             checked={emoji}

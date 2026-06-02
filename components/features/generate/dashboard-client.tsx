@@ -236,8 +236,8 @@ function DashboardClient() {
   }, [])
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col gap-5 lg:flex-row">
+    <div className="space-y-4">
+      <div className="flex flex-col gap-4 lg:flex-row">
         <PostCreationForm
           onGenerate={handleGenerate}
           isSubmitting={status === "submitting"}
