@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import { IconCheck, IconX } from "@tabler/icons-react"
 
 interface ConfirmDialogProps {
   open: boolean
@@ -39,17 +40,25 @@ function ConfirmDialog({
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="outline" size="sm" onClick={() => onOpenChange(false)}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1.5"
+            onClick={() => onOpenChange(false)}
+          >
+            <IconX className="h-3.5 w-3.5" />
             {cancelLabel}
           </Button>
           <Button
             variant={variant === "destructive" ? "destructive" : "default"}
             size="sm"
+            className="gap-1.5"
             onClick={() => {
               onConfirm()
               onOpenChange(false)
             }}
           >
+            <IconCheck className="h-3.5 w-3.5" />
             {confirmLabel}
           </Button>
         </DialogFooter>

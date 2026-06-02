@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { IconSparkles, IconCrown } from "@tabler/icons-react"
+import { IconSparkles, IconCrown, IconCircleCheck } from "@tabler/icons-react"
 
 interface UpgradeModalProps {
   open: boolean
@@ -25,34 +25,37 @@ function UpgradeModal({ open, onOpenChange }: UpgradeModalProps) {
             <IconCrown className="h-6 w-6 text-chart-4" />
           </div>
           <DialogTitle className="text-lg">
-            You&apos;ve used all your free posts
+            You&apos;ve outgrown the free plan.
           </DialogTitle>
           <DialogDescription>
-            You&apos;ve generated 10 posts on the free plan. Upgrade to Pro for
-            unlimited generations, advanced guardrails, and priority AI models.
+            10 posts is a solid run. Go Pro for unlimited generations, priority
+            AI, and advanced guardrails.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-2 rounded-lg border bg-muted/30 p-3">
           <div className="flex items-center gap-2 text-sm">
-            <IconSparkles className="h-4 w-4 text-chart-4" />
-            <span>Unlimited post generations</span>
+            <IconCircleCheck className="h-4 w-4 text-emerald-500" />
+            <span>Unlimited posts</span>
           </div>
           <div className="flex items-center gap-2 text-sm">
-            <IconSparkles className="h-4 w-4 text-chart-4" />
+            <IconCircleCheck className="h-4 w-4 text-emerald-500" />
             <span>Advanced AI models & scoring</span>
           </div>
           <div className="flex items-center gap-2 text-sm">
-            <IconSparkles className="h-4 w-4 text-chart-4" />
-            <span>Priority queue & faster results</span>
+            <IconCircleCheck className="h-4 w-4 text-emerald-500" />
+            <span>Faster queue & priority AI</span>
           </div>
         </div>
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Maybe later
+            Remind me tomorrow
           </Button>
-          <Button className="bg-linear-to-br from-primary to-chart-2 text-primary-foreground" asChild>
+          <Button
+            className="bg-linear-to-br from-primary to-chart-2 text-primary-foreground"
+            asChild
+          >
             <a href="#" onClick={(e) => e.preventDefault()}>
               <IconCrown className="mr-1.5 h-4 w-4" />
               Upgrade to Pro
