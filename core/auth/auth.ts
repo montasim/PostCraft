@@ -44,18 +44,37 @@ function buildAuthConfig() {
           text: `Reset your LinkedIQ password: ${url}\n\nIf you didn't request this, you can safely ignore this email.`,
           html: buildEmailLayout(
             `
-            <h1 style="font-size:22px;font-weight:700;color:${EMAIL_BRAND.TEXT_HEX};margin:0 0 8px;">Reset your password</h1>
-            <p style="font-size:15px;color:${EMAIL_BRAND.TEXT_HEX};line-height:1.6;margin:0 0 16px;">
+            <h1 style="font-size:22px;font-weight:700;color:${EMAIL_BRAND.LIGHT.foreground};margin:0 0 8px;">Reset your password</h1>
+            <p style="font-size:15px;color:${EMAIL_BRAND.LIGHT.foreground};line-height:1.6;margin:0 0 16px;">
               Someone requested a password reset for your LinkedIQ account.
               Click the button below to set a new password.
             </p>
             ${buildEmailButton(url, EMAIL_BUTTON.RESET_PASSWORD)}
-            <p style="font-size:13px;color:${EMAIL_BRAND.MUTED_HEX};line-height:1.5;margin:16px 0 0;">
+            <p style="font-size:13px;color:${EMAIL_BRAND.LIGHT.mutedForeground};line-height:1.5;margin:16px 0 0;">
               If you didn't request this, you can safely ignore this email.
               Your password won't change until you click the link above.
             </p>
-            <p style="font-size:13px;color:${EMAIL_BRAND.MUTED_HEX};line-height:1.5;margin:4px 0 0;">
+            <p style="font-size:13px;color:${EMAIL_BRAND.LIGHT.mutedForeground};line-height:1.5;margin:4px 0 0;">
               This link expires in 1 hour for security reasons.
+            </p>
+          `,
+            env.APP_URL
+          ),
+        })
+      },
+      onPasswordReset: async ({ user }: { user: { email: string } }) => {
+        await sendEmail({
+          to: user.email,
+          subject: EMAIL_SUBJECT.PASSWORD_CHANGED,
+          text: "Your LinkedIQ password has been changed successfully. If you didn't make this change, please contact support immediately.",
+          html: buildEmailLayout(
+            `
+            <h1 style="font-size:22px;font-weight:700;color:${EMAIL_BRAND.LIGHT.foreground};margin:0 0 8px;">Password changed successfully</h1>
+            <p style="font-size:15px;color:${EMAIL_BRAND.LIGHT.foreground};line-height:1.6;margin:0 0 16px;">
+              Your LinkedIQ password has been changed. This change was made from your account settings.
+            </p>
+            <p style="font-size:13px;color:${EMAIL_BRAND.LIGHT.mutedForeground};line-height:1.5;margin:16px 0 0;">
+              If you didn't make this change, please contact support immediately and secure your account.
             </p>
           `,
             env.APP_URL
@@ -79,15 +98,15 @@ function buildAuthConfig() {
           text: `Welcome to LinkedIQ! Verify your email: ${url}\n\nThis link expires in 1 hour.`,
           html: buildEmailLayout(
             `
-            <h1 style="font-size:22px;font-weight:700;color:${EMAIL_BRAND.TEXT_HEX};margin:0 0 8px;">Welcome to LinkedIQ</h1>
-            <p style="font-size:15px;color:${EMAIL_BRAND.TEXT_HEX};line-height:1.6;margin:0 0 16px;">
+            <h1 style="font-size:22px;font-weight:700;color:${EMAIL_BRAND.LIGHT.foreground};margin:0 0 8px;">Welcome to LinkedIQ</h1>
+            <p style="font-size:15px;color:${EMAIL_BRAND.LIGHT.foreground};line-height:1.6;margin:0 0 16px;">
               You're one step away from creating AI-powered LinkedIn posts that build your professional brand.
             </p>
-            <p style="font-size:15px;color:${EMAIL_BRAND.TEXT_HEX};line-height:1.6;margin:0 0 20px;">
+            <p style="font-size:15px;color:${EMAIL_BRAND.LIGHT.foreground};line-height:1.6;margin:0 0 20px;">
               Click the button below to verify your email address and get started.
             </p>
             ${buildEmailButton(url, EMAIL_BUTTON.VERIFY_EMAIL)}
-            <p style="font-size:13px;color:${EMAIL_BRAND.MUTED_HEX};line-height:1.5;margin:16px 0 0;">
+            <p style="font-size:13px;color:${EMAIL_BRAND.LIGHT.mutedForeground};line-height:1.5;margin:16px 0 0;">
               This link expires in 1 hour. If you didn't create an account, you can ignore this email.
             </p>
           `,
