@@ -469,9 +469,9 @@ function GuardrailsContent() {
     totalCount > 0 ? Math.round((activeCount / totalCount) * 100) : 0
 
   return (
-    <div className="space-y-5">
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <div className="space-y-5">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="space-y-4">
           <RuleSection
             title="Tone rules"
             description="Shape how your voice sounds across every post"
@@ -503,7 +503,7 @@ function GuardrailsContent() {
             loading={loading}
           />
         </div>
-        <div className="space-y-5">
+        <div className="space-y-4">
           <BannedWordsCard
             rules={bannedRules}
             onToggle={handleToggle}

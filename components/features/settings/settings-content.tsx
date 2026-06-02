@@ -84,7 +84,7 @@ function NotificationSettingsCard({
           Choose how you want to be notified
         </p>
       </CardHeader>
-      <CardContent className="space-y-5">
+      <CardContent className="space-y-4">
         {items.map((item, i) => (
           <div key={item.key}>
             <div className="flex items-center justify-between">
@@ -129,7 +129,7 @@ function AccountSecurityCard({
           Manage your account security settings
         </p>
       </CardHeader>
-      <CardContent className="space-y-5">
+      <CardContent className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-start gap-2">
             <IconKey className="mt-0.5 h-3 w-3 text-muted-foreground" />
@@ -553,9 +553,9 @@ function SettingsContent() {
 
   if (loading || !data) {
     return (
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <div className="space-y-5">
-          <div className="rounded-xl border p-5">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="space-y-4">
+          <div className="rounded-xl border p-4">
             <div className="mb-4 flex items-center gap-2">
               <Skeleton className="h-5 w-5 rounded" />
               <Skeleton className="h-4 w-24" />
@@ -572,8 +572,8 @@ function SettingsContent() {
             ))}
           </div>
         </div>
-        <div className="space-y-5">
-          <div className="rounded-xl border p-5">
+        <div className="space-y-4">
+          <div className="rounded-xl border p-4">
             <div className="mb-4 flex items-center gap-2">
               <Skeleton className="h-5 w-5 rounded" />
               <Skeleton className="h-4 w-32" />
@@ -591,7 +591,7 @@ function SettingsContent() {
               ))}
             </div>
           </div>
-          <div className="rounded-xl border border-red-200 p-5">
+          <div className="rounded-xl border border-red-200 p-4">
             <div className="mb-4 flex items-center gap-2">
               <Skeleton className="h-5 w-5 rounded" />
               <Skeleton className="h-4 w-24" />
@@ -616,15 +616,15 @@ function SettingsContent() {
   }
 
   return (
-    <div className="space-y-5">
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <div className="space-y-5">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="space-y-4">
           <NotificationSettingsCard
             settings={data.notifications}
             onUpdate={handleNotificationUpdate}
           />
         </div>
-        <div className="space-y-5">
+        <div className="space-y-4">
           <AccountSecurityCard
             settings={data.account}
             onUpdate={handleAccountUpdate}

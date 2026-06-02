@@ -68,9 +68,9 @@ function AnalyticsContent() {
 
   if (loading) {
     return (
-      <div className="space-y-5">
+      <div className="space-y-4">
         {/* Overview metric cards */}
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5 lg:gap-5">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5 lg:gap-4">
           {Array.from({ length: 5 }).map((_, i) => (
             <div key={i} className="rounded-xl border">
               <div className="flex items-center gap-3 p-3 lg:p-4">
@@ -109,8 +109,8 @@ function AnalyticsContent() {
         </div>
 
         {/* Charts row 1 */}
-        <div className="grid grid-cols-1 gap-3 sm:gap-5 lg:grid-cols-2">
-          <div className="rounded-xl border p-5">
+        <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2">
+          <div className="rounded-xl border p-4">
             <div className="mb-4 flex items-center justify-between">
               <Skeleton className="h-4 w-32" />
               <div className="flex gap-3">
@@ -137,7 +137,7 @@ function AnalyticsContent() {
               </div>
             </div>
           </div>
-          <div className="rounded-xl border p-5">
+          <div className="rounded-xl border p-4">
             <Skeleton className="mb-4 h-4 w-32" />
             <div className="space-y-3">
               {Array.from({ length: 5 }).map((_, i) => (
@@ -154,8 +154,8 @@ function AnalyticsContent() {
         </div>
 
         {/* Charts row 2 */}
-        <div className="grid grid-cols-1 gap-3 sm:gap-5 lg:grid-cols-2">
-          <div className="rounded-xl border p-5">
+        <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2">
+          <div className="rounded-xl border p-4">
             <Skeleton className="mb-4 h-4 w-28" />
             <div className="space-y-4">
               {Array.from({ length: 4 }).map((_, i) => (
@@ -172,7 +172,7 @@ function AnalyticsContent() {
               ))}
             </div>
           </div>
-          <div className="rounded-xl border p-5">
+          <div className="rounded-xl border p-4">
             <Skeleton className="mb-4 h-4 w-24" />
             <div className="space-y-3">
               {Array.from({ length: 5 }).map((_, i) => (
@@ -195,17 +195,17 @@ function AnalyticsContent() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <AnalyticsOverviewCards
         overview={data.overview}
         styles={data.stylePerformance}
       />
       <AnalyticsHeader />
-      <div className="grid grid-cols-1 gap-3 sm:gap-5 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2">
         <AnalyticsTrendChart data={data.trendData} />
         <AnalyticsScoreDistribution data={data.scoreDistribution} />
       </div>
-      <div className="grid grid-cols-1 gap-3 sm:gap-5 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2">
         <AnalyticsStyleBreakdown data={data.stylePerformance} />
         <AnalyticsTopPosts posts={data.topPosts} />
       </div>

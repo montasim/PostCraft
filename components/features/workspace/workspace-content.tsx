@@ -157,7 +157,7 @@ function BrandPersonaCard({
           Define who you write for and how you sound
         </p>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-4">
         {editing ? (
           <>
             <div className="space-y-1.5">
@@ -449,10 +449,10 @@ function WorkspaceContent() {
 
   if (loading || !data) {
     return (
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <div className="space-y-5">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="space-y-4">
           <div className="rounded-xl border p-0">
-            <div className="space-y-1 border-b px-6 py-4">
+            <div className="space-y-1 border-b px-4 py-4">
               <div className="flex items-center gap-2">
                 <Skeleton className="h-4 w-4" />
                 <Skeleton className="h-4 w-24" />
@@ -461,7 +461,7 @@ function WorkspaceContent() {
               </div>
               <Skeleton className="h-3 w-52" />
             </div>
-            <div className="space-y-3 p-6">
+            <div className="space-y-4 p-4">
               {[
                 "Target audiences",
                 "Preferred tones",
@@ -482,9 +482,9 @@ function WorkspaceContent() {
             </div>
           </div>
         </div>
-        <div className="space-y-5">
+        <div className="space-y-4">
           <div className="rounded-xl border p-0">
-            <div className="space-y-1 border-b px-6 py-4">
+            <div className="space-y-1 border-b px-4 py-4">
               <div className="flex items-center gap-2">
                 <Skeleton className="h-4 w-4" />
                 <Skeleton className="h-4 w-20" />
@@ -492,7 +492,7 @@ function WorkspaceContent() {
               </div>
               <Skeleton className="h-3 w-52" />
             </div>
-            <div className="space-y-4 p-6">
+            <div className="space-y-4 p-4">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Skeleton className="h-3 w-28" />
@@ -511,14 +511,14 @@ function WorkspaceContent() {
             </div>
           </div>
           <div className="rounded-xl border p-0">
-            <div className="flex items-center justify-between border-b px-6 py-4">
+            <div className="flex items-center justify-between border-b px-4 py-4">
               <div className="flex items-center gap-2">
                 <Skeleton className="h-4 w-4" />
                 <Skeleton className="h-4 w-24" />
               </div>
               <Skeleton className="h-5 w-9 rounded-full" />
             </div>
-            <div className="p-6">
+            <div className="p-4">
               <Skeleton className="mb-3 h-3 w-full" />
               <Skeleton className="h-3 w-3/4" />
               <div className="mt-3 flex items-center gap-1.5">
@@ -535,11 +535,11 @@ function WorkspaceContent() {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-      <div className="space-y-5">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="space-y-4">
         <BrandPersonaCard persona={data.persona} onSave={handlePersonaSave} />
       </div>
-      <div className="space-y-5">
+      <div className="space-y-4">
         <UsagePlanCard used={data.usage.used} limit={data.usage.limit} />
         <TrendingToggleCard />
       </div>

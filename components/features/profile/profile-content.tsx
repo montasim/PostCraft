@@ -93,8 +93,8 @@ function ProfileHeaderCard({
           </Button>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="flex items-center gap-5">
+      <CardContent className="space-y-4">
+        <div className="flex items-center gap-4">
           <Avatar
             size="lg"
             className="!h-20 !w-20 sm:!h-24 sm:!w-24 lg:!h-32 lg:!w-32"
@@ -421,7 +421,7 @@ function ProfileContent() {
 
   if (loading || !profile || !stats) {
     return (
-      <div className="space-y-5">
+      <div className="space-y-4">
         <div className="flex items-center gap-4 rounded-lg border px-4 py-3">
           <div className="flex-1 space-y-1">
             <Skeleton className="h-3 w-36" />
@@ -429,9 +429,9 @@ function ProfileContent() {
           </div>
           <Skeleton className="h-2 w-32 rounded-full" />
         </div>
-        <div className="flex flex-col gap-5 lg:flex-row">
+        <div className="flex flex-col gap-4 lg:flex-row">
           <div className="w-full lg:w-[40%]">
-            <div className="h-full rounded-xl border p-5">
+            <div className="h-full rounded-xl border p-4">
               <div className="mb-4 flex items-center gap-2">
                 <Skeleton className="h-5 w-5 rounded" />
                 <Skeleton className="h-4 w-24" />
@@ -455,7 +455,7 @@ function ProfileContent() {
             </div>
           </div>
           <div className="w-full lg:w-[60%]">
-            <div className="h-full rounded-xl border p-5">
+            <div className="h-full rounded-xl border p-4">
               <div className="mb-4 flex items-center gap-2">
                 <Skeleton className="h-5 w-5 rounded" />
                 <Skeleton className="h-4 w-24" />
@@ -493,10 +493,10 @@ function ProfileContent() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <ProfileCompletionCard profile={profile} />
 
-      <div className="flex flex-col gap-5 lg:flex-row">
+      <div className="flex flex-col gap-4 lg:flex-row">
         <div className="w-full lg:w-[40%] [&_>div]:h-full">
           <ProfileHeaderCard profile={profile} onUpdate={handleUpdate} />
         </div>
