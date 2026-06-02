@@ -1,13 +1,9 @@
+import { THEME_COLORS } from "./colors"
+
 export const EMAIL_BRAND = {
   NAME: "LinkedIQ",
-  PRIMARY_HEX: "#7C3AED",
-  PRIMARY_LIGHT_HEX: "#EDE9FE",
-  TEXT_HEX: "#111827",
-  MUTED_HEX: "#6B7280",
-  BORDER_HEX: "#E5E7EB",
-  BG_HEX: "#FFFFFF",
-  SURFACE_HEX: "#F9FAFB",
-  SUCCESS_HEX: "#10B981",
+  LIGHT: THEME_COLORS.light,
+  DARK: THEME_COLORS.dark,
   FONT: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
   MAX_WIDTH: "600px",
 } as const
@@ -16,6 +12,7 @@ export const EMAIL_SUBJECT = {
   VERIFY: "Verify your LinkedIQ email",
   RESET_PASSWORD: "Reset your LinkedIQ password",
   OTP: "Your LinkedIQ verification code",
+  PASSWORD_CHANGED: "Your LinkedIQ password has been changed",
   TRENDING_COMPLETE: (count: number) =>
     `${count} trending posts ready — LinkedIQ`,
 } as const
