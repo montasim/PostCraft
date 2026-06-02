@@ -8,7 +8,7 @@ import { TrendingEmptyState } from "./trending-empty-state"
 import { TrendingSidebar } from "./trending-sidebar"
 import { TrendingSettingsPanel } from "./trending-settings-panel"
 import { TrendingVariant } from "./trending-run-group"
-import { EmptyState } from "@/components/shared"
+import { EmptyState, VariantCarousel } from "@/components/shared"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import type { SelectOption } from "@/components/shared/multi-select"
@@ -192,9 +192,9 @@ function TrendingShell() {
               <Skeleton className="h-7 w-20 rounded-md" />
             </div>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-px py-1 scrollbar-none [&::-webkit-scrollbar]:hidden">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="rounded-xl border p-4">
+              <div key={i} className="w-[85%] shrink-0 snap-start rounded-xl border p-4 sm:w-100">
                 <div className="mb-3 flex items-center gap-2">
                   <Skeleton className="h-5 w-5 rounded-full" />
                   <Skeleton className="h-3 flex-1" />
@@ -275,7 +275,7 @@ function TrendingShell() {
       <div
         className={cn(
           "flex-1 overflow-y-auto",
-          showSidebar && !isDesktop ? "hidden" : "block p-5"
+          showSidebar && !isDesktop ? "hidden" : "block md:p-5"
         )}
       >
         <div className="mb-12">
@@ -289,30 +289,21 @@ function TrendingShell() {
           />
         </div>
 
-        {!isDesktop && selectedRunId && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setSelectedRunId(null)}
-            className="mb-4 h-8 gap-1 text-xs"
-          >
-            <IconArrowLeft className="h-4 w-4" />
-            Back to runs
-          </Button>
-        )}
-
         {selectedRun && selectedRun.status === "failed" ? (
           <div className="flex flex-col items-center justify-center gap-4 py-20">
             <p className="text-sm text-red-600">Error: {selectedRun.error}</p>
           </div>
         ) : selectedGenerations.length > 0 ? (
-          <div className="space-y-5">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {selectedGenerations.map((gen) => (
-                <TrendingVariant key={gen.generationId} generation={gen} />
-              ))}
-            </div>
-          </div>
+          <VariantCarousel>
+            {selectedGenerations.map((gen) => (
+              <div
+                key={gen.generationId}
+                className="w-[85%] shrink-0 snap-start sm:w-100"
+              >
+                <TrendingVariant generation={gen} />
+              </div>
+            ))}
+          </VariantCarousel>
         ) : (
           <EmptyState
             variant="centered"

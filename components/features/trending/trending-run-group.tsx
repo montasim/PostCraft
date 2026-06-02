@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { VariantCarousel } from "@/components/shared"
 import {
   IconChevronDown,
   IconChevronRight,
@@ -167,11 +168,16 @@ function RunItem({
               Error: {run.error}
             </div>
           ) : (
-            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <VariantCarousel>
               {generations.map((gen) => (
-                <TrendingVariant key={gen.generationId} generation={gen} />
+                <div
+                  key={gen.generationId}
+                  className="w-[85%] shrink-0 snap-start sm:w-100"
+                >
+                  <TrendingVariant generation={gen} />
+                </div>
               ))}
-            </div>
+            </VariantCarousel>
           )}
         </div>
       )}

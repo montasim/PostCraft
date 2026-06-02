@@ -68,7 +68,7 @@ function TrendingHeader({
           Settings
         </Button>
       </div>
-      <p className="ml-auto text-xs text-muted-foreground">
+      <p className="text-xs text-muted-foreground">
         Next run: {formatSchedule()}
       </p>
     </div>
