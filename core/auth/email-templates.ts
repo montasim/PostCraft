@@ -1,15 +1,7 @@
 import { EMAIL_BRAND } from "@/lib/constants"
+import { getEnv } from "@/core/config/env"
 
-const {
-  PRIMARY_HEX,
-  TEXT_HEX,
-  MUTED_HEX,
-  BORDER_HEX,
-  BG_HEX,
-  SURFACE_HEX,
-  FONT,
-  MAX_WIDTH,
-} = EMAIL_BRAND
+const { LIGHT, DARK, FONT, MAX_WIDTH } = EMAIL_BRAND
 
 export function buildEmailLayout(content: string, appUrl: string): string {
   return `<!DOCTYPE html>
@@ -17,8 +9,8 @@ export function buildEmailLayout(content: string, appUrl: string): string {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="color-scheme" content="light" />
-  <meta name="supported-color-schemes" content="light" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="supported-color-schemes" content="light dark" />
   <style>
     @media only screen and (max-width: 480px) {
       .email-container { width: 100% !important; }
@@ -35,16 +27,27 @@ export function buildEmailLayout(content: string, appUrl: string): string {
       .email-container { width: 100% !important; }
       .email-padding { padding: 20px !important; }
     }
+    @media (prefers-color-scheme: dark) {
+      .email-body { background-color: ${DARK.surface} !important; }
+      .email-outer { background-color: ${DARK.surface} !important; }
+      .email-container { background-color: ${DARK.background} !important; }
+      .email-header { background-color: ${DARK.primary} !important; }
+      .email-footer { background-color: ${DARK.surface} !important; }
+      .email-footer-border { border-top-color: ${DARK.border} !important; }
+      .email-text { color: ${DARK.foreground} !important; }
+      .email-muted { color: ${DARK.mutedForeground} !important; }
+      .email-link { color: ${DARK.primary} !important; }
+    }
   </style>
 </head>
-<body style="margin:0;padding:0;background-color:${SURFACE_HEX};font-family:${FONT};-webkit-font-smoothing:antialiased;">
-  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:${SURFACE_HEX};min-width:100%;">
+<body class="email-body" style="margin:0;padding:0;background-color:${LIGHT.surface};font-family:${FONT};-webkit-font-smoothing:antialiased;">
+  <table class="email-outer" role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:${LIGHT.surface};min-width:100%;">
     <tr>
       <td align="center" style="padding:20px 10px;">
-        <table class="email-container" role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:${MAX_WIDTH};background-color:${BG_HEX};border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+        <table class="email-container" role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:${MAX_WIDTH};background-color:${LIGHT.background};border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
           <!-- Header -->
           <tr>
-            <td style="padding:0;border-radius:12px 12px 0 0;background-color:${PRIMARY_HEX};">
+            <td class="email-header" style="padding:0;border-radius:12px 12px 0 0;background-color:${LIGHT.primary};">
               <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                   <td align="center" style="padding:24px 20px 16px;">
@@ -64,13 +67,13 @@ export function buildEmailLayout(content: string, appUrl: string): string {
           </tr>
           <!-- Footer -->
           <tr>
-            <td style="padding:16px 32px;border-top:1px solid ${BORDER_HEX};background-color:${SURFACE_HEX};border-radius:0 0 12px 12px;">
+            <td class="email-footer" style="padding:16px 32px;border-top:1px solid ${LIGHT.border};background-color:${LIGHT.surface};border-radius:0 0 12px 12px;">
               <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
-                  <td align="center" style="font-size:12px;color:${MUTED_HEX};line-height:1.6;">
+                  <td align="center" style="font-size:12px;color:${LIGHT.mutedForeground};line-height:1.6;">
                     <p style="margin:0 0 4px;">Sent by LinkedIQ — AI-powered LinkedIn content</p>
                     <p style="margin:0;">
-                      <a href="${appUrl}" style="color:${PRIMARY_HEX};text-decoration:none;">${appUrl.replace(/^https?:\/\//, "")}</a>
+                      <a class="email-link" href="${appUrl}" style="color:${LIGHT.primary};text-decoration:none;">${appUrl.replace(/^https?:\/\//, "")}</a>
                     </p>
                   </td>
                 </tr>
@@ -81,7 +84,7 @@ export function buildEmailLayout(content: string, appUrl: string): string {
         <!-- Tiny spacer text for preview -->
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:${MAX_WIDTH};">
           <tr>
-            <td align="center" style="padding:12px 10px 0;font-size:11px;color:${MUTED_HEX};font-family:${FONT};">
+            <td align="center" style="padding:12px 10px 0;font-size:11px;color:${LIGHT.mutedForeground};font-family:${FONT};">
               ${new Date().getFullYear()} LinkedIQ. All rights reserved.
             </td>
           </tr>
@@ -99,9 +102,9 @@ export function buildEmailButton(href: string, text: string): string {
       <td align="center" style="padding:8px 0;">
         <table role="presentation" cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <td align="center" style="background-color:${PRIMARY_HEX};border-radius:8px;">
+            <td align="center" style="background-color:${LIGHT.primary};border-radius:8px;">
               <a class="email-button" href="${href}" target="_blank"
-                 style="display:inline-block;padding:12px 28px;background-color:${PRIMARY_HEX};color:#FFFFFF;text-decoration:none;border-radius:8px;font-size:14px;font-weight:600;line-height:1.4;white-space:nowrap;">
+                 style="display:inline-block;padding:12px 28px;background-color:${LIGHT.primary};color:#FFFFFF;text-decoration:none;border-radius:8px;font-size:14px;font-weight:600;line-height:1.4;white-space:nowrap;">
                 ${text}
               </a>
             </td>
@@ -115,14 +118,14 @@ export function buildEmailButton(href: string, text: string): string {
 export function buildEmailDivider(): string {
   return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:20px 0;">
     <tr>
-      <td style="height:1px;background-color:${BORDER_HEX};font-size:1px;line-height:1px;">&nbsp;</td>
+      <td style="height:1px;background-color:${LIGHT.border};font-size:1px;line-height:1px;">&nbsp;</td>
     </tr>
   </table>`
 }
 
 export const EMAIL_COMMON = {
-  textStyles: `font-size:15px;color:${TEXT_HEX};line-height:1.6;`,
-  mutedStyles: `font-size:13px;color:${MUTED_HEX};line-height:1.5;`,
-  headingStyles: `font-size:22px;font-weight:700;color:${TEXT_HEX};margin:0 0 8px;`,
-  bodyStyles: `font-size:15px;color:${TEXT_HEX};line-height:1.6;margin:0 0 16px;`,
+  textStyles: `font-size:15px;color:${LIGHT.foreground};line-height:1.6;`,
+  mutedStyles: `font-size:13px;color:${LIGHT.mutedForeground};line-height:1.5;`,
+  headingStyles: `font-size:22px;font-weight:700;color:${LIGHT.foreground};margin:0 0 8px;`,
+  bodyStyles: `font-size:15px;color:${LIGHT.foreground};line-height:1.6;margin:0 0 16px;`,
 }
