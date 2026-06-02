@@ -86,7 +86,7 @@ function HistoryContent() {
 
   if (loading) {
     return (
-      <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:-m-4 lg:flex-row">
+      <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden -m-4 lg:flex-row">
         <div className="hidden w-72 shrink-0 border-r border-sidebar-border bg-sidebar lg:flex lg:flex-col">
           <div className="p-4">
             <Skeleton className="h-9 w-full rounded-md" />
@@ -160,7 +160,7 @@ function HistoryContent() {
   const showList = !showDetail
 
   return (
-    <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:-m-4 lg:flex-row">
+    <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden -m-4 lg:flex-row">
       {/* Sidebar / List */}
       <div
         className={cn(
@@ -183,18 +183,6 @@ function HistoryContent() {
           showList && !isDesktop ? "hidden" : "block p-4"
         )}
       >
-        {!isDesktop && selectedId && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleBack}
-            className="mb-4 h-8 gap-1 text-xs"
-          >
-            <IconArrowLeft className="h-4 w-4" />
-            Back to history
-          </Button>
-        )}
-
         {detailLoading ? (
           <div className="space-y-4">
             <div className="flex flex-col gap-4 lg:flex-row">
