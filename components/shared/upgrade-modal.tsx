@@ -52,7 +52,7 @@ function UpgradeModal({ open, onOpenChange }: UpgradeModalProps) {
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Maybe later
           </Button>
-          <Button className="brand-gradient text-primary-foreground" asChild>
+          <Button className="bg-linear-to-br from-primary to-chart-2 text-primary-foreground" asChild>
             <a href="#" onClick={(e) => e.preventDefault()}>
               <IconCrown className="mr-1.5 h-4 w-4" />
               Upgrade to Pro

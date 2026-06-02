@@ -48,7 +48,7 @@ function VariantCard({
       )}
     >
       {isTop && (
-        <Badge className="absolute -top-3 left-6 grid-flow-col items-center gap-1 rounded-full px-2.5 py-1 text-[10px] leading-none font-bold tracking-wider text-primary-foreground uppercase shadow brand-gradient">
+        <Badge className="absolute -top-3 left-6 grid-flow-col items-center gap-1 rounded-full px-2.5 py-1 text-[10px] leading-none font-bold tracking-wider text-primary-foreground uppercase shadow bg-linear-to-br from-primary to-chart-2">
           <IconStar className="h-3 w-3 fill-current" />
           {badgeLabel}
         </Badge>
@@ -61,7 +61,7 @@ function VariantCard({
             headerIcon
               ? headerIconClassName
               : isTop
-                ? "text-primary-foreground brand-gradient"
+                ? "text-primary-foreground bg-linear-to-br from-primary to-chart-2"
                 : "bg-muted text-muted-foreground"
           )}
         >

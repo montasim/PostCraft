@@ -391,7 +391,7 @@ function PostCreationFormInner({
         <Button
           disabled={isDisabled}
           onClick={handleSubmit}
-          className="group gap-2 px-6 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-all brand-gradient hover:scale-[1.02] hover:shadow-primary/40 active:scale-[0.98]"
+          className="group gap-2 px-6 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-all bg-linear-to-br from-primary to-chart-2 hover:scale-[1.02] hover:shadow-primary/40 active:scale-[0.98]"
         >
           {isSubmitting ? (
             <IconLoader2 className="h-4 w-4 animate-spin" />

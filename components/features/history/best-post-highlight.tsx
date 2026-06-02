@@ -26,7 +26,7 @@ function BestPostHighlight({ entry, copied, onCopy }: BestPostHighlightProps) {
         "border-primary/40 ring-1 ring-primary/20"
       )}
     >
-      <Badge className="absolute -top-3 left-6 grid-flow-col items-center gap-1 rounded-full brand-gradient px-2.5 py-1 text-[10px] font-bold uppercase leading-none tracking-wider text-primary-foreground shadow">
+      <Badge className="absolute -top-3 left-6 grid-flow-col items-center gap-1 rounded-full bg-linear-to-br from-primary to-chart-2 px-2.5 py-1 text-[10px] font-bold uppercase leading-none tracking-wider text-primary-foreground shadow">
         <IconTrophy className="h-3 w-3 fill-current" />
         Your best post
       </Badge>

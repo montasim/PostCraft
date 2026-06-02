@@ -22,10 +22,10 @@ function Sidebar({ active, onSelect, used, limit, streakDays = 0, weeklyGoal = 5
   return (
     <aside className="hidden w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar md:flex">
       <div className="flex h-14 items-center gap-2 border-b border-sidebar-border px-4">
-        <div className="flex h-7 w-7 items-center justify-center rounded-lg brand-gradient">
+        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-linear-to-br from-primary to-chart-2">
           <IconSparkles className="h-4 w-4 text-primary-foreground" />
         </div>
-        <span className="brand-gradient-text text-base font-bold">LinkedIQ</span>
+        <span className="text-primary font-bold">LinkedIQ</span>
       </div>
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
         <NavGroup
