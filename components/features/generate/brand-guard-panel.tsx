@@ -6,7 +6,13 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
-import { IconCheck, IconSettings } from "@tabler/icons-react"
+import {
+  IconCheck,
+  IconSettings,
+  IconMessage,
+  IconRuler,
+  IconShield,
+} from "@tabler/icons-react"
 import { API } from "@/lib/constants"
 import Link from "next/link"
 
@@ -196,7 +202,10 @@ function BrandGuardPanel({
     <Card className="hidden max-h-[30.5rem] w-full shrink-0 md:flex md:w-[40%]">
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-sm font-semibold">
-          <div className="flex items-center gap-2">{title}</div>
+          <div className="flex items-center gap-2">
+            <IconShield className="h-4 w-4 text-primary" />
+            {title}
+          </div>
           {showButton && (
             <Button variant="ghost" size="icon" className="h-7 w-7" asChild>
               <Link href="/guardrails" title="Protect your brand">
@@ -221,15 +230,15 @@ function BrandGuardPanel({
             <RuleGroup
               label="Tone rules"
               rules={toneRules}
-              icon={IconCheck}
-              iconClass="text-green-500"
+              icon={IconMessage}
+              iconClass="text-blue-500"
               onExpand={(v) => updateExpanded("tone", v)}
             />
             <RuleGroup
               label="Format rules"
               rules={formatRules}
-              icon={IconCheck}
-              iconClass="text-green-500"
+              icon={IconRuler}
+              iconClass="text-orange-500"
               onExpand={(v) => updateExpanded("format", v)}
             />
 
@@ -244,8 +253,8 @@ function BrandGuardPanel({
 
             {guardrails.length === 0 && (
               <p className="text-xs text-muted-foreground">
-                Your brand voice is unprotected. Add rules to keep your content
-                on-point.
+                One stray post can confuse your audience. Set tone rules, format
+                rules, and banned words — in under 30 seconds.
               </p>
             )}
           </>

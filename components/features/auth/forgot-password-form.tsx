@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
+import { IconSend, IconArrowLeft } from "@tabler/icons-react"
 import { API } from "@/lib/constants"
 import Link from "next/link"
 
@@ -48,7 +49,11 @@ function ForgotPasswordForm() {
           </p>
         </CardContent>
         <CardFooter className="justify-center">
-          <Link href="/login" className="text-sm hover:underline">
+          <Link
+            href="/login"
+            className="inline-flex items-center gap-1 text-sm hover:underline"
+          >
+            <IconArrowLeft className="h-3 w-3" />
             Back to login
           </Link>
         </CardFooter>
@@ -78,7 +83,8 @@ function ForgotPasswordForm() {
               autoComplete="email"
             />
           </div>
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full gap-2" disabled={loading}>
+            <IconSend className="h-4 w-4" />
             {loading ? "Sending..." : "Send reset link"}
           </Button>
         </form>
@@ -86,8 +92,9 @@ function ForgotPasswordForm() {
       <CardFooter className="justify-center">
         <Link
           href="/login"
-          className="text-sm text-muted-foreground hover:underline"
+          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:underline"
         >
+          <IconArrowLeft className="h-3 w-3" />
           Back to login
         </Link>
       </CardFooter>

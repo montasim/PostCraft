@@ -37,10 +37,10 @@ type GenerationStatus =
 
 const POLL_INTERVAL = 2000
 const STATUS_LABELS: Record<string, string> = {
-  queued: "Queued for generation...",
-  generating: "AI is crafting your posts...",
-  scoring: "Evaluating quality...",
-  ranking: "Ranking variants...",
+  queued: "Your turn is coming...",
+  generating: "Writing your first variant...",
+  scoring: "Checking the score...",
+  ranking: "Picking the winner...",
 }
 
 function DashboardClient() {

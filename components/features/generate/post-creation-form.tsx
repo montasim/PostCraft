@@ -18,6 +18,7 @@ import { Separator } from "@/components/ui/separator"
 import { MultiSelect, type SelectOption } from "@/components/shared"
 import {
   IconTrendingUp,
+  IconPencil,
   IconSparkles,
   IconLoader2,
   IconMap,
@@ -211,7 +212,7 @@ function PostCreationFormInner({
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-            <IconTrendingUp className="h-4 w-4 text-primary" />
+            <IconPencil className="h-4 w-4 text-primary" />
             What&apos;s on your mind, {userName || "creator"}?
           </CardTitle>
           <Badge variant="secondary" className="text-[10px] font-medium">
@@ -233,7 +234,7 @@ function PostCreationFormInner({
               }}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              placeholder="Share the insight your audience is missing — what should they know?"
+              placeholder="What should your audience know? Drop your topic here."
               rows={6}
               className={`min-h-[140px] resize-none border-2 transition-colors duration-200 ${
                 isFocused ? "border-primary/40" : "border-border"
@@ -261,8 +262,8 @@ function PostCreationFormInner({
 
           {/* Topic Suggestions */}
           {topic.trim().length === 0 && (
-            <div className="space-y-1.5 mt-4">
-              <p className="text-[10px] font-medium tracking-wider text-xs text-foreground uppercase">
+            <div className="mt-4 space-y-1.5">
+              <p className="text-xs text-[10px] font-medium tracking-wider text-foreground uppercase">
                 {suggestionsLoading
                   ? "Loading trending topics..."
                   : topicSuggestions.length > 0
@@ -301,11 +302,9 @@ function PostCreationFormInner({
         {/* Configuration Section */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold text-foreground">
-              Shape your post
-            </p>
+            <p className="text-xs font-semibold text-foreground">Fine-tune</p>
             <p className="text-[10px] text-muted-foreground">
-              Or skip — defaults work great
+              Defaults are good enough
             </p>
           </div>
 
@@ -337,7 +336,7 @@ function PostCreationFormInner({
             <div className="space-y-1.5">
               <Label className="flex items-center gap-1 text-xs font-medium">
                 <IconUsers className="h-3 w-3 text-muted-foreground" />
-                Who is your audience?
+                Write for
               </Label>
               <MultiSelect
                 options={audienceOptions}
@@ -350,7 +349,7 @@ function PostCreationFormInner({
             <div className="space-y-1.5">
               <Label className="flex items-center gap-1 text-xs font-medium">
                 <IconMessageCircle className="h-3 w-3 text-muted-foreground" />
-                What vibe?
+                Tone
               </Label>
               <MultiSelect
                 options={toneOptions}
@@ -391,7 +390,7 @@ function PostCreationFormInner({
         <Button
           disabled={isDisabled}
           onClick={handleSubmit}
-          className="group gap-2 px-6 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-all bg-linear-to-br from-primary to-chart-2 hover:scale-[1.02] hover:shadow-primary/40 active:scale-[0.98]"
+          className="group gap-2 bg-linear-to-br from-primary to-chart-2 px-6 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:scale-[1.02] hover:shadow-primary/40 active:scale-[0.98]"
         >
           {isSubmitting ? (
             <IconLoader2 className="h-4 w-4 animate-spin" />
@@ -399,10 +398,10 @@ function PostCreationFormInner({
             <IconSparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
           )}
           {isSubmitting
-            ? "Crafting your voice..."
+            ? "Writing your posts..."
             : quotaExceeded
-              ? "Quota Exceeded"
-              : "Write My Post"}
+              ? "Upgrade to Continue"
+              : "Generate 3 Posts"}
         </Button>
       </CardFooter>
     </Card>
