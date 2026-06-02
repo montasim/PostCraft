@@ -55,7 +55,7 @@ function TrendingHeader({
             ) : (
               <IconPlayerPlay className="h-3.5 w-3.5" />
             )}
-            {quotaExceeded ? "Quota Exceeded" : "Run Now"}
+            {quotaExceeded ? "Quota Exceeded" : "Scan Now"}
           </Button>
         )}
         <Button

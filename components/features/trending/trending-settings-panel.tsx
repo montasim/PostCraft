@@ -11,15 +11,26 @@ import {
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Label } from "@/components/ui/label"
-import { MultiSelect, type SelectOption } from "@/components/shared/multi-select"
+import {
+  MultiSelect,
+  type SelectOption,
+} from "@/components/shared/multi-select"
 import { Switch } from "@/components/ui/switch"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  TooltipProvider,
+} from "@/components/ui/tooltip"
 import { TimePicker } from "@/components/shared/time-picker"
-import { IconInfoCircle } from "@tabler/icons-react"
+import { IconInfoCircle, IconDeviceFloppy } from "@tabler/icons-react"
 import { toast } from "sonner"
 import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
-import type { TrendingPlatform, ScheduleType } from "@/modules/trending/trending.types"
+import type {
+  TrendingPlatform,
+  ScheduleType,
+} from "@/modules/trending/trending.types"
 
 const PLATFORMS: {
   value: TrendingPlatform
@@ -53,7 +64,15 @@ const PLATFORMS: {
   },
 ]
 
-const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+const DAYS = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+]
 
 interface TrendingSettingsPanelProps {
   open: boolean
@@ -66,18 +85,36 @@ interface TrendingSettingsPanelProps {
   industryOptions?: SelectOption[]
 }
 
-function TrendingSettingsPanel({ open, prefs, onClose, onSave, audienceOptions, languageOptions, topicOptions, industryOptions }: TrendingSettingsPanelProps) {
-  const [platforms, setPlatforms] = useState<TrendingPlatform[]>(prefs.platforms as TrendingPlatform[])
+function TrendingSettingsPanel({
+  open,
+  prefs,
+  onClose,
+  onSave,
+  audienceOptions,
+  languageOptions,
+  topicOptions,
+  industryOptions,
+}: TrendingSettingsPanelProps) {
+  const [enabled, setEnabled] = useState(prefs.enabled)
+  const [platforms, setPlatforms] = useState<TrendingPlatform[]>(
+    prefs.platforms as TrendingPlatform[]
+  )
   const [topics, setTopics] = useState<string[]>(prefs.topics)
   const [industry, setIndustry] = useState<string[]>(prefs.industry)
   const [audience, setAudience] = useState<string[]>(prefs.targetAudience)
   const [language, setLanguage] = useState<string[]>(prefs.language)
-  const [postsPerPlatform, setPostsPerPlatform] = useState(prefs.postsPerPlatform)
+  const [postsPerPlatform, setPostsPerPlatform] = useState(
+    prefs.postsPerPlatform
+  )
   const [topPostsForAI, setTopPostsForAI] = useState(prefs.topPostsForAI)
   const [postsToGenerate, setPostsToGenerate] = useState(prefs.postsToGenerate)
-  const [scheduleType, setScheduleType] = useState<ScheduleType>(prefs.scheduleType as ScheduleType)
+  const [scheduleType, setScheduleType] = useState<ScheduleType>(
+    prefs.scheduleType as ScheduleType
+  )
   const [scheduledTime, setScheduledTime] = useState(prefs.scheduledTime)
-  const [scheduledDay, setScheduledDay] = useState<string | null>(prefs.scheduledDay)
+  const [scheduledDay, setScheduledDay] = useState<string | null>(
+    prefs.scheduledDay
+  )
 
   function togglePlatform(p: TrendingPlatform) {
     setPlatforms((prev) =>
@@ -92,7 +129,7 @@ function TrendingSettingsPanel({ open, prefs, onClose, onSave, audienceOptions, 
     }
 
     onSave({
-      enabled: true,
+      enabled,
       platforms,
       topics,
       industry,
@@ -110,16 +147,42 @@ function TrendingSettingsPanel({ open, prefs, onClose, onSave, audienceOptions, 
   return (
     <TooltipProvider delayDuration={200}>
       <Sheet open={open} onOpenChange={(v) => !v && onClose()}>
-        <SheetContent side="right" className="w-[480px] overflow-y-auto sm:w-[540px]">
+        <SheetContent
+          side="right"
+          className="w-[480px] overflow-y-auto sm:w-[540px]"
+        >
           <SheetHeader>
             <SheetTitle>Trending Settings</SheetTitle>
-            <SheetDescription>Configure how and when trending posts are generated.</SheetDescription>
+            <SheetDescription>
+              Configure how and when trending posts are generated.
+            </SheetDescription>
           </SheetHeader>
 
-          <div className="p-4 space-y-4">
+          <div className="space-y-4 p-4">
+            {/* Enable / Disable */}
+            <div className="flex items-center justify-between rounded-lg border bg-muted/20 px-3 py-2.5">
+              <div className="flex items-center gap-2">
+                <div
+                  className={`h-2 w-2 rounded-full transition-colors ${
+                    enabled ? "bg-emerald-500" : "bg-muted-foreground/40"
+                  }`}
+                />
+                <span className="text-xs font-medium">
+                  {enabled ? "Auto-scan is on" : "Auto-scan is off"}
+                </span>
+              </div>
+              <Switch
+                checked={enabled}
+                onCheckedChange={setEnabled}
+                className="data-[state=checked]:bg-chart-4"
+              />
+            </div>
+
             {/* Platforms */}
             <div>
-              <Label className="mb-2 block text-xs font-medium">Platforms</Label>
+              <Label className="mb-2 block text-xs font-medium">
+                Platforms
+              </Label>
               <div className="space-y-2">
                 {PLATFORMS.map((p) => (
                   <div key={p.value} className="flex items-center gap-3">
@@ -128,17 +191,25 @@ function TrendingSettingsPanel({ open, prefs, onClose, onSave, audienceOptions, 
                       onCheckedChange={() => togglePlatform(p.value)}
                       className="scale-90"
                     />
-                    <div className="flex-1 min-w-0">
+                    <div className="min-w-0 flex-1">
                       <span className="text-xs font-medium">{p.label}</span>
-                      <span className="ml-2 text-[11px] text-muted-foreground">{p.url}</span>
+                      <span className="ml-2 text-[11px] text-muted-foreground">
+                        {p.url}
+                      </span>
                     </div>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <button type="button" className="text-muted-foreground hover:text-foreground">
+                        <button
+                          type="button"
+                          className="text-muted-foreground hover:text-foreground"
+                        >
                           <IconInfoCircle className="h-3.5 w-3.5" />
                         </button>
                       </TooltipTrigger>
-                      <TooltipContent side="left" className="max-w-[280px] whitespace-pre-line text-xs">
+                      <TooltipContent
+                        side="left"
+                        className="max-w-[280px] text-xs whitespace-pre-line"
+                      >
                         {p.api}
                       </TooltipContent>
                     </Tooltip>
@@ -151,28 +222,59 @@ function TrendingSettingsPanel({ open, prefs, onClose, onSave, audienceOptions, 
 
             {/* Fetch Settings */}
             <div>
-              <Label className="mb-2 block text-xs font-medium">Fetch Settings</Label>
+              <Label className="mb-2 block text-xs font-medium">
+                Fetch Settings
+              </Label>
               <div className="space-y-3">
                 {[
-                  { label: "Posts per platform", value: postsPerPlatform, setter: setPostsPerPlatform, min: 1, max: 10 },
-                  { label: "Top posts for AI", value: topPostsForAI, setter: setTopPostsForAI, min: 1, max: 5 },
-                  { label: "Posts to generate", value: postsToGenerate, setter: setPostsToGenerate, min: 1, max: 3 },
+                  {
+                    label: "Posts per platform",
+                    value: postsPerPlatform,
+                    setter: setPostsPerPlatform,
+                    min: 1,
+                    max: 10,
+                  },
+                  {
+                    label: "Top posts for AI",
+                    value: topPostsForAI,
+                    setter: setTopPostsForAI,
+                    min: 1,
+                    max: 5,
+                  },
+                  {
+                    label: "Posts to generate",
+                    value: postsToGenerate,
+                    setter: setPostsToGenerate,
+                    min: 1,
+                    max: 3,
+                  },
                 ].map((field) => (
-                  <div key={field.label} className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">{field.label}</span>
+                  <div
+                    key={field.label}
+                    className="flex items-center justify-between"
+                  >
+                    <span className="text-xs text-muted-foreground">
+                      {field.label}
+                    </span>
                     <div className="flex items-center gap-2">
                       <Button
-                        variant='outline'
-                        size='sm'
-                        onClick={() => field.setter(Math.max(field.min, field.value - 1))}
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          field.setter(Math.max(field.min, field.value - 1))
+                        }
                       >
                         −
                       </Button>
-                      <span className="w-6 text-center text-xs font-medium">{field.value}</span>
+                      <span className="w-6 text-center text-xs font-medium">
+                        {field.value}
+                      </span>
                       <Button
-                        variant='outline'
-                        size='sm'
-                        onClick={() => field.setter(Math.min(field.max, field.value + 1))}
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          field.setter(Math.min(field.max, field.value + 1))
+                        }
                       >
                         +
                       </Button>
@@ -242,7 +344,11 @@ function TrendingSettingsPanel({ open, prefs, onClose, onSave, audienceOptions, 
             {/* Schedule */}
             <div>
               <Label className="mb-4 block text-xs font-medium">Schedule</Label>
-              <RadioGroup value={scheduleType} onValueChange={(v) => setScheduleType(v as ScheduleType)} className="flex gap-4">
+              <RadioGroup
+                value={scheduleType}
+                onValueChange={(v) => setScheduleType(v as ScheduleType)}
+                className="flex gap-4"
+              >
                 {(["hourly", "daily", "weekly"] as ScheduleType[]).map((s) => (
                   <label key={s} className="flex items-center gap-1.5 text-xs">
                     <RadioGroupItem value={s} />
@@ -255,7 +361,10 @@ function TrendingSettingsPanel({ open, prefs, onClose, onSave, audienceOptions, 
                 <div className="mt-3 space-y-3">
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground">Time</span>
-                    <TimePicker value={scheduledTime} onChange={setScheduledTime} />
+                    <TimePicker
+                      value={scheduledTime}
+                      onChange={setScheduledTime}
+                    />
                   </div>
 
                   {scheduleType === "weekly" && (
@@ -267,7 +376,9 @@ function TrendingSettingsPanel({ open, prefs, onClose, onSave, audienceOptions, 
                         className="h-8 rounded-md border border-input bg-transparent px-2 text-xs"
                       >
                         {DAYS.map((d) => (
-                          <option key={d} value={d}>{d}</option>
+                          <option key={d} value={d}>
+                            {d}
+                          </option>
                         ))}
                       </select>
                     </div>
@@ -280,10 +391,20 @@ function TrendingSettingsPanel({ open, prefs, onClose, onSave, audienceOptions, 
 
             {/* Actions */}
             <div className="flex justify-end gap-2 pb-4">
-              <Button variant="outline" size="sm" onClick={onClose} className="h-8 text-xs">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onClose}
+                className="h-8 text-xs"
+              >
                 Cancel
               </Button>
-              <Button size="sm" onClick={handleSave} className="h-8 text-xs">
+              <Button
+                size="sm"
+                onClick={handleSave}
+                className="h-8 gap-1.5 text-xs"
+              >
+                <IconDeviceFloppy className="h-3.5 w-3.5" />
                 Save Settings
               </Button>
             </div>

@@ -4,8 +4,11 @@ import { useState, useMemo } from "react"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { DatePicker } from "@/components/shared/date-picker"
-import { IconClock } from "@tabler/icons-react"
-import type { ITrendingRun, TrendingPlatform } from "@/modules/trending/trending.types"
+import { IconClock, IconFilterOff } from "@tabler/icons-react"
+import type {
+  ITrendingRun,
+  TrendingPlatform,
+} from "@/modules/trending/trending.types"
 
 const PLATFORM_ABBREV: Record<TrendingPlatform, string> = {
   hackernews: "HN",
@@ -28,8 +31,12 @@ interface DateGroup {
 function groupByDate(runs: ITrendingRun[]): DateGroup[] {
   const now = new Date()
   const today = now.toISOString().slice(0, 10)
-  const yesterday = new Date(now.getTime() - 86400000).toISOString().slice(0, 10)
-  const weekAgo = new Date(now.getTime() - 7 * 86400000).toISOString().slice(0, 10)
+  const yesterday = new Date(now.getTime() - 86400000)
+    .toISOString()
+    .slice(0, 10)
+  const weekAgo = new Date(now.getTime() - 7 * 86400000)
+    .toISOString()
+    .slice(0, 10)
 
   const groups: DateGroup[] = [
     { label: "Today", runs: [] },
@@ -81,7 +88,7 @@ function TrendingSidebar({ runs, selectedId, onSelect }: TrendingSidebarProps) {
   const groups = useMemo(() => groupByDate(filtered), [filtered])
 
   return (
-    <aside className="flex w-full shrink-0 flex-col mt-1">
+    <aside className="mt-1 flex w-full shrink-0 flex-col">
       <div className="mb-4 space-y-2">
         <div className="flex gap-2">
           <DatePicker
@@ -89,34 +96,49 @@ function TrendingSidebar({ runs, selectedId, onSelect }: TrendingSidebarProps) {
             onChange={setDateFrom}
             placeholder="From"
           />
-          <DatePicker
-            date={dateTo}
-            onChange={setDateTo}
-            placeholder="To"
-          />
+          <DatePicker date={dateTo} onChange={setDateTo} placeholder="To" />
         </div>
         {(dateFrom || dateTo) && (
           <button
-            onClick={() => { setDateFrom(undefined); setDateTo(undefined) }}
-            className="text-[10px] text-primary hover:underline"
+            onClick={() => {
+              setDateFrom(undefined)
+              setDateTo(undefined)
+            }}
+            className="inline-flex items-center gap-1 text-[10px] text-primary hover:underline"
           >
+            <IconFilterOff className="h-3 w-3" />
             Clear filter
           </button>
         )}
       </div>
 
-      <div className="flex-1 -mx-1 px-1">
+      <div className="-mx-1 flex-1 px-1">
         {groups.map((group) => (
           <div key={group.label} className="mb-4">
-            <p className="mb-1 px-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <p className="mb-1 px-2 text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
               {group.label}
             </p>
             {group.runs.map((run) => {
               const isSelected = run._id === selectedId
               const d = run.ranAt
-              const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+              const months = [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec",
+              ]
               const datetime = `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}, ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`
-              const platforms = run.configSnapshot.platforms.map((p) => PLATFORM_ABBREV[p]).join(" + ")
+              const platforms = run.configSnapshot.platforms
+                .map((p) => PLATFORM_ABBREV[p])
+                .join(" + ")
 
               return (
                 <button
@@ -127,19 +149,24 @@ function TrendingSidebar({ runs, selectedId, onSelect }: TrendingSidebarProps) {
                     isSelected ? "bg-primary/10" : "hover:bg-muted/50"
                   )}
                 >
-                  <div className="w-full flex justify-between gap-4">
+                  <div className="flex w-full justify-between gap-4">
                     <div className="flex items-center gap-2">
                       <IconClock className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                       <span className="text-xs font-medium">{datetime}</span>
                     </div>
-                    <span className="text-xs">{run.generationIds.length} posts</span>
+                    <span className="text-xs">
+                      {run.generationIds.length} posts
+                    </span>
                   </div>
 
-                  <div className="w-full mt-1.5 flex items-center gap-2 text-[10px] text-muted-foreground">
+                  <div className="mt-1.5 flex w-full items-center gap-2 text-[10px] text-muted-foreground">
                     <span className="text-muted-foreground/30">·</span>
                     <span>{platforms}</span>
                     <span className="text-muted-foreground/30">·</span>
-                    <Badge variant="secondary" className={cn("text-[10px]", STATUS_STYLES[run.status])}>
+                    <Badge
+                      variant="secondary"
+                      className={cn("text-[10px]", STATUS_STYLES[run.status])}
+                    >
                       {run.status}
                     </Badge>
                   </div>
@@ -149,7 +176,9 @@ function TrendingSidebar({ runs, selectedId, onSelect }: TrendingSidebarProps) {
           </div>
         ))}
         {filtered.length === 0 && (
-          <p className="py-8 text-center text-xs text-muted-foreground">No runs found</p>
+          <p className="py-8 text-center text-xs text-muted-foreground">
+            No runs found
+          </p>
         )}
       </div>
     </aside>

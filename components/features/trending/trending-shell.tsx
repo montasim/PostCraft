@@ -18,6 +18,7 @@ import type {
 } from "@/modules/trending/trending.types"
 import { type TrendingPrefs } from "@/modules/prefs/prefs.schema"
 import { IconArrowLeft, IconTrendingUp } from "@tabler/icons-react"
+import { QuotaAlert } from "@/components/shared/quota-alert"
 import { toast } from "sonner"
 import { API } from "@/lib/constants"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
@@ -117,7 +118,7 @@ function TrendingShell() {
       const result = await res.json()
       if (!result.success)
         throw new Error(result.error ?? "Failed to start run")
-      toast.success("Run started — posts will appear shortly")
+      toast.success("Scan started. Posts land in ~2 min.")
       setTimeout(loadTrending, 15_000)
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to start run")
@@ -136,7 +137,7 @@ function TrendingShell() {
       const result = await res.json()
       if (result.success && result.data) {
         dispatch(setTrendingPrefs(result.data))
-        toast.success("Settings saved")
+        toast.success("Saved.")
       }
     } catch {
       toast.error("Failed to save settings")
@@ -154,7 +155,7 @@ function TrendingShell() {
 
   if (isLoading) {
     return (
-      <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden -m-4 lg:flex-row">
+      <div className="-m-4 flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:flex-row">
         <div className="hidden w-72 shrink-0 border-r border-sidebar-border bg-sidebar lg:flex lg:flex-col">
           <div className="flex-1 p-4">
             <div className="mb-4 space-y-2">
@@ -192,9 +193,12 @@ function TrendingShell() {
               <Skeleton className="h-7 w-20 rounded-md" />
             </div>
           </div>
-          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-px py-1 scrollbar-none [&::-webkit-scrollbar]:hidden">
+          <div className="flex snap-x snap-mandatory scrollbar-none gap-4 overflow-x-auto px-px py-1 [&::-webkit-scrollbar]:hidden">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="w-[85%] shrink-0 snap-start rounded-xl border p-4 sm:w-100">
+              <div
+                key={i}
+                className="w-[85%] shrink-0 snap-start rounded-xl border p-4 sm:w-100"
+              >
                 <div className="mb-3 flex items-center gap-2">
                   <Skeleton className="h-5 w-5 rounded-full" />
                   <Skeleton className="h-3 flex-1" />
@@ -255,7 +259,7 @@ function TrendingShell() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden -m-4 lg:flex-row">
+    <div className="-m-4 flex h-[calc(100vh-3.5rem)] flex-col overflow-hidden lg:flex-row">
       <div
         className={cn(
           "shrink-0 border-r border-sidebar-border bg-sidebar",
@@ -278,6 +282,9 @@ function TrendingShell() {
           showSidebar && !isDesktop ? "hidden" : "block p-4"
         )}
       >
+        <div className="mb-4">
+          <QuotaAlert />
+        </div>
         <div className="mb-12">
           <TrendingHeader
             enabled={hasConfig}
