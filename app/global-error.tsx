@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { IconAlertTriangle, IconHome } from "@tabler/icons-react"
+import { IconAlertTriangle, IconHome, IconRefresh } from "@tabler/icons-react"
 import Link from "next/link"
 
 export default function GlobalError({
@@ -24,7 +24,13 @@ export default function GlobalError({
             </p>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" size="sm" onClick={reset}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-1.5"
+              onClick={reset}
+            >
+              <IconRefresh className="h-3.5 w-3.5" />
               Try again
             </Button>
             <Button size="sm" asChild>

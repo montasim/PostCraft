@@ -13,10 +13,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(getEnv().APP_URL),
   title: {
     template: "%s | LinkedIQ",
-    default: "LinkedIQ — Write LinkedIn Posts That Get Engagement",
+    default: "LinkedIQ — 3 AI Posts, One Idea",
   },
   description:
-    "Generate LinkedIn posts ranked by engagement score. Get 3 AI-written variants tailored to your brand voice, scored for clarity, engagement, and readability.",
+    "Drop a topic. Get 3 LinkedIn-ready variants ranked by engagement, clarity, and readability. Write better posts in half the time.",
   openGraph: {
     type: "website",
     locale: "en_US",
