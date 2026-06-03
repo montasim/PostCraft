@@ -5,5 +5,19 @@ dist/
 
 # only index src/, ignore everything else
 *
-!src/
-!src/**
+!app/
+!app/**
+!components/
+!components/**
+!core/
+!core/**
+!lib/
+!lib/**
+!hooks/
+!hooks/**
+!modules/
+!modules/**
+!store/
+!store/**
+!types/
+!types/**
