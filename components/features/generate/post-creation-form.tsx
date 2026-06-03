@@ -268,14 +268,19 @@ function PostCreationFormInner({
             />
             {/* Character progress bar */}
             <div className="absolute right-2 bottom-2 flex items-center gap-2">
-              <div className="h-1 w-16 overflow-hidden rounded-full bg-muted">
+              <Progress
+                value={progressPercent}
+                className="mt-2 h-1.5"
+                aria-label="Character limit progress"
+              >
                 <div
-                  className={`h-full rounded-full transition-all duration-300 ${
+                  className={cn(
+                    "h-full transition-all",
                     isOverWarning ? "bg-destructive" : "bg-primary"
-                  }`}
+                  )}
                   style={{ width: `${progressPercent}%` }}
                 />
-              </div>
+              </Progress>
               <span
                 className={`text-[10px] font-medium tabular-nums ${
                   isOverWarning ? "text-destructive" : "text-muted-foreground"

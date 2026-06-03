@@ -80,7 +80,7 @@ function LoginForm() {
               <Label htmlFor="password">Password</Label>
               <Link
                 href="/forgot-password"
-                className="text-xs text-muted-foreground hover:text-foreground"
+                className="text-xs text-muted-foreground underline hover:text-foreground"
               >
                 Forgot password?
               </Link>
@@ -122,13 +122,13 @@ function LoginForm() {
       <CardFooter className="flex flex-col space-y-4 text-center">
         <p className="text-sm text-muted-foreground">
           Don&apos;t have an account?{" "}
-          <Link href="/signup" className="text-foreground hover:underline">
+          <Link href="/signup" className="text-foreground underline hover:no-underline">
             Sign up
           </Link>
         </p>
         <p className="text-xs text-muted-foreground">
           By signing in, you agree to our{" "}
-          <Link href="/privacy" className="text-foreground hover:underline">
+          <Link href="/privacy" className="text-foreground underline hover:no-underline">
             Privacy Policy
           </Link>
           .

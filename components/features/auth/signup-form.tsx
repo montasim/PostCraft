@@ -130,13 +130,13 @@ function SignupForm() {
       <CardFooter className="flex flex-col space-y-4 text-center">
         <p className="text-sm text-muted-foreground">
           Already have an account?{" "}
-          <Link href="/login" className="text-foreground hover:underline">
+          <Link href="/login" className="text-foreground underline hover:no-underline">
             Sign in
           </Link>
         </p>
         <p className="text-xs text-muted-foreground">
           By signing up, you agree to our{" "}
-          <Link href="/privacy" className="text-foreground hover:underline">
+          <Link href="/privacy" className="text-foreground underline hover:no-underline">
             Privacy Policy
           </Link>
           .

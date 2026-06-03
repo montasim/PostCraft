@@ -95,7 +95,7 @@ function TrendingToggleCard() {
           </div>
         </CardTitle>
         <p className="text-xs text-muted-foreground">
-          Auto-generate LinkedIn posts from trending dev topics on a custom
+          Auto-generate social media posts from trending dev topics on a custom
           schedule.
         </p>
       </CardHeader>
@@ -547,7 +547,7 @@ function UsagePlanCard({ used, limit }: { used: number; limit: number }) {
               {remaining} remaining
             </span>
           </div>
-          <Progress value={percent} className="h-2" />
+          <Progress value={percent} className="h-2" aria-label="Usage quota progress" />
           {remaining <= 2 && remaining > 0 && (
             <p className="text-[10px] text-destructive">
               Only {remaining} left today

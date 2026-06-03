@@ -44,7 +44,7 @@ function StreakWidget({ streakDays, weeklyGoal, weeklyProgress, className }: Str
           </span>
           <span>{weeklyProgress}/{weeklyGoal}</span>
         </div>
-        <Progress value={percent} className="mt-1 h-1.5" />
+        <Progress value={percent} className="mt-1 h-1.5" aria-label="Weekly streak progress" />
       </div>
     </div>
   )

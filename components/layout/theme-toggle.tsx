@@ -27,6 +27,7 @@ function ThemeToggle() {
       size="icon"
       className="rounded-full border border-border"
       onClick={handleToggle}
+      aria-label="Toggle theme"
     >
       {resolvedTheme === "dark" ? (
         <IconSun className="h-4 w-4" />

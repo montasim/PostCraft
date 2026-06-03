@@ -155,6 +155,7 @@ function RuleSection({
                 size="icon"
                 className="h-6 w-6 text-muted-foreground hover:text-destructive"
                 onClick={() => onRemove(rule.id)}
+                aria-label={`Remove rule: ${rule.text}`}
               >
                 <IconX className="h-3.5 w-3.5" />
               </Button>
@@ -277,6 +278,7 @@ function BannedWordsCard({
               <button
                 onClick={() => onRemove(rule.id)}
                 className="ml-0.5 text-muted-foreground hover:text-destructive"
+                aria-label={`Remove banned word: ${rule.text}`}
               >
                 <IconX className="h-3 w-3" />
               </button>
@@ -585,7 +587,7 @@ function BrandGuardContent() {
                   {activeCount} of {totalCount} rules protecting your brand
                 </p>
               </div>
-              <Progress value={strengthPercent} className="h-2 w-24" />
+              <Progress value={strengthPercent} className="h-2 w-24" aria-label="Brand shield strength" />
             </div>
           </div>
         </div>

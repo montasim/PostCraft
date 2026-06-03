@@ -18,6 +18,7 @@ function PasswordInput(props: PasswordInputProps) {
         size="icon"
         className="absolute top-0 right-0 h-full px-3 text-muted-foreground hover:text-foreground"
         onClick={() => setVisible(!visible)}
+        aria-label={visible ? "Hide password" : "Show password"}
         tabIndex={-1}
       >
         {visible ? (

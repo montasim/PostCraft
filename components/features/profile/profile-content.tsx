@@ -390,7 +390,7 @@ function ProfileCompletionCard({ profile }: { profile: UserProfile }) {
             : "Your profile is complete. Your posts will reflect the real you."}
         </p>
       </div>
-      <Progress value={percent} className="h-2 w-32" />
+      <Progress value={percent} className="h-2 w-32" aria-label="Profile completion progress" />
     </div>
   )
 }
