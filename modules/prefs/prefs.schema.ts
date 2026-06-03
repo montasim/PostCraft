@@ -5,6 +5,9 @@ export const generationPrefsSchema = z.object({
   tones: z.array(z.string().min(1)).min(1),
   languages: z.array(z.string().min(1)).min(1),
   emoji: z.boolean(),
+  postCount: z.number().min(1).max(3).default(1),
+  hashtagCount: z.number().min(1).max(10).default(3),
+  platforms: z.array(z.string()).default([]),
 })
 
 export type GenerationPrefs = z.infer<typeof generationPrefsSchema>
@@ -14,6 +17,9 @@ export const GENERATION_PREFS_DEFAULTS: GenerationPrefs = {
   tones: ["Thought Leadership", "Storytelling"],
   languages: ["EN"],
   emoji: true,
+  postCount: 1,
+  hashtagCount: 3,
+  platforms: [],
 }
 
 export const trendingPrefsSchema = z.object({

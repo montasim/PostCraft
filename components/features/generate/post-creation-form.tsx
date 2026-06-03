@@ -122,9 +122,15 @@ function PostCreationFormInner({
       : (initialPrefs?.languages ?? ["EN"])
   )
   const [emoji, setEmoji] = useState(initialPrefs?.emoji ?? true)
-  const [postCount, setPostCount] = useState(POST_COUNT_DEFAULT)
-  const [hashtagCount, setHashtagCount] = useState(HASHTAG_COUNT_DEFAULT)
-  const [platforms, setPlatforms] = useState<string[]>([])
+  const [postCount, setPostCount] = useState(
+    initialPrefs?.postCount ?? POST_COUNT_DEFAULT
+  )
+  const [hashtagCount, setHashtagCount] = useState(
+    initialPrefs?.hashtagCount ?? HASHTAG_COUNT_DEFAULT
+  )
+  const [platforms, setPlatforms] = useState<string[]>(
+    initialPrefs?.platforms ?? []
+  )
   const [isFocused, setIsFocused] = useState(false)
   const [topicSuggestions, setTopicSuggestions] = useState<string[]>([])
   const [suggestionsLoading, setSuggestionsLoading] = useState(true)
@@ -142,6 +148,9 @@ function PostCreationFormInner({
     tones: string[]
     languages: string[]
     emoji: boolean
+    postCount: number
+    hashtagCount: number
+    platforms: string[]
   }) => {
     fetch(API.PREFS_GENERATION, {
       method: "PUT",
@@ -196,6 +205,9 @@ function PostCreationFormInner({
       tones: preset.tones,
       languages: preset.languages,
       emoji,
+      postCount,
+      hashtagCount,
+      platforms,
     }
     setAudience(next.audiences)
     setTones(next.tones)
@@ -209,22 +221,37 @@ function PostCreationFormInner({
 
   const handleAudienceChange = (val: string[]) => {
     setAudience(val)
-    savePrefs({ audiences: val, tones, languages, emoji })
+    savePrefs({ audiences: val, tones, languages, emoji, postCount, hashtagCount, platforms })
   }
 
   const handleTonesChange = (val: string[]) => {
     setTones(val)
-    savePrefs({ audiences: audience, tones: val, languages, emoji })
+    savePrefs({ audiences: audience, tones: val, languages, emoji, postCount, hashtagCount, platforms })
   }
 
   const handleLanguagesChange = (val: string[]) => {
     setLanguages(val)
-    savePrefs({ audiences: audience, tones, languages: val, emoji })
+    savePrefs({ audiences: audience, tones, languages: val, emoji, postCount, hashtagCount, platforms })
   }
 
   const handleEmojiChange = (val: boolean) => {
     setEmoji(val)
-    savePrefs({ audiences: audience, tones, languages, emoji: val })
+    savePrefs({ audiences: audience, tones, languages, emoji: val, postCount, hashtagCount, platforms })
+  }
+
+  const handlePostCountChange = (val: number) => {
+    setPostCount(val)
+    savePrefs({ audiences: audience, tones, languages, emoji, postCount: val, hashtagCount, platforms })
+  }
+
+  const handleHashtagCountChange = (val: number) => {
+    setHashtagCount(val)
+    savePrefs({ audiences: audience, tones, languages, emoji, postCount, hashtagCount: val, platforms })
+  }
+
+  const handlePlatformsChange = (val: string[]) => {
+    setPlatforms(val)
+    savePrefs({ audiences: audience, tones, languages, emoji, postCount, hashtagCount, platforms: val })
   }
 
   return (
@@ -321,9 +348,9 @@ function PostCreationFormInner({
         <Separator className="bg-border/60" />
 
         {/* Configuration Section */}
-        <div className="space-y-3">
+        <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold text-foreground">Fine-tune</p>
+            <p className="text-xs text-foreground">Fine-tune</p>
             <p className="text-[10px] text-muted-foreground">
               Defaults are good enough
             </p>
@@ -409,7 +436,7 @@ function PostCreationFormInner({
                 onChange={(e) => {
                   const v = parseInt(e.target.value, 10)
                   if (!isNaN(v))
-                    setPostCount(
+                    handlePostCountChange(
                       Math.max(POST_COUNT_MIN, Math.min(POST_COUNT_MAX, v))
                     )
                 }}
@@ -428,7 +455,7 @@ function PostCreationFormInner({
                 value={hashtagCount}
                 onChange={(e) => {
                   const v = parseInt(e.target.value, 10)
-                  if (!isNaN(v)) setHashtagCount(Math.max(1, Math.min(10, v)))
+                  if (!isNaN(v)) handleHashtagCountChange(Math.max(1, Math.min(10, v)))
                 }}
                 className="flex min-h-[44px] w-full rounded-lg border border-border/60 bg-transparent px-3 py-1 text-xs shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-primary focus-visible:outline-none"
               />
@@ -441,7 +468,7 @@ function PostCreationFormInner({
               <MultiSelect
                 options={platformOptions}
                 selected={platforms}
-                onChange={setPlatforms}
+                onChange={handlePlatformsChange}
                 placeholder="Select platforms..."
                 maxVisible={3}
               />

@@ -6,6 +6,9 @@ export interface IGenerationPrefsDoc {
   tones: string[]
   languages: string[]
   emoji: boolean
+  postCount: number
+  hashtagCount: number
+  platforms: string[]
 }
 
 export interface ITrendingPrefsDoc {
@@ -42,6 +45,9 @@ const generationPrefsSubSchema = new mongoose.Schema<IGenerationPrefsDoc>(
     tones: { type: [String], default: () => ["Thought leader", "Story"] },
     languages: { type: [String], default: () => ["EN"] },
     emoji: { type: Boolean, default: true },
+    postCount: { type: Number, default: 1 },
+    hashtagCount: { type: Number, default: 3 },
+    platforms: { type: [String], default: [] },
   },
   { _id: false }
 )
