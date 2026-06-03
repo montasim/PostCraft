@@ -1,0 +1,15 @@
+# PostCraft AI Documentation
+
+> PostCraft is an AI-powered social media post generator (supporting LinkedIn, Twitter, Facebook, etc.) that ranks variants by engagement, clarity, and readability.
+
+## Features
+- Generate 3 distinct post variants from a single topic
+- Intelligent hooks and formatting designed for your target platform (LinkedIn, Twitter, Facebook)
+- Personalized brand voice integration
+- Automated library saving
+
+## Endpoints
+- [Dashboard](/)
+- [Saved posts](/library)
+- [Trending topics](/trending)
+- [Brand configuration](/brand-voice)
