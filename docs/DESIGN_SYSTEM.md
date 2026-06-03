@@ -11,7 +11,7 @@
 
 | Attribute | Value |
 |-----------|-------|
-| **Product** | PostCraft — LinkedIn Content Intelligence SaaS |
+| **Product** | PostCraft — Social Media Content Intelligence SaaS |
 | **Purpose** | AI-powered post generation, scoring, and ranking |
 | **Target user** | Founders, creators, professionals building personal brand |
 | **Personality** | Authoritative yet approachable. Smart, fast, trustworthy |
@@ -512,7 +512,7 @@ Position the system as expert.
 "Heuristic 40% · Judge LLM 40% · Structure 20%"
 
 // Value proposition
-"Write LinkedIn posts that get engagement. AI generates, scores, and ranks your content in seconds."
+"Write social media posts that get engagement. AI generates, scores, and ranks your content in seconds."
 ```
 
 ### Endowment Effect

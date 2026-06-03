@@ -1,6 +1,6 @@
 # postcraft
 
-AI-powered LinkedIn post generator. Solo professionals create, refine, and schedule LinkedIn content using multiple AI providers. MVP stage, solo dev + Claude.
+AI-powered social media post generator. Solo professionals create, refine, and schedule social media content using multiple AI providers. MVP stage, solo dev + Claude.
 
 ## Stack
 

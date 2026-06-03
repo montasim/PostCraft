@@ -1,8 +1,8 @@
 # Final AI-Agent Implementation Plan (Production Grade)
 
-System: LinkedIn Content Intelligence SaaS (Text-Only, Free-Tier, Modular, SOLID-compliant)
+System: Social Media Content Intelligence SaaS (Text-Only, Free-Tier, Modular, SOLID-compliant)
 
-Goal: Build a daily-use system that reliably generates, evaluates, and ranks LinkedIn posts for personal growth, engagement, and client acquisition.
+Goal: Build a daily-use system that reliably generates, evaluates, and ranks social media posts for personal growth, engagement, and client acquisition.
 
 > **Migration Context:** The current codebase uses TanStack Start + Vite (React 19).
 > This requirements doc describes the target Next.js 15 App Router architecture.
@@ -513,7 +513,7 @@ User enters topic
 → system evaluates quality
 → system ranks outputs
 → user copies best post
-→ posts on LinkedIn
+→ posts on social media
 → system learns via usage tracking
 ```
 
@@ -547,4 +547,4 @@ QUEUE DRIVEN EXECUTION
 
 ---
 
-This is the complete AI-agent execution blueprint for building a production-grade LinkedIn intelligence SaaS with long-term scalability and daily real-world usage value.
+This is the complete AI-agent execution blueprint for building a production-grade social media intelligence SaaS with long-term scalability and daily real-world usage value.
