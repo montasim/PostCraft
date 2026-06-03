@@ -159,24 +159,6 @@ function TrendingSettingsPanel({
           </SheetHeader>
 
           <div className="space-y-4 p-4">
-            {/* Enable / Disable */}
-            <div className="flex items-center justify-between rounded-lg border bg-muted/20 px-3 py-2.5">
-              <div className="flex items-center gap-2">
-                <div
-                  className={`h-2 w-2 rounded-full transition-colors ${
-                    enabled ? "bg-emerald-500" : "bg-muted-foreground/40"
-                  }`}
-                />
-                <span className="text-xs font-medium">
-                  {enabled ? "Auto-scan is on" : "Auto-scan is off"}
-                </span>
-              </div>
-              <Switch
-                checked={enabled}
-                onCheckedChange={setEnabled}
-                className="data-[state=checked]:bg-chart-4"
-              />
-            </div>
 
             {/* Platforms */}
             <div>

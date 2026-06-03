@@ -17,7 +17,7 @@ import type {
   TrendingGenerationPreview,
 } from "@/modules/trending/trending.types"
 import { type TrendingPrefs } from "@/modules/prefs/prefs.schema"
-import { IconArrowLeft, IconTrendingUp } from "@tabler/icons-react"
+import { IconArrowLeft, IconTrendingUp, IconLoader2 } from "@tabler/icons-react"
 import { QuotaAlert } from "@/components/shared/quota-alert"
 import { toast } from "sonner"
 import { API } from "@/lib/constants"
@@ -132,7 +132,7 @@ function TrendingShell() {
       const res = await fetch(API.TRENDING_PREFS, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...newPrefs, enabled: true }),
+        body: JSON.stringify(newPrefs),
       })
       const result = await res.json()
       if (result.success && result.data) {
@@ -310,6 +310,26 @@ function TrendingShell() {
               </div>
             ))}
           </VariantCarousel>
+        ) : selectedRun?.status === "running" ? (
+          <EmptyState
+            variant="centered"
+            title="Scan in Progress"
+            description="We are currently scanning for trending topics and generating posts. Check back soon."
+            icon={<IconLoader2 className="h-10 w-10 animate-spin text-muted-foreground" />}
+          />
+        ) : selectedGenerations.length === 0 && selectedRun ? (
+          <EmptyState
+            variant="centered"
+            title={selectedRun.generationIds.length > 0 ? "Posts Unavailable" : "No Posts Generated"}
+            description={
+              selectedRun.generationIds.length > 0
+                ? "The posts generated during this scan are no longer available (they may have been deleted)."
+                : quotaExceeded 
+                  ? "This scan was skipped because your daily generation quota has been exceeded."
+                  : "This scan completed but no matching trending topics were found."
+            }
+            icon={<IconTrendingUp className="h-10 w-10 text-muted-foreground" />}
+          />
         ) : (
           <EmptyState
             variant="centered"
