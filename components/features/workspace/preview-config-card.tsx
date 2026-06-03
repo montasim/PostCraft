@@ -52,16 +52,16 @@ function PreviewConfigCard() {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <div className="flex items-center gap-2">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-sm font-semibold">
           <IconEye className="h-4 w-4 text-primary" />
-          <CardTitle className="text-sm">Post Previews</CardTitle>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-3">
+          Post Previews
+        </CardTitle>
         <p className="text-xs text-muted-foreground">
           Show platform preview buttons on generated posts.
         </p>
+      </CardHeader>
+      <CardContent className="space-y-3">
         {PLATFORMS.map((platform) => (
           <label
             key={platform.id}

@@ -102,7 +102,7 @@ function Sidebar({
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
         <NavGroup
           label="Main"
-          items={NAV_MAIN}
+          items={trendingPrefs?.enabled ? NAV_MAIN : NAV_MAIN.filter((item) => item.id !== "trending")}
           active={active}
           onSelect={onSelect}
           badges={{ trending: trendingCount }}
@@ -123,7 +123,7 @@ function Sidebar({
       <div className="space-y-4 p-4">
         {aiLimitError && <HighDemandCard />}
         <PlanQuotaCard used={used} limit={limit} />
-        {trendingPrefs && (
+        {trendingPrefs?.enabled && (
           <TrendingScheduleCard
             prefs={trendingPrefs}
             onSettingsClick={() => setSettingsPanelOpen(true)}

@@ -21,6 +21,7 @@ import {
 } from "@/store/slices/trending-prefs.slice"
 import { API } from "@/lib/constants"
 import { fetchProfile } from "@/store/slices/profile.slice"
+import { fetchPreviewPrefs } from "@/store/slices/preview-prefs.slice"
 
 const ROUTE_MAP: Record<string, string> = {
   generate: "/",
@@ -52,6 +53,7 @@ function AppShell({ children }: AppShellProps) {
     dispatch(fetchWorkspace())
     dispatch(fetchTrendingPrefs())
     dispatch(fetchProfile())
+    dispatch(fetchPreviewPrefs())
   }, [dispatch])
 
   const active =
@@ -103,6 +105,7 @@ function AppShell({ children }: AppShellProps) {
         onOpenChange={setMobileOpen}
         active={active}
         onSelect={handleSelect}
+        trendingPrefs={trendingPrefs ?? undefined}
       />
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header onMobileMenuOpen={() => setMobileOpen(true)} />

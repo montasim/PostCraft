@@ -21,7 +21,6 @@ import {
   IconPencil,
   IconSparkles,
   IconLoader2,
-  IconMap,
   IconUsers,
   IconMessageCircle,
   IconGlobe,
@@ -44,30 +43,9 @@ import {
 import type { GenerationPrefs } from "@/modules/prefs/prefs.schema"
 import { API } from "@/lib/constants"
 import { consumeRefineData, type RefineData } from "@/lib/refine-store"
+import { TopicSuggestions } from "./topic-suggestions"
+import { QuickPresets, type Preset } from "./quick-presets"
 
-const QUICK_PRESETS = [
-  {
-    label: "Founder Mode",
-    icon: IconMap,
-    audiences: ["Startup Founders"],
-    tones: ["Thought Leadership", "Storytelling"],
-    languages: ["EN"],
-  },
-  {
-    label: "Dev Rel",
-    icon: IconUsers,
-    audiences: ["Fellow Developers"],
-    tones: ["Educational", "Conversational"],
-    languages: ["EN"],
-  },
-  {
-    label: "Leadership",
-    icon: IconMessageCircle,
-    audiences: ["CTO / VP Engineering"],
-    tones: ["Thought Leadership", "Analytical"],
-    languages: ["EN"],
-  },
-]
 
 interface PostCreationFormProps {
   onGenerate: (data: {
@@ -199,7 +177,7 @@ function PostCreationFormInner({
     })
   }
 
-  const applyPreset = (preset: (typeof QUICK_PRESETS)[0]) => {
+  const applyPreset = (preset: Preset) => {
     const next = {
       audiences: preset.audiences,
       tones: preset.tones,
@@ -310,38 +288,11 @@ function PostCreationFormInner({
 
           {/* Topic Suggestions */}
           {topic.trim().length === 0 && (
-            <div className="mt-4 space-y-1.5">
-              <p className="text-xs text-[10px] font-medium tracking-wider text-foreground uppercase">
-                {suggestionsLoading
-                  ? "Loading trending topics..."
-                  : topicSuggestions.length > 0
-                    ? "Trending in tech right now — pick one to get started"
-                    : null}
-              </p>
-              {suggestionsLoading ? (
-                <div className="flex flex-wrap gap-1.5">
-                  {Array.from({ length: 6 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-7 w-40 animate-pulse rounded-md bg-muted/40"
-                    />
-                  ))}
-                </div>
-              ) : topicSuggestions.length > 0 ? (
-                <div className="flex flex-wrap gap-1.5">
-                  {topicSuggestions.map((suggestion) => (
-                    <button
-                      key={suggestion}
-                      onClick={() => applySuggestion(suggestion)}
-                      className="inline-flex items-center gap-1 rounded-md border border-border/60 bg-muted/40 px-2.5 py-1 text-xs text-muted-foreground transition-all hover:border-primary/30 hover:bg-primary/5 hover:text-primary"
-                    >
-                      <IconTrendingUp className="h-3 w-3 text-orange-500" />
-                      {suggestion}
-                    </button>
-                  ))}
-                </div>
-              ) : null}
-            </div>
+            <TopicSuggestions
+              loading={suggestionsLoading}
+              suggestions={topicSuggestions}
+              onSelect={applySuggestion}
+            />
           )}
         </div>
 
@@ -357,28 +308,11 @@ function PostCreationFormInner({
           </div>
 
           {/* Quick Presets */}
-          <div className="flex flex-wrap gap-2">
-            {QUICK_PRESETS.map((preset) => {
-              const Icon = preset.icon
-              const isActive =
-                preset.audiences.every((a) => audience.includes(a)) &&
-                preset.tones.every((t) => tones.includes(t))
-              return (
-                <button
-                  key={preset.label}
-                  onClick={() => applyPreset(preset)}
-                  className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-all ${
-                    isActive
-                      ? "border-primary/40 bg-primary/10 text-primary"
-                      : "border-border/60 bg-muted/30 text-muted-foreground hover:border-primary/20 hover:bg-primary/5 hover:text-foreground"
-                  }`}
-                >
-                  <Icon className="h-3.5 w-3.5" />
-                  {preset.label}
-                </button>
-              )
-            })}
-          </div>
+          <QuickPresets
+            currentAudience={audience}
+            currentTones={tones}
+            onSelect={applyPreset}
+          />
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div className="space-y-1.5">

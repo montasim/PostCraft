@@ -80,20 +80,22 @@ function TrendingToggleCard() {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <div className="flex items-center gap-2">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-sm font-semibold">
           <IconTrendingUp className="h-4 w-4 text-primary" />
-          <CardTitle className="text-sm">Trending Posts</CardTitle>
-        </div>
-        <Switch checked={enabled} onCheckedChange={handleToggle} />
-      </CardHeader>
-      <CardContent>
+          Trending Posts
+          <div className="ml-auto flex items-center">
+            <Switch checked={enabled} onCheckedChange={handleToggle} />
+          </div>
+        </CardTitle>
         <p className="text-xs text-muted-foreground">
           Auto-generate LinkedIn posts from trending dev topics on a custom
           schedule.
         </p>
-        {enabled && (
-          <div className="mt-3 flex items-center gap-1.5">
+      </CardHeader>
+      {enabled && (
+        <CardContent>
+          <div className="flex items-center gap-1.5">
             <IconCheck className="h-3.5 w-3.5 text-emerald-500" />
             <span className="text-xs text-muted-foreground">Enabled</span>
             <span className="text-xs text-muted-foreground">·</span>
@@ -105,8 +107,8 @@ function TrendingToggleCard() {
               <IconArrowRight className="h-3 w-3" />
             </Link>
           </div>
-        )}
-      </CardContent>
+        </CardContent>
+      )}
     </Card>
   )
 }

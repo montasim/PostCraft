@@ -15,6 +15,7 @@ interface MobileSidebarProps {
   onOpenChange: (open: boolean) => void
   active: string
   onSelect: (id: string) => void
+  trendingPrefs?: import("@/modules/prefs/prefs.schema").TrendingPrefs
 }
 
 function MobileSidebar({
@@ -22,6 +23,7 @@ function MobileSidebar({
   onOpenChange,
   active,
   onSelect,
+  trendingPrefs,
 }: MobileSidebarProps) {
   const handleSelect = (id: string) => {
     onSelect(id)
@@ -40,7 +42,7 @@ function MobileSidebar({
         <div className="flex-1 space-y-4 p-4">
           <NavGroup
             label="Main"
-            items={NAV_MAIN}
+            items={trendingPrefs?.enabled ? NAV_MAIN : NAV_MAIN.filter((item) => item.id !== "trending")}
             active={active}
             onSelect={handleSelect}
           />
