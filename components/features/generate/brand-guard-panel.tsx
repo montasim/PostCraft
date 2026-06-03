@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
@@ -27,6 +28,7 @@ interface BrandGuardPanelProps {
   showButton?: boolean
   title?: string
   guardrails?: GuardRule[]
+  className?: string
 }
 
 interface RuleGroupProps {
@@ -157,6 +159,7 @@ function BrandGuardPanel({
   showButton = true,
   title = "Brand Guard",
   guardrails: providedGuardrails,
+  className,
 }: BrandGuardPanelProps) {
   const [guardrails, setGuardrails] = useState<GuardRule[]>(
     providedGuardrails ?? []
@@ -167,6 +170,18 @@ function BrandGuardPanel({
     format: false,
     banned: false,
   })
+
+  const contentRef = useRef<HTMLDivElement>(null)
+  const [availableHeight, setAvailableHeight] = useState(0)
+
+  useEffect(() => {
+    if (!contentRef.current) return
+    const observer = new ResizeObserver((entries) => {
+      setAvailableHeight(entries[0].contentRect.height)
+    })
+    observer.observe(contentRef.current)
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     if (providedGuardrails) return
@@ -198,8 +213,30 @@ function BrandGuardPanel({
     setExpandedSections((prev) => ({ ...prev, [key]: expanded }))
   }
 
+  let maxTone = 5
+  let maxFormat = 3
+  let maxBanned = 5
+
+  if (availableHeight > 0) {
+    const activeGroups =
+      [toneRules.length > 0, formatRules.length > 0, bannedWords.length > 0].filter(Boolean).length || 1
+    const totalHeadersHeight = activeGroups * 24
+    const totalGapHeight = (activeGroups - 1) * 16
+    const extraPadding = 32
+
+    const remainingHeight = Math.max(
+      0,
+      availableHeight - totalHeadersHeight - totalGapHeight - extraPadding
+    )
+    const heightPerGroup = remainingHeight / activeGroups
+
+    maxTone = Math.max(1, Math.floor(heightPerGroup / 32))
+    maxFormat = Math.max(1, Math.floor(heightPerGroup / 32))
+    maxBanned = Math.max(3, Math.floor(heightPerGroup / 28) * 3)
+  }
+
   return (
-    <Card className="hidden max-h-[30.5rem] w-full shrink-0 md:flex md:w-[40%]">
+    <Card className={cn("hidden max-h-[30.5rem] w-full shrink-0 md:flex md:w-[40%]", className)}>
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-sm font-semibold">
           <div className="flex items-center gap-2">
@@ -215,7 +252,7 @@ function BrandGuardPanel({
           )}
         </CardTitle>
       </CardHeader>
-      <CardContent className="min-h-0 flex-1 space-y-4 overflow-y-auto">
+      <CardContent ref={contentRef} className="min-h-0 flex-1 space-y-4 overflow-y-auto">
         {loading ? (
           <div className="space-y-3">
             <Skeleton className="h-4 w-full" />
@@ -232,6 +269,7 @@ function BrandGuardPanel({
               rules={toneRules}
               icon={IconMessage}
               iconClass="text-blue-500"
+              maxVisible={maxTone}
               onExpand={(v) => updateExpanded("tone", v)}
             />
             <RuleGroup
@@ -239,6 +277,7 @@ function BrandGuardPanel({
               rules={formatRules}
               icon={IconRuler}
               iconClass="text-orange-500"
+              maxVisible={maxFormat}
               onExpand={(v) => updateExpanded("format", v)}
             />
 
@@ -248,6 +287,7 @@ function BrandGuardPanel({
             <BannedWordsGroup
               label="Banned words"
               rules={bannedWords}
+              maxVisible={maxBanned}
               onExpand={(v) => updateExpanded("banned", v)}
             />
 

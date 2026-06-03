@@ -246,20 +246,26 @@ function DashboardClient() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-4 lg:flex-row">
-        <PostCreationForm
-          onGenerate={handleGenerate}
-          isSubmitting={status === "submitting"}
-          quotaExceeded={quotaExceeded}
-          userName={userName}
-          initialPrefs={generationPrefs}
-          initialRefine={refineData}
-          audienceOptions={personaOptions.audiences}
-          toneOptions={personaOptions.tones}
-          languageOptions={personaOptions.languages}
-          platformOptions={personaOptions.platforms}
-        />
-        <BrandGuardPanel />
+      <div className="flex flex-col items-stretch gap-4 lg:flex-row">
+        <div className="min-w-0 flex-1">
+          <PostCreationForm
+            onGenerate={handleGenerate}
+            isSubmitting={status === "submitting"}
+            quotaExceeded={quotaExceeded}
+            userName={userName}
+            initialPrefs={generationPrefs}
+            initialRefine={refineData}
+            audienceOptions={personaOptions.audiences}
+            toneOptions={personaOptions.tones}
+            languageOptions={personaOptions.languages}
+            platformOptions={personaOptions.platforms}
+          />
+        </div>
+        <div className="relative hidden w-[40%] shrink-0 lg:block">
+          <div className="absolute inset-0">
+            <BrandGuardPanel className="flex h-full max-h-none w-full flex-col md:w-full" />
+          </div>
+        </div>
       </div>
       <PostVariantsCarousel
         variants={variants}
