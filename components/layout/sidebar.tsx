@@ -6,19 +6,17 @@ import {
   PlanQuotaCard,
   StreakWidget,
   MotivationTip,
+  HighDemandCard,
+  TrendingScheduleCard,
 } from "@/components/shared"
 import { TrendingSettingsPanel } from "@/components/features/trending/trending-settings-panel"
 import { Button } from "@/components/ui/button"
 import { IconSparkles, IconClock, IconSettings } from "@tabler/icons-react"
 import { NAV_MAIN, NAV_CONFIG, NAV_ACCOUNT, API } from "@/lib/constants"
-import {
-  computeNextRunAt,
-  formatNextRun,
-} from "@/modules/trending/trending-schedule"
 import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { setTrendingPrefs } from "@/store/slices/trending-prefs.slice"
-import { selectPersona } from "@/store/slices/workspace.slice"
+import { selectPersona, selectAiLimitError } from "@/store/slices/workspace.slice"
 import { toast } from "sonner"
 import type { SelectOption } from "@/components/shared/multi-select"
 
@@ -47,6 +45,7 @@ function Sidebar({
 }: SidebarProps) {
   const dispatch = useAppDispatch()
   const persona = useAppSelector(selectPersona)
+  const aiLimitError = useAppSelector(selectAiLimitError)
   const [settingsPanelOpen, setSettingsPanelOpen] = useState(false)
 
   const personaOptions: {
@@ -122,36 +121,13 @@ function Sidebar({
         />
       </div>
       <div className="space-y-4 p-4">
+        {aiLimitError && <HighDemandCard />}
         <PlanQuotaCard used={used} limit={limit} />
         {trendingPrefs && (
-          <div className="rounded-lg border border-chart-4/20 bg-chart-4/5 px-3 py-2.5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5 text-xs font-medium text-chart-4">
-                <IconClock className="h-3.5 w-3.5" />
-                Trending
-              </div>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="h-5 w-5 text-chart-4/70 hover:text-chart-4"
-                onClick={() => setSettingsPanelOpen(true)}
-                aria-label="Trending settings"
-              >
-                <IconSettings className="h-3.5 w-3.5" />
-              </Button>
-            </div>
-            <p className="mt-1 text-[11px] text-chart-4/60">
-              Next run:{" "}
-              {formatNextRun(
-                computeNextRunAt({
-                  scheduleType: trendingPrefs.scheduleType,
-                  scheduledTime: trendingPrefs.scheduledTime,
-                  scheduledDay: trendingPrefs.scheduledDay,
-                })
-              )}
-            </p>
-          </div>
+          <TrendingScheduleCard
+            prefs={trendingPrefs}
+            onSettingsClick={() => setSettingsPanelOpen(true)}
+          />
         )}
       </div>
 

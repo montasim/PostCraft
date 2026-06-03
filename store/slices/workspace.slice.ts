@@ -15,12 +15,14 @@ interface WorkspaceState {
   data: WorkspaceData | null
   status: "idle" | "loading" | "succeeded" | "failed"
   error: string | null
+  aiLimitError: string | null
 }
 
 const initialState: WorkspaceState = {
   data: null,
   status: "idle",
   error: null,
+  aiLimitError: null,
 }
 
 export const fetchWorkspace = createAsyncThunk(
@@ -44,6 +46,9 @@ const workspaceSlice = createSlice({
     resetWorkspace() {
       return initialState
     },
+    setAiLimitError(state, action: PayloadAction<string | null>) {
+      state.aiLimitError = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -62,7 +67,7 @@ const workspaceSlice = createSlice({
   },
 })
 
-export const { updateWorkspace, resetWorkspace } = workspaceSlice.actions
+export const { updateWorkspace, resetWorkspace, setAiLimitError } = workspaceSlice.actions
 export default workspaceSlice.reducer
 
 // Selectors
@@ -80,3 +85,5 @@ export const selectQuotaExceeded = (state: { workspace: WorkspaceState }) => {
   const d = state.workspace.data
   return d ? d.usage.used >= d.usage.limit : false
 }
+export const selectAiLimitError = (state: { workspace: WorkspaceState }) =>
+  state.workspace.aiLimitError

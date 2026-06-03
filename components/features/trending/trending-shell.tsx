@@ -8,7 +8,7 @@ import { TrendingEmptyState } from "./trending-empty-state"
 import { TrendingSidebar } from "./trending-sidebar"
 import { TrendingSettingsPanel } from "./trending-settings-panel"
 import { TrendingVariant } from "./trending-run-group"
-import { EmptyState, VariantCarousel } from "@/components/shared"
+import { EmptyState, VariantCarousel, HighTrafficAlert } from "@/components/shared"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import type { SelectOption } from "@/components/shared/multi-select"
@@ -282,9 +282,8 @@ function TrendingShell() {
           showSidebar && !isDesktop ? "hidden" : "block p-4"
         )}
       >
-        <div className="mb-4">
-          <QuotaAlert />
-        </div>
+        <HighTrafficAlert />
+        <QuotaAlert />
         <div className="mb-12">
           <TrendingHeader
             enabled={hasConfig}

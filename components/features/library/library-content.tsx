@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { LibrarySidebar } from "@/components/features/library/library-sidebar"
 import { LibraryDetail } from "@/components/features/library/library-detail"
-import { EmptyState } from "@/components/shared"
+import { EmptyState, HighTrafficAlert } from "@/components/shared"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "sonner"
@@ -186,9 +186,8 @@ function LibraryContent() {
           showList && !isDesktop ? "hidden" : "block p-4"
         )}
       >
-        <div className="mb-4">
-          <QuotaAlert />
-        </div>
+        <HighTrafficAlert />
+        <QuotaAlert />
         {detailLoading ? (
           <div className="space-y-4">
             <div className="flex flex-col gap-4 lg:flex-row">

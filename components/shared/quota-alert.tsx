@@ -13,7 +13,7 @@ function QuotaAlert() {
   if (!quotaExceeded || dismissed) return null
 
   return (
-    <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800 dark:border-amber-800/40 dark:bg-amber-950/30 dark:text-amber-300">
+    <div className="mb-4 flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800 dark:border-amber-800/40 dark:bg-amber-950/30 dark:text-amber-300">
       <IconAlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
       <p className="flex-1">
         You&apos;ve hit your daily limit of 3 posts. Resets at UTC midnight —
