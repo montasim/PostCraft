@@ -1,4 +1,4 @@
-import { buildGenerationPrompt } from "./prompt-builder"
+import { buildPromptPayload } from "./prompt-builder"
 import {
   aiGenerationOutputSchema,
   resolveLanguage,
@@ -35,6 +35,7 @@ import {
   PROMPT_INJECTION_PATTERNS,
   PROFANITY_PATTERNS,
   HATE_SPEECH_PATTERNS,
+  PARAGRAPH_SPLIT,
 } from "@/lib/constants"
 
 interface GenerationData {
@@ -88,6 +89,63 @@ function safeJsonParse(text: string): unknown {
     }
     throw new SyntaxError("Unexpected end of JSON input")
   }
+}
+
+// ─── Variant Repair ──────────────────────────────────────────
+
+/**
+ * Attempt to fill empty hook/body/cta by splitting content from
+ * neighboring fields. LinkedIn posts are paragraph-structured, so
+ * PARAGRAPH_SPLIT (\n\n) is the natural boundary.
+ */
+function repairVariant(v: RawVariant): RawVariant {
+  const hook = v.hook?.trim() ?? ""
+  const body = v.body?.trim() ?? ""
+  const cta = v.cta?.trim() ?? ""
+
+  // All present — nothing to repair
+  if (hook && body && cta) return v
+
+  const repaired = { ...v, hook, body, cta }
+
+  // hook empty → split first paragraph from body
+  if (!repaired.hook && repaired.body) {
+    const parts = repaired.body.split(PARAGRAPH_SPLIT)
+    if (parts.length > 1) {
+      repaired.hook = parts[0]
+      repaired.body = parts.slice(1).join("\n\n")
+    } else {
+      // Single paragraph — split by first sentence end
+      const idx = repaired.body.search(/[.!?]\s/)
+      if (idx > 0) {
+        repaired.hook = repaired.body.slice(0, idx + 1)
+        repaired.body = repaired.body.slice(idx + 1).trim()
+      }
+    }
+  }
+
+  // cta empty → split last paragraph from body
+  if (!repaired.cta && repaired.body) {
+    const parts = repaired.body.split(PARAGRAPH_SPLIT)
+    if (parts.length > 1) {
+      repaired.cta = parts[parts.length - 1]
+      repaired.body = parts.slice(0, -1).join("\n\n")
+    } else {
+      // Single paragraph — split by last sentence end
+      const idx = repaired.body.lastIndexOf(".")
+      if (idx > 0 && idx < repaired.body.length - 1) {
+        repaired.cta = repaired.body.slice(idx + 1).trim()
+        repaired.body = repaired.body.slice(0, idx + 1)
+      }
+    }
+  }
+
+  // body empty but hook + cta exist → combine as body
+  if (!repaired.body && repaired.hook && repaired.cta) {
+    repaired.body = `${repaired.hook}\n\n${repaired.cta}`
+  }
+
+  return repaired
 }
 
 export const generationService = {
@@ -181,8 +239,7 @@ export const generationService = {
     generation: GenerationData,
     guardrails: GuardrailData
   ): Promise<RawVariant[]> {
-    const prompt = buildGenerationPrompt(generation, guardrails)
-    const userPrompt = `${prompt.developer}\n\n${prompt.user}`
+    const prompt = buildPromptPayload(generation, guardrails)
 
     try {
       logger.info(
@@ -194,7 +251,7 @@ export const generationService = {
         "generate",
         {
           system: prompt.system,
-          user: userPrompt,
+          user: prompt.user,
           temperature: AI_TEMPERATURE.GENERATE,
           maxTokens: AI_MAX_TOKENS.GENERATE,
         },
@@ -216,8 +273,22 @@ export const generationService = {
         language: resolveLanguage(v.language),
       }))
 
-      const filtered = variants.filter((v) => {
-        const fullPost = `${v.hook} ${v.body} ${v.cta} ${v.hashtags.join(" ")}`
+      const repaired = variants.map((v) => {
+        const before = { hook: v.hook?.trim(), body: v.body?.trim(), cta: v.cta?.trim() }
+        const r = repairVariant(v)
+        const after = { hook: r.hook?.trim(), body: r.body?.trim(), cta: r.cta?.trim() }
+        if (!before.hook || !before.body || !before.cta) {
+          logger.info({ style: v.styleType, before, after }, "Variant repaired")
+        }
+        return r
+      })
+
+      const filtered = repaired.filter((v) => {
+        if (!v.hook?.trim() || !v.body?.trim() || !v.cta?.trim()) {
+          logger.warn({ style: v.styleType }, "Variant discarded: missing required field")
+          return false
+        }
+        const fullPost = `${v.hook} ${v.body} ${v.cta} ${v.hashtags?.join(" ") ?? ""}`
         if (PROFANITY_PATTERNS.test(fullPost)) {
           logger.warn({ style: v.styleType }, "Variant discarded: profanity")
           return false
