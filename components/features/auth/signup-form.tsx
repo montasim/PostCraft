@@ -127,12 +127,19 @@ function SignupForm() {
           </Button>
         </form>
       </CardContent>
-      <CardFooter className="justify-center">
+      <CardFooter className="flex flex-col space-y-4 text-center">
         <p className="text-sm text-muted-foreground">
           Already have an account?{" "}
           <Link href="/login" className="text-foreground hover:underline">
             Sign in
           </Link>
+        </p>
+        <p className="text-xs text-muted-foreground">
+          By signing up, you agree to our{" "}
+          <Link href="/privacy" className="text-foreground hover:underline">
+            Privacy Policy
+          </Link>
+          .
         </p>
       </CardFooter>
     </Card>

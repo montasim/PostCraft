@@ -119,12 +119,19 @@ function LoginForm() {
           Continue with Google
         </Button>
       </CardContent>
-      <CardFooter className="justify-center">
+      <CardFooter className="flex flex-col space-y-4 text-center">
         <p className="text-sm text-muted-foreground">
           Don&apos;t have an account?{" "}
           <Link href="/signup" className="text-foreground hover:underline">
             Sign up
           </Link>
+        </p>
+        <p className="text-xs text-muted-foreground">
+          By signing in, you agree to our{" "}
+          <Link href="/privacy" className="text-foreground hover:underline">
+            Privacy Policy
+          </Link>
+          .
         </p>
       </CardFooter>
     </Card>
