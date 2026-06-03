@@ -90,7 +90,7 @@ async function testStandardProviders() {
           errorMsg = parsed.message;
         }
       } catch {
-        const jsonMatch = e.message.match(/\{.*\}/s);
+        const jsonMatch = e.message.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
           try {
             const parsed = JSON.parse(jsonMatch[0]);
