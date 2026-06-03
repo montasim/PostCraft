@@ -18,6 +18,16 @@ import {
 import { logger } from "@/core/logger"
 import type { Schema } from "@google/generative-ai"
 
+// ── Re-export new v2 system ────────────────────────────────────
+// Callers can import from either the old or new API surface.
+// The new system (callWithAutoSwitch) is preferred for all new code.
+
+export { callWithAutoSwitch } from "./switcher"
+export type { SwitcherOptions, SwitcherResult } from "./switcher"
+export type { ChatRequest, ChatResponse } from "./provider-client"
+
+// ── Legacy types (still used by existing callers) ──────────────
+
 export interface AIModelCall {
   system: string
   user: string
@@ -128,7 +138,18 @@ export function getProviders(): AIProvider[] {
   }
 
   if (hasOpenRouter()) {
-    providers.push(openrouterProvider(getOpenRouterModel()))
+    // Primary model from env, then fallback chain of free models
+    const primary = getOpenRouterModel()
+    const seen = new Set<string>()
+    if (primary) {
+      providers.push(openrouterProvider(primary))
+      seen.add(primary)
+    }
+    for (const model of AI_CONFIG.OPENROUTER_FREE_MODELS) {
+      if (!seen.has(model)) {
+        providers.push(openrouterProvider(model))
+      }
+    }
   }
 
   if (hasZhipuAI()) {
