@@ -1,125 +1,119 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { IconClock } from "@tabler/icons-react"
-import { cn } from "@/lib/utils"
+import { useState } from "react";
+import { IconCheck, IconSelector, IconClock } from "@tabler/icons-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
-function parseTime(time: string): { hour: number; minute: number } {
-  const [h, m] = time.split(":").map(Number)
-  return { hour: h ?? 9, minute: m ?? 0 }
-}
+import { useAutocompleteTimepicker } from "@/hooks/useAutocompleteTimepicker";
 
-function toTimeStr(hour: number, minute: number): string {
-  return `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`
-}
-
-function format12(time: string): string {
-  const { hour, minute } = parseTime(time)
-  const ampm = hour >= 12 ? "PM" : "AM"
-  const h12 = hour % 12 || 12
-  return `${h12}:${minute.toString().padStart(2, "0")} ${ampm}`
-}
+const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 interface TimePickerProps {
-  value: string
-  onChange: (time: string) => void
-  className?: string
+  value: string;
+  onChange: (time: string) => void;
+  is24Hour?: boolean;
+  locale?: string;
+  timeZone?: string;
+  placeholder?: string;
+  className?: string;
 }
 
-function TimePicker({ value, onChange, className }: TimePickerProps) {
-  const { hour, minute } = parseTime(value)
+export function TimePicker({
+  value,
+  onChange,
+  is24Hour = false,
+  locale = "en-US",
+  timeZone = currentTimezone,
+  placeholder = "Select time...",
+  className
+}: TimePickerProps) {
+  const [open, setOpen] = useState(false);
+  const { timeOptions, formatTime } = useAutocompleteTimepicker({
+    is24Hour,
+    locale,
+    timeZone,
+  });
 
-  function setHour(h12: number) {
-    const isPM = hour >= 12
-    const newHour = isPM ? (h12 === 12 ? 12 : h12 + 12) : (h12 === 12 ? 0 : h12)
-    onChange(toTimeStr(newHour, minute))
+  const selectedTime = new Date();
+  if (value) {
+    const [h, m] = value.split(":").map(Number);
+    selectedTime.setHours(h ?? 0, m ?? 0, 0, 0);
   }
 
-  function setMinute(m: number) {
-    onChange(toTimeStr(hour, m))
-  }
+  const handleSelect = (time: Date) => {
+    const hh = time.getHours().toString().padStart(2, "0");
+    const mm = time.getMinutes().toString().padStart(2, "0");
+    onChange(`${hh}:${mm}`);
+    setOpen(false);
+  };
 
-  function setAmpm(ampm: "AM" | "PM") {
-    let newHour = hour
-    if (ampm === "AM" && hour >= 12) newHour = hour - 12
-    else if (ampm === "PM" && hour < 12) newHour = hour + 12
-    onChange(toTimeStr(newHour, minute))
-  }
+  const currentTimeString = value ? formatTime(selectedTime) : placeholder;
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className={cn("h-8 gap-1.5 text-xs font-normal", className)}
+          role="combobox"
+          aria-expanded={open}
+          className={cn("w-[140px] min-h-[44px] justify-between font-normal bg-transparent dark:bg-input/30 hover:bg-transparent dark:hover:bg-input/30", className)}
         >
-          <IconClock className="h-3 w-3" />
-          {format12(value)}
+          <div className="flex items-center">
+            <IconClock className="mr-2 h-4 w-4" data-testid="ClockIcon" />
+            {currentTimeString}
+          </div>
+          <IconSelector className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
-        <div className="flex h-[200px] divide-x">
-          {/* Hours */}
-          <ScrollArea className="w-[56px]">
-            <div className="flex flex-col p-1">
-              {Array.from({ length: 12 }, (_, i) => i + 1).map((h) => (
-                <button
-                  key={h}
-                  onClick={() => setHour(h)}
-                  className={cn(
-                    "rounded-sm px-2 py-1 text-xs hover:bg-accent",
-                    hour % 12 === h % 12 && "bg-primary text-primary-foreground hover:bg-primary"
-                  )}
-                >
-                  {h}
-                </button>
-              ))}
-            </div>
-            <ScrollBar orientation="vertical" />
-          </ScrollArea>
-          {/* Minutes */}
-          <ScrollArea className="w-[56px]">
-            <div className="flex flex-col p-1">
-              {Array.from({ length: 12 }, (_, i) => i * 5).map((m) => (
-                <button
-                  key={m}
-                  onClick={() => setMinute(m)}
-                  className={cn(
-                    "rounded-sm px-2 py-1 text-xs hover:bg-accent",
-                    minute === m && "bg-primary text-primary-foreground hover:bg-primary"
-                  )}
-                >
-                  {m.toString().padStart(2, "0")}
-                </button>
-              ))}
-            </div>
-            <ScrollBar orientation="vertical" />
-          </ScrollArea>
-          {/* AM/PM */}
-          <ScrollArea className="w-[48px]">
-            <div className="flex flex-col p-1">
-              {(["AM", "PM"] as const).map((ampm) => (
-                <button
-                  key={ampm}
-                  onClick={() => setAmpm(ampm)}
-                  className={cn(
-                    "rounded-sm px-2 py-1 text-xs hover:bg-accent",
-                    ((ampm === "AM" && hour < 12) || (ampm === "PM" && hour >= 12)) &&
-                      "bg-primary text-primary-foreground hover:bg-primary"
-                  )}
-                >
-                  {ampm}
-                </button>
-              ))}
-            </div>
-            <ScrollBar orientation="vertical" />
-          </ScrollArea>
-        </div>
+      <PopoverContent className="w-[200px] p-0" align="start">
+        <Command>
+          <CommandInput
+            placeholder="Search time..."
+            data-testid="CommandInput"
+          />
+          <CommandList>
+            <CommandEmpty>No time found.</CommandEmpty>
+            <CommandGroup>
+              {timeOptions.map((time, index) => {
+                const timeString = formatTime(time);
+                const isSelected =
+                  value &&
+                  time.getHours() === selectedTime.getHours() &&
+                  time.getMinutes() === selectedTime.getMinutes();
+                return (
+                  <CommandItem
+                    key={index}
+                    value={timeString}
+                    onSelect={() => handleSelect(time)}
+                  >
+                    <IconCheck
+                      className={cn(
+                        "mr-2 h-4 w-4 shrink-0",
+                        isSelected ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                    {timeString}
+                  </CommandItem>
+                );
+              })}
+            </CommandGroup>
+          </CommandList>
+        </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
-
-export { TimePicker }

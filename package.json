@@ -22,6 +22,7 @@
     "@google/generative-ai": "^0.24.1",
     "@openrouter/sdk": "^0.12.79",
     "@radix-ui/react-icons": "^1.3.2",
+    "@radix-ui/react-select": "^2.1.1",
     "@reduxjs/toolkit": "^2.12.0",
     "@tabler/icons-react": "^3.44.0",
     "bcryptjs": "^3.0.3",

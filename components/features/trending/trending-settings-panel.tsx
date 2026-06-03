@@ -24,6 +24,13 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip"
 import { TimePicker } from "@/components/shared/time-picker"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { IconInfoCircle, IconDeviceFloppy } from "@tabler/icons-react"
 import { toast } from "sonner"
 import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
@@ -38,31 +45,31 @@ const PLATFORMS: {
   url: string
   api: string
 }[] = [
-  {
-    value: "hackernews",
-    label: "Hacker News",
-    url: "news.ycombinator.com",
-    api: "HN Algolia API — fetches top/new stories with metadata.\nFlow: Fetch top stories → filter by score/recency → extract titles + URLs + comments.",
-  },
-  {
-    value: "devto",
-    label: "Dev.to",
-    url: "dev.to",
-    api: "Dev.to API (dev.to/api/articles) — fetches popular articles by tag.\nFlow: Fetch top articles → filter by reactions/comments → extract title + body + tags.",
-  },
-  {
-    value: "github",
-    label: "GitHub",
-    url: "github.com/trending",
-    api: "GitHub Trending — scrapes trending repos by language.\nFlow: Fetch trending repos → filter by stars gained → extract name + description + language.",
-  },
-  {
-    value: "reddit",
-    label: "Reddit",
-    url: "reddit.com",
-    api: "Reddit JSON API — fetches hot posts from subreddits.\nFlow: Fetch hot posts → filter by upvotes/comments → extract title + body + subreddit.",
-  },
-]
+    {
+      value: "hackernews",
+      label: "Hacker News",
+      url: "news.ycombinator.com",
+      api: "HN Algolia API — fetches top/new stories with metadata.\nFlow: Fetch top stories → filter by score/recency → extract titles + URLs + comments.",
+    },
+    {
+      value: "devto",
+      label: "Dev.to",
+      url: "dev.to",
+      api: "Dev.to API (dev.to/api/articles) — fetches popular articles by tag.\nFlow: Fetch top articles → filter by reactions/comments → extract title + body + tags.",
+    },
+    {
+      value: "github",
+      label: "GitHub",
+      url: "github.com/trending",
+      api: "GitHub Trending — scrapes trending repos by language.\nFlow: Fetch trending repos → filter by stars gained → extract name + description + language.",
+    },
+    {
+      value: "reddit",
+      label: "Reddit",
+      url: "reddit.com",
+      api: "Reddit JSON API — fetches hot posts from subreddits.\nFlow: Fetch hot posts → filter by upvotes/comments → extract title + body + subreddit.",
+    },
+  ]
 
 const DAYS = [
   "Monday",
@@ -325,7 +332,7 @@ function TrendingSettingsPanel({
 
             {/* Schedule */}
             <div>
-              <Label className="mb-4 block text-xs font-medium">Schedule</Label>
+              <Label className="mb-2 block text-xs font-medium">Schedule</Label>
               <RadioGroup
                 value={scheduleType}
                 onValueChange={(v) => setScheduleType(v as ScheduleType)}
@@ -340,29 +347,38 @@ function TrendingSettingsPanel({
               </RadioGroup>
 
               {scheduleType !== "hourly" && (
-                <div className="mt-3 space-y-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">Time</span>
+                <div className="mt-4 grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <Label className="flex items-center gap-1 text-xs font-medium">
+                      Time
+                    </Label>
                     <TimePicker
                       value={scheduledTime}
                       onChange={setScheduledTime}
+                      className="w-full"
                     />
                   </div>
 
                   {scheduleType === "weekly" && (
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-muted-foreground">Day</span>
-                      <select
+                    <div className="space-y-1.5">
+                      <Label className="flex items-center gap-1 text-xs font-medium">
+                        Day
+                      </Label>
+                      <Select
                         value={scheduledDay ?? "Monday"}
-                        onChange={(e) => setScheduledDay(e.target.value)}
-                        className="h-8 rounded-md border border-input bg-transparent px-2 text-xs"
+                        onValueChange={(v) => setScheduledDay(v)}
                       >
-                        {DAYS.map((d) => (
-                          <option key={d} value={d}>
-                            {d}
-                          </option>
-                        ))}
-                      </select>
+                        <SelectTrigger className="flex min-h-[44px] w-full bg-transparent dark:bg-input/30">
+                          <SelectValue placeholder="Select day" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {DAYS.map((d) => (
+                            <SelectItem key={d} value={d}>
+                              {d}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                   )}
                 </div>

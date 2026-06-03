@@ -84,18 +84,18 @@ function MultiSelect({
   // Merge static options with any custom selected values
   const allOptions: SelectOption[] = creatable
     ? [
-        ...normalized,
-        ...selected
-          .filter((s) => !normalized.some((o) => o.value === s))
-          .map((s) => ({ value: s, label: s })),
-      ]
+      ...normalized,
+      ...selected
+        .filter((s) => !normalized.some((o) => o.value === s))
+        .map((s) => ({ value: s, label: s })),
+    ]
     : normalized
 
   // Manual filtering
   const filtered = search.trim()
     ? allOptions.filter((o) =>
-        o.label.toLowerCase().includes(search.trim().toLowerCase())
-      )
+      o.label.toLowerCase().includes(search.trim().toLowerCase())
+    )
     : allOptions
 
   const canCreate =
@@ -122,46 +122,46 @@ function MultiSelect({
                 <>
                   {visible.map((s) => {
                     const badge = (
-                <Badge
-                  key={s}
-                  variant="secondary"
-                  className="gap-1 rounded-md bg-primary/10 text-primary"
-                >
-                  {labelMap.get(s) ?? s}
-                  <button
-                    className="ml-0.5 rounded-full ring-offset-background outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") toggle(s)
-                    }}
-                    onMouseDown={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                    }}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      toggle(s)
-                    }}
-                  >
-                    <IconX className="h-3 w-3" />
-                  </button>
-                </Badge>
-              )
+                      <Badge
+                        key={s}
+                        variant="secondary"
+                        className="gap-1 rounded-md bg-primary/10 text-primary"
+                      >
+                        {labelMap.get(s) ?? s}
+                        <button
+                          className="ml-0.5 rounded-full ring-offset-background outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") toggle(s)
+                          }}
+                          onMouseDown={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                          }}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            toggle(s)
+                          }}
+                        >
+                          <IconX className="h-3 w-3" />
+                        </button>
+                      </Badge>
+                    )
 
-              const desc = descMap.get(s)
-              if (!desc) return badge
+                    const desc = descMap.get(s)
+                    if (!desc) return badge
 
-              return (
-                <TooltipProvider key={s} delayDuration={300}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>{badge}</TooltipTrigger>
-                    <TooltipContent side="bottom" className="max-w-xs text-xs">
-                      {desc}
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              )
-            })}
+                    return (
+                      <TooltipProvider key={s} delayDuration={300}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>{badge}</TooltipTrigger>
+                          <TooltipContent side="bottom" className="max-w-xs text-xs">
+                            {desc}
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )
+                  })}
                   {remaining > 0 && (
                     <Badge
                       variant="secondary"
@@ -201,7 +201,7 @@ function MultiSelect({
             value={search}
             onValueChange={setSearch}
           />
-          <CommandList>
+          <CommandList className="mx-1 mt-2 mb-1 rounded-lg border border-input/30">
             {!creatable && filtered.length === 0 && (
               <CommandEmpty>No results found.</CommandEmpty>
             )}
