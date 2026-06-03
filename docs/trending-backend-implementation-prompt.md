@@ -196,7 +196,7 @@ One function per platform. Each takes keywords (derived from config) and count, 
 - Subreddits derived from keywords: map tech keywords to subreddits (react→reactjs, typescript→typescript, ai→MachineLearning, devops→devops, etc.)
 - Params: `limit=count`
 - Map → SourceItem: `{ source: "reddit", title: post.title, url: `https://reddit.com${post.permalink}`, score: post.score, rank: 0 }`
-- Headers: `User-Agent: linkedIQ/1.0`
+- Headers: `User-Agent: postcraft/1.0`
 
 **`fetchTrendingSources(config: TrendingPrefs): Promise<SourceItem[]>`**
 - Calls appropriate fetcher for each platform in `config.platforms`

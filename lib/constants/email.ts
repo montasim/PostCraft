@@ -1,7 +1,7 @@
 import { THEME_COLORS } from "./colors"
 
 export const EMAIL_BRAND = {
-  NAME: "LinkedIQ",
+  NAME: "PostCraft",
   LIGHT: THEME_COLORS.light,
   DARK: THEME_COLORS.dark,
   FONT: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
@@ -9,12 +9,12 @@ export const EMAIL_BRAND = {
 } as const
 
 export const EMAIL_SUBJECT = {
-  VERIFY: "Verify your LinkedIQ email",
-  RESET_PASSWORD: "Reset your LinkedIQ password",
-  OTP: "Your LinkedIQ verification code",
-  PASSWORD_CHANGED: "Your LinkedIQ password has been changed",
+  VERIFY: "Verify your PostCraft email",
+  RESET_PASSWORD: "Reset your PostCraft password",
+  OTP: "Your PostCraft verification code",
+  PASSWORD_CHANGED: "Your PostCraft password has been changed",
   TRENDING_COMPLETE: (count: number) =>
-    `${count} trending posts ready — LinkedIQ`,
+    `${count} trending posts ready — PostCraft`,
 } as const
 
 export const EMAIL_BUTTON = {

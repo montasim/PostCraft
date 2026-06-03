@@ -18,7 +18,7 @@ const envSchema = z.object({
   OPENROUTER_API_KEY: z.string().optional(),
   OPENROUTER_MODEL: z.string().default("google/gemma-4-31b-it:free"),
   OPENROUTER_SITE_URL: z.string().default(EXTERNAL_API.OPENROUTER_SITE),
-  OPENROUTER_SITE_NAME: z.string().default("linkedIQ"),
+  OPENROUTER_SITE_NAME: z.string().default("postcraft"),
   INNGEST_EVENT_KEY: z.string().optional(),
   INNGEST_SIGNING_KEY: z.string().optional(),
   APP_URL: z.string().optional().default(EXTERNAL_API.LOCALHOST),
@@ -30,7 +30,7 @@ const envSchema = z.object({
 
   // Email
   RESEND_API_KEY: z.string().optional(),
-  EMAIL_FROM: z.string().default("noreply@linkedIQ.dev"),
+  EMAIL_FROM: z.string().default("noreply@postcraft.dev"),
 
   NODE_ENV: z
     .enum(["development", "production", "test"])

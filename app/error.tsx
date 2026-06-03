@@ -18,7 +18,7 @@ export default function GlobalError({
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-linear-to-br from-primary to-chart-2">
             <IconSparkles className="h-4 w-4 text-primary-foreground" />
           </div>
-          <span className="font-bold text-primary">LinkedIQ</span>
+          <span className="font-bold text-primary">PostCraft</span>
         </Link>
       </header>
       
@@ -45,7 +45,7 @@ export default function GlobalError({
       </main>
 
       <footer className="border-t py-6 text-center bg-card/50">
-        <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} LinkedIQ. All rights reserved.</p>
+        <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} PostCraft. All rights reserved.</p>
       </footer>
     </div>
   )

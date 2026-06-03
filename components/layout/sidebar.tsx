@@ -97,7 +97,7 @@ function Sidebar({
         <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-linear-to-br from-primary to-chart-2">
           <IconSparkles className="h-4 w-4 text-primary-foreground" />
         </div>
-        <span className="font-bold text-primary">LinkedIQ</span>
+        <span className="font-bold text-primary">PostCraft</span>
       </div>
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
         <NavGroup

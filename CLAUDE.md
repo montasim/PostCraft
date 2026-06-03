@@ -1,4 +1,4 @@
-# linkedIQ
+# postcraft
 
 AI-powered LinkedIn post generator. Solo professionals create, refine, and schedule LinkedIn content using multiple AI providers. MVP stage, solo dev + Claude.
 
@@ -194,7 +194,7 @@ When creating a **new component or page**, follow these rules before writing any
 ### SEO & Metadata (new pages only)
 
 - Every `page.tsx` must export a `Metadata` object with `title` and `description`
-- Title format: `"{Feature} — LinkedIQ"` or descriptive standalone title
+- Title format: `"{Feature} — PostCraft"` or descriptive standalone title
 - Description: 120-160 characters, includes relevant keywords, human-readable
 - Use Open Graph and Twitter Card metadata for social sharing pages
 - Set canonical URLs where appropriate

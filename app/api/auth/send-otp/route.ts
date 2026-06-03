@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
     await sendEmail({
       to: email,
       subject: EMAIL_SUBJECT.OTP,
-      text: `Your LinkedIQ verification code is: ${code}\n\nThis code expires in ${OTP.EXPIRY_MINUTES} minutes.\n\nNever share this code with anyone. LinkedIQ will never ask for your code.`,
+      text: `Your PostCraft verification code is: ${code}\n\nThis code expires in ${OTP.EXPIRY_MINUTES} minutes.\n\nNever share this code with anyone. PostCraft will never ask for your code.`,
       html: buildEmailLayout(
         `
         <h1 style="font-size:22px;font-weight:700;color:${EMAIL_BRAND.LIGHT.foreground};margin:0 0 4px;">Verify it's you</h1>
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
           <tr>
             <td align="center" style="padding:12px;background-color:${EMAIL_BRAND.LIGHT.primaryLight};border-radius:8px;">
               <p style="font-size:13px;color:${EMAIL_BRAND.LIGHT.mutedForeground};line-height:1.5;margin:0;">
-                Never share this code with anyone. LinkedIQ will never ask for your verification code.
+                Never share this code with anyone. PostCraft will never ask for your verification code.
               </p>
             </td>
           </tr>

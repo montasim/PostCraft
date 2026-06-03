@@ -1,6 +1,6 @@
-# LinkedIQ Frontend Clone Specification
+# PostCraft Frontend Clone Specification
 
-**Purpose:** Any AI agent can use this spec + `DESIGN_SYSTEM.md` + `requirements.md` to build a pixel-perfect clone of the LinkedIQ dashboard using Next.js App Router, shadcn/ui, and TypeScript.
+**Purpose:** Any AI agent can use this spec + `DESIGN_SYSTEM.md` + `requirements.md` to build a pixel-perfect clone of the PostCraft dashboard using Next.js App Router, shadcn/ui, and TypeScript.
 
 **Source framework:** TanStack Start + Vite → **Target framework:** Next.js 15 App Router
 
@@ -534,7 +534,7 @@ export { VariantCard };
 ### 7a. Sidebar (`src/components/sidebar.tsx`)
 
 The sidebar contains:
-1. **Logo** — gradient icon + "LinkedIQ" text
+1. **Logo** — gradient icon + "PostCraft" text
 2. **"New post" button** — outline with Plus icon
 3. **Nav groups** — Main (Generate, History, Analytics) + Config (Guardrails, Workspace)
 4. **Plan quota card** — Flame icon + psychology text + segmented progress bar + usage counter

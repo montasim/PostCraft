@@ -23,7 +23,7 @@ export const API = {
 } as const
 
 export const WORKSPACE_ID_PREFIX = "ws_"
-export const APP_ID = "linkedIQ"
+export const APP_ID = "postcraft"
 
 export const EXTERNAL_API = {
   GROQ: "https://api.groq.com/openai/v1",
