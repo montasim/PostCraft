@@ -1,58 +1,52 @@
-export function buildShortlistSystemPrompt(): string {
-  return `You are a content strategist for LinkedIn post generation.
-Your job is to select the most engaging trending topics for a specific professional audience.
-You understand what drives LinkedIn engagement: controversy, practical insight, and timely relevance.
-Always respond with valid JSON only. No markdown fences. No explanation outside the JSON.`
+/**
+ * core/ai/prompts/shortlist.ts
+ *
+ * OPTIMIZED: Tighter token footprint. Selection criteria condensed.
+ * Output schema simplified — removed redundant fields.
+ */
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+export interface ShortlistItem {
+  title: string;
+  url?: string;
+  score?: number;
+  source?: string;
 }
 
-export function buildShortlistPrompt(
-  items: Array<{ title: string; url: string; score: number; source: string; rank: number }>,
-  persona: {
-    targetAudience: string[]
-    topics: string[]
-    industry: string[]
-    language: string[]
-  },
-  topN: number
-): string {
-  const audienceStr = persona.targetAudience.join(", ") || "software developers"
-  const topicsStr = persona.topics.join(", ") || "software development"
-  const industryStr = persona.industry.join(", ") || "technology"
-  const languageStr = persona.language.join(", ") || "english"
+export interface ShortlistPromptData {
+  items: ShortlistItem[];
+  selectCount: number;
+  platforms: string[];
+  audiences: string[];
+}
 
-  return `Select the ${topN} best topics for LinkedIn posts from the list below.
+// ─── Prompt builder ───────────────────────────────────────────────────────────
 
-TARGET AUDIENCE: ${audienceStr}
-RELEVANT TOPICS: ${topicsStr}
-INDUSTRY: ${industryStr}
-LANGUAGE: ${languageStr}
+export function buildShortlistPrompt(data: ShortlistPromptData): {
+  system: string;
+  user: string;
+} {
+  const itemList = data.items
+    .map((item, i) => `${i + 1}. ${item.title}${item.source ? ` [${item.source}]` : ""}`)
+    .join("\n");
 
-AVAILABLE ITEMS (${items.length} total):
-${items.map((item, i) =>
-  `${i + 1}. [Platform: ${item.source.toUpperCase()} | Score: ${item.score}]
-   Title: ${item.title}
-   URL: ${item.url}`
-).join("\n\n")}
+  const system = `You are a content strategist selecting trending topics for social posts.
 
-SELECTION CRITERIA (in priority order):
-1. Relevance — matches the audience's interests and topics
-2. Engagement potential — controversial, insightful, or timely for LinkedIn
-3. Platform score — higher score = more community validation
-4. Diversity — prefer items from different platforms when scores are similar
+SELECTION RULES (in priority order):
+1. Relevance — directly relates to ${data.audiences.join(", ")} on ${data.platforms.join(", ")}
+2. Post potential — can generate multiple distinct angles (story, data, opinion, question)
+3. Recency signal — breaking or newly emerging > evergreen
+4. Diversity — no two selected topics from the same niche or framing
 
-Return exactly ${topN} items. Maintain all original fields unchanged.
+REJECT if: topic is too niche to generate engagement, too broad to say anything specific, or requires technical expertise the average user lacks.
 
-Respond with this exact JSON shape:
-{
-  "selected": [
-    {
-      "title": "<exact title from input>",
-      "url": "<exact url from input>",
-      "score": <number>,
-      "source": "<exact source from input>",
-      "rank": <new 1-based rank after your selection>,
-      "selectionReason": "<one sentence: why this topic works for this audience>"
-    }
-  ]
-}`
+OUTPUT: JSON only. {"selected":[{"title":"string","url":"string","selectionReason":"max 10 words"}]}`;
+
+  const user = `Select ${data.selectCount} topics from this list. Platforms: ${data.platforms.join(", ")}. Audiences: ${data.audiences.join(", ")}.
+
+TOPICS:
+${itemList}`;
+
+  return { system, user };
 }
