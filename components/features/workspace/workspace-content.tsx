@@ -28,10 +28,11 @@ import {
   IconArrowRight,
   IconTrendingUp,
   IconUserCircle,
+  IconHash,
 } from "@tabler/icons-react"
 import { toast } from "sonner"
 import Link from "next/link"
-import type { BrandPersona, PersonaOption } from "@/types"
+import type { BrandPersona, PersonaOption, CustomHashtag } from "@/types"
 import type { SelectOption } from "@/components/shared/multi-select"
 import { API } from "@/lib/constants"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
@@ -292,6 +293,62 @@ function BrandPersonaCard({
                 creatable
               />
             </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Custom hashtags</Label>
+              <MultiSelect
+                options={[]}
+                selected={draft.customHashtags?.map((h) => h.value) ?? []}
+                onChange={(v) => {
+                  const existing = new Map(
+                    (draft.customHashtags ?? []).map((h) => [h.value, h])
+                  )
+                  const updated: CustomHashtag[] = v.map((val) => {
+                    const prev = existing.get(val)
+                    return {
+                      value: val,
+                      label: val.startsWith("#") ? val : `#${val}`,
+                      enabled: prev?.enabled ?? true,
+                    }
+                  })
+                  setDraft((d) => ({ ...d, customHashtags: updated }))
+                }}
+                placeholder="Add hashtags (e.g. #leadership)..."
+                creatable
+              />
+              {(draft.customHashtags ?? []).length > 0 && (
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {draft.customHashtags.map((tag) => (
+                    <div
+                      key={tag.value}
+                      className="flex items-center gap-1.5 rounded-md border px-2 py-1"
+                    >
+                      <Switch
+                        checked={tag.enabled}
+                        onCheckedChange={(checked) =>
+                          setDraft((d) => ({
+                            ...d,
+                            customHashtags: (d.customHashtags ?? []).map((h) =>
+                              h.value === tag.value
+                                ? { ...h, enabled: checked }
+                                : h
+                            ),
+                          }))
+                        }
+                        className="scale-75"
+                      />
+                      <span
+                        className={cn(
+                          "text-xs",
+                          !tag.enabled && "text-muted-foreground line-through"
+                        )}
+                      >
+                        {tag.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
             <Button
               size="sm"
               className="h-7 gap-1 text-xs"
@@ -410,6 +467,29 @@ function BrandPersonaCard({
                       className="text-[10px]"
                     >
                       {p.label}
+                    </Badge>
+                  ))
+                ) : (
+                  <p className="text-xs">—</p>
+                )}
+              </div>
+            </div>
+            <div>
+              <p className="mb-0.5 text-xs text-muted-foreground">
+                Custom hashtags
+              </p>
+              <div className="flex flex-wrap gap-1">
+                {(persona.customHashtags ?? []).length > 0 ? (
+                  persona.customHashtags.map((h) => (
+                    <Badge
+                      key={h.value}
+                      variant={h.enabled ? "secondary" : "outline"}
+                      className={cn(
+                        "text-[10px]",
+                        !h.enabled && "text-muted-foreground line-through"
+                      )}
+                    >
+                      {h.label}
                     </Badge>
                   ))
                 ) : (

@@ -6,6 +6,12 @@ export interface IPersonaOption {
   description?: string
 }
 
+export interface ICustomHashtag {
+  value: string
+  label: string
+  enabled: boolean
+}
+
 export interface IBrandPersona {
   targetAudiences: IPersonaOption[]
   preferredTones: IPersonaOption[]
@@ -13,6 +19,7 @@ export interface IBrandPersona {
   topics: IPersonaOption[]
   industry: IPersonaOption[]
   platforms: IPersonaOption[]
+  customHashtags: ICustomHashtag[]
 }
 
 export interface IWorkspace extends Document {
@@ -31,6 +38,15 @@ const personaOptionSchema = new mongoose.Schema<IPersonaOption>(
   { _id: false }
 )
 
+const customHashtagSchema = new mongoose.Schema<ICustomHashtag>(
+  {
+    value: { type: String, required: true },
+    label: { type: String, required: true },
+    enabled: { type: Boolean, default: true },
+  },
+  { _id: false }
+)
+
 const brandPersonaSchema = new mongoose.Schema<IBrandPersona>(
   {
     targetAudiences: { type: [personaOptionSchema], default: [] },
@@ -42,6 +58,7 @@ const brandPersonaSchema = new mongoose.Schema<IBrandPersona>(
     topics: { type: [personaOptionSchema], default: [] },
     industry: { type: [personaOptionSchema], default: [] },
     platforms: { type: [personaOptionSchema], default: [] },
+    customHashtags: { type: [customHashtagSchema], default: [] },
   },
   { _id: false }
 )

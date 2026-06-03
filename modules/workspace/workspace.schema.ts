@@ -6,6 +6,12 @@ const personaOptionSchema = z.object({
   description: z.string().optional(),
 })
 
+const customHashtagSchema = z.object({
+  value: z.string(),
+  label: z.string(),
+  enabled: z.boolean().default(true),
+})
+
 export const brandPersonaSchema = z.object({
   targetAudiences: z.array(personaOptionSchema),
   preferredTones: z.array(personaOptionSchema),
@@ -13,6 +19,7 @@ export const brandPersonaSchema = z.object({
   topics: z.array(personaOptionSchema),
   industry: z.array(personaOptionSchema),
   platforms: z.array(personaOptionSchema),
+  customHashtags: z.array(customHashtagSchema).default([]),
 })
 
 export const updateWorkspaceSchema = z.object({

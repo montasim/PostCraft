@@ -19,6 +19,7 @@ const DEFAULT_PERSONA: BrandPersona = {
   topics: [],
   industry: [],
   platforms: [],
+  customHashtags: [],
 }
 
 export const workspaceService = {

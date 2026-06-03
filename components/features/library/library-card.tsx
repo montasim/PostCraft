@@ -8,6 +8,8 @@ import { VariantCard } from "@/components/shared/variant-card"
 import { cn } from "@/lib/utils"
 import { IconChevronDown, IconStack2 } from "@tabler/icons-react"
 import type { LibraryEntry } from "@/types"
+import { useAppSelector } from "@/store/hooks"
+import { selectPersona } from "@/store/slices/workspace.slice"
 
 const STATUS_STYLES: Record<string, string> = {
   published: "bg-chart-2/15 text-chart-2",
@@ -97,6 +99,7 @@ function LibraryCard({ entry, expanded, onToggle }: LibraryCardProps) {
 
 function VariantCardWrapper({ variant }: { variant: import("@/types").Variant }) {
   const [copied, setCopied] = useState(false)
+  const persona = useAppSelector(selectPersona)
 
   const handleCopy = async () => {
     const text = `${variant.hook}\n\n${variant.body}\n\n${variant.cta}\n\n${variant.hashtags.join(" ")}`
@@ -105,7 +108,7 @@ function VariantCardWrapper({ variant }: { variant: import("@/types").Variant })
     setTimeout(() => setCopied(false), 1500)
   }
 
-  return <VariantCard variant={variant} copied={copied} onCopy={handleCopy} />
+  return <VariantCard variant={variant} copied={copied} onCopy={handleCopy} customHashtags={persona?.customHashtags} />
 }
 
 export { LibraryCard }

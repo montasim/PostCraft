@@ -8,6 +8,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import type { Variant } from "@/types"
+import { useAppSelector } from "@/store/hooks"
+import { selectPersona } from "@/store/slices/workspace.slice"
 import {
   IconTrophy,
   IconLoader2,
@@ -53,6 +55,7 @@ function PostVariantsCarousel({
 }: PostVariantsCarouselProps) {
   const { ref, scrollLeft, scrollRight } = useCarousel()
   const { copy, isCopied } = useClipboard()
+  const persona = useAppSelector(selectPersona)
 
   const isProcessing = ["queued", "generating", "scoring", "ranking"].includes(
     status
@@ -222,6 +225,7 @@ function PostVariantsCarousel({
                 variant={variant}
                 copied={isCopied(variant.rank)}
                 onCopy={() => copy(formatVariantText(variant), variant.rank)}
+                customHashtags={persona?.customHashtags}
               />
             </div>
           ))}

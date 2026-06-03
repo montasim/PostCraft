@@ -19,7 +19,7 @@ import {
   IconBrandTwitter,
   IconBrandFacebook,
 } from "@tabler/icons-react"
-import type { Variant } from "@/types"
+import type { Variant, CustomHashtag } from "@/types"
 import type { PlatformId } from "@/lib/constants/preview"
 import { PLATFORM_DISPLAY_NAMES } from "@/lib/constants/preview"
 import { PostPreviewDialog } from "@/components/features/preview/post-preview-dialog"
@@ -35,6 +35,7 @@ interface VariantCardProps {
   headerIconClassName?: string
   sourceLink?: { title: string; url: string }
   extraActions?: React.ReactNode
+  customHashtags?: CustomHashtag[]
 }
 
 const PLATFORM_ICONS: Record<PlatformId, React.ReactNode> = {
@@ -52,6 +53,7 @@ function VariantCard({
   headerIconClassName,
   sourceLink,
   extraActions,
+  customHashtags,
 }: VariantCardProps) {
   const isTop = variant.rank === 1
   const enabledPlatforms = useAppSelector(selectEnabledPlatforms)
@@ -181,6 +183,23 @@ function VariantCard({
                 {tag}
               </Badge>
             ))}
+            {customHashtags
+              ?.filter((h) => h.enabled)
+              .filter(
+                (h) =>
+                  !variant.hashtags.some(
+                    (t) => t.toLowerCase() === h.value.toLowerCase()
+                  )
+              )
+              .map((h) => (
+                <Badge
+                  key={h.value}
+                  variant="secondary"
+                  className="text-xs font-normal"
+                >
+                  {h.label}
+                </Badge>
+              ))}
           </div>
         </div>
 

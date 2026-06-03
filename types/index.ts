@@ -102,6 +102,12 @@ export interface PersonaOption {
   description?: string
 }
 
+export interface CustomHashtag {
+  value: string
+  label: string
+  enabled: boolean
+}
+
 export interface BrandPersona {
   targetAudiences: PersonaOption[]
   preferredTones: PersonaOption[]
@@ -109,6 +115,7 @@ export interface BrandPersona {
   topics: PersonaOption[]
   industry: PersonaOption[]
   platforms: PersonaOption[]
+  customHashtags: CustomHashtag[]
 }
 
 export interface UserProfile {

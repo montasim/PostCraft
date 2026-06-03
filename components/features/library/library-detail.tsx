@@ -7,6 +7,8 @@ import { VariantCard } from "@/components/shared/variant-card"
 import { VariantCarousel } from "@/components/shared/variant-carousel"
 import { BrandGuardPanel } from "@/components/features/generate/brand-guard-panel"
 import type { LibraryEntry } from "@/types"
+import { useAppSelector } from "@/store/hooks"
+import { selectPersona } from "@/store/slices/workspace.slice"
 import { IconTrophy, IconFileText } from "@tabler/icons-react"
 
 function formatVariantText(v: {
@@ -89,6 +91,7 @@ function VariantCardWrapper({
   variant: import("@/types").Variant
 }) {
   const [copied, setCopied] = useState(false)
+  const persona = useAppSelector(selectPersona)
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(formatVariantText(variant))
@@ -96,7 +99,7 @@ function VariantCardWrapper({
     setTimeout(() => setCopied(false), 1500)
   }
 
-  return <VariantCard variant={variant} copied={copied} onCopy={handleCopy} />
+  return <VariantCard variant={variant} copied={copied} onCopy={handleCopy} customHashtags={persona?.customHashtags} />
 }
 
 function LibraryDetail({

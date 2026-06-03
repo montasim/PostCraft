@@ -23,6 +23,8 @@ import type {
   TrendingGenerationPreview,
   TrendingPlatform,
 } from "@/modules/trending/trending.types"
+import { useAppSelector } from "@/store/hooks"
+import { selectPersona } from "@/store/slices/workspace.slice"
 
 const PLATFORM_ABBREV: Record<TrendingPlatform, string> = {
   hackernews: "HN",
@@ -192,6 +194,7 @@ function TrendingVariant({
 }) {
   const [copied, setCopied] = useState(false)
   const router = useRouter()
+  const persona = useAppSelector(selectPersona)
   const mapped = toVariant(generation)
   if (!mapped) return null
 
@@ -214,6 +217,7 @@ function TrendingVariant({
       badgeLabel="Top Trending"
       headerIcon={source.icon}
       headerIconClassName={source.className}
+      customHashtags={persona?.customHashtags}
       sourceLink={{
         title: generation.sourceItem.title,
         url: generation.sourceItem.url,
