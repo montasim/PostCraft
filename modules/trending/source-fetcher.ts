@@ -57,7 +57,7 @@ export async function fetchHackerNews(
 ): Promise<SourceItem[]> {
   try {
     const query = keywords.slice(0, TRENDING_KEYWORDS_MAX).join(" OR ")
-    const url = `${EXTERNAL_API.HN_SEARCH}?query=${encodeURIComponent(query)}&tags=story&hitsPerPage=${count}&numericFilters=points>50`
+    const url = `${EXTERNAL_API.HN_SEARCH}?query=${encodeURIComponent(query)}&tags=story&hitsPerPage=${count}&numericFilters=${encodeURIComponent('points>50')}`
     const res = await fetch(url)
     if (!res.ok) throw new Error(`HN API ${res.status}`)
     const data = await res.json()
@@ -109,7 +109,7 @@ export async function fetchGitHub(
     )
       .toISOString()
       .split("T")[0]
-    const q = `${keywords.slice(0, 3).join("+")}+created:>${sevenDaysAgo}`
+    const q = `${keywords.slice(0, 3).join(" ")} created:>${sevenDaysAgo}`
     const url = `${EXTERNAL_API.GITHUB_SEARCH}?q=${encodeURIComponent(q)}&sort=stars&order=desc&per_page=${count}`
     const res = await fetch(url, {
       headers: {
@@ -170,7 +170,7 @@ export async function fetchReddit(
       : "programming+webdev"
 
   try {
-    const url = `${EXTERNAL_API.REDDIT_HOT}/${subreddit}/hot.json?limit=${count}`
+    const url = `${EXTERNAL_API.REDDIT_HOT}/${subreddit}/hot.json?limit=${count}&raw_json=1`
     const res = await fetch(url, {
       headers: { "User-Agent": AI_CONFIG.REDDIT_USER_AGENT },
     })
