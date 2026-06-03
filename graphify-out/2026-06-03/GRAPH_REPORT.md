@@ -1,11 +1,11 @@
 # Graph Report - PostCraft  (2026-06-03)
 
 ## Corpus Check
-- 294 files · ~67,244 words
+- 294 files · ~66,810 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1159 nodes · 3329 edges · 56 communities (46 shown, 10 thin omitted)
+- 1159 nodes · 3329 edges · 55 communities (46 shown, 9 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 17 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
@@ -57,7 +57,6 @@
 - [[_COMMUNITY_Constants Status|Constants Status]]
 - [[_COMMUNITY_Ranking Service|Ranking Service]]
 - [[_COMMUNITY_Constants Language|Constants Language]]
-- [[_COMMUNITY_Community 42|Community 42]]
 - [[_COMMUNITY_Slices Trending|Slices Trending]]
 - [[_COMMUNITY_Generation Prompt|Generation Prompt]]
 - [[_COMMUNITY_Quota Lib|Quota Lib]]
@@ -98,7 +97,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (56 total, 10 thin omitted)
+## Communities (55 total, 9 thin omitted)
 
 ### Community 0 - "Groq Gemini"
 Cohesion: 0.06
@@ -149,8 +148,8 @@ Cohesion: 0.08
 Nodes (28): SCORE_RANGES, DEFAULT_FILTERS, LibraryStats, ActivityHeatmapProps, BestPostHighlight(), BestPostHighlightProps, formatRelativeDate(), LibraryCard() (+20 more)
 
 ### Community 12 - "Auth Form"
-Cohesion: 0.19
-Nodes (14): authClient, LoginForm(), SignupForm(), VerifyEmailContent(), metadata, Card(), CardAction(), CardContent() (+6 more)
+Cohesion: 0.18
+Nodes (15): authClient, LoginForm(), SignupForm(), VerifyEmailContent(), RANGE_COLORS, metadata, Card(), CardAction() (+7 more)
 
 ### Community 13 - "Library Activity"
 Cohesion: 0.11
@@ -225,8 +224,8 @@ Cohesion: 0.07
 Nodes (35): accountSchema, appearanceSchema, IAccountSettings, IAppearanceSettings, INotificationSettings, ISettings, notificationSchema, settingsSchema (+27 more)
 
 ### Community 31 - "Insights Content"
-Cohesion: 0.20
-Nodes (19): EMPTY_DATA, InsightsContent(), InsightsData, InsightsHeader(), InsightsOverviewCards(), MetricCard(), InsightsScoreDistribution(), RANGE_COLORS (+11 more)
+Cohesion: 0.18
+Nodes (19): EMPTY_DATA, InsightsContent(), InsightsData, InsightsHeader(), InsightsOverviewCards(), MetricCard(), InsightsScoreDistribution(), InsightsDashboard (+11 more)
 
 ### Community 32 - "Prefs Schema"
 Cohesion: 0.18
@@ -283,7 +282,7 @@ Nodes (16): metadata, SettingsContent(), SettingsData, ConfirmDialog(), ConfirmD
 ## Knowledge Gaps
 - **206 isolated node(s):** `metadata`, `metadata`, `metadata`, `metadata`, `metadata` (+201 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **9 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
@@ -292,8 +291,8 @@ _Questions this graph is uniquely positioned to answer:_
   _High betweenness centrality (0.182) - this node is a cross-community bridge._
 - **Why does `getEnv()` connect `Groq Gemini` to `App Api`, `Errors Inngest`, `App Layout`?**
   _High betweenness centrality (0.038) - this node is a cross-community bridge._
-- **Why does `connectDB()` connect `App Api` to `Groq Gemini`, `Errors App`, `Trending Global`, `Trending Prompts`, `Queue Functions`?**
-  _High betweenness centrality (0.024) - this node is a cross-community bridge._
+- **Why does `Skeleton()` connect `Generate Brand` to `Trending Empty`, `Generate Brand`, `Insights Checkbox`, `Error Brand`, `Settings Page`, `Constants Options`, `Profile Content`, `Preview Slices`, `Brand Guard`, `Insights Content`?**
+  _High betweenness centrality (0.025) - this node is a cross-community bridge._
 - **Are the 5 inferred relationships involving `connectDB()` (e.g. with `GET()` and `GET()`) actually correct?**
   _`connectDB()` has 5 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 6 inferred relationships involving `handleApiError()` (e.g. with `GET()` and `GET()`) actually correct?**

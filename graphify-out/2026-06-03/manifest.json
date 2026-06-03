@@ -1464,9 +1464,9 @@
     "ast_hash": "8c6366ec4ee5429ee3d54e33a698694b",
     "semantic_hash": "8c6366ec4ee5429ee3d54e33a698694b"
   },
-  "/home/r3tr0/Personal/PostCraft/app/privacy/page.tsx": {
-    "mtime": 1780502454.1778798,
-    "ast_hash": "b9c08795cced333fff8a16f2378a6c7f",
+  "/home/r3tr0/Personal/PostCraft/app/(auth)/privacy/page.tsx": {
+    "mtime": 1780502068.9395247,
+    "ast_hash": "9e53ca9b9b8ce8bb464915e5a3394494",
     "semantic_hash": ""
   }
 }
