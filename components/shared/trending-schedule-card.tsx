@@ -21,7 +21,7 @@ export function TrendingScheduleCard({
   return (
     <div
       className={cn(
-        "rounded-xl border border-chart-4/20 bg-chart-4/5 p-3 text-sidebar-foreground transition-colors",
+        "rounded-xl border border-chart-4/20 bg-chart-5/5 p-3 text-sidebar-foreground transition-colors",
         className
       )}
     >
@@ -34,7 +34,7 @@ export function TrendingScheduleCard({
           type="button"
           variant="ghost"
           size="icon"
-          className="-mr-1.5 -mt-1.5 h-6 w-6 text-chart-4/70 hover:bg-chart-4/10 hover:text-chart-4"
+          className="-mr-1.5 -mt-1.5 h-6 w-6 text-chart-4/70 hover:bg-chart-5/10 hover:text-chart-4"
           onClick={onSettingsClick}
           aria-label="Trending settings"
         >

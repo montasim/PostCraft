@@ -9,7 +9,7 @@ const RANGE_COLORS: Record<string, string> = {
   "90-100": "bg-chart-2",
   "80-89": "bg-chart-5",
   "70-79": "bg-chart-3",
-  "Below 70": "bg-chart-4",
+  "Below 70": "bg-chart-5",
 }
 
 function InsightsScoreDistribution({ data }: { data: ScoreDistribution[] }) {

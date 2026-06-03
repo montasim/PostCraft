@@ -113,7 +113,7 @@ function MetricCard({
                   "text-[9px] font-semibold",
                   change >= 0
                     ? "bg-chart-2/15 text-chart-2"
-                    : "bg-chart-4/15 text-chart-4"
+                    : "bg-chart-5/15 text-chart-4"
                 )}
               >
                 {change >= 0 ? "+" : ""}

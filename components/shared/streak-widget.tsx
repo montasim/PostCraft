@@ -21,7 +21,7 @@ function StreakWidget({ streakDays, weeklyGoal, weeklyProgress, className }: Str
         <div className="flex items-center gap-2">
           <div className={cn(
             "flex h-7 w-7 items-center justify-center rounded-lg",
-            isOnFire ? "bg-chart-4/20" : "bg-muted"
+            isOnFire ? "bg-chart-5/20" : "bg-muted"
           )}>
             <IconFlame className={cn("h-4 w-4", isOnFire ? "text-chart-4" : "text-muted-foreground")} />
           </div>
