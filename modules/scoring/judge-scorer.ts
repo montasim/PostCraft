@@ -1,5 +1,4 @@
 import {
-  buildJudgeSystemPrompt,
   buildJudgePrompt,
   type JudgePromptData,
 } from "@/core/ai/prompts/judge"
@@ -30,8 +29,27 @@ function stripMarkdownFences(text: string): string {
     .trim()
 }
 
+function safeJsonParse(text: string): unknown {
+  try {
+    return JSON.parse(text)
+  } catch {
+    // Try to extract JSON object from text
+    const match = text.match(/\{[\s\S]*\}/)
+    if (match) {
+      try {
+        return JSON.parse(match[0])
+      } catch {
+        // Try fixing unquoted property names
+        const fixed = match[0].replace(/(\w+)\s*:/g, '"$1":')
+        try { return JSON.parse(fixed) } catch { /* give up */ }
+      }
+    }
+    throw new SyntaxError("Failed to parse judge output")
+  }
+}
+
 export async function scoreWithJudge(
-  variant: { hook: string; body: string; cta: string; hashtags: string[] },
+  variant: { hook: string; body: string; cta: string; hashtags: string[]; platform?: string },
   audiences: string[],
   topic: string
 ): Promise<JudgeResult> {
@@ -42,15 +60,16 @@ export async function scoreWithJudge(
     hashtags: variant.hashtags,
     audiences,
     topic,
+    platform: variant.platform ?? "linkedin",
   }
-  const userPrompt = buildJudgePrompt(data)
+  const { system, user } = buildJudgePrompt(data)
 
   try {
     const { text: raw, provider } = await callWithTaskFallback(
       "score",
       {
-        system: buildJudgeSystemPrompt(),
-        user: userPrompt,
+        system,
+        user,
         temperature: AI_TEMPERATURE.JUDGE,
         maxTokens: AI_MAX_TOKENS.JUDGE,
       },
@@ -58,7 +77,7 @@ export async function scoreWithJudge(
     )
 
     const text = stripMarkdownFences(raw)
-    const parsed = judgeOutputSchema.safeParse(JSON.parse(text))
+    const parsed = judgeOutputSchema.safeParse(safeJsonParse(text))
     if (!parsed.success) {
       logger.warn(
         { errors: parsed.error.issues },

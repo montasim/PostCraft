@@ -5,8 +5,6 @@ import { getProviders } from "@/core/ai/provider"
 import { logger } from "@/core/logger"
 import {
   SCORE_WEIGHTS,
-  BODY_MIN_LENGTH,
-  BODY_MAX_LENGTH,
   HASHTAG_MIN,
   HASHTAG_MAX,
   MAX_SCORE,
@@ -34,13 +32,25 @@ interface ScoredVariantOutput {
   model: string
 }
 
+/** Platform-specific ideal post length ranges [min, max] */
+const PLATFORM_LENGTH_RANGES: Record<string, [number, number]> = {
+  linkedin: [600, 1500],
+  facebook: [400, 1000],
+  twitter: [80, 280],
+}
+
+function scoreLength(totalLength: number, platform: string): number {
+  const [min, max] = PLATFORM_LENGTH_RANGES[platform] ?? [400, 1300]
+  if (totalLength >= min && totalLength <= max) return 33
+  if (totalLength >= min * 0.6) return 16
+  return 0
+}
+
 function scoreStructure(variant: ScoringInput): number {
   const fullPost = `${variant.hook}\n${variant.body}\n${variant.cta}\n${variant.hashtags.join(" ")}`
   let score = 0
 
-  if (fullPost.length >= BODY_MIN_LENGTH && fullPost.length <= BODY_MAX_LENGTH)
-    score += 33
-  else if (fullPost.length >= 400) score += 16
+  score += scoreLength(fullPost.length, variant.platform ?? "linkedin")
 
   const sections = [variant.hook, variant.body, variant.cta, variant.hashtags]
   const present = sections.filter((s) =>

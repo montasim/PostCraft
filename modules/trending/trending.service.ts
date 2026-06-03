@@ -1,8 +1,8 @@
 import { generationService } from "@/modules/generation"
 import { callWithTaskFallback } from "@/core/ai/provider"
 import {
-  buildShortlistSystemPrompt,
   buildShortlistPrompt,
+  type ShortlistPromptData,
 } from "@/core/ai/prompts/shortlist"
 import { logger } from "@/core/logger"
 import { inngest } from "@/core/queue/client"
@@ -254,12 +254,11 @@ export async function generatePostsFromTrends(
         audiences:
           config.targetAudience.length > 0
             ? config.targetAudience
-            : ["developers"],
-        tones: ["Thought leader"],
-        languages: (config.language.length > 0
-          ? config.language
-          : ["english"]
-        ).map((l) => LANGUAGE_TO_CODE[l.toLowerCase()] ?? "en"),
+            : ["Fellow Developers"],
+        tones: ["Thought Leadership", "Storytelling"],
+        languages: config.language.length > 0
+          ? config.language.map((l) => l.toUpperCase() === "EN" ? "EN" : l.toUpperCase() === "BN" ? "BN" : "Banglish")
+          : ["EN"],
         includeEmoji: true,
         postCount: 3,
         platforms: ["linkedin"],
@@ -291,15 +290,19 @@ export async function shortlistWithAI(
     }))
   }
 
-  const persona = {
-    targetAudience: config.targetAudience ?? [],
-    topics: config.topics ?? [],
-    industry: config.industry ?? [],
-    language: config.language ?? ["english"],
+  const shortlistData: ShortlistPromptData = {
+    items: rankedItems.map((item) => ({
+      title: item.title,
+      url: item.url,
+      score: item.score,
+      source: item.source,
+    })),
+    selectCount: topN,
+    platforms: ["linkedin"],
+    audiences: config.targetAudience ?? [],
   }
 
-  const systemPrompt = buildShortlistSystemPrompt()
-  const userPrompt = buildShortlistPrompt(rankedItems, persona, topN)
+  const { system: systemPrompt, user: userPrompt } = buildShortlistPrompt(shortlistData)
 
   try {
     const { text: raw } = await callWithTaskFallback("shortlist", {

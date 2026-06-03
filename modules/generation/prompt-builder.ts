@@ -1,7 +1,5 @@
 import {
-  buildSystemPrompt,
-  buildDeveloperPrompt,
-  buildUserPrompt,
+  buildGenerationPrompt,
   type GenerationPromptData,
 } from "@/core/ai/prompts/generate"
 import {
@@ -29,7 +27,7 @@ interface GuardrailData {
   customRules: string[]
 }
 
-export function buildGenerationPrompt(
+export function buildPromptPayload(
   generation: GenerationData,
   guardrails: GuardrailData
 ) {
@@ -48,9 +46,5 @@ export function buildGenerationPrompt(
     customRules: guardrails.customRules.slice(0, ACTIVE_CUSTOM_RULES_MAX),
   }
 
-  return {
-    system: buildSystemPrompt(generation.platforms),
-    developer: buildDeveloperPrompt(data),
-    user: buildUserPrompt(generation.topic, generation.postCount),
-  }
+  return buildGenerationPrompt(data)
 }
