@@ -112,6 +112,12 @@ function TrendingShell() {
   }, [loadTrending])
 
   async function handleRunNow() {
+    if (!prefs?.platforms || prefs.platforms.length === 0) {
+      toast.error("Please select at least one platform in settings first.")
+      setSettingsPanelOpen(true)
+      return
+    }
+
     setIsRunning(true)
     try {
       const res = await fetch(API.TRENDING_RUN_NOW, { method: "POST" })
