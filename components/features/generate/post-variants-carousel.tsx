@@ -77,7 +77,7 @@ function PostVariantsCarousel({
               <IconSparkles className="h-7 w-7 text-primary/60" />
             </div>
             <h3 className="text-sm font-semibold text-foreground">
-              Drop your topic above. PostCraftt writes 3 variants, scores each,
+              Drop your topic above. PostCraft writes 3 variants, scores each,
               and tells you which one hits hardest.
             </h3>
             <p className="mt-1.5 max-w-sm text-xs leading-relaxed text-muted-foreground">

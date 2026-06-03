@@ -52,7 +52,7 @@ export function buildEmailLayout(content: string, appUrl: string): string {
                 <tr>
                   <td align="center" style="padding:24px 20px 16px;">
                     <span class="email-header-logo" style="font-size:18px;font-weight:700;color:#FFFFFF;letter-spacing:-0.3px;">
-                      ▲ PostCraftt
+                      ▲ PostCraft
                     </span>
                   </td>
                 </tr>
@@ -71,7 +71,7 @@ export function buildEmailLayout(content: string, appUrl: string): string {
               <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                   <td align="center" style="font-size:12px;color:${LIGHT.mutedForeground};line-height:1.6;">
-                    <p style="margin:0 0 4px;">Sent by PostCraftt — AI-powered LinkedIn content</p>
+                    <p style="margin:0 0 4px;">Sent by PostCraft — AI-powered LinkedIn content</p>
                     <p style="margin:0;">
                       <a class="email-link" href="${appUrl}" style="color:${LIGHT.primary};text-decoration:none;">${appUrl.replace(/^https?:\/\//, "")}</a>
                     </p>
@@ -85,7 +85,7 @@ export function buildEmailLayout(content: string, appUrl: string): string {
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:${MAX_WIDTH};">
           <tr>
             <td align="center" style="padding:12px 10px 0;font-size:11px;color:${LIGHT.mutedForeground};font-family:${FONT};">
-              ${new Date().getFullYear()} PostCraftt. All rights reserved.
+              ${new Date().getFullYear()} PostCraft. All rights reserved.
             </td>
           </tr>
         </table>

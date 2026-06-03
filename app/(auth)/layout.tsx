@@ -11,7 +11,7 @@ export default function AuthLayout({
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-primary to-chart-2">
           <IconSparkles className="h-4 w-4 text-primary-foreground" />
         </div>
-        <span className="bg-linear-to-br from-primary to-chart-2 bg-clip-text text-transparent text-lg font-bold">PostCraftt</span>
+        <span className="bg-linear-to-br from-primary to-chart-2 bg-clip-text text-transparent text-lg font-bold">PostCraft</span>
       </div>
       {children}
     </div>

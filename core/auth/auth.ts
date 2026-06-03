@@ -41,12 +41,12 @@ function buildAuthConfig() {
         await sendEmail({
           to: user.email,
           subject: EMAIL_SUBJECT.RESET_PASSWORD,
-          text: `Reset your PostCraftt password: ${url}\n\nIf you didn't request this, you can safely ignore this email.`,
+          text: `Reset your PostCraft password: ${url}\n\nIf you didn't request this, you can safely ignore this email.`,
           html: buildEmailLayout(
             `
             <h1 style="font-size:22px;font-weight:700;color:${EMAIL_BRAND.LIGHT.foreground};margin:0 0 8px;">Reset your password</h1>
             <p style="font-size:15px;color:${EMAIL_BRAND.LIGHT.foreground};line-height:1.6;margin:0 0 16px;">
-              Someone requested a password reset for your PostCraftt account.
+              Someone requested a password reset for your PostCraft account.
               Click the button below to set a new password.
             </p>
             ${buildEmailButton(url, EMAIL_BUTTON.RESET_PASSWORD)}
@@ -66,12 +66,12 @@ function buildAuthConfig() {
         await sendEmail({
           to: user.email,
           subject: EMAIL_SUBJECT.PASSWORD_CHANGED,
-          text: "Your PostCraftt password has been changed successfully. If you didn't make this change, please contact support immediately.",
+          text: "Your PostCraft password has been changed successfully. If you didn't make this change, please contact support immediately.",
           html: buildEmailLayout(
             `
             <h1 style="font-size:22px;font-weight:700;color:${EMAIL_BRAND.LIGHT.foreground};margin:0 0 8px;">Password changed successfully</h1>
             <p style="font-size:15px;color:${EMAIL_BRAND.LIGHT.foreground};line-height:1.6;margin:0 0 16px;">
-              Your PostCraftt password has been changed. This change was made from your account settings.
+              Your PostCraft password has been changed. This change was made from your account settings.
             </p>
             <p style="font-size:13px;color:${EMAIL_BRAND.LIGHT.mutedForeground};line-height:1.5;margin:16px 0 0;">
               If you didn't make this change, please contact support immediately and secure your account.
@@ -95,10 +95,10 @@ function buildAuthConfig() {
         await sendEmail({
           to: user.email,
           subject: EMAIL_SUBJECT.VERIFY,
-          text: `Welcome to PostCraftt! Verify your email: ${url}\n\nThis link expires in 1 hour.`,
+          text: `Welcome to PostCraft! Verify your email: ${url}\n\nThis link expires in 1 hour.`,
           html: buildEmailLayout(
             `
-            <h1 style="font-size:22px;font-weight:700;color:${EMAIL_BRAND.LIGHT.foreground};margin:0 0 8px;">Welcome to PostCraftt</h1>
+            <h1 style="font-size:22px;font-weight:700;color:${EMAIL_BRAND.LIGHT.foreground};margin:0 0 8px;">Welcome to PostCraft</h1>
             <p style="font-size:15px;color:${EMAIL_BRAND.LIGHT.foreground};line-height:1.6;margin:0 0 16px;">
               You're one step away from creating AI-powered LinkedIn posts that build your professional brand.
             </p>

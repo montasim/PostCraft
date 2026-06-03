@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export const metadata: Metadata = {
   title: "Reset Password",
-  description: "Choose a new password for your PostCraftt account.",
+  description: "Choose a new password for your PostCraft account.",
 }
 
 export default function ResetPasswordPage() {
