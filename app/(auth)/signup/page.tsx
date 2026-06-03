@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
+import { Suspense } from "react"
 import { SignupForm } from "@/components/features/auth"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export const metadata: Metadata = {
   title: "Start Creating",
@@ -8,5 +10,9 @@ export const metadata: Metadata = {
 }
 
 export default function SignupPage() {
-  return <SignupForm />
+  return (
+    <Suspense fallback={<Skeleton className="h-96 w-full max-w-md" />}>
+      <SignupForm />
+    </Suspense>
+  )
 }

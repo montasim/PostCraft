@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import {
   Card,
@@ -13,12 +13,16 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { IconUserPlus, IconArrowLeft } from "@tabler/icons-react"
+import { IconUserPlus, IconArrowLeft, IconBrandGoogle } from "@tabler/icons-react"
+import { Separator } from "@/components/ui/separator"
 import { PasswordInput } from "@/components/shared/password-input"
 import { authClient } from "@/core/auth/auth-client"
 
 function SignupForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/"
+
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -44,6 +48,13 @@ function SignupForm() {
     }
 
     setSent(true)
+  }
+
+  async function handleGoogle() {
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: callbackUrl,
+    })
   }
 
   if (sent) {
@@ -126,6 +137,22 @@ function SignupForm() {
             {loading ? "Creating account..." : "Create account"}
           </Button>
         </form>
+
+        <div className="relative my-4">
+          <Separator />
+          <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
+            or
+          </span>
+        </div>
+
+        <Button
+          variant="outline"
+          className="w-full gap-2"
+          onClick={handleGoogle}
+        >
+          <IconBrandGoogle className="h-4 w-4" />
+          Continue with Google
+        </Button>
       </CardContent>
       <CardFooter className="flex flex-col space-y-4 text-center">
         <p className="text-sm text-muted-foreground">
