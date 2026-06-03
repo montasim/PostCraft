@@ -15,7 +15,9 @@ import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
+import { Progress } from "@/components/ui/progress"
 import { MultiSelect, type SelectOption } from "@/components/shared"
+import { cn } from "@/lib/utils"
 import {
   IconTrendingUp,
   IconPencil,
