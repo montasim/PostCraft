@@ -147,8 +147,8 @@ export const MODEL_REGISTRY: ModelConfig[] = [
   },
   {
     providerId: "zhipu",
-    modelId: "glm-4.5-air",
-    displayName: "GLM-4.5 Air",
+    modelId: "glm-5.1",
+    displayName: "GLM-5.1",
     rpm: 5,
     rpd: -1,
     contextWindow: 128_000,

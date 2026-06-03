@@ -7,7 +7,8 @@ const envSchema = z.object({
   GEMINI_MODEL: z.string().default("gemini-2.5-flash"),
   ZAI_API_KEY: z.string().optional(),
   ZAI_BASE_URL: z.string().default(EXTERNAL_API.ZHIPU),
-  ZAI_MODEL: z.string().default("glm-4.5-air"),
+  ZAI_MODEL: z.string().default("glm-5.1"),
+  DEFAULT_AI_PROVIDER: z.string().optional(),
 
   // Groq
   GROQ_API_KEY: z.string().optional(),

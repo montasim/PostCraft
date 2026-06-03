@@ -22,6 +22,7 @@ import { quotaTracker } from "./quota-tracker";
 import { getKeysForProvider, hasKeys } from "./key-registry";
 import { PROVIDER_CALLERS, type ChatRequest, type ChatResponse } from "./provider-client";
 import { logger } from "@/core/logger";
+import { getEnv } from "@/core/config/env";
 
 // ── Types ─────────────────────────────────────────────────────
 
@@ -41,7 +42,15 @@ export async function callWithAutoSwitch(
   req: ChatRequest,
   opts: SwitcherOptions = {},
 ): Promise<SwitcherResult> {
-  const registry = opts.customRegistry ?? MODEL_REGISTRY;
+  let registry = opts.customRegistry ?? MODEL_REGISTRY;
+  const { DEFAULT_AI_PROVIDER } = getEnv();
+  
+  if (DEFAULT_AI_PROVIDER) {
+    registry = [
+      ...registry.filter(m => m.providerId === DEFAULT_AI_PROVIDER),
+      ...registry.filter(m => m.providerId !== DEFAULT_AI_PROVIDER)
+    ];
+  }
 
   // Track which keys have received permanent auth errors this session
   // key: "provider#keyIndex", value: true
