@@ -37,7 +37,7 @@ export const AI_CONFIG = {
   HN_QUERY_MIN_POINTS: 50,
   DEVTO_TOP_PERIOD: 7,
   GITHUB_USER_AGENT: "postcraft/1.0",
-  REDDIT_USER_AGENT: "postcraft/1.0 (by /u/linkediq)",
+  REDDIT_USER_AGENT: "postcraft/1.0 (by /u/postcraft)",
   REDDIT_BASE_URL: "https://reddit.com",
 } as const
 

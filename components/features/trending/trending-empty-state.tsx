@@ -12,7 +12,7 @@ function TrendingEmptyState({ onConfigure }: TrendingEmptyStateProps) {
     <EmptyState
       icon={<IconTrendingUp className="h-7 w-7" />}
       title="No trending posts yet"
-      description="Set your topics and schedule. PostCraft scans HN, GitHub, Reddit, and Dev.to — then writes posts tailored to your voice."
+      description="Set your topics and schedule. PostCraftt scans HN, GitHub, Reddit, and Dev.to — then writes posts tailored to your voice."
       action={{ label: "Configure Settings", onClick: onConfigure }}
     />
   )

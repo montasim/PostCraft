@@ -37,7 +37,7 @@ function MobileSidebar({
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-linear-to-br from-primary to-chart-2">
             <IconSparkles className="h-4 w-4 text-primary-foreground" />
           </div>
-          <SheetTitle className="text-primary font-bold">PostCraft</SheetTitle>
+          <SheetTitle className="text-primary font-bold">PostCraftt</SheetTitle>
         </SheetHeader>
         <div className="flex-1 space-y-4 p-4">
           <NavGroup

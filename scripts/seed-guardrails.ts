@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 import { GuardrailModel } from "../modules/guardrail/guardrail.model"
 import { DEFAULT_GUARDRAILS } from "../modules/guardrail/guardrail.defaults"
 
-const MONGODB_URI = process.env.MONGODB_URI ?? "mongodb://localhost:27017/linkediq"
+const MONGODB_URI = process.env.MONGODB_URI ?? "mongodb://localhost:27017/postcraft"
 const WORKSPACE_ID = process.env.SEED_WORKSPACE_ID ?? "ws_default"
 
 async function seed() {

@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { getEnv } from "@/core/config/env"
 
 const SITE_URL = getEnv().APP_URL
-const SITE_NAME = "PostCraft"
+const SITE_NAME = "PostCraftt"
 
 export function buildMetadata(opts: {
   title: string

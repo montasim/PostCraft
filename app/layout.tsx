@@ -12,15 +12,15 @@ import { getEnv } from "@/core/config/env"
 export const metadata: Metadata = {
   metadataBase: new URL(getEnv().APP_URL),
   title: {
-    template: "%s | PostCraft",
-    default: "PostCraft — 3 AI Posts, One Idea",
+    template: "%s | PostCraftt",
+    default: "PostCraftt — 3 AI Posts, One Idea",
   },
   description:
     "Drop a topic. Get 3 LinkedIn-ready variants ranked by engagement, clarity, and readability. Write better posts in half the time.",
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "PostCraft",
+    siteName: "PostCraftt",
     images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
   },
   twitter: {

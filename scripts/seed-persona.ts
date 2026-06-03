@@ -9,7 +9,7 @@ import {
   INDUSTRY_OPTIONS,
 } from "../lib/constants"
 
-const MONGODB_URI = process.env.MONGODB_URI ?? "mongodb://localhost:27017/linkediq"
+const MONGODB_URI = process.env.MONGODB_URI ?? "mongodb://localhost:27017/postcraft"
 const WORKSPACE_ID = process.env.SEED_WORKSPACE_ID ?? "ws_default"
 
 const SEED_PERSONA = {

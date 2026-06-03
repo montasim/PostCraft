@@ -10,10 +10,10 @@ export default function NotFound() {
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-linear-to-br from-primary to-chart-2">
             <IconSparkles className="h-4 w-4 text-primary-foreground" />
           </div>
-          <span className="font-bold text-primary">PostCraft</span>
+          <span className="font-bold text-primary">PostCraftt</span>
         </Link>
       </header>
-      
+
       <main className="flex flex-1 flex-col items-center justify-center gap-6 p-10">
         <div className="flex flex-col items-center justify-center text-center">
           <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-muted/50 border shadow-sm">
@@ -35,7 +35,7 @@ export default function NotFound() {
       </main>
 
       <footer className="border-t py-6 text-center bg-card/50">
-        <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} PostCraft. All rights reserved.</p>
+        <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} PostCraftt. All rights reserved.</p>
       </footer>
     </div>
   )

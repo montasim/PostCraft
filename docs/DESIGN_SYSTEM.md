@@ -1,4 +1,4 @@
-# PostCraft Design System
+# PostCraftt Design System
 
 **Version:** 1.0
 **Stack:** React 19 + Tailwind CSS v4 + shadcn/ui (Radix)
@@ -11,7 +11,7 @@
 
 | Attribute | Value |
 |-----------|-------|
-| **Product** | PostCraft — LinkedIn Content Intelligence SaaS |
+| **Product** | PostCraftt — LinkedIn Content Intelligence SaaS |
 | **Purpose** | AI-powered post generation, scoring, and ranking |
 | **Target user** | Founders, creators, professionals building personal brand |
 | **Personality** | Authoritative yet approachable. Smart, fast, trustworthy |

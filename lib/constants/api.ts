@@ -32,7 +32,7 @@ export const EXTERNAL_API = {
   GITHUB_SEARCH: "https://api.github.com/search/repositories",
   REDDIT_HOT: "https://www.reddit.com/r",
   ZHIPU: "https://open.bigmodel.cn/api/paas/v4",
-  OPENROUTER_SITE: "https://linkediq.onrender.com",
+  OPENROUTER_SITE: "https://postcraft.onrender.com",
   LOCALHOST: "http://localhost:3000",
 } as const
 

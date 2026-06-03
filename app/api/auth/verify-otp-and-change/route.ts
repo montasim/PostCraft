@@ -88,12 +88,12 @@ export async function POST(request: NextRequest) {
     await sendEmail({
       to: email,
       subject: EMAIL_SUBJECT.PASSWORD_CHANGED,
-      text: "Your PostCraft password has been changed successfully. If you didn't make this change, please contact support immediately.",
+      text: "Your PostCraftt password has been changed successfully. If you didn't make this change, please contact support immediately.",
       html: buildEmailLayout(
         `
         <h1 style="font-size:22px;font-weight:700;color:${EMAIL_BRAND.LIGHT.foreground};margin:0 0 8px;">Password changed successfully</h1>
         <p style="font-size:15px;color:${EMAIL_BRAND.LIGHT.foreground};line-height:1.6;margin:0 0 16px;">
-          Your PostCraft password has been changed. This change was made from your account settings.
+          Your PostCraftt password has been changed. This change was made from your account settings.
         </p>
         <p style="font-size:13px;color:${EMAIL_BRAND.LIGHT.mutedForeground};line-height:1.5;margin:16px 0 0;">
           If you didn't make this change, please contact support immediately and secure your account.
