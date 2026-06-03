@@ -1,16 +1,16 @@
 # Graph Report - PostCraft  (2026-06-03)
 
 ## Corpus Check
-- 294 files · ~67,244 words
+- 294 files · ~67,283 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1159 nodes · 3329 edges · 56 communities (46 shown, 10 thin omitted)
-- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 17 edges (avg confidence: 0.8)
+- 1159 nodes · 3330 edges · 55 communities (46 shown, 9 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 18 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `67f1824f`
+- Built from commit: `9e2c72ef`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -57,7 +57,6 @@
 - [[_COMMUNITY_Constants Status|Constants Status]]
 - [[_COMMUNITY_Ranking Service|Ranking Service]]
 - [[_COMMUNITY_Constants Language|Constants Language]]
-- [[_COMMUNITY_Community 42|Community 42]]
 - [[_COMMUNITY_Slices Trending|Slices Trending]]
 - [[_COMMUNITY_Generation Prompt|Generation Prompt]]
 - [[_COMMUNITY_Quota Lib|Quota Lib]]
@@ -72,7 +71,7 @@
 - [[_COMMUNITY_Inngest Route|Inngest Route]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `cn()` - 156 edges
+1. `cn()` - 157 edges
 2. `connectDB()` - 53 edges
 3. `handleApiError()` - 52 edges
 4. `getEnv()` - 47 edges
@@ -86,19 +85,19 @@
 ## Surprising Connections (you probably didn't know these)
 - `RootLayout()` --calls--> `cn()`  [EXTRACTED]
   app/layout.tsx → lib/utils.ts
+- `PostCreationFormInner()` --calls--> `cn()`  [INFERRED]
+  components/features/generate/post-creation-form.tsx → lib/utils.ts
 - `MetricCard()` --calls--> `cn()`  [EXTRACTED]
   components/features/insights/insights-overview-cards.tsx → lib/utils.ts
 - `VariantCardWrapper()` --calls--> `useAppSelector()`  [EXTRACTED]
   components/features/library/library-card.tsx → store/hooks.ts
 - `TrendingHeaderProps` --references--> `TrendingPrefs`  [EXTRACTED]
   components/features/trending/trending-header.tsx → modules/prefs/prefs.schema.ts
-- `RunItem()` --calls--> `cn()`  [EXTRACTED]
-  components/features/trending/trending-run-group.tsx → lib/utils.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (56 total, 10 thin omitted)
+## Communities (55 total, 9 thin omitted)
 
 ### Community 0 - "Groq Gemini"
 Cohesion: 0.06
@@ -149,8 +148,8 @@ Cohesion: 0.08
 Nodes (28): SCORE_RANGES, DEFAULT_FILTERS, LibraryStats, ActivityHeatmapProps, BestPostHighlight(), BestPostHighlightProps, formatRelativeDate(), LibraryCard() (+20 more)
 
 ### Community 12 - "Auth Form"
-Cohesion: 0.19
-Nodes (14): authClient, LoginForm(), SignupForm(), VerifyEmailContent(), metadata, Card(), CardAction(), CardContent() (+6 more)
+Cohesion: 0.18
+Nodes (15): authClient, LoginForm(), SignupForm(), VerifyEmailContent(), RANGE_COLORS, metadata, Card(), CardAction() (+7 more)
 
 ### Community 13 - "Library Activity"
 Cohesion: 0.11
@@ -225,8 +224,8 @@ Cohesion: 0.07
 Nodes (35): accountSchema, appearanceSchema, IAccountSettings, IAppearanceSettings, INotificationSettings, ISettings, notificationSchema, settingsSchema (+27 more)
 
 ### Community 31 - "Insights Content"
-Cohesion: 0.20
-Nodes (19): EMPTY_DATA, InsightsContent(), InsightsData, InsightsHeader(), InsightsOverviewCards(), MetricCard(), InsightsScoreDistribution(), RANGE_COLORS (+11 more)
+Cohesion: 0.18
+Nodes (19): EMPTY_DATA, InsightsContent(), InsightsData, InsightsHeader(), InsightsOverviewCards(), MetricCard(), InsightsScoreDistribution(), InsightsDashboard (+11 more)
 
 ### Community 32 - "Prefs Schema"
 Cohesion: 0.18
@@ -283,7 +282,7 @@ Nodes (16): metadata, SettingsContent(), SettingsData, ConfirmDialog(), ConfirmD
 ## Knowledge Gaps
 - **206 isolated node(s):** `metadata`, `metadata`, `metadata`, `metadata`, `metadata` (+201 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **9 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_

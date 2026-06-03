@@ -324,7 +324,7 @@
       "source_file": "app/(main)/insights/page.tsx",
       "source_location": "L1",
       "id": "insights_page",
-      "community": 42,
+      "community": 31,
       "norm_label": "page.tsx"
     },
     {
@@ -333,7 +333,7 @@
       "source_file": "app/(main)/insights/page.tsx",
       "source_location": "L4",
       "id": "insights_page_metadata",
-      "community": 42,
+      "community": 31,
       "norm_label": "metadata"
     },
     {
@@ -342,7 +342,7 @@
       "source_file": "app/(main)/insights/page.tsx",
       "source_location": "L10",
       "id": "insights_page_insightspage",
-      "community": 42,
+      "community": 31,
       "norm_label": "insightspage()"
     },
     {
@@ -1285,7 +1285,7 @@
       "label": "geist",
       "file_type": "code",
       "source_file": "app/layout.tsx",
-      "source_location": "L38",
+      "source_location": "L43",
       "id": "app_layout_geist",
       "community": 38,
       "norm_label": "geist"
@@ -1294,7 +1294,7 @@
       "label": "fontMono",
       "file_type": "code",
       "source_file": "app/layout.tsx",
-      "source_location": "L40",
+      "source_location": "L45",
       "id": "app_layout_fontmono",
       "community": 38,
       "norm_label": "fontmono"
@@ -1303,7 +1303,7 @@
       "label": "RootLayout()",
       "file_type": "code",
       "source_file": "app/layout.tsx",
-      "source_location": "L45",
+      "source_location": "L50",
       "id": "app_layout_rootlayout",
       "community": 38,
       "norm_label": "rootlayout()"
@@ -1528,7 +1528,7 @@
       "label": "BannedWordsCard()",
       "file_type": "code",
       "source_file": "components/features/brand-guard/brand-guard-content.tsx",
-      "source_location": "L191",
+      "source_location": "L192",
       "id": "brand_guard_brand_guard_content_bannedwordscard",
       "community": 27,
       "norm_label": "bannedwordscard()"
@@ -1537,7 +1537,7 @@
       "label": "PreviewCard()",
       "file_type": "code",
       "source_file": "components/features/brand-guard/brand-guard-content.tsx",
-      "source_location": "L311",
+      "source_location": "L313",
       "id": "brand_guard_brand_guard_content_previewcard",
       "community": 27,
       "norm_label": "previewcard()"
@@ -1546,7 +1546,7 @@
       "label": "ApiGuardrail",
       "file_type": "code",
       "source_file": "components/features/brand-guard/brand-guard-content.tsx",
-      "source_location": "L394",
+      "source_location": "L396",
       "id": "brand_guard_brand_guard_content_apiguardrail",
       "community": 27,
       "norm_label": "apiguardrail"
@@ -1555,7 +1555,7 @@
       "label": "BrandGuardContent()",
       "file_type": "code",
       "source_file": "components/features/brand-guard/brand-guard-content.tsx",
-      "source_location": "L401",
+      "source_location": "L403",
       "id": "brand_guard_brand_guard_content_brandguardcontent",
       "community": 27,
       "norm_label": "brandguardcontent()"
@@ -1744,7 +1744,7 @@
       "label": "PostCreationForm()",
       "file_type": "code",
       "source_file": "components/features/generate/post-creation-form.tsx",
-      "source_location": "L446",
+      "source_location": "L451",
       "id": "generate_post_creation_form_postcreationform",
       "community": 28,
       "norm_label": "postcreationform()"
@@ -1971,7 +1971,7 @@
       "source_file": "components/features/insights/insights-score-distribution.tsx",
       "source_location": "L1",
       "id": "insights_insights_score_distribution",
-      "community": 31,
+      "community": 12,
       "norm_label": "insights-score-distribution.tsx"
     },
     {
@@ -1980,7 +1980,7 @@
       "source_file": "components/features/insights/insights-score-distribution.tsx",
       "source_location": "L8",
       "id": "insights_insights_score_distribution_range_colors",
-      "community": 31,
+      "community": 12,
       "norm_label": "range_colors"
     },
     {
@@ -17630,6 +17630,17 @@
       "weight": 1.0,
       "source": "generate_post_creation_form_postcreationforminner",
       "target": "lib_refine_store_consumerefinedata"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "components/features/generate/post-creation-form.tsx",
+      "source_location": "L277",
+      "weight": 1.0,
+      "source": "generate_post_creation_form_postcreationforminner",
+      "target": "lib_utils_cn"
     },
     {
       "relation": "contains",
@@ -46195,5 +46206,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "67f1824fa2088c001e1c6b9a5e8ac617120a9ec3"
+  "built_at_commit": "9e2c72ef851af37ee3296434b5cce69f4459b90e"
 }

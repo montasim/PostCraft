@@ -78,33 +78,6 @@
     {
       "label": "page.tsx",
       "file_type": "code",
-      "source_file": "app/(auth)/privacy/page.tsx",
-      "source_location": "L1",
-      "id": "privacy_page",
-      "community": 12,
-      "norm_label": "page.tsx"
-    },
-    {
-      "label": "metadata",
-      "file_type": "code",
-      "source_file": "app/(auth)/privacy/page.tsx",
-      "source_location": "L7",
-      "id": "privacy_page_metadata",
-      "community": 12,
-      "norm_label": "metadata"
-    },
-    {
-      "label": "PrivacyPage()",
-      "file_type": "code",
-      "source_file": "app/(auth)/privacy/page.tsx",
-      "source_location": "L12",
-      "id": "privacy_page_privacypage",
-      "community": 12,
-      "norm_label": "privacypage()"
-    },
-    {
-      "label": "page.tsx",
-      "file_type": "code",
       "source_file": "app/(auth)/reset-password/page.tsx",
       "source_location": "L1",
       "id": "reset_password_page",
@@ -351,7 +324,7 @@
       "source_file": "app/(main)/insights/page.tsx",
       "source_location": "L1",
       "id": "insights_page",
-      "community": 31,
+      "community": 42,
       "norm_label": "page.tsx"
     },
     {
@@ -360,7 +333,7 @@
       "source_file": "app/(main)/insights/page.tsx",
       "source_location": "L4",
       "id": "insights_page_metadata",
-      "community": 31,
+      "community": 42,
       "norm_label": "metadata"
     },
     {
@@ -369,7 +342,7 @@
       "source_file": "app/(main)/insights/page.tsx",
       "source_location": "L10",
       "id": "insights_page_insightspage",
-      "community": 31,
+      "community": 42,
       "norm_label": "insightspage()"
     },
     {
@@ -1381,6 +1354,33 @@
       "norm_label": "image()"
     },
     {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/privacy/page.tsx",
+      "source_location": "L1",
+      "id": "privacy_page",
+      "community": 12,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "metadata",
+      "file_type": "code",
+      "source_file": "app/privacy/page.tsx",
+      "source_location": "L6",
+      "id": "privacy_page_metadata",
+      "community": 12,
+      "norm_label": "metadata"
+    },
+    {
+      "label": "PrivacyPage()",
+      "file_type": "code",
+      "source_file": "app/privacy/page.tsx",
+      "source_location": "L11",
+      "id": "privacy_page_privacypage",
+      "community": 12,
+      "norm_label": "privacypage()"
+    },
+    {
       "label": "robots.ts",
       "file_type": "code",
       "source_file": "app/robots.ts",
@@ -1971,7 +1971,7 @@
       "source_file": "components/features/insights/insights-score-distribution.tsx",
       "source_location": "L1",
       "id": "insights_insights_score_distribution",
-      "community": 12,
+      "community": 31,
       "norm_label": "insights-score-distribution.tsx"
     },
     {
@@ -1980,7 +1980,7 @@
       "source_file": "components/features/insights/insights-score-distribution.tsx",
       "source_location": "L8",
       "id": "insights_insights_score_distribution_range_colors",
-      "community": 12,
+      "community": 31,
       "norm_label": "range_colors"
     },
     {
@@ -10522,103 +10522,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "app/(auth)/privacy/page.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "source": "privacy_page",
-      "target": "privacy_page_metadata",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(auth)/privacy/page.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "source": "privacy_page",
-      "target": "privacy_page_privacypage",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(auth)/privacy/page.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "source": "privacy_page",
-      "target": "ui_button",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(auth)/privacy/page.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "source": "privacy_page",
-      "target": "ui_button_button",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(auth)/privacy/page.tsx",
-      "source_location": "L2",
-      "weight": 1.0,
-      "source": "privacy_page",
-      "target": "ui_card",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(auth)/privacy/page.tsx",
-      "source_location": "L2",
-      "weight": 1.0,
-      "source": "privacy_page",
-      "target": "ui_card_card",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(auth)/privacy/page.tsx",
-      "source_location": "L2",
-      "weight": 1.0,
-      "source": "privacy_page",
-      "target": "ui_card_cardcontent",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(auth)/privacy/page.tsx",
-      "source_location": "L2",
-      "weight": 1.0,
-      "source": "privacy_page",
-      "target": "ui_card_cardheader",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(auth)/privacy/page.tsx",
-      "source_location": "L2",
-      "weight": 1.0,
-      "source": "privacy_page",
-      "target": "ui_card_cardtitle",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "app/(auth)/reset-password/page.tsx",
       "source_location": "L6",
       "weight": 1.0,
@@ -15282,6 +15185,103 @@
       "confidence_score": 1.0,
       "source": "app_opengraph_image",
       "target": "app_opengraph_image_size"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(auth)/privacy/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "privacy_page",
+      "target": "privacy_page_metadata"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(auth)/privacy/page.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "privacy_page",
+      "target": "privacy_page_privacypage"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(auth)/privacy/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "privacy_page",
+      "target": "ui_button"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(auth)/privacy/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "privacy_page",
+      "target": "ui_button_button"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(auth)/privacy/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "privacy_page",
+      "target": "ui_card"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(auth)/privacy/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "privacy_page",
+      "target": "ui_card_card"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(auth)/privacy/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "privacy_page",
+      "target": "ui_card_cardcontent"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(auth)/privacy/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "privacy_page",
+      "target": "ui_card_cardheader"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(auth)/privacy/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "privacy_page",
+      "target": "ui_card_cardtitle"
     },
     {
       "relation": "contains",

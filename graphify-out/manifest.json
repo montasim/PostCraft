@@ -5,13 +5,13 @@
     "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/app/(auth)/layout.tsx": {
-    "mtime": 1780502504.1731546,
-    "ast_hash": "9076bcd05c92e993f66026f9be7a3935",
+    "mtime": 1780503811.497955,
+    "ast_hash": "00311fcdd4643c60d33e4e633ccc3f87",
     "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/app/(auth)/login/page.tsx": {
-    "mtime": 1780502504.1771545,
-    "ast_hash": "f20b02ddda2461542d5a2216d0d8bd10",
+    "mtime": 1780505519.584227,
+    "ast_hash": "c88f5a7d10ac879f4dfe9ba47a10605a",
     "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/app/(auth)/reset-password/page.tsx": {
@@ -20,13 +20,13 @@
     "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/app/(auth)/signup/page.tsx": {
-    "mtime": 1780502504.1751547,
-    "ast_hash": "8ed6f0981b91bd1522f05e7ceaae0596",
+    "mtime": 1780505516.1783128,
+    "ast_hash": "f47a885f3a5b0bfc658ee2d1e6ce77fd",
     "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/app/(auth)/verify-email/page.tsx": {
-    "mtime": 1780502504.1771545,
-    "ast_hash": "9fb739a565a2d6927e981817e568e0d3",
+    "mtime": 1780505523.293984,
+    "ast_hash": "fc041c78bc858de84455a20306032d09",
     "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/app/(main)/brand-guard/error.tsx": {
@@ -100,9 +100,9 @@
     "semantic_hash": "287a8079a595969d8e728de3a8eff350"
   },
   "/home/r3tr0/Personal/PostCraft/app/(main)/page.tsx": {
-    "mtime": 1780389477.0159907,
-    "ast_hash": "e634ce95cf8e160914108263d92b9ce9",
-    "semantic_hash": "e634ce95cf8e160914108263d92b9ce9"
+    "mtime": 1780505512.1402621,
+    "ast_hash": "9023c67724378b7df572505b38700262",
+    "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/app/(main)/profile/error.tsx": {
     "mtime": 1780393578.1258495,
@@ -145,9 +145,9 @@
     "semantic_hash": "4cd2f8dda28e99634a8568eb7db685d5"
   },
   "/home/r3tr0/Personal/PostCraft/app/(main)/trending/page.tsx": {
-    "mtime": 1780389482.0690267,
-    "ast_hash": "9ce734b3718778fd72c87ae80798d944",
-    "semantic_hash": "9ce734b3718778fd72c87ae80798d944"
+    "mtime": 1780505514.1492872,
+    "ast_hash": "79a94bc49c2747a22350d276689e817d",
+    "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/app/api/ai-config/route.ts": {
     "mtime": 1780470889.583654,
@@ -285,8 +285,8 @@
     "semantic_hash": "cb4ff6e993d6e4f01a793896aed1b543"
   },
   "/home/r3tr0/Personal/PostCraft/app/layout.tsx": {
-    "mtime": 1780502504.1301165,
-    "ast_hash": "2ec2ff2fa632b16287c471603b337818",
+    "mtime": 1780504287.3105807,
+    "ast_hash": "08c7555f6bd3d4ad1a666d542473d71f",
     "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/app/not-found.tsx": {
@@ -295,14 +295,14 @@
     "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/app/opengraph-image.tsx": {
-    "mtime": 1780502504.1731546,
-    "ast_hash": "d20c79e72c8a46f06a8cdd542d454f6a",
+    "mtime": 1780504256.073083,
+    "ast_hash": "508d2d791693cb93ca401824cd5c1887",
     "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/app/robots.ts": {
-    "mtime": 1780407697.8168666,
-    "ast_hash": "67b456aefa68773cf0913ff2533d6b50",
-    "semantic_hash": "67b456aefa68773cf0913ff2533d6b50"
+    "mtime": 1780505176.486989,
+    "ast_hash": "d0f2dba626382377723c9067f4125aa3",
+    "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/app/sitemap.ts": {
     "mtime": 1780407697.8922322,
@@ -315,13 +315,13 @@
     "semantic_hash": "ee4a173e285d221aca6f80cbd7a554ab"
   },
   "/home/r3tr0/Personal/PostCraft/components/features/auth/login-form.tsx": {
-    "mtime": 1780502070.9415271,
-    "ast_hash": "32b9a06f659deeb863e623819404995b",
+    "mtime": 1780503815.531041,
+    "ast_hash": "dce2d5cde8d0d467182a935049571403",
     "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/components/features/auth/signup-form.tsx": {
-    "mtime": 1780502072.9765296,
-    "ast_hash": "574c3639c888ae5efe175fee1266cee4",
+    "mtime": 1780503829.7663407,
+    "ast_hash": "3a9ecaf78be52e0434be3ff88d091c9b",
     "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/components/features/auth/verify-email-content.tsx": {
@@ -330,9 +330,9 @@
     "semantic_hash": "c56eb5771c4fe5a1311e445c1b875d1e"
   },
   "/home/r3tr0/Personal/PostCraft/components/features/brand-guard/brand-guard-content.tsx": {
-    "mtime": 1780421217.3476923,
-    "ast_hash": "8fb1bcadac27955e4101f0dfc853928e",
-    "semantic_hash": "8fb1bcadac27955e4101f0dfc853928e"
+    "mtime": 1780505151.0156603,
+    "ast_hash": "1abc4f9af2e096dfbbd9236eecf724e9",
+    "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/components/features/brand-guard/index.ts": {
     "mtime": 1780403767.2486556,
@@ -360,13 +360,13 @@
     "semantic_hash": "cd91256eade47d20722d210a10918b9d"
   },
   "/home/r3tr0/Personal/PostCraft/components/features/generate/post-creation-form.tsx": {
-    "mtime": 1780491050.561114,
-    "ast_hash": "03e2bb32acaf64ba6bcd5330eb10b613",
-    "semantic_hash": "03e2bb32acaf64ba6bcd5330eb10b613"
+    "mtime": 1780505173.2559474,
+    "ast_hash": "ec0ff07b9ef5576c27e9b84827a8b40a",
+    "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/components/features/generate/post-variants-carousel.tsx": {
-    "mtime": 1780502504.1861546,
-    "ast_hash": "a9936935416efec067af6ff0b2dda704",
+    "mtime": 1780505538.464009,
+    "ast_hash": "e48d0351efd14910943b1bb5078fdfa2",
     "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/components/features/generate/quick-presets.tsx": {
@@ -510,9 +510,9 @@
     "semantic_hash": "8e46c757ad8ddb58566d6a27ba500a7c"
   },
   "/home/r3tr0/Personal/PostCraft/components/features/profile/profile-content.tsx": {
-    "mtime": 1780398527.1495411,
-    "ast_hash": "a85a36bd20e1da7cff9edfae9dce9130",
-    "semantic_hash": "a85a36bd20e1da7cff9edfae9dce9130"
+    "mtime": 1780505148.999634,
+    "ast_hash": "48cad0c6f7d166a0ef57c99e6307edd8",
+    "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/components/features/settings/index.ts": {
     "mtime": 1779443318.8296154,
@@ -570,9 +570,9 @@
     "semantic_hash": "28f2648a11014987b2fbd405d94c983b"
   },
   "/home/r3tr0/Personal/PostCraft/components/features/workspace/workspace-content.tsx": {
-    "mtime": 1780492671.3566856,
-    "ast_hash": "dadbc7449e7734056139290d6cbe27af",
-    "semantic_hash": "dadbc7449e7734056139290d6cbe27af"
+    "mtime": 1780505540.4878812,
+    "ast_hash": "47f6d90b56f6bbd65e8edf96b14e026a",
+    "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/components/layout/app-shell.tsx": {
     "mtime": 1780490622.8266437,
@@ -605,9 +605,9 @@
     "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/components/layout/theme-toggle.tsx": {
-    "mtime": 1780338958.1957576,
-    "ast_hash": "5e3796284fe4207c6a63422b988760cc",
-    "semantic_hash": "5e3796284fe4207c6a63422b988760cc"
+    "mtime": 1780505143.7945669,
+    "ast_hash": "2a2ae3d799d182afdfa997171230cdf0",
+    "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/components/layout/user-dropdown.tsx": {
     "mtime": 1780397975.9601078,
@@ -690,9 +690,9 @@
     "semantic_hash": "75b4a7cc6457529bc64e0adccc8f37aa"
   },
   "/home/r3tr0/Personal/PostCraft/components/shared/streak-widget.tsx": {
-    "mtime": 1780495425.5632908,
-    "ast_hash": "d670f940ec6525433f496d7d6e7bb2e4",
-    "semantic_hash": "d670f940ec6525433f496d7d6e7bb2e4"
+    "mtime": 1780505146.9846082,
+    "ast_hash": "980f42639c8d250e3a096c6e95f2611f",
+    "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/components/shared/time-picker.tsx": {
     "mtime": 1780494506.8007598,
@@ -825,9 +825,9 @@
     "semantic_hash": "d2d7ec364e338d1549d953a7a80fe098"
   },
   "/home/r3tr0/Personal/PostCraft/components/ui/skeleton.tsx": {
-    "mtime": 1780389126.936133,
-    "ast_hash": "e117d01459cbcc9c085512e7e6176f99",
-    "semantic_hash": "e117d01459cbcc9c085512e7e6176f99"
+    "mtime": 1780505216.017498,
+    "ast_hash": "8c740ebb1000dc53d25d37b2c7387a42",
+    "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/components/ui/switch.tsx": {
     "mtime": 1780491853.607124,
@@ -935,13 +935,13 @@
     "semantic_hash": "bc7d4a7a03a6658d6bb69776bf76b364"
   },
   "/home/r3tr0/Personal/PostCraft/core/auth/auth.ts": {
-    "mtime": 1780502504.1861546,
-    "ast_hash": "e5535951a9bb78c97229938312d1dbee",
+    "mtime": 1780505536.4431372,
+    "ast_hash": "edc5a4b2aef889b16cf4ae782300f818",
     "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/core/auth/email-templates.ts": {
-    "mtime": 1780502504.1901548,
-    "ast_hash": "a9c7c79bd7baba972fcc5f4484a96b9a",
+    "mtime": 1780505534.4302654,
+    "ast_hash": "70370f1fa5717ddb504740632d195158",
     "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/core/auth/email.ts": {
@@ -1370,9 +1370,9 @@
     "semantic_hash": "10bca7d3c0afc5be4d648e7f6281eddd"
   },
   "/home/r3tr0/Personal/PostCraft/modules/trending/trending.service.ts": {
-    "mtime": 1780426402.1602597,
-    "ast_hash": "b9ff1d262ab65ec9bce55a773de598ce",
-    "semantic_hash": "b9ff1d262ab65ec9bce55a773de598ce"
+    "mtime": 1780505641.87812,
+    "ast_hash": "b535b1d3a18b6acd987dd4aac86a9563",
+    "semantic_hash": ""
   },
   "/home/r3tr0/Personal/PostCraft/modules/trending/trending.types.ts": {
     "mtime": 1780288547.8896182,
