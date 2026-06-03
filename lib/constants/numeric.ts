@@ -1,4 +1,4 @@
-export const PLAN_LIMIT = 3
+export const PLAN_LIMIT = 300
 export const PAGE_SIZE = 6
 
 export const TOPIC_MAX_LENGTH = 2000
@@ -32,8 +32,8 @@ export const MAX_RETRIES_DEFAULT = 3
 export const MAX_RETRIES_JUDGE = 2
 export const BACKOFF_BASE_MS = 1000
 export const POST_COUNT_MIN = 1
-export const POST_COUNT_MAX = 10
-export const POST_COUNT_DEFAULT = 3
+export const POST_COUNT_MAX = 3
+export const POST_COUNT_DEFAULT = 1
 export const TWITTER_BODY_MAX_LENGTH = 280
 
 export const SCORE_MIN = 0
