@@ -100,7 +100,7 @@ function buildAuthConfig() {
             `
             <h1 style="font-size:22px;font-weight:700;color:${EMAIL_BRAND.LIGHT.foreground};margin:0 0 8px;">Welcome to PostCraft</h1>
             <p style="font-size:15px;color:${EMAIL_BRAND.LIGHT.foreground};line-height:1.6;margin:0 0 16px;">
-              You're one step away from creating AI-powered LinkedIn posts that build your professional brand.
+              You're one step away from creating AI-powered social media posts that build your professional brand.
             </p>
             <p style="font-size:15px;color:${EMAIL_BRAND.LIGHT.foreground};line-height:1.6;margin:0 0 20px;">
               Click the button below to verify your email address and get started.

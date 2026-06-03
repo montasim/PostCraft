@@ -16,12 +16,17 @@ export const metadata: Metadata = {
     default: "PostCraft — 3 AI Posts, One Idea",
   },
   description:
-    "Drop a topic. Get 3 LinkedIn-ready variants ranked by engagement, clarity, and readability. Write better posts in half the time.",
+    "Drop a topic. Get 3 social-ready variants ranked by engagement, clarity, and readability. Write better posts in half the time.",
   openGraph: {
     type: "website",
     locale: "en_US",
     siteName: "PostCraft",
     images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
+  },
+  alternates: {
+    types: {
+      "text/markdown": "/llms.txt",
+    },
   },
   twitter: {
     card: "summary_large_image",

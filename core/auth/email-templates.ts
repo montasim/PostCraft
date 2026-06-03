@@ -71,7 +71,7 @@ export function buildEmailLayout(content: string, appUrl: string): string {
               <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                   <td align="center" style="font-size:12px;color:${LIGHT.mutedForeground};line-height:1.6;">
-                    <p style="margin:0 0 4px;">Sent by PostCraft — AI-powered LinkedIn content</p>
+                    <p style="margin:0 0 4px;">Sent by PostCraft — AI-powered social media content</p>
                     <p style="margin:0;">
                       <a class="email-link" href="${appUrl}" style="color:${LIGHT.primary};text-decoration:none;">${appUrl.replace(/^https?:\/\//, "")}</a>
                     </p>

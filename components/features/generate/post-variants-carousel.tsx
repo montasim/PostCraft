@@ -83,7 +83,7 @@ function PostVariantsCarousel({
             <p className="mt-1.5 max-w-sm text-xs leading-relaxed text-muted-foreground">
               Share your idea above and hit{" "}
               <span className="font-medium text-primary">Write My Post</span>.
-              You'll get 3 LinkedIn-ready versions, each scored for engagement,
+              You'll get 3 social-ready versions, each scored for engagement,
               clarity, and readability.
             </p>
             <div className="mt-5 flex flex-wrap justify-center gap-2">

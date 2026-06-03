@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og"
 
-export const alt = "PostCraft — Write LinkedIn Posts That Get Engagement"
+export const alt = "PostCraft — Write Social Posts That Get Engagement"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
@@ -63,7 +63,7 @@ export default function Image() {
             lineHeight: 1.4,
           }}
         >
-          Write LinkedIn Posts That Get Engagement
+          Write Social Posts That Get Engagement
         </div>
         <div
           style={{

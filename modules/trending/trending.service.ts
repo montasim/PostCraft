@@ -201,12 +201,12 @@ export async function getGlobalTopics(): Promise<{
   // Tier 2: AI-generated suggestions
   try {
     const { text: raw } = await callWithTaskFallback("generate", {
-      system: `You are a LinkedIn content strategist.
+      system: `You are a social media content strategist.
 Return a JSON object with a "topics" array of exactly 6 trending professional topics
-suitable as LinkedIn post ideas for developers, founders, and tech professionals.
+suitable as social media post ideas for developers, founders, and tech professionals.
 Topics should be timely, specific, and conversation-starting.
 No markdown. No explanation. JSON only.`,
-      user: `Generate 6 trending LinkedIn topic suggestions for tech professionals.
+      user: `Generate 6 trending social media topic suggestions for tech professionals.
 Return exactly: { "topics": ["topic1", "topic2", "topic3", "topic4", "topic5", "topic6"] }`,
       temperature: AI_TEMPERATURE.TRENDING,
       maxTokens: AI_MAX_TOKENS.TRENDING,

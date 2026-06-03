@@ -4,8 +4,8 @@ import { LoginForm } from "@/components/features/auth"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export const metadata: Metadata = {
-  title: "Sign In",
-  description: "Welcome back. Sign in to your PostCraft account and start creating LinkedIn posts that get engagement.",
+  title: "Login",
+  description: "Welcome back. Sign in to your PostCraft account and start creating social media posts that get engagement.",
 }
 
 export default function LoginPage() {
