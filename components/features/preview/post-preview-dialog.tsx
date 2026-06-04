@@ -45,7 +45,7 @@ function PostPreviewDialog({
   async function handlePostNow() {
     setIsPosting(true)
     try {
-      const response = await fetch("/api/linkedin/post", {
+      const response = await fetch(`/api/${platform}/post`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -54,12 +54,15 @@ function PostPreviewDialog({
         }),
       })
 
-      if (!response.ok) throw new Error("Failed to post")
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || "Failed to post")
+      }
 
-      toast.success("Successfully posted to LinkedIn!")
+      toast.success(`Successfully posted to ${platformName}!`)
       onOpenChange(false)
     } catch (error) {
-      toast.error("Could not post to LinkedIn. Please connect your account.")
+      toast.error(error instanceof Error ? error.message : `Could not post to ${platformName}.`)
     } finally {
       setIsPosting(false)
     }
@@ -68,7 +71,7 @@ function PostPreviewDialog({
   async function handleSchedule() {
     setIsScheduling(true)
     try {
-      const response = await fetch("/api/linkedin/schedule", {
+      const response = await fetch(`/api/${platform}/schedule`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -78,12 +81,15 @@ function PostPreviewDialog({
         }),
       })
 
-      if (!response.ok) throw new Error("Failed to schedule")
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || "Failed to schedule")
+      }
 
-      toast.success("Post scheduled for tomorrow!")
+      toast.success("Post scheduled successfully!")
       onOpenChange(false)
     } catch (error) {
-      toast.error("Could not schedule post. Please connect your account.")
+      toast.error(error instanceof Error ? error.message : "Could not schedule post.")
     } finally {
       setIsScheduling(false)
     }
@@ -97,7 +103,7 @@ function PostPreviewDialog({
       >
         <DialogTitle className="sr-only">{platformName} Preview</DialogTitle>
         <PreviewComponent variant={variant} />
-        {platform === "linkedin" && (
+        {(platform === "linkedin" || platform === "facebook") && (
           <DialogFooter className="mt-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
             {showDatePicker ? (
               <div className="flex w-full items-center gap-2 sm:w-auto">
@@ -107,7 +113,7 @@ function PostPreviewDialog({
                       <IconInfoCircle className="h-4 w-4 text-muted-foreground hover:text-foreground cursor-help shrink-0 transition-colors" />
                     </TooltipTrigger>
                     <TooltipContent className="max-w-[260px] text-center p-3 leading-relaxed" side="top" sideOffset={8}>
-                      <p>We do not schedule posts directly on LinkedIn. Instead, PostCraft holds your post securely on our servers and automatically publishes it to your account at the scheduled time.</p>
+                      <p>We do not schedule posts directly on {platformName}. Instead, PostCraft holds your post securely on our servers and automatically publishes it to your account at the scheduled time.</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -147,7 +153,7 @@ function PostPreviewDialog({
                   Schedule Post
                 </Button>
                 <Button 
-                  className="gap-2 bg-[#0a66c2] text-white hover:bg-[#004182]"
+                  className={`gap-2 ${platform === "facebook" ? "bg-[#1877F2] hover:bg-[#166fe5]" : "bg-[#0a66c2] hover:bg-[#004182]"} text-white`}
                   onClick={handlePostNow}
                   disabled={isPosting}
                 >
