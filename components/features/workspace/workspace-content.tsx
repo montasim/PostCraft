@@ -58,11 +58,6 @@ function TrendingToggleCard() {
   async function handleToggle() {
     if (!trendingPrefs) return
 
-    if (!enabled && (!trendingPrefs.platforms || trendingPrefs.platforms.length === 0)) {
-      toast.error("Please select at least one platform in Trending Settings first.")
-      return
-    }
-
     const updated: TrendingPrefs = { ...trendingPrefs, enabled: !enabled }
     await savePrefs(updated)
   }

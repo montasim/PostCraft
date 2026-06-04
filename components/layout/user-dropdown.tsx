@@ -33,8 +33,7 @@ function UserDropdown() {
 
   async function handleLogout() {
     await authClient.signOut()
-    router.push("/login")
-    router.refresh()
+    window.location.href = "/login"
   }
 
   return (

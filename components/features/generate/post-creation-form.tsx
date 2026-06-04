@@ -264,7 +264,7 @@ function PostCreationFormInner({
               onBlur={() => setIsFocused(false)}
               placeholder="What should your audience know? Drop your topic here."
               rows={6}
-              className={`min-h-[140px] resize-none border-2 transition-colors duration-200 ${
+              className={`min-h-[140px] max-h-[280px] overflow-y-auto resize-none border-2 transition-colors duration-200 ${
                 isFocused ? "border-primary/40" : "border-border"
               } ${topic.trim().length > 0 ? "bg-primary/[0.02]" : ""}`}
             />
