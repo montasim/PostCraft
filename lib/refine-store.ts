@@ -5,14 +5,22 @@ export interface RefineData {
   languages: string[]
 }
 
-let pendingRefine: RefineData | null = null
+const STORAGE_KEY = "postcraft_refine_data"
 
 export function setRefineData(data: RefineData) {
-  pendingRefine = data
+  if (typeof window !== "undefined") {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+  }
 }
 
 export function consumeRefineData(): RefineData | null {
-  const data = pendingRefine
-  pendingRefine = null
-  return data
+  if (typeof window === "undefined") return null
+  const dataStr = sessionStorage.getItem(STORAGE_KEY)
+  if (!dataStr) return null
+  sessionStorage.removeItem(STORAGE_KEY)
+  try {
+    return JSON.parse(dataStr) as RefineData
+  } catch {
+    return null
+  }
 }
