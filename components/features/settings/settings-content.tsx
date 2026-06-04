@@ -464,9 +464,14 @@ function ConnectedAccountsCard() {
     await authClient.linkSocial({ provider: "facebook", callbackURL: "/settings" })
   }
 
+  const handleConnectTwitter = async () => {
+    await authClient.linkSocial({ provider: "twitter", callbackURL: "/settings" })
+  }
+
   const googleAccount = accounts.find((a) => a.providerId === "google")
   const linkedinAccount = accounts.find((a) => a.providerId === "linkedin")
   const facebookAccount = accounts.find((a) => a.providerId === "facebook")
+  const twitterAccount = accounts.find((a) => a.providerId === "twitter")
 
   return (
     <Card>
@@ -544,6 +549,26 @@ function ConnectedAccountsCard() {
                 onClick={() => facebookAccount ? handleDisconnect("facebook") : handleConnectFacebook()}
               >
                 {facebookAccount ? "Disconnect" : "Connect"}
+              </Button>
+            </div>
+
+            <div className="flex items-center justify-between rounded-lg border px-3 py-2">
+              <div className="flex items-center gap-3">
+                <svg className="h-5 w-5 fill-current text-foreground" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.936H5.051z" /></svg>
+                <div>
+                  <p className="text-xs font-medium">Twitter / X</p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {twitterAccount ? "Connected" : "Not connected"}
+                  </p>
+                </div>
+              </div>
+              <Button
+                variant={twitterAccount ? "outline" : "default"}
+                size="sm"
+                className={cn("h-7 text-xs", twitterAccount && "text-destructive hover:text-destructive hover:bg-destructive/10")}
+                onClick={() => twitterAccount ? handleDisconnect("twitter") : handleConnectTwitter()}
+              >
+                {twitterAccount ? "Disconnect" : "Connect"}
               </Button>
             </div>
           </>
@@ -735,12 +760,12 @@ function SettingsContent() {
             settings={data.notifications}
             onUpdate={handleNotificationUpdate}
           />
-        </div>
-        <div className="space-y-4">
           <AccountSecurityCard
             settings={data.account}
             onUpdate={handleAccountUpdate}
           />
+        </div>
+        <div className="space-y-4">
           <ConnectedAccountsCard />
           <DangerZoneCard
             onReset={handleReset}

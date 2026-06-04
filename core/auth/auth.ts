@@ -137,6 +137,12 @@ function buildAuthConfig() {
         enabled: !!(env.FACEBOOK_CLIENT_ID && env.FACEBOOK_CLIENT_SECRET),
         scope: ["pages_manage_posts", "pages_read_engagement", "pages_show_list"],
       },
+      twitter: {
+        clientId: env.TWITTER_CLIENT_ID ?? "",
+        clientSecret: env.TWITTER_CLIENT_SECRET ?? "",
+        enabled: !!(env.TWITTER_CLIENT_ID && env.TWITTER_CLIENT_SECRET),
+        scope: ["tweet.read", "tweet.write", "users.read", "offline.access"],
+      },
     },
 
     session: {
@@ -151,8 +157,13 @@ function buildAuthConfig() {
     account: {
       accountLinking: {
         enabled: true,
-        trustedProviders: ["google", "linkedin", "facebook"],
+        trustedProviders: ["google", "linkedin", "facebook", "twitter"],
+        allowDifferentEmails: true,
       },
+    },
+
+    logger: {
+      level: "debug",
     },
   }
 }
