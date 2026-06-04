@@ -28,12 +28,16 @@ import {
   IconRefresh,
   IconSend,
   IconShieldCheck,
+  IconBrandGoogle,
+  IconBrandLinkedin,
+  IconLink,
 } from "@tabler/icons-react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { requestNotificationPermission } from "@/lib/browser-notification"
 import { API } from "@/lib/constants"
 import { authClient } from "@/core/auth/auth-client"
+import { cn } from "@/lib/utils"
 import type { NotificationSettings, AccountSettings } from "@/types"
 
 // ─── Notification Settings Card ────────────────────────────────────
@@ -407,6 +411,122 @@ function DangerZoneCard({
   )
 }
 
+// ─── Connected Accounts Card ───────────────────────────────────────
+
+function ConnectedAccountsCard() {
+  const [accounts, setAccounts] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  const fetchAccounts = async () => {
+    try {
+      const res = await fetch("/api/settings/accounts")
+      const result = await res.json()
+      if (result.success) setAccounts(result.data)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchAccounts()
+  }, [])
+
+  const handleDisconnect = async (providerId: string) => {
+    try {
+      setLoading(true)
+      const res = await fetch(`/api/settings/accounts?providerId=${providerId}`, { method: "DELETE" })
+      const result = await res.json()
+      if (result.success) {
+        toast.success(`Account disconnected successfully`)
+        fetchAccounts()
+      } else {
+        toast.error("Failed to disconnect account")
+        setLoading(false)
+      }
+    } catch (err) {
+      toast.error("Failed to disconnect account")
+      setLoading(false)
+    }
+  }
+
+  const handleConnectGoogle = async () => {
+    await authClient.signIn.social({ provider: "google", callbackURL: "/settings" })
+  }
+
+  const handleConnectLinkedin = async () => {
+    await authClient.signIn.social({ provider: "linkedin", callbackURL: "/settings" })
+  }
+
+  const googleAccount = accounts.find((a) => a.providerId === "google")
+  const linkedinAccount = accounts.find((a) => a.providerId === "linkedin")
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+          <IconLink className="h-4 w-4 text-primary" />
+          Connected accounts
+        </CardTitle>
+        <p className="text-xs text-muted-foreground">
+          Connect your social accounts for seamless posting
+        </p>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {loading ? (
+          <div className="space-y-4">
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+          </div>
+        ) : (
+          <>
+            <div className="flex items-center justify-between rounded-lg border px-3 py-2">
+              <div className="flex items-center gap-3">
+                <IconBrandGoogle className="h-5 w-5 text-foreground" />
+                <div>
+                  <p className="text-xs font-medium">Google</p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {googleAccount ? "Connected" : "Not connected"}
+                  </p>
+                </div>
+              </div>
+              <Button
+                variant={googleAccount ? "outline" : "default"}
+                size="sm"
+                className={cn("h-7 text-xs", googleAccount && "text-destructive hover:text-destructive hover:bg-destructive/10")}
+                onClick={() => googleAccount ? handleDisconnect("google") : handleConnectGoogle()}
+              >
+                {googleAccount ? "Disconnect" : "Connect"}
+              </Button>
+            </div>
+
+            <div className="flex items-center justify-between rounded-lg border px-3 py-2">
+              <div className="flex items-center gap-3">
+                <IconBrandLinkedin className="h-5 w-5 text-[#0a66c2]" />
+                <div>
+                  <p className="text-xs font-medium">LinkedIn</p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {linkedinAccount ? "Connected" : "Not connected"}
+                  </p>
+                </div>
+              </div>
+              <Button
+                variant={linkedinAccount ? "outline" : "default"}
+                size="sm"
+                className={cn("h-7 text-xs", linkedinAccount && "text-destructive hover:text-destructive hover:bg-destructive/10")}
+                onClick={() => linkedinAccount ? handleDisconnect("linkedin") : handleConnectLinkedin()}
+              >
+                {linkedinAccount ? "Disconnect" : "Connect"}
+              </Button>
+            </div>
+          </>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
+
 // ─── Orchestrator ──────────────────────────────────────────────────
 
 interface SettingsData {
@@ -511,8 +631,7 @@ function SettingsContent() {
         return
       }
       await authClient.signOut()
-      router.push("/login")
-      router.refresh()
+      window.location.href = "/login"
     } catch {
       toast.error("Failed to delete workspace")
     }
@@ -596,6 +715,7 @@ function SettingsContent() {
             settings={data.account}
             onUpdate={handleAccountUpdate}
           />
+          <ConnectedAccountsCard />
           <DangerZoneCard
             onReset={handleReset}
             onDelete={handleDeleteWorkspace}

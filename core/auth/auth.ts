@@ -125,6 +125,12 @@ function buildAuthConfig() {
         clientSecret: env.GOOGLE_CLIENT_SECRET ?? "",
         enabled: googleEnabled,
       },
+      linkedin: {
+        clientId: env.LINKEDIN_CLIENT_ID ?? "",
+        clientSecret: env.LINKEDIN_CLIENT_SECRET ?? "",
+        enabled: !!(env.LINKEDIN_CLIENT_ID && env.LINKEDIN_CLIENT_SECRET),
+        scope: ["w_member_social"],
+      },
     },
 
     session: {
