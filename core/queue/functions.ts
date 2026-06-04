@@ -315,23 +315,33 @@ export const scheduleLinkedInPost = inngest.createFunction(
     triggers: [{ event: "linkedin/post-scheduled" }],
   },
   async ({ event, step }) => {
-    const { userId, text, hashtags, scheduledTime } = event.data as {
+    const { userId, scheduledTime, postId } = event.data as {
       userId: string
-      text: string
-      hashtags: string[]
       scheduledTime: string
+      postId?: string
     }
 
     await step.sleepUntil("wait-for-schedule", new Date(scheduledTime))
 
     await step.run("post-to-linkedin", async () => {
-      // Inline the LinkedIn post logic or call an internal service
-      // We need to fetch the user's token and post to LinkedIn
       const { connectDB } = await import("@/core/config/database")
       const { getAuthDb } = await import("@/core/auth/auth-db")
+      const { LinkedinPost } = await import("@/modules/linkedin/linkedin.schema")
       const { ObjectId } = await import("mongodb")
       
       await connectDB()
+
+      let currentText = event.data.text as string
+      let currentHashtags = event.data.hashtags as string[]
+
+      if (postId) {
+        const dbPost = await LinkedinPost.findById(postId)
+        if (!dbPost || dbPost.status !== "scheduled") {
+          return { skipped: true, reason: "post_deleted_or_not_scheduled" }
+        }
+        currentText = dbPost.text
+        currentHashtags = dbPost.hashtags || []
+      }
       const { db } = getAuthDb()
       
       let userObjectId
@@ -357,9 +367,9 @@ export const scheduleLinkedInPost = inngest.createFunction(
       const profile = await profileRes.json()
       const personUrn = `urn:li:person:${profile.sub}`
       
-      const postContent = hashtags?.length
-        ? `${text}\n\n${hashtags.map((h: string) => h.startsWith('#') ? h : `#${h}`).join(' ')}`
-        : text
+      const postContent = currentHashtags?.length
+        ? `${currentText}\n\n${currentHashtags.map((h: string) => h.startsWith('#') ? h : `#${h}`).join(' ')}`
+        : currentText
         
       const postRes = await fetch("https://api.linkedin.com/v2/ugcPosts", {
         method: "POST",
@@ -387,10 +397,25 @@ export const scheduleLinkedInPost = inngest.createFunction(
       
       if (!postRes.ok) {
         const err = await postRes.text()
+        if (postId) {
+          await LinkedinPost.findByIdAndUpdate(postId, {
+            status: "failed",
+            error: err,
+          })
+        }
         throw new Error(`LinkedIn API error: ${err}`)
       }
       
-      return { success: true }
+      const urn = postRes.headers.get("x-restli-id") || ""
+      
+      if (postId) {
+        await LinkedinPost.findByIdAndUpdate(postId, {
+          status: "published",
+          urn,
+        })
+      }
+      
+      return { success: true, urn }
     })
   }
 )

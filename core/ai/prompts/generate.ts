@@ -114,8 +114,8 @@ LinkedIn: Thought Leadership, Contrarian Take, Personal Failure→Lesson, Data S
 Twitter: Hot Take, Unpopular Opinion, Thread Starter, Quick Insight, Humor
 Facebook: Personal Story, Community Question, Nostalgia Trigger, Behind the Scenes, Emotional Truth
 
-EMOJI: ${data.includeEmoji ? "Use emojis to boost engagement and make the post visually appealing. Include 3-5 relevant emojis per post." : "No emojis. Do not use any emojis at all."}
-HASHTAG COUNT PER POST: ${data.hashtagCount}
+EMOJI: ${data.includeEmoji ? "Use a few relevant emojis (1-3 max) to boost engagement. Only use them where naturally applicable. Do NOT overuse them, keep the post professional." : "No emojis. Do not use any emojis at all."}
+HASHTAGS: Include exactly ${data.hashtagCount} hashtags per post. Hashtags MUST ALWAYS BE IN ENGLISH ONLY, regardless of the language of the post. NEVER use Bengali script for hashtags.
 CRITICAL RULE - LANGUAGES: You MUST write the posts STRICTLY in the following languages: ${data.languages.join(", ")}. If a mixed language like 'Banglish (Bangla + English)' is requested, you MUST write the content mixing both languages naturally as a native speaker would. Do not output only English.
 AUDIENCES: ${data.audiences.join(", ")}
 TONES: ${data.tones.join(", ")}${guardrailBlock}
