@@ -419,3 +419,111 @@ export const scheduleLinkedInPost = inngest.createFunction(
     })
   }
 )
+
+export const scheduleFacebookPost = inngest.createFunction(
+  {
+    id: "schedule-facebook-post",
+    name: "Schedule Facebook Post",
+    retries: 2,
+    triggers: [{ event: "facebook/post-scheduled" }],
+  },
+  async ({ event, step }) => {
+    const { userId, scheduledTime, postId } = event.data as {
+      userId: string
+      scheduledTime: string
+      postId?: string
+    }
+
+    await step.sleepUntil("wait-for-schedule", new Date(scheduledTime))
+
+    await step.run("post-to-facebook", async () => {
+      const { connectDB } = await import("@/core/config/database")
+      const { getAuthDb } = await import("@/core/auth/auth-db")
+      const { FacebookPost } = await import("@/modules/facebook/facebook.schema")
+      const { ObjectId } = await import("mongodb")
+      
+      await connectDB()
+
+      let currentText = event.data.text as string
+      let currentHashtags = event.data.hashtags as string[]
+
+      if (postId) {
+        const dbPost = await FacebookPost.findById(postId)
+        if (!dbPost || dbPost.status !== "scheduled") {
+          return { skipped: true, reason: "post_deleted_or_not_scheduled" }
+        }
+        currentText = dbPost.text
+        currentHashtags = dbPost.hashtags || []
+      }
+      const { db } = getAuthDb()
+      
+      let userObjectId
+      try {
+        userObjectId = new ObjectId(userId)
+      } catch(e) {}
+      
+      const query = {
+        userId: userObjectId ? { $in: [userId, userObjectId] } : userId,
+        providerId: "facebook",
+      }
+      
+      const account = await db.collection("account").findOne(query)
+      if (!account || !account.accessToken) throw new Error("No Facebook token found")
+      
+      const token = account.accessToken
+      
+      const pagesRes = await fetch(`https://graph.facebook.com/v19.0/me/accounts?access_token=${token}`)
+      if (!pagesRes.ok) throw new Error("Failed to fetch Facebook pages")
+      
+      const pagesData = await pagesRes.json()
+      if (!pagesData.data || pagesData.data.length === 0) {
+        throw new Error("No Facebook pages found for this account")
+      }
+
+      const page = pagesData.data[0]
+      const pageId = page.id
+      const pageToken = page.access_token
+
+      const postContent = currentHashtags?.length
+        ? `${currentText}\n\n${currentHashtags.map((h: string) => h.startsWith('#') ? h : `#${h}`).join(' ')}`
+        : currentText
+        
+      const postRes = await fetch(`https://graph.facebook.com/v19.0/${pageId}/feed`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: postContent,
+          access_token: pageToken,
+        }),
+      })
+      
+      if (!postRes.ok) {
+        const err = await postRes.text()
+        if (postId) {
+          await FacebookPost.findByIdAndUpdate(postId, {
+            status: "failed",
+            error: err,
+          })
+        }
+        logger.error({ err, pageId, userId }, "Facebook scheduled post failed")
+        throw new Error(`Facebook API error: ${err}`)
+      }
+      
+      const postData = await postRes.json()
+      const returnedPostId = postData.id
+      
+      if (postId) {
+        await FacebookPost.findByIdAndUpdate(postId, {
+          status: "published",
+          postId: returnedPostId,
+        })
+      }
+      
+      logger.info({ postId: returnedPostId, userId, pageId }, "Successfully executed scheduled Facebook post")
+      
+      return { success: true, postId: returnedPostId }
+    })
+  }
+)
