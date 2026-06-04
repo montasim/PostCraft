@@ -10,6 +10,9 @@ import { IconChevronDown, IconStack2 } from "@tabler/icons-react"
 import type { LibraryEntry } from "@/types"
 import { useAppSelector } from "@/store/hooks"
 import { selectPersona } from "@/store/slices/workspace.slice"
+import { setRefineData } from "@/lib/refine-store"
+import { IconRefresh } from "@tabler/icons-react"
+import { Button } from "@/components/ui/button"
 
 const STATUS_STYLES: Record<string, string> = {
   published: "bg-chart-2/15 text-chart-2",
@@ -108,7 +111,33 @@ function VariantCardWrapper({ variant }: { variant: import("@/types").Variant })
     setTimeout(() => setCopied(false), 1500)
   }
 
-  return <VariantCard variant={variant} copied={copied} onCopy={handleCopy} customHashtags={persona?.customHashtags} />
+  return (
+    <VariantCard 
+      variant={variant} 
+      copied={copied} 
+      onCopy={handleCopy} 
+      customHashtags={persona?.customHashtags} 
+      extraActions={
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            setRefineData({
+              topic: `${variant.hook}\n\n${variant.body}\n\n${variant.cta}`,
+              audiences: [],
+              tones: [variant.style],
+              languages: [variant.language],
+            })
+            window.location.href = "/"
+          }}
+          className="gap-1 text-xs"
+        >
+          <IconRefresh className="h-3.5 w-3.5" />
+          Refine
+        </Button>
+      }
+    />
+  )
 }
 
 export { LibraryCard }

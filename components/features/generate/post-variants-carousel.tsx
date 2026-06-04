@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card"
 import type { Variant } from "@/types"
 import { useAppSelector } from "@/store/hooks"
 import { selectPersona } from "@/store/slices/workspace.slice"
+import { setRefineData } from "@/lib/refine-store"
 import {
   IconTrophy,
   IconLoader2,
@@ -226,6 +227,25 @@ function PostVariantsCarousel({
                 copied={isCopied(variant.rank)}
                 onCopy={() => copy(formatVariantText(variant), variant.rank)}
                 customHashtags={persona?.customHashtags}
+                extraActions={
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setRefineData({
+                        topic: `${variant.hook}\n\n${variant.body}\n\n${variant.cta}`,
+                        audiences: [],
+                        tones: [variant.style],
+                        languages: [variant.language],
+                      })
+                      window.location.href = "/"
+                    }}
+                    className="gap-1 text-xs"
+                  >
+                    <IconRefresh className="h-3.5 w-3.5" />
+                    Refine
+                  </Button>
+                }
               />
             </div>
           ))}

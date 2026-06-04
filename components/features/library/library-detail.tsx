@@ -9,7 +9,9 @@ import { BrandGuardPanel } from "@/components/features/generate/brand-guard-pane
 import type { LibraryEntry } from "@/types"
 import { useAppSelector } from "@/store/hooks"
 import { selectPersona } from "@/store/slices/workspace.slice"
-import { IconTrophy, IconFileText } from "@tabler/icons-react"
+import { IconTrophy, IconFileText, IconRefresh } from "@tabler/icons-react"
+import { Button } from "@/components/ui/button"
+import { setRefineData } from "@/lib/refine-store"
 
 function formatVariantText(v: {
   hook: string
@@ -99,7 +101,33 @@ function VariantCardWrapper({
     setTimeout(() => setCopied(false), 1500)
   }
 
-  return <VariantCard variant={variant} copied={copied} onCopy={handleCopy} customHashtags={persona?.customHashtags} />
+  return (
+    <VariantCard 
+      variant={variant} 
+      copied={copied} 
+      onCopy={handleCopy} 
+      customHashtags={persona?.customHashtags} 
+      extraActions={
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            setRefineData({
+              topic: `${variant.hook}\n\n${variant.body}\n\n${variant.cta}`,
+              audiences: [],
+              tones: [variant.style],
+              languages: [variant.language],
+            })
+            window.location.href = "/"
+          }}
+          className="gap-1 text-xs"
+        >
+          <IconRefresh className="h-3.5 w-3.5" />
+          Refine
+        </Button>
+      }
+    />
+  )
 }
 
 function LibraryDetail({
@@ -117,13 +145,20 @@ function LibraryDetail({
   return (
     <div className="space-y-4">
       {/* Two-column: input card + brand guard */}
-      <div className="flex flex-col gap-4 lg:flex-row">
-        <OriginalInputCard entry={entry} />
-        <BrandGuardPanel
-          showButton={false}
-          title="Used Brand Guard"
-          guardrails={entry.guardrails}
-        />
+      <div className="flex flex-col items-stretch gap-4 lg:flex-row">
+        <div className="min-w-0 flex-1 flex">
+          <OriginalInputCard entry={entry} />
+        </div>
+        <div className="relative hidden w-[40%] shrink-0 lg:block">
+          <div className="absolute inset-0">
+            <BrandGuardPanel
+              showButton={false}
+              title="Used Brand Guard"
+              guardrails={entry.guardrails}
+              className="flex h-full max-h-none w-full flex-col md:w-full"
+            />
+          </div>
+        </div>
       </div>
 
       {/* Ranked variants carousel */}
