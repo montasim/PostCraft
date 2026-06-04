@@ -16,71 +16,82 @@
 //   (all models exhausted → throw ALL_EXHAUSTED)
 // ─────────────────────────────────────────────────────────────
 
-import { MODEL_REGISTRY, type ModelConfig, type ProviderName } from "./models";
-import { AiErrorType, AiProviderError } from "./errors";
-import { quotaTracker } from "./quota-tracker";
-import { getKeysForProvider, hasKeys } from "./key-registry";
-import { PROVIDER_CALLERS, type ChatRequest, type ChatResponse } from "./provider-client";
-import { logger } from "@/core/logger";
-import { getEnv } from "@/core/config/env";
+import { MODEL_REGISTRY, type ModelConfig, type ProviderName } from "./models"
+import { AiErrorType, AiProviderError } from "./errors"
+import { quotaTracker } from "./quota-tracker"
+import { getKeysForProvider, hasKeys } from "./key-registry"
+import {
+  PROVIDER_CALLERS,
+  type ChatRequest,
+  type ChatResponse,
+} from "./provider-client"
+import { logger } from "@/core/logger"
+import { getEnv } from "@/core/config/env"
 
 // ── Types ─────────────────────────────────────────────────────
 
 export interface SwitcherOptions {
   /** Override registry order for this call (e.g. prefer higher quality) */
-  customRegistry?: ModelConfig[];
+  customRegistry?: ModelConfig[]
 }
 
 export interface SwitcherResult extends ChatResponse {
   /** Total (model, key) combinations tried before success */
-  attemptCount: number;
+  attemptCount: number
 }
 
 // ── Main switcher ─────────────────────────────────────────────
 
 export async function callWithAutoSwitch(
   req: ChatRequest,
-  opts: SwitcherOptions = {},
+  opts: SwitcherOptions = {}
 ): Promise<SwitcherResult> {
-  let registry = opts.customRegistry ?? MODEL_REGISTRY;
-  const { DEFAULT_AI_PROVIDER } = getEnv();
-  
+  let registry = opts.customRegistry ?? MODEL_REGISTRY
+  const { DEFAULT_AI_PROVIDER } = getEnv()
+
   if (DEFAULT_AI_PROVIDER) {
     registry = [
-      ...registry.filter(m => m.providerId === DEFAULT_AI_PROVIDER),
-      ...registry.filter(m => m.providerId !== DEFAULT_AI_PROVIDER)
-    ];
+      ...registry.filter((m) => m.providerId === DEFAULT_AI_PROVIDER),
+      ...registry.filter((m) => m.providerId !== DEFAULT_AI_PROVIDER),
+    ]
   }
 
   // Track which keys have received permanent auth errors this session
   // key: "provider#keyIndex", value: true
-  const deadKeys = new Set<string>();
+  const deadKeys = new Set<string>()
 
-  let attemptCount = 0;
+  let attemptCount = 0
 
   for (const model of registry) {
-    const { providerId, modelId } = model;
+    const { providerId, modelId } = model
 
     // Skip provider entirely if no keys configured
     if (!hasKeys(providerId)) {
-      logger.debug({ provider: providerId, model: modelId }, "No keys configured — skipping provider");
-      continue;
+      logger.debug(
+        { provider: providerId, model: modelId },
+        "No keys configured — skipping provider"
+      )
+      continue
     }
 
-    const keys = getKeysForProvider(providerId);
+    const keys = getKeysForProvider(providerId)
 
     for (const keyEntry of keys) {
-      const { keyIndex, label, value: apiKey } = keyEntry;
-      const deadKey = `${providerId}#${keyIndex}`;
+      const { keyIndex, label, value: apiKey } = keyEntry
+      const deadKey = `${providerId}#${keyIndex}`
 
       // Skip permanently dead keys (bad auth)
       if (deadKeys.has(deadKey)) {
-        logger.debug({ key: label }, "Key marked dead (auth error) — skipping");
-        continue;
+        logger.debug({ key: label }, "Key marked dead (auth error) — skipping")
+        continue
       }
 
       // Check MongoDB quota state for this key
-      const availability = await quotaTracker.isAvailable(providerId, modelId, keyIndex);
+      const availability = await quotaTracker.isAvailable(
+        providerId,
+        modelId,
+        keyIndex
+      )
       if (!availability.available) {
         logger.debug(
           {
@@ -89,65 +100,84 @@ export async function callWithAutoSwitch(
             reason: availability.reason,
             cooldownUntil: availability.cooldownUntil,
           },
-          "Model unavailable for key",
-        );
-        continue;
+          "Model unavailable for key"
+        )
+        continue
       }
 
-      attemptCount++;
-      logger.info({ key: label, model: modelId, attempt: attemptCount }, "Trying model");
+      attemptCount++
+      logger.info(
+        { key: label, model: modelId, attempt: attemptCount },
+        "Trying model"
+      )
 
       try {
-        const caller = PROVIDER_CALLERS[providerId];
-        const response = await caller(apiKey, modelId, keyIndex, req);
+        const caller = PROVIDER_CALLERS[providerId]
+        const response = await caller(apiKey, modelId, keyIndex, req)
 
         // Record successful request against this key's quota
-        await quotaTracker.recordRequest(providerId, modelId, keyIndex);
-        logger.info({ key: label, model: modelId }, "AI call success");
+        await quotaTracker.recordRequest(providerId, modelId, keyIndex)
+        logger.info({ key: label, model: modelId }, "AI call success")
 
-        return { ...response, attemptCount };
+        return { ...response, attemptCount }
       } catch (err) {
         if (!(err instanceof AiProviderError)) {
           // Unknown / network error — log and try next key
-          logger.warn({ key: label, model: modelId, err: String(err) }, "Unknown error on model");
-          continue;
+          logger.warn(
+            { key: label, model: modelId, err: String(err) },
+            "Unknown error on model"
+          )
+          continue
         }
 
         switch (err.type) {
           case AiErrorType.RATE_LIMITED:
             logger.info(
-              { key: label, model: modelId, retryAfterMs: err.retryAfterMs ?? 65_000 },
-              "RPM hit — cooling down key",
-            );
+              {
+                key: label,
+                model: modelId,
+                retryAfterMs: err.retryAfterMs ?? 65_000,
+              },
+              "RPM hit — cooling down key"
+            )
             await quotaTracker.setCooldown(
               providerId,
               modelId,
               keyIndex,
-              err.retryAfterMs ?? 65_000,
-            );
+              err.retryAfterMs ?? 65_000
+            )
             // Try next key for this model — it has its own RPM bucket
-            continue;
+            continue
 
           case AiErrorType.QUOTA_EXHAUSTED:
-            logger.info({ key: label, model: modelId }, "Daily quota exhausted — marking key");
-            await quotaTracker.markExhausted(providerId, modelId, keyIndex);
+            logger.info(
+              { key: label, model: modelId },
+              "Daily quota exhausted — marking key"
+            )
+            await quotaTracker.markExhausted(providerId, modelId, keyIndex)
             // Try next key — different account, fresh quota
-            continue;
+            continue
 
           case AiErrorType.AUTH_ERROR:
-            logger.warn({ key: label }, "Auth error — key is invalid, marking dead");
-            deadKeys.add(deadKey);
+            logger.warn(
+              { key: label },
+              "Auth error — key is invalid, marking dead"
+            )
+            deadKeys.add(deadKey)
             // Don't touch quota — it's a bad key, not a usage issue
-            continue;
+            continue
 
           case AiErrorType.PROVIDER_ERROR:
           case AiErrorType.NETWORK_ERROR:
           case AiErrorType.PARSE_ERROR:
-            logger.warn({ key: label, model: modelId, errType: err.type }, "Provider/network error");
-            continue;
+            logger.warn(
+              { key: label, model: modelId, errType: err.type },
+              "Provider/network error"
+            )
+            continue
 
           default:
-            continue;
+            continue
         }
       }
     }
@@ -161,6 +191,6 @@ export async function callWithAutoSwitch(
     0,
     undefined,
     undefined,
-    `All ${attemptCount} (model × key) combinations are exhausted or unavailable.`,
-  );
+    `All ${attemptCount} (model × key) combinations are exhausted or unavailable.`
+  )
 }

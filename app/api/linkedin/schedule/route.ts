@@ -19,7 +19,10 @@ export async function POST(req: Request) {
     const { text, hashtags, scheduledTime } = body
 
     if (!text || !scheduledTime) {
-      return NextResponse.json({ error: "Text and scheduledTime are required" }, { status: 400 })
+      return NextResponse.json(
+        { error: "Text and scheduledTime are required" },
+        { status: 400 }
+      )
     }
 
     await connectDB()
@@ -39,12 +42,19 @@ export async function POST(req: Request) {
         hashtags,
         scheduledTime,
         postId: dbPost._id.toString(),
-      }
+      },
     })
-    
-    return NextResponse.json({ success: true, message: "Successfully scheduled LinkedIn post", id: dbPost._id })
+
+    return NextResponse.json({
+      success: true,
+      message: "Successfully scheduled LinkedIn post",
+      id: dbPost._id,
+    })
   } catch (error) {
     console.error("LinkedIn schedule error:", error)
-    return NextResponse.json({ error: "Failed to schedule LinkedIn post" }, { status: 500 })
+    return NextResponse.json(
+      { error: "Failed to schedule LinkedIn post" },
+      { status: 500 }
+    )
   }
 }

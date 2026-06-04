@@ -20,7 +20,7 @@ export function TopicSuggestions({
 
   return (
     <div className={cn("mt-4 space-y-1.5", className)}>
-      <p className="text-[10px] text-xs font-medium tracking-wider text-foreground uppercase">
+      <p className="text-xs text-[10px] font-medium tracking-wider text-foreground uppercase">
         {loading
           ? "Loading trending topics..."
           : "Trending in tech right now — pick one to get started"}

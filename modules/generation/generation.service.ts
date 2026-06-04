@@ -274,9 +274,17 @@ export const generationService = {
       }))
 
       const repaired = variants.map((v) => {
-        const before = { hook: v.hook?.trim(), body: v.body?.trim(), cta: v.cta?.trim() }
+        const before = {
+          hook: v.hook?.trim(),
+          body: v.body?.trim(),
+          cta: v.cta?.trim(),
+        }
         const r = repairVariant(v)
-        const after = { hook: r.hook?.trim(), body: r.body?.trim(), cta: r.cta?.trim() }
+        const after = {
+          hook: r.hook?.trim(),
+          body: r.body?.trim(),
+          cta: r.cta?.trim(),
+        }
         if (!before.hook || !before.body || !before.cta) {
           logger.info({ style: v.styleType, before, after }, "Variant repaired")
         }
@@ -285,7 +293,10 @@ export const generationService = {
 
       const filtered = repaired.filter((v) => {
         if (!v.hook?.trim() || !v.body?.trim() || !v.cta?.trim()) {
-          logger.warn({ style: v.styleType }, "Variant discarded: missing required field")
+          logger.warn(
+            { style: v.styleType },
+            "Variant discarded: missing required field"
+          )
           return false
         }
         const fullPost = `${v.hook} ${v.body} ${v.cta} ${v.hashtags?.join(" ") ?? ""}`

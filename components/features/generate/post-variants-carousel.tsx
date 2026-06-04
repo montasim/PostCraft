@@ -115,7 +115,7 @@ function PostVariantsCarousel({
             <IconLoader2 className="h-5 w-5 animate-spin text-primary" />
             {status === "generating"
               ? `Writing variant 1 of ${postCount}`
-              : STATUS_HEADERS[status] ?? "Processing"}
+              : (STATUS_HEADERS[status] ?? "Processing")}
           </h2>
         </div>
         <div className="flex gap-4 overflow-hidden px-px py-4">
@@ -169,11 +169,12 @@ function PostVariantsCarousel({
         <IconSparkles className="h-5 w-5 text-primary" />
         <div>
           <p className="text-sm font-semibold text-foreground">
-            {postCount} post{postCount !== 1 ? "s" : ""}, ready for your audience
+            {postCount} post{postCount !== 1 ? "s" : ""}, ready for your
+            audience
           </p>
           <p className="text-[11px] text-muted-foreground">
-            {variants.length} version{variants.length !== 1 ? "s" : ""} ranked by engagement score. Version #1 is
-            your strongest.
+            {variants.length} version{variants.length !== 1 ? "s" : ""} ranked
+            by engagement score. Version #1 is your strongest.
           </p>
         </div>
       </div>

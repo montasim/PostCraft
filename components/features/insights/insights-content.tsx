@@ -130,7 +130,7 @@ function InsightsContent() {
                   <Skeleton key={i} className="h-px w-full" />
                 ))}
               </div>
-              <div className="absolute bottom-0 left-0 right-0 flex justify-between pt-4">
+              <div className="absolute right-0 bottom-0 left-0 flex justify-between pt-4">
                 {Array.from({ length: 6 }).map((_, i) => (
                   <Skeleton key={i} className="h-3 w-6" />
                 ))}

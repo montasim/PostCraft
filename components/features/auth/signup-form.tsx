@@ -13,7 +13,13 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { IconUserPlus, IconArrowLeft, IconBrandGoogle, IconBrandLinkedin, IconBrandFacebook } from "@tabler/icons-react"
+import {
+  IconUserPlus,
+  IconArrowLeft,
+  IconBrandGoogle,
+  IconBrandLinkedin,
+  IconBrandFacebook,
+} from "@tabler/icons-react"
 import { Separator } from "@/components/ui/separator"
 import { PasswordInput } from "@/components/shared/password-input"
 import { authClient } from "@/core/auth/auth-client"
@@ -122,7 +128,7 @@ function SignupForm() {
         </Button>
         <Button
           variant="outline"
-          className="w-full gap-2 mt-2"
+          className="mt-2 w-full gap-2"
           onClick={handleLinkedin}
           type="button"
         >
@@ -131,7 +137,7 @@ function SignupForm() {
         </Button>
         <Button
           variant="outline"
-          className="w-full gap-2 mt-2"
+          className="mt-2 w-full gap-2"
           onClick={handleFacebook}
           type="button"
         >
@@ -140,11 +146,16 @@ function SignupForm() {
         </Button>
         <Button
           variant="outline"
-          className="w-full gap-2 mt-2"
+          className="mt-2 w-full gap-2"
           onClick={handleTwitter}
           type="button"
         >
-          <svg className="h-4 w-4 fill-current text-foreground" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.936H5.051z" /></svg>
+          <svg
+            className="h-4 w-4 fill-current text-foreground"
+            viewBox="0 0 24 24"
+          >
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.936H5.051z" />
+          </svg>
           Continue with X
         </Button>
 
@@ -207,13 +218,19 @@ function SignupForm() {
       <CardFooter className="flex flex-col space-y-4 text-center">
         <p className="text-sm text-muted-foreground">
           Already have an account?{" "}
-          <Link href="/login" className="text-foreground underline hover:no-underline">
+          <Link
+            href="/login"
+            className="text-foreground underline hover:no-underline"
+          >
             Sign in
           </Link>
         </p>
         <p className="text-xs text-muted-foreground">
           By signing up, you agree to our{" "}
-          <Link href="/privacy" className="text-foreground underline hover:no-underline">
+          <Link
+            href="/privacy"
+            className="text-foreground underline hover:no-underline"
+          >
             Privacy Policy
           </Link>
           .

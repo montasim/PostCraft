@@ -324,7 +324,11 @@ function ProfileDetailsCard({
             <div className="flex items-center gap-2 text-xs">
               <IconWorld className="h-3 w-3 text-muted-foreground" />
               <a
-                href={profile.website?.startsWith("http") ? profile.website : `https://${profile.website}`}
+                href={
+                  profile.website?.startsWith("http")
+                    ? profile.website
+                    : `https://${profile.website}`
+                }
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"
@@ -335,7 +339,11 @@ function ProfileDetailsCard({
             <div className="flex items-center gap-2 text-xs">
               <IconBrandTwitter className="h-3 w-3 text-muted-foreground" />
               <a
-                href={profile.twitterHandle?.startsWith("http") ? profile.twitterHandle : `https://x.com/${profile.twitterHandle?.replace("@", "")}`}
+                href={
+                  profile.twitterHandle?.startsWith("http")
+                    ? profile.twitterHandle
+                    : `https://x.com/${profile.twitterHandle?.replace("@", "")}`
+                }
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"
@@ -390,7 +398,11 @@ function ProfileCompletionCard({ profile }: { profile: UserProfile }) {
             : "Your profile is complete. Your posts will reflect the real you."}
         </p>
       </div>
-      <Progress value={percent} className="h-2 w-32" aria-label="Profile completion progress" />
+      <Progress
+        value={percent}
+        className="h-2 w-32"
+        aria-label="Profile completion progress"
+      />
     </div>
   )
 }

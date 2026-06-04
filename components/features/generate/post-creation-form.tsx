@@ -48,7 +48,6 @@ import { consumeRefineData, type RefineData } from "@/lib/refine-store"
 import { TopicSuggestions } from "./topic-suggestions"
 import { QuickPresets, type Preset } from "./quick-presets"
 
-
 interface PostCreationFormProps {
   onGenerate: (data: {
     topic: string
@@ -201,37 +200,93 @@ function PostCreationFormInner({
 
   const handleAudienceChange = (val: string[]) => {
     setAudience(val)
-    savePrefs({ audiences: val, tones, languages, emoji, postCount, hashtagCount, platforms })
+    savePrefs({
+      audiences: val,
+      tones,
+      languages,
+      emoji,
+      postCount,
+      hashtagCount,
+      platforms,
+    })
   }
 
   const handleTonesChange = (val: string[]) => {
     setTones(val)
-    savePrefs({ audiences: audience, tones: val, languages, emoji, postCount, hashtagCount, platforms })
+    savePrefs({
+      audiences: audience,
+      tones: val,
+      languages,
+      emoji,
+      postCount,
+      hashtagCount,
+      platforms,
+    })
   }
 
   const handleLanguagesChange = (val: string[]) => {
     setLanguages(val)
-    savePrefs({ audiences: audience, tones, languages: val, emoji, postCount, hashtagCount, platforms })
+    savePrefs({
+      audiences: audience,
+      tones,
+      languages: val,
+      emoji,
+      postCount,
+      hashtagCount,
+      platforms,
+    })
   }
 
   const handleEmojiChange = (val: boolean) => {
     setEmoji(val)
-    savePrefs({ audiences: audience, tones, languages, emoji: val, postCount, hashtagCount, platforms })
+    savePrefs({
+      audiences: audience,
+      tones,
+      languages,
+      emoji: val,
+      postCount,
+      hashtagCount,
+      platforms,
+    })
   }
 
   const handlePostCountChange = (val: number) => {
     setPostCount(val)
-    savePrefs({ audiences: audience, tones, languages, emoji, postCount: val, hashtagCount, platforms })
+    savePrefs({
+      audiences: audience,
+      tones,
+      languages,
+      emoji,
+      postCount: val,
+      hashtagCount,
+      platforms,
+    })
   }
 
   const handleHashtagCountChange = (val: number) => {
     setHashtagCount(val)
-    savePrefs({ audiences: audience, tones, languages, emoji, postCount, hashtagCount: val, platforms })
+    savePrefs({
+      audiences: audience,
+      tones,
+      languages,
+      emoji,
+      postCount,
+      hashtagCount: val,
+      platforms,
+    })
   }
 
   const handlePlatformsChange = (val: string[]) => {
     setPlatforms(val)
-    savePrefs({ audiences: audience, tones, languages, emoji, postCount, hashtagCount, platforms: val })
+    savePrefs({
+      audiences: audience,
+      tones,
+      languages,
+      emoji,
+      postCount,
+      hashtagCount,
+      platforms: val,
+    })
   }
 
   return (
@@ -264,7 +319,7 @@ function PostCreationFormInner({
               onBlur={() => setIsFocused(false)}
               placeholder="What should your audience know? Drop your topic here."
               rows={6}
-              className={`min-h-[140px] max-h-[280px] overflow-y-auto resize-none border-2 transition-colors duration-200 ${
+              className={`max-h-[280px] min-h-[140px] resize-none overflow-y-auto border-2 transition-colors duration-200 ${
                 isFocused ? "border-primary/40" : "border-border"
               } ${topic.trim().length > 0 ? "bg-primary/[0.02]" : ""}`}
             />
@@ -396,7 +451,8 @@ function PostCreationFormInner({
                 value={hashtagCount}
                 onChange={(e) => {
                   const v = parseInt(e.target.value, 10)
-                  if (!isNaN(v)) handleHashtagCountChange(Math.max(1, Math.min(10, v)))
+                  if (!isNaN(v))
+                    handleHashtagCountChange(Math.max(1, Math.min(10, v)))
                 }}
                 className="flex min-h-[44px] w-full rounded-lg border border-border/60 bg-transparent px-3 py-1 text-xs shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-primary focus-visible:outline-none"
               />

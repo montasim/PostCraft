@@ -14,7 +14,7 @@ function VariantCarousel({ children }: VariantCarouselProps) {
     <div className="group relative">
       <div
         ref={ref}
-        className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-px py-5 scrollbar-none [&::-webkit-scrollbar]:hidden"
+        className="flex snap-x snap-mandatory scrollbar-none gap-4 overflow-x-auto px-px py-5 [&::-webkit-scrollbar]:hidden"
       >
         {children}
       </div>

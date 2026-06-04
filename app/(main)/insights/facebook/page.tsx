@@ -35,10 +35,14 @@ export default async function FacebookInsightsPage() {
   const { getAuthDb } = await import("@/core/auth/auth-db")
   const { db } = getAuthDb()
   let userObjectId: any
-  try { userObjectId = new (await import("mongodb")).ObjectId(session.user.id) } catch (e) { }
+  try {
+    userObjectId = new (await import("mongodb")).ObjectId(session.user.id)
+  } catch (e) {}
 
   const account = await db.collection("account").findOne({
-    userId: userObjectId ? { $in: [session.user.id, userObjectId] } : session.user.id,
+    userId: userObjectId
+      ? { $in: [session.user.id, userObjectId] }
+      : session.user.id,
     providerId: "facebook",
   })
 
@@ -50,36 +54,51 @@ export default async function FacebookInsightsPage() {
 
   if (account && account.accessToken) {
     try {
-      const profileRes = await fetch(`https://graph.facebook.com/v19.0/me?fields=name,picture&access_token=${account.accessToken}`)
+      const profileRes = await fetch(
+        `https://graph.facebook.com/v19.0/me?fields=name,picture&access_token=${account.accessToken}`
+      )
       if (profileRes.ok) {
         const profile = await profileRes.json()
         facebookUser.name = profile.name || facebookUser.name
         facebookUser.image = profile.picture?.data?.url || facebookUser.image
       }
-    } catch (e) { }
+    } catch (e) {}
   }
 
-  const publishedCount = posts.filter((p: any) => p.status === "published").length
-  const scheduledCount = posts.filter((p: any) => p.status === "scheduled").length
+  const publishedCount = posts.filter(
+    (p: any) => p.status === "published"
+  ).length
+  const scheduledCount = posts.filter(
+    (p: any) => p.status === "scheduled"
+  ).length
   const failedCount = posts.filter((p: any) => p.status === "failed").length
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
         <div>
           <h1 className="text-md font-semibold">Facebook Posts</h1>
           <p className="text-sm text-muted-foreground">
             View your published and scheduled Facebook posts.
           </p>
         </div>
-        <div className="flex items-center gap-2 flex-wrap">
-          <Badge variant="outline" className="border-emerald-500/30 text-emerald-600 bg-emerald-500/10">
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge
+            variant="outline"
+            className="border-emerald-500/30 bg-emerald-500/10 text-emerald-600"
+          >
             {publishedCount} Published
           </Badge>
-          <Badge variant="outline" className="border-blue-500/30 text-blue-600 bg-blue-500/10">
+          <Badge
+            variant="outline"
+            className="border-blue-500/30 bg-blue-500/10 text-blue-600"
+          >
             {scheduledCount} Scheduled
           </Badge>
-          <Badge variant="outline" className="border-destructive/30 text-destructive bg-destructive/10">
+          <Badge
+            variant="outline"
+            className="border-destructive/30 bg-destructive/10 text-destructive"
+          >
             {failedCount} Failed
           </Badge>
         </div>
@@ -93,13 +112,16 @@ export default async function FacebookInsightsPage() {
           variant="centered"
         >
           <div className="mt-4 flex justify-center">
-            <Link href="/" className="inline-flex items-center text-sm font-medium text-primary hover:underline">
+            <Link
+              href="/"
+              className="inline-flex items-center text-sm font-medium text-primary hover:underline"
+            >
               Go generate one
             </Link>
           </div>
         </EmptyState>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 items-start">
+        <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-2 2xl:grid-cols-3">
           {serializedPosts.map((post: any) => (
             <FacebookPostItem key={post._id} post={post} user={facebookUser} />
           ))}

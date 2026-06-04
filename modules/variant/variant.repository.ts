@@ -3,7 +3,11 @@ import { VariantModel } from "./variant.model"
 import type { ScoredVariant } from "./variant.schema"
 
 export const variantRepository = {
-  async createMany(variants: ScoredVariant[], trendId: string, workspaceId: string) {
+  async createMany(
+    variants: ScoredVariant[],
+    trendId: string,
+    workspaceId: string
+  ) {
     const docs = variants.map((v) => ({
       ...v,
       trendId: new mongoose.Types.ObjectId(trendId),

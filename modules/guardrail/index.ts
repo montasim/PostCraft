@@ -2,4 +2,8 @@ export { guardrailService } from "./guardrail.service"
 export { guardrailRepository } from "./guardrail.repository"
 export { GuardrailModel } from "./guardrail.model"
 export { DEFAULT_GUARDRAILS } from "./guardrail.defaults"
-export { createGuardrailSchema, type CreateGuardrailInput, type GuardrailCategory } from "./guardrail.schema"
+export {
+  createGuardrailSchema,
+  type CreateGuardrailInput,
+  type GuardrailCategory,
+} from "./guardrail.schema"

@@ -8,18 +8,18 @@
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export interface GenerationPromptData {
-  topic: string;
-  postCount: number;
-  platforms: string[];          // "linkedin" | "twitter" | "facebook"
-  audiences: string[];
-  tones: string[];
-  languages: string[];
-  includeEmoji: boolean;
-  hashtagCount: number;
-  toneRules: string[];          // max 5
-  formatRules: string[];        // max 5
-  bannedWords: string[];        // max 10
-  customRules: string[];        // max 5
+  topic: string
+  postCount: number
+  platforms: string[] // "linkedin" | "twitter" | "facebook"
+  audiences: string[]
+  tones: string[]
+  languages: string[]
+  includeEmoji: boolean
+  hashtagCount: number
+  toneRules: string[] // max 5
+  formatRules: string[] // max 5
+  bannedWords: string[] // max 10
+  customRules: string[] // max 5
 }
 
 // ─── Platform psychology context (loaded once, not repeated per-call) ─────────
@@ -47,7 +47,7 @@ FORMAT: Hook doubles as the whole point (≤120 chars). Body expands briefly (�
   facebook: `PSYCHOLOGY: Community and belonging platform. Reader mindset = "does this remind me of something real in my life?" Bilateral network = posts feel personal, not broadcast. Algorithm rewards sustained engagement — comments that spark threads, shares to groups. Emotional resonance (nostalgia, pride, humor, empathy) drives shares more than information. Audience skews 25-55 — references should match.
 VOICE: Warm, personal, slightly vulnerable. Storytelling over bullet points. "This happened to me" beats "here's advice." End with an open question that invites personal experience, not just opinions.
 FORMAT: Hook is a scene or moment, not a claim. Body unfolds like a story. CTA asks about their experience. Hashtags 2-3, conversational not corporate.`,
-};
+}
 
 // ─── Anti-AI pattern rules (compiled from research) ──────────────────────────
 
@@ -63,45 +63,51 @@ const ANTI_AI_RULES = `WRITING RULES — NON-NEGOTIABLE:
 - Vary sentence length deliberately: mix 3-word punches with 15-word observations. Monotone rhythm = AI tell
 - Use contractions naturally: "don't", "it's", "I've", "you're" — formal = robotic
 - Allow one deliberate imperfection per post: an unfinished thought, a parenthetical aside, a mid-sentence pivot. Humans do this.
-- Specific > general always: "47 features shipped, 3 got used" beats "many features were built"`;
+- Specific > general always: "47 features shipped, 3 got used" beats "many features were built"`
 
 // ─── Output schema (kept minimal — no redundant field descriptions) ───────────
 
 const OUTPUT_SCHEMA = `OUTPUT: Valid JSON only. No markdown. No explanation.
-{"variants":[{"language":"string","styleType":"string","platform":"string","hook":"string","body":"string","cta":"string","hashtags":["string"]}]}`;
+{"variants":[{"language":"string","styleType":"string","platform":"string","hook":"string","body":"string","cta":"string","hashtags":["string"]}]}`
 
 // ─── Main prompt builder ──────────────────────────────────────────────────────
 
 export function buildGenerationPrompt(data: GenerationPromptData): {
-  system: string;
-  user: string;
+  system: string
+  user: string
 } {
   const activePlatformPsych = data.platforms
     .map((p) => PLATFORM_PSYCHOLOGY[p])
     .filter(Boolean)
-    .join("\n\n");
+    .join("\n\n")
 
   // Distribution: posts per platform
-  const perPlatform = Math.floor(data.postCount / data.platforms.length);
-  const remainder = data.postCount % data.platforms.length;
+  const perPlatform = Math.floor(data.postCount / data.platforms.length)
+  const remainder = data.postCount % data.platforms.length
   const distribution = data.platforms
     .map((p, i) => `${p}: ${perPlatform + (i < remainder ? 1 : 0)}`)
-    .join(", ");
+    .join(", ")
 
   // Guardrails — only include sections that have content
-  const guardrailParts: string[] = [];
+  const guardrailParts: string[] = []
   if (data.bannedWords.length)
-    guardrailParts.push(`BANNED WORDS: ${data.bannedWords.join(", ")}`);
+    guardrailParts.push(`BANNED WORDS: ${data.bannedWords.join(", ")}`)
   if (data.toneRules.length)
-    guardrailParts.push(`TONE RULES:\n${data.toneRules.map((r) => `- ${r}`).join("\n")}`);
+    guardrailParts.push(
+      `TONE RULES:\n${data.toneRules.map((r) => `- ${r}`).join("\n")}`
+    )
   if (data.formatRules.length)
-    guardrailParts.push(`FORMAT RULES:\n${data.formatRules.map((r) => `- ${r}`).join("\n")}`);
+    guardrailParts.push(
+      `FORMAT RULES:\n${data.formatRules.map((r) => `- ${r}`).join("\n")}`
+    )
   if (data.customRules.length)
-    guardrailParts.push(`CUSTOM RULES:\n${data.customRules.map((r) => `- ${r}`).join("\n")}`);
+    guardrailParts.push(
+      `CUSTOM RULES:\n${data.customRules.map((r) => `- ${r}`).join("\n")}`
+    )
 
   const guardrailBlock = guardrailParts.length
     ? `\nGUARDRAILS:\n${guardrailParts.join("\n")}`
-    : "";
+    : ""
 
   const system = `You are a senior social media strategist writing posts that read as if a real person sat down and typed them — not optimized, not polished, not AI-shaped.
 
@@ -120,12 +126,12 @@ CRITICAL RULE - LANGUAGES: You MUST write the posts STRICTLY in the following la
 AUDIENCES: ${data.audiences.join(", ")}
 TONES: ${data.tones.join(", ")}${guardrailBlock}
 
-${OUTPUT_SCHEMA}`;
+${OUTPUT_SCHEMA}`
 
   const user = `TOPIC: ${data.topic}
 
 Generate ${data.postCount} posts. Distribution: ${distribution}.
-Each post must feel written by a different person with a different voice. No two hooks can use the same structural pattern.`;
+Each post must feel written by a different person with a different voice. No two hooks can use the same structural pattern.`
 
-  return { system, user };
+  return { system, user }
 }

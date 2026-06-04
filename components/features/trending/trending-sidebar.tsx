@@ -150,7 +150,12 @@ function TrendingSidebar({ runs, selectedId, onSelect }: TrendingSidebarProps) {
                 >
                   <div className="flex w-full justify-between gap-4">
                     <div className="flex items-center gap-2">
-                      <span className={cn("h-2 w-2 shrink-0 rounded-full", STATUS_DOT[run.status])} />
+                      <span
+                        className={cn(
+                          "h-2 w-2 shrink-0 rounded-full",
+                          STATUS_DOT[run.status]
+                        )}
+                      />
                       <span className="text-xs font-medium">{datetime}</span>
                     </div>
                     <span className="text-xs">

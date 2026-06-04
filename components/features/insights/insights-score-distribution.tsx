@@ -32,7 +32,10 @@ function InsightsScoreDistribution({ data }: { data: ScoreDistribution[] }) {
             </div>
             <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
               <div
-                className={cn("h-full rounded-full transition-all", RANGE_COLORS[item.range])}
+                className={cn(
+                  "h-full rounded-full transition-all",
+                  RANGE_COLORS[item.range]
+                )}
                 style={{ width: `${item.percentage}%` }}
               />
             </div>

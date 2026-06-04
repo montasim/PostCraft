@@ -25,14 +25,16 @@ export async function POST(req: Request) {
     }
 
     const { db } = getAuthDb()
-    
-    let userObjectId: ObjectId | undefined;
+
+    let userObjectId: ObjectId | undefined
     try {
-      userObjectId = new ObjectId(session.user.id);
-    } catch(e) {}
+      userObjectId = new ObjectId(session.user.id)
+    } catch (e) {}
 
     const query = {
-      userId: userObjectId ? { $in: [session.user.id, userObjectId] } : session.user.id,
+      userId: userObjectId
+        ? { $in: [session.user.id, userObjectId] }
+        : session.user.id,
       providerId: "twitter",
     }
 
@@ -40,7 +42,10 @@ export async function POST(req: Request) {
 
     if (!account || !account.accessToken) {
       return NextResponse.json(
-        { error: "No Twitter account linked or missing access token. Please sign in with Twitter." },
+        {
+          error:
+            "No Twitter account linked or missing access token. Please sign in with Twitter.",
+        },
         { status: 403 }
       )
     }
@@ -48,7 +53,7 @@ export async function POST(req: Request) {
     const token = account.accessToken
 
     const postContent = hashtags?.length
-      ? `${text}\n\n${hashtags.map((h: string) => h.startsWith('#') ? h : `#${h}`).join(' ')}`
+      ? `${text}\n\n${hashtags.map((h: string) => (h.startsWith("#") ? h : `#${h}`)).join(" ")}`
       : text
 
     const postRes = await fetch("https://api.twitter.com/2/tweets", {
@@ -65,15 +70,25 @@ export async function POST(req: Request) {
     if (!postRes.ok) {
       const errorData = await postRes.text()
       logger.error({ errorData }, "Twitter API error")
-      
+
       try {
         const parsed = JSON.parse(errorData)
         if (parsed.title === "CreditsDepleted" || parsed.detail) {
-          return NextResponse.json({ error: parsed.detail || "Twitter API credits depleted or permission denied." }, { status: 500 })
+          return NextResponse.json(
+            {
+              error:
+                parsed.detail ||
+                "Twitter API credits depleted or permission denied.",
+            },
+            { status: 500 }
+          )
         }
       } catch (e) {}
-      
-      return NextResponse.json({ error: "Failed to post to Twitter" }, { status: 500 })
+
+      return NextResponse.json(
+        { error: "Failed to post to Twitter" },
+        { status: 500 }
+      )
     }
 
     const postData = await postRes.json()
@@ -88,11 +103,25 @@ export async function POST(req: Request) {
       tweetId: tweetId,
     })
 
-    logger.info({ userId: session.user.id, tweetId, dbPostId: dbPost._id }, "Successfully posted to Twitter")
+    logger.info(
+      { userId: session.user.id, tweetId, dbPostId: dbPost._id },
+      "Successfully posted to Twitter"
+    )
 
-    return NextResponse.json({ success: true, message: "Successfully posted to Twitter", tweetId, id: dbPost._id })
+    return NextResponse.json({
+      success: true,
+      message: "Successfully posted to Twitter",
+      tweetId,
+      id: dbPost._id,
+    })
   } catch (error) {
-    logger.error({ err: error instanceof Error ? error.message : String(error) }, "Twitter post error")
-    return NextResponse.json({ error: "Failed to post to Twitter" }, { status: 500 })
+    logger.error(
+      { err: error instanceof Error ? error.message : String(error) },
+      "Twitter post error"
+    )
+    return NextResponse.json(
+      { error: "Failed to post to Twitter" },
+      { status: 500 }
+    )
   }
 }

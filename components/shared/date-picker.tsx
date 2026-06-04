@@ -4,7 +4,11 @@ import { format } from "date-fns"
 import { IconCalendar } from "@tabler/icons-react"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 
 interface DatePickerProps {
@@ -14,7 +18,12 @@ interface DatePickerProps {
   className?: string
 }
 
-function DatePicker({ date, onChange, placeholder = "Pick a date", className }: DatePickerProps) {
+function DatePicker({
+  date,
+  onChange,
+  placeholder = "Pick a date",
+  className,
+}: DatePickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -31,12 +40,7 @@ function DatePicker({ date, onChange, placeholder = "Pick a date", className }: 
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={onChange}
-          autoFocus
-        />
+        <Calendar mode="single" selected={date} onSelect={onChange} autoFocus />
       </PopoverContent>
     </Popover>
   )

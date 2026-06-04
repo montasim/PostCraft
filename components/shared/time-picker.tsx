@@ -1,9 +1,9 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { IconCheck, IconSelector, IconClock } from "@tabler/icons-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { useState } from "react"
+import { IconCheck, IconSelector, IconClock } from "@tabler/icons-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,
@@ -11,25 +11,25 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
+} from "@/components/ui/command"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/components/ui/popover"
 
-import { useAutocompleteTimepicker } from "@/hooks/useAutocompleteTimepicker";
+import { useAutocompleteTimepicker } from "@/hooks/useAutocompleteTimepicker"
 
-const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
 interface TimePickerProps {
-  value: string;
-  onChange: (time: string) => void;
-  is24Hour?: boolean;
-  locale?: string;
-  timeZone?: string;
-  placeholder?: string;
-  className?: string;
+  value: string
+  onChange: (time: string) => void
+  is24Hour?: boolean
+  locale?: string
+  timeZone?: string
+  placeholder?: string
+  className?: string
 }
 
 export function TimePicker({
@@ -39,29 +39,29 @@ export function TimePicker({
   locale = "en-US",
   timeZone = currentTimezone,
   placeholder = "Select time...",
-  className
+  className,
 }: TimePickerProps) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
   const { timeOptions, formatTime } = useAutocompleteTimepicker({
     is24Hour,
     locale,
     timeZone,
-  });
+  })
 
-  const selectedTime = new Date();
+  const selectedTime = new Date()
   if (value) {
-    const [h, m] = value.split(":").map(Number);
-    selectedTime.setHours(h ?? 0, m ?? 0, 0, 0);
+    const [h, m] = value.split(":").map(Number)
+    selectedTime.setHours(h ?? 0, m ?? 0, 0, 0)
   }
 
   const handleSelect = (time: Date) => {
-    const hh = time.getHours().toString().padStart(2, "0");
-    const mm = time.getMinutes().toString().padStart(2, "0");
-    onChange(`${hh}:${mm}`);
-    setOpen(false);
-  };
+    const hh = time.getHours().toString().padStart(2, "0")
+    const mm = time.getMinutes().toString().padStart(2, "0")
+    onChange(`${hh}:${mm}`)
+    setOpen(false)
+  }
 
-  const currentTimeString = value ? formatTime(selectedTime) : placeholder;
+  const currentTimeString = value ? formatTime(selectedTime) : placeholder
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -70,7 +70,10 @@ export function TimePicker({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={cn("w-[140px] min-h-[44px] justify-between font-normal bg-transparent dark:bg-input/30 hover:bg-transparent dark:hover:bg-input/30", className)}
+          className={cn(
+            "min-h-[44px] w-[140px] justify-between bg-transparent font-normal hover:bg-transparent dark:bg-input/30 dark:hover:bg-input/30",
+            className
+          )}
         >
           <div className="flex items-center">
             <IconClock className="mr-2 h-4 w-4" data-testid="ClockIcon" />
@@ -89,11 +92,11 @@ export function TimePicker({
             <CommandEmpty>No time found.</CommandEmpty>
             <CommandGroup>
               {timeOptions.map((time, index) => {
-                const timeString = formatTime(time);
+                const timeString = formatTime(time)
                 const isSelected =
                   value &&
                   time.getHours() === selectedTime.getHours() &&
-                  time.getMinutes() === selectedTime.getMinutes();
+                  time.getMinutes() === selectedTime.getMinutes()
                 return (
                   <CommandItem
                     key={index}
@@ -108,12 +111,12 @@ export function TimePicker({
                     />
                     {timeString}
                   </CommandItem>
-                );
+                )
               })}
             </CommandGroup>
           </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
-  );
+  )
 }

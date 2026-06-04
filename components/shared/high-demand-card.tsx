@@ -18,7 +18,8 @@ export function HighDemandCard({ className }: HighDemandCardProps) {
         <span className="text-sm leading-none">High Demand</span>
       </div>
       <p className="mt-2 text-[11px] leading-relaxed opacity-90">
-        High traffic volume. Generations are temporarily paused — try again in a few minutes.
+        High traffic volume. Generations are temporarily paused — try again in a
+        few minutes.
       </p>
     </div>
   )

@@ -12,7 +12,10 @@ export async function sendEmail(payload: EmailPayload): Promise<void> {
   const env = getEnv()
 
   if (!env.RESEND_API_KEY) {
-    logger.info({ to: payload.to, subject: payload.subject }, "[EMAIL] dev mode — not sent")
+    logger.info(
+      { to: payload.to, subject: payload.subject },
+      "[EMAIL] dev mode — not sent"
+    )
     logger.info({ url: payload.text }, "[EMAIL] body")
     return
   }

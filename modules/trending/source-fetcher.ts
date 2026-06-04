@@ -57,7 +57,7 @@ export async function fetchHackerNews(
 ): Promise<SourceItem[]> {
   try {
     const query = keywords.slice(0, TRENDING_KEYWORDS_MAX).join(" OR ")
-    const url = `${EXTERNAL_API.HN_SEARCH}?query=${encodeURIComponent(query)}&tags=story&hitsPerPage=${count}&numericFilters=${encodeURIComponent('points>50')}`
+    const url = `${EXTERNAL_API.HN_SEARCH}?query=${encodeURIComponent(query)}&tags=story&hitsPerPage=${count}&numericFilters=${encodeURIComponent("points>50")}`
     const res = await fetch(url)
     if (!res.ok) throw new Error(`HN API ${res.status}`)
     const data = await res.json()

@@ -1,4 +1,7 @@
-import { libraryRepository, type LibraryListFilters } from "./library.repository"
+import {
+  libraryRepository,
+  type LibraryListFilters,
+} from "./library.repository"
 import { generationService } from "@/modules/generation/generation.service"
 import { variantService } from "@/modules/variant/variant.service"
 import { variantRepository } from "@/modules/variant/variant.repository"
@@ -67,7 +70,10 @@ function mapEntry(generation: {
   }>
 }): LibraryEntry {
   return {
-    id: typeof generation._id === "string" ? generation._id : generation._id.toString(),
+    id:
+      typeof generation._id === "string"
+        ? generation._id
+        : generation._id.toString(),
     topic: generation.topic,
     audience: generation.audiences,
     tones: generation.tones,
@@ -118,7 +124,10 @@ export const libraryService = {
     const topVariant = topVariants[0]
     const generationId = topVariant.trendId.toString()
 
-    const generation = await generationRepository.findById(generationId, workspaceId)
+    const generation = await generationRepository.findById(
+      generationId,
+      workspaceId
+    )
     const variants = await variantService.getVariantsByTrend(
       generationId,
       workspaceId
@@ -141,7 +150,10 @@ export const libraryService = {
     generationId: string,
     workspaceId: string
   ): Promise<LibraryEntry & { guardrails: GuardrailDetail[] }> {
-    const generation = await generationService.getGenerationStatus(generationId, workspaceId)
+    const generation = await generationService.getGenerationStatus(
+      generationId,
+      workspaceId
+    )
     const variants = await variantService.getVariantsByTrend(
       generationId,
       workspaceId
@@ -150,7 +162,8 @@ export const libraryService = {
     // Fetch guardrails that were active when this generation was created
     let guardrails: GuardrailDetail[] = []
     if (generation.guardrailIds && generation.guardrailIds.length > 0) {
-      const allGuardrails = await guardrailRepository.findAllByWorkspace(workspaceId)
+      const allGuardrails =
+        await guardrailRepository.findAllByWorkspace(workspaceId)
       const idSet = new Set(generation.guardrailIds)
       guardrails = allGuardrails
         .filter((g) => idSet.has(g._id.toString()))

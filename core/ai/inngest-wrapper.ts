@@ -7,18 +7,18 @@
 // - Handles the step serialization requirement (must be JSON-serialisable)
 // ─────────────────────────────────────────────────────────────
 
-import { inngest } from "@/core/queue/client";
-import type { GetStepTools } from "inngest";
-import { callWithAutoSwitch, type SwitcherOptions } from "./switcher";
-import type { ChatRequest, ChatResponse } from "./provider-client";
+import { inngest } from "@/core/queue/client"
+import type { GetStepTools } from "inngest"
+import { callWithAutoSwitch, type SwitcherOptions } from "./switcher"
+import type { ChatRequest, ChatResponse } from "./provider-client"
 
 export interface InngestAiCallOptions extends SwitcherOptions {
   /** Unique step ID — shows in Inngest dashboard */
-  stepId: string;
+  stepId: string
 }
 
 /** Step tools type derived from our Inngest client instance */
-type StepTools = GetStepTools<typeof inngest>;
+type StepTools = GetStepTools<typeof inngest>
 
 /**
  * Use inside Inngest functions. Wraps the auto-switcher in a step.
@@ -26,9 +26,9 @@ type StepTools = GetStepTools<typeof inngest>;
 export async function callAiWithInngest(
   step: StepTools,
   req: ChatRequest,
-  opts: InngestAiCallOptions,
+  opts: InngestAiCallOptions
 ): Promise<ChatResponse & { attemptCount: number }> {
   return step.run(`ai-call:${opts.stepId}`, async () => {
-    return callWithAutoSwitch(req, opts);
-  });
+    return callWithAutoSwitch(req, opts)
+  })
 }

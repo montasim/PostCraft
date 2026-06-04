@@ -29,10 +29,16 @@ function InsightsStyleBreakdown({ data }: { data: StylePerformance[] }) {
               </div>
               <div className="flex gap-3 text-xs text-muted-foreground">
                 <span>
-                  Score: <span className="font-semibold text-foreground">{item.avgScore}</span>
+                  Score:{" "}
+                  <span className="font-semibold text-foreground">
+                    {item.avgScore}
+                  </span>
                 </span>
                 <span>
-                  Eng: <span className="font-semibold text-foreground">{item.avgEngagement}</span>
+                  Eng:{" "}
+                  <span className="font-semibold text-foreground">
+                    {item.avgEngagement}
+                  </span>
                 </span>
               </div>
             </div>
@@ -63,7 +69,9 @@ function InsightsStyleBreakdown({ data }: { data: StylePerformance[] }) {
           </div>
           <div className="flex items-center gap-1.5">
             <span className="h-2 w-3 rounded-full bg-chart-2" />
-            <span className="text-[10px] text-muted-foreground">Engagement</span>
+            <span className="text-[10px] text-muted-foreground">
+              Engagement
+            </span>
           </div>
         </div>
       </CardContent>

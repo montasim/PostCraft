@@ -18,15 +18,15 @@ export const NAV_MAIN: NavItem[] = [
   { id: "generate", label: "New Post", icon: IconSparkles },
   { id: "trending", label: "Trending", icon: IconTrendingUp },
   { id: "library", label: "Library", icon: IconHistory },
-  { 
-    id: "insights", 
-    label: "Insights", 
+  {
+    id: "insights",
+    label: "Insights",
     icon: IconChartBar,
     subItems: [
       { id: "linkedin", label: "LinkedIn", icon: IconBrandLinkedin },
       { id: "facebook", label: "Facebook", icon: IconBrandFacebook },
-      { id: "twitter", label: "Twitter", icon: IconBrandTwitter }
-    ]
+      { id: "twitter", label: "Twitter", icon: IconBrandTwitter },
+    ],
   },
 ]
 

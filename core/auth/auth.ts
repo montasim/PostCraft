@@ -135,7 +135,11 @@ function buildAuthConfig() {
         clientId: env.FACEBOOK_CLIENT_ID ?? "",
         clientSecret: env.FACEBOOK_CLIENT_SECRET ?? "",
         enabled: !!(env.FACEBOOK_CLIENT_ID && env.FACEBOOK_CLIENT_SECRET),
-        scope: ["pages_manage_posts", "pages_read_engagement", "pages_show_list"],
+        scope: [
+          "pages_manage_posts",
+          "pages_read_engagement",
+          "pages_show_list",
+        ],
       },
       twitter: {
         clientId: env.TWITTER_CLIENT_ID ?? "",

@@ -13,10 +13,7 @@ export async function GET(
     const { generationId } = await params
     const workspaceId = await getWorkspaceId()
 
-    const entry = await libraryService.getEntryDetail(
-      generationId,
-      workspaceId
-    )
+    const entry = await libraryService.getEntryDetail(generationId, workspaceId)
     return NextResponse.json({ success: true, data: entry })
   } catch (error) {
     return handleApiError(error)

@@ -1,7 +1,12 @@
 "use client"
 
 import { Card } from "@/components/ui/card"
-import { IconFileText, IconCalendar, IconTrophy, IconChartBar } from "@tabler/icons-react"
+import {
+  IconFileText,
+  IconCalendar,
+  IconTrophy,
+  IconChartBar,
+} from "@tabler/icons-react"
 
 interface StatCardProps {
   label: string

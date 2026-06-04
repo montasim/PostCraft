@@ -16,7 +16,7 @@ export async function deleteTwitterPost(id: string) {
   }
 
   await connectDB()
-  
+
   const post = await TwitterPost.findOne({ _id: id, userId: session.user.id })
   if (!post) {
     throw new Error("Post not found")
@@ -26,7 +26,12 @@ export async function deleteTwitterPost(id: string) {
   revalidatePath("/insights/twitter")
 }
 
-export async function updateTwitterPost(id: string, text: string, hashtags: string[], scheduledTime?: Date) {
+export async function updateTwitterPost(
+  id: string,
+  text: string,
+  hashtags: string[],
+  scheduledTime?: Date
+) {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
@@ -36,7 +41,7 @@ export async function updateTwitterPost(id: string, text: string, hashtags: stri
   }
 
   await connectDB()
-  
+
   const post = await TwitterPost.findOne({ _id: id, userId: session.user.id })
   if (!post) {
     throw new Error("Post not found")

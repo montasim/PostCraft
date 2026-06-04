@@ -254,7 +254,8 @@ export const libraryRepository = {
     let current = 1
 
     for (let i = 1; i < dates.length; i++) {
-      const diff = (dates[i].getTime() - dates[i - 1].getTime()) / (1000 * 60 * 60 * 24)
+      const diff =
+        (dates[i].getTime() - dates[i - 1].getTime()) / (1000 * 60 * 60 * 24)
       if (Math.abs(diff - 1) < 0.5) {
         current++
         longest = Math.max(longest, current)

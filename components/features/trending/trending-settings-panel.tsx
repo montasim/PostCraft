@@ -45,31 +45,31 @@ const PLATFORMS: {
   url: string
   api: string
 }[] = [
-    {
-      value: "hackernews",
-      label: "Hacker News",
-      url: "news.ycombinator.com",
-      api: "HN Algolia API — fetches top/new stories with metadata.\nFlow: Fetch top stories → filter by score/recency → extract titles + URLs + comments.",
-    },
-    {
-      value: "devto",
-      label: "Dev.to",
-      url: "dev.to",
-      api: "Dev.to API (dev.to/api/articles) — fetches popular articles by tag.\nFlow: Fetch top articles → filter by reactions/comments → extract title + body + tags.",
-    },
-    {
-      value: "github",
-      label: "GitHub",
-      url: "github.com/trending",
-      api: "GitHub Trending — scrapes trending repos by language.\nFlow: Fetch trending repos → filter by stars gained → extract name + description + language.",
-    },
-    {
-      value: "reddit",
-      label: "Reddit",
-      url: "reddit.com",
-      api: "Reddit JSON API — fetches hot posts from subreddits.\nFlow: Fetch hot posts → filter by upvotes/comments → extract title + body + subreddit.",
-    },
-  ]
+  {
+    value: "hackernews",
+    label: "Hacker News",
+    url: "news.ycombinator.com",
+    api: "HN Algolia API — fetches top/new stories with metadata.\nFlow: Fetch top stories → filter by score/recency → extract titles + URLs + comments.",
+  },
+  {
+    value: "devto",
+    label: "Dev.to",
+    url: "dev.to",
+    api: "Dev.to API (dev.to/api/articles) — fetches popular articles by tag.\nFlow: Fetch top articles → filter by reactions/comments → extract title + body + tags.",
+  },
+  {
+    value: "github",
+    label: "GitHub",
+    url: "github.com/trending",
+    api: "GitHub Trending — scrapes trending repos by language.\nFlow: Fetch trending repos → filter by stars gained → extract name + description + language.",
+  },
+  {
+    value: "reddit",
+    label: "Reddit",
+    url: "reddit.com",
+    api: "Reddit JSON API — fetches hot posts from subreddits.\nFlow: Fetch hot posts → filter by upvotes/comments → extract title + body + subreddit.",
+  },
+]
 
 const DAYS = [
   "Monday",
@@ -166,7 +166,6 @@ function TrendingSettingsPanel({
           </SheetHeader>
 
           <div className="space-y-4 p-4">
-
             {/* Platforms */}
             <div>
               <Label className="mb-2 block text-xs font-medium">

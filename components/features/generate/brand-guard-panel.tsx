@@ -219,7 +219,11 @@ function BrandGuardPanel({
 
   if (availableHeight > 0) {
     const activeGroups =
-      [toneRules.length > 0, formatRules.length > 0, bannedWords.length > 0].filter(Boolean).length || 1
+      [
+        toneRules.length > 0,
+        formatRules.length > 0,
+        bannedWords.length > 0,
+      ].filter(Boolean).length || 1
     const totalHeadersHeight = activeGroups * 24
     const totalGapHeight = (activeGroups - 1) * 16
     const extraPadding = 32
@@ -236,7 +240,12 @@ function BrandGuardPanel({
   }
 
   return (
-    <Card className={cn("hidden max-h-[30.5rem] w-full shrink-0 md:flex md:w-[40%]", className)}>
+    <Card
+      className={cn(
+        "hidden max-h-[30.5rem] w-full shrink-0 md:flex md:w-[40%]",
+        className
+      )}
+    >
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-sm font-semibold">
           <div className="flex items-center gap-2">
@@ -252,7 +261,10 @@ function BrandGuardPanel({
           )}
         </CardTitle>
       </CardHeader>
-      <CardContent ref={contentRef} className="min-h-0 flex-1 space-y-4 overflow-y-auto">
+      <CardContent
+        ref={contentRef}
+        className="min-h-0 flex-1 space-y-4 overflow-y-auto"
+      >
         {loading ? (
           <div className="space-y-3">
             <Skeleton className="h-4 w-full" />

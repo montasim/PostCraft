@@ -9,12 +9,13 @@ export async function POST(request: NextRequest) {
     const userId = await getUserId()
 
     const body = await request.json()
-    const result = await generationService.createGeneration(body, workspaceId, userId)
-
-    return NextResponse.json(
-      { success: true, data: result },
-      { status: 201 }
+    const result = await generationService.createGeneration(
+      body,
+      workspaceId,
+      userId
     )
+
+    return NextResponse.json({ success: true, data: result }, { status: 201 })
   } catch (error) {
     return handleApiError(error)
   }

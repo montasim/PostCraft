@@ -16,21 +16,29 @@ export async function deleteLinkedinPost(postId: string) {
 
   await connectDB()
 
-  const post = await LinkedinPost.findOne({ _id: postId, userId: session.user.id })
+  const post = await LinkedinPost.findOne({
+    _id: postId,
+    userId: session.user.id,
+  })
   if (!post) {
     throw new Error("Post not found")
   }
 
-  // Optionally, if the post is scheduled, we might need to cancel the inngest event, 
-  // but inngest cancellation works by sending an event which we might not have set up 
+  // Optionally, if the post is scheduled, we might need to cancel the inngest event,
+  // but inngest cancellation works by sending an event which we might not have set up
   // explicitly with a cancelOn for this, but Inngest will skip execution if post is deleted/status changed.
-  
+
   await LinkedinPost.findByIdAndDelete(postId)
 
   revalidatePath("/insights/linkedin")
 }
 
-export async function updateLinkedinPost(postId: string, text: string, hashtags: string[], scheduledTime?: Date) {
+export async function updateLinkedinPost(
+  postId: string,
+  text: string,
+  hashtags: string[],
+  scheduledTime?: Date
+) {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
@@ -40,7 +48,10 @@ export async function updateLinkedinPost(postId: string, text: string, hashtags:
 
   await connectDB()
 
-  const post = await LinkedinPost.findOne({ _id: postId, userId: session.user.id })
+  const post = await LinkedinPost.findOne({
+    _id: postId,
+    userId: session.user.id,
+  })
   if (!post) {
     throw new Error("Post not found")
   }

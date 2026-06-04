@@ -6,18 +6,18 @@
 // Protect with auth middleware in production.
 // ─────────────────────────────────────────────────────────────
 
-import { NextResponse } from "next/server";
-import { quotaTracker } from "@/core/ai/quota-tracker";
-import { MODEL_REGISTRY } from "@/core/ai/models";
-import { getKeyCountSummary } from "@/core/ai/key-registry";
+import { NextResponse } from "next/server"
+import { quotaTracker } from "@/core/ai/quota-tracker"
+import { MODEL_REGISTRY } from "@/core/ai/models"
+import { getKeyCountSummary } from "@/core/ai/key-registry"
 
 export async function GET() {
   const [summary, rawStatus] = await Promise.all([
     quotaTracker.getSummary(),
     quotaTracker.getStatus(),
-  ]);
+  ])
 
-  const keyCounts = getKeyCountSummary();
+  const keyCounts = getKeyCountSummary()
 
   const registry = MODEL_REGISTRY.map((m) => ({
     provider: m.providerId,
@@ -28,7 +28,7 @@ export async function GET() {
     contextWindow: m.contextWindow,
     qualityTier: m.qualityTier,
     keysConfigured: keyCounts[m.providerId] ?? 0,
-  }));
+  }))
 
   return NextResponse.json({
     keyCounts,
@@ -43,5 +43,5 @@ export async function GET() {
       exhausted: r.exhausted,
       cooldownUntil: r.cooldownUntil,
     })),
-  });
+  })
 }

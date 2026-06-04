@@ -163,12 +163,15 @@ export function getProviders(): AIProvider[] {
 export function getProvidersForTask(task: AITask): AIProvider[] {
   const { DEFAULT_AI_PROVIDER } = getEnv()
   let order = TASK_PROVIDER_ORDER[task]
-  
+
   if (DEFAULT_AI_PROVIDER) {
     // Put the default provider at the very front
-    order = [DEFAULT_AI_PROVIDER, ...order.filter(p => p !== DEFAULT_AI_PROVIDER)]
+    order = [
+      DEFAULT_AI_PROVIDER,
+      ...order.filter((p) => p !== DEFAULT_AI_PROVIDER),
+    ]
   }
-  
+
   const available = getProviders()
 
   return order

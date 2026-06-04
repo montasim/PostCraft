@@ -1,10 +1,10 @@
-import { useMemo } from "react";
+import { useMemo } from "react"
 
 interface UseAutocompleteTimepickerProps {
-  is24Hour?: boolean;
-  locale?: string;
-  timeZone?: string;
-  interval?: number;
+  is24Hour?: boolean
+  locale?: string
+  timeZone?: string
+  interval?: number
 }
 
 export function useAutocompleteTimepicker({
@@ -14,17 +14,17 @@ export function useAutocompleteTimepicker({
   interval = 30, // Default to 30 minutes
 }: UseAutocompleteTimepickerProps = {}) {
   const timeOptions = useMemo(() => {
-    const options: Date[] = [];
-    const date = new Date();
-    date.setHours(0, 0, 0, 0);
+    const options: Date[] = []
+    const date = new Date()
+    date.setHours(0, 0, 0, 0)
 
     for (let i = 0; i < 24 * 60; i += interval) {
-      const time = new Date(date);
-      time.setMinutes(i);
-      options.push(time);
+      const time = new Date(date)
+      time.setMinutes(i)
+      options.push(time)
     }
-    return options;
-  }, [interval]);
+    return options
+  }, [interval])
 
   const formatTime = (date: Date) => {
     return new Intl.DateTimeFormat(locale, {
@@ -32,8 +32,8 @@ export function useAutocompleteTimepicker({
       minute: "2-digit",
       hour12: !is24Hour,
       timeZone: timeZone,
-    }).format(date);
-  };
+    }).format(date)
+  }
 
-  return { timeOptions, formatTime };
+  return { timeOptions, formatTime }
 }

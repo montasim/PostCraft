@@ -4,12 +4,12 @@ export default function FacebookInsightsLoading() {
   return (
     <div className="space-y-6">
       {/* Header Section */}
-      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
         <div>
-          <Skeleton className="h-5 w-40 mb-2" />
+          <Skeleton className="mb-2 h-5 w-40" />
           <Skeleton className="h-4 w-72" />
         </div>
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex flex-wrap items-center gap-2">
           <Skeleton className="h-[22px] w-[90px] rounded-full" />
           <Skeleton className="h-[22px] w-[95px] rounded-full" />
           <Skeleton className="h-[22px] w-[70px] rounded-full" />
@@ -17,12 +17,15 @@ export default function FacebookInsightsLoading() {
       </div>
 
       {/* Grid of Skeleton Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6 items-start">
+      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-2 2xl:grid-cols-3">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="w-full h-full rounded-lg border bg-card p-0 shadow-sm flex flex-col">
+          <div
+            key={i}
+            className="flex h-full w-full flex-col rounded-lg border bg-card p-0 shadow-sm"
+          >
             {/* Card Header */}
             <div className="flex items-start gap-3 border-b px-4 py-3">
-              <Skeleton className="h-12 w-12 rounded-full shrink-0" />
+              <Skeleton className="h-12 w-12 shrink-0 rounded-full" />
               <div className="min-w-0 flex-1 space-y-2">
                 <div className="flex items-center gap-2 pt-1">
                   <Skeleton className="h-4 w-32" />
@@ -30,11 +33,11 @@ export default function FacebookInsightsLoading() {
                 </div>
                 <Skeleton className="h-2.5 w-32" />
               </div>
-              <Skeleton className="h-5 w-5 rounded shrink-0 mt-1" />
+              <Skeleton className="mt-1 h-5 w-5 shrink-0 rounded" />
             </div>
 
             {/* Card Content */}
-            <div className="space-y-3 px-4 py-4 flex-1">
+            <div className="flex-1 space-y-3 px-4 py-4">
               <div className="space-y-2">
                 <Skeleton className="h-3.5 w-full" />
                 <Skeleton className="h-3.5 w-[90%]" />
@@ -62,7 +65,7 @@ export default function FacebookInsightsLoading() {
               {Array.from({ length: 3 }).map((_, j) => (
                 <div key={j} className="flex items-center gap-1.5 px-3 py-1">
                   <Skeleton className="h-5 w-5 rounded-full" />
-                  <Skeleton className="hidden sm:block h-3 w-12" />
+                  <Skeleton className="hidden h-3 w-12 sm:block" />
                 </div>
               ))}
             </div>

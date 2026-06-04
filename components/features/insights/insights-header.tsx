@@ -10,9 +10,7 @@ function InsightsHeader() {
         <IconSparkles className="h-5 w-5 text-primary" />
         <div>
           <p className="text-sm font-semibold">Performance</p>
-          <p className="text-xs text-muted-foreground">
-            Your content insights
-          </p>
+          <p className="text-xs text-muted-foreground">Your content insights</p>
         </div>
       </div>
     </div>

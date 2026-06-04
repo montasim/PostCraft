@@ -9,7 +9,8 @@ import {
   INDUSTRY_OPTIONS,
 } from "../lib/constants"
 
-const MONGODB_URI = process.env.MONGODB_URI ?? "mongodb://localhost:27017/postcraft"
+const MONGODB_URI =
+  process.env.MONGODB_URI ?? "mongodb://localhost:27017/postcraft"
 const WORKSPACE_ID = process.env.SEED_WORKSPACE_ID ?? "ws_default"
 
 const SEED_PERSONA = {
@@ -31,9 +32,15 @@ async function seed() {
   )
 
   console.log(`Seeded brand persona for workspace: ${WORKSPACE_ID}`)
-  console.log(`  targetAudiences: ${result.persona.targetAudiences.length} items`)
-  console.log(`  preferredTones:  ${result.persona.preferredTones.length} items`)
-  console.log(`  language:        ${result.persona.language.map((l: { value: string }) => l.value).join(", ")}`)
+  console.log(
+    `  targetAudiences: ${result.persona.targetAudiences.length} items`
+  )
+  console.log(
+    `  preferredTones:  ${result.persona.preferredTones.length} items`
+  )
+  console.log(
+    `  language:        ${result.persona.language.map((l: { value: string }) => l.value).join(", ")}`
+  )
   console.log(`  topics:          ${result.persona.topics.length} items`)
   console.log(`  industry:        ${result.persona.industry.length} items`)
 

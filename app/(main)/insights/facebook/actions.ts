@@ -16,7 +16,10 @@ export async function deleteFacebookPost(postId: string) {
 
   await connectDB()
 
-  const post = await FacebookPost.findOne({ _id: postId, userId: session.user.id })
+  const post = await FacebookPost.findOne({
+    _id: postId,
+    userId: session.user.id,
+  })
   if (!post) {
     throw new Error("Post not found")
   }
@@ -26,7 +29,12 @@ export async function deleteFacebookPost(postId: string) {
   revalidatePath("/insights/facebook")
 }
 
-export async function updateFacebookPost(postId: string, text: string, hashtags: string[], scheduledTime?: Date) {
+export async function updateFacebookPost(
+  postId: string,
+  text: string,
+  hashtags: string[],
+  scheduledTime?: Date
+) {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
@@ -36,7 +44,10 @@ export async function updateFacebookPost(postId: string, text: string, hashtags:
 
   await connectDB()
 
-  const post = await FacebookPost.findOne({ _id: postId, userId: session.user.id })
+  const post = await FacebookPost.findOne({
+    _id: postId,
+    userId: session.user.id,
+  })
   if (!post) {
     throw new Error("Post not found")
   }

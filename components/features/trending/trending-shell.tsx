@@ -8,7 +8,11 @@ import { TrendingEmptyState } from "./trending-empty-state"
 import { TrendingSidebar } from "./trending-sidebar"
 import { TrendingSettingsPanel } from "./trending-settings-panel"
 import { TrendingVariant } from "./trending-run-group"
-import { EmptyState, VariantCarousel, HighTrafficAlert } from "@/components/shared"
+import {
+  EmptyState,
+  VariantCarousel,
+  HighTrafficAlert,
+} from "@/components/shared"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import type { SelectOption } from "@/components/shared/multi-select"
@@ -321,20 +325,28 @@ function TrendingShell() {
             variant="centered"
             title="Scan in Progress"
             description="We are currently scanning for trending topics and generating posts. Check back soon."
-            icon={<IconLoader2 className="h-10 w-10 animate-spin text-muted-foreground" />}
+            icon={
+              <IconLoader2 className="h-10 w-10 animate-spin text-muted-foreground" />
+            }
           />
         ) : selectedGenerations.length === 0 && selectedRun ? (
           <EmptyState
             variant="centered"
-            title={selectedRun.generationIds.length > 0 ? "Posts Unavailable" : "No Posts Generated"}
+            title={
+              selectedRun.generationIds.length > 0
+                ? "Posts Unavailable"
+                : "No Posts Generated"
+            }
             description={
               selectedRun.generationIds.length > 0
                 ? "The posts generated during this scan are no longer available (they may have been deleted)."
-                : quotaExceeded 
+                : quotaExceeded
                   ? "This scan was skipped because your daily generation quota has been exceeded."
                   : "This scan completed but no matching trending topics were found."
             }
-            icon={<IconTrendingUp className="h-10 w-10 text-muted-foreground" />}
+            icon={
+              <IconTrendingUp className="h-10 w-10 text-muted-foreground" />
+            }
           />
         ) : (
           <EmptyState

@@ -1,11 +1,26 @@
 "use client"
 
 import { useState } from "react"
-import { Dialog, DialogContent, DialogTitle, DialogFooter } from "@/components/ui/dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { IconCalendar, IconSend, IconLoader2, IconInfoCircle } from "@tabler/icons-react"
+import {
+  IconCalendar,
+  IconSend,
+  IconLoader2,
+  IconInfoCircle,
+} from "@tabler/icons-react"
 import { toast } from "sonner"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { LinkedInPreview } from "./linkedin-preview"
 import { TwitterPreview } from "./twitter-preview"
 import { FacebookPreview } from "./facebook-preview"
@@ -62,7 +77,11 @@ function PostPreviewDialog({
       toast.success(`Successfully posted to ${platformName}!`)
       onOpenChange(false)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : `Could not post to ${platformName}.`)
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : `Could not post to ${platformName}.`
+      )
     } finally {
       setIsPosting(false)
     }
@@ -89,7 +108,9 @@ function PostPreviewDialog({
       toast.success("Post scheduled successfully!")
       onOpenChange(false)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not schedule post.")
+      toast.error(
+        error instanceof Error ? error.message : "Could not schedule post."
+      )
     } finally {
       setIsScheduling(false)
     }
@@ -103,27 +124,43 @@ function PostPreviewDialog({
       >
         <DialogTitle className="sr-only">{platformName} Preview</DialogTitle>
         <PreviewComponent variant={variant} />
-        {(platform === "linkedin" || platform === "facebook" || platform === "twitter") && (
+        {(platform === "linkedin" ||
+          platform === "facebook" ||
+          platform === "twitter") && (
           <DialogFooter className="mt-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
             {showDatePicker ? (
               <div className="flex w-full items-center gap-2 sm:w-auto">
                 <TooltipProvider delayDuration={200}>
                   <Tooltip>
-                    <TooltipTrigger type="button" className="focus:outline-none">
-                      <IconInfoCircle className="h-4 w-4 text-muted-foreground hover:text-foreground cursor-help shrink-0 transition-colors" />
+                    <TooltipTrigger
+                      type="button"
+                      className="focus:outline-none"
+                    >
+                      <IconInfoCircle className="h-4 w-4 shrink-0 cursor-help text-muted-foreground transition-colors hover:text-foreground" />
                     </TooltipTrigger>
-                    <TooltipContent className="max-w-[260px] text-center p-3 leading-relaxed" side="top" sideOffset={8}>
-                      <p>We do not schedule posts directly on {platformName}. Instead, PostCraft holds your post securely on our servers and automatically publishes it to your account at the scheduled time.</p>
+                    <TooltipContent
+                      className="max-w-[260px] p-3 text-center leading-relaxed"
+                      side="top"
+                      sideOffset={8}
+                    >
+                      <p>
+                        We do not schedule posts directly on {platformName}.
+                        Instead, PostCraft holds your post securely on our
+                        servers and automatically publishes it to your account
+                        at the scheduled time.
+                      </p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
                 <input
                   type="datetime-local"
-                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring sm:w-auto dark:[color-scheme:dark]"
+                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none sm:w-auto dark:[color-scheme:dark]"
                   style={{ accentColor: "hsl(var(--primary))" }}
                   value={scheduleDate}
                   onChange={(e) => setScheduleDate(e.target.value)}
-                  min={new Date(Date.now() + 10 * 60000).toISOString().slice(0, 16)}
+                  min={new Date(Date.now() + 10 * 60000)
+                    .toISOString()
+                    .slice(0, 16)}
                 />
                 <Button
                   variant="outline"
@@ -137,14 +174,18 @@ function PostPreviewDialog({
                   onClick={handleSchedule}
                   disabled={isScheduling || !scheduleDate}
                 >
-                  {isScheduling ? <IconLoader2 className="h-4 w-4 animate-spin" /> : <IconCalendar className="h-4 w-4" />}
+                  {isScheduling ? (
+                    <IconLoader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <IconCalendar className="h-4 w-4" />
+                  )}
                   Confirm
                 </Button>
               </div>
             ) : (
               <>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="gap-2"
                   onClick={() => setShowDatePicker(true)}
                   disabled={isPosting}
@@ -152,12 +193,16 @@ function PostPreviewDialog({
                   <IconCalendar className="h-4 w-4" />
                   Schedule Post
                 </Button>
-                <Button 
-                  className={`gap-2 ${platform === "facebook" ? "bg-[#1877F2] hover:bg-[#166fe5] text-white" : platform === "twitter" ? "bg-black hover:bg-gray-800 text-white dark:bg-white dark:hover:bg-gray-200 dark:text-black" : "bg-[#0a66c2] hover:bg-[#004182] text-white"}`}
+                <Button
+                  className={`gap-2 ${platform === "facebook" ? "bg-[#1877F2] text-white hover:bg-[#166fe5]" : platform === "twitter" ? "bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200" : "bg-[#0a66c2] text-white hover:bg-[#004182]"}`}
                   onClick={handlePostNow}
                   disabled={isPosting}
                 >
-                  {isPosting ? <IconLoader2 className="h-4 w-4 animate-spin" /> : <IconSend className="h-4 w-4" />}
+                  {isPosting ? (
+                    <IconLoader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <IconSend className="h-4 w-4" />
+                  )}
                   Post Now
                 </Button>
               </>

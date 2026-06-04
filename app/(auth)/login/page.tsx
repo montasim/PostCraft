@@ -5,7 +5,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export const metadata: Metadata = {
   title: "Login",
-  description: "Welcome back. Sign in to your PostCraft account and start creating social media posts that get engagement.",
+  description:
+    "Welcome back. Sign in to your PostCraft account and start creating social media posts that get engagement.",
 }
 
 export default function LoginPage() {

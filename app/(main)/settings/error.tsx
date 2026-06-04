@@ -9,5 +9,7 @@ export default function SettingsError({
   error: Error & { digest?: string }
   reset: () => void
 }) {
-  return <PageError title="Settings failed to load" error={error} reset={reset} />
+  return (
+    <PageError title="Settings failed to load" error={error} reset={reset} />
+  )
 }

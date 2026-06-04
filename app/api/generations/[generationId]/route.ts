@@ -14,11 +14,17 @@ export async function GET(
     const { generationId } = await params
     const workspaceId = await getWorkspaceId()
 
-    const generation = await generationService.getGenerationStatus(generationId, workspaceId)
+    const generation = await generationService.getGenerationStatus(
+      generationId,
+      workspaceId
+    )
 
     let variants: unknown[] = []
     if (generation.status === "completed") {
-      variants = await variantService.getVariantsByTrend(generationId, workspaceId)
+      variants = await variantService.getVariantsByTrend(
+        generationId,
+        workspaceId
+      )
     }
 
     return NextResponse.json({

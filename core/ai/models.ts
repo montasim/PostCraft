@@ -8,21 +8,21 @@
 // rpd = -1 means no daily cap (unlimited requests per day).
 // ─────────────────────────────────────────────────────────────
 
-export type ProviderName = "groq" | "gemini" | "openrouter" | "zhipu";
+export type ProviderName = "groq" | "gemini" | "openrouter" | "zhipu"
 
-export type QualityTier = "flagship" | "high" | "mid" | "low";
+export type QualityTier = "flagship" | "high" | "mid" | "low"
 
 export interface ModelConfig {
-  providerId: ProviderName;
-  modelId: string;
-  displayName: string;
+  providerId: ProviderName
+  modelId: string
+  displayName: string
   /** Requests per minute */
-  rpm: number;
+  rpm: number
   /** Requests per day. -1 = unlimited */
-  rpd: number;
+  rpd: number
   /** Context window in tokens */
-  contextWindow: number;
-  qualityTier: QualityTier;
+  contextWindow: number
+  qualityTier: QualityTier
 }
 
 /**
@@ -154,4 +154,4 @@ export const MODEL_REGISTRY: ModelConfig[] = [
     contextWindow: 128_000,
     qualityTier: "high",
   },
-];
+]

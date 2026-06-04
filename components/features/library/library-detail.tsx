@@ -102,11 +102,11 @@ function VariantCardWrapper({
   }
 
   return (
-    <VariantCard 
-      variant={variant} 
-      copied={copied} 
-      onCopy={handleCopy} 
-      customHashtags={persona?.customHashtags} 
+    <VariantCard
+      variant={variant}
+      copied={copied}
+      onCopy={handleCopy}
+      customHashtags={persona?.customHashtags}
       extraActions={
         <Button
           variant="outline"
@@ -146,7 +146,7 @@ function LibraryDetail({
     <div className="space-y-4">
       {/* Two-column: input card + brand guard */}
       <div className="flex flex-col items-stretch gap-4 lg:flex-row">
-        <div className="min-w-0 flex-1 flex">
+        <div className="flex min-w-0 flex-1">
           <OriginalInputCard entry={entry} />
         </div>
         <div className="relative hidden w-[40%] shrink-0 lg:block">

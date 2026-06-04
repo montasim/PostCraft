@@ -34,7 +34,7 @@ export function TrendingScheduleCard({
           type="button"
           variant="ghost"
           size="icon"
-          className="-mr-1.5 -mt-1.5 h-6 w-6 text-chart-4/70 hover:bg-chart-5/10 hover:text-chart-4"
+          className="-mt-1.5 -mr-1.5 h-6 w-6 text-chart-4/70 hover:bg-chart-5/10 hover:text-chart-4"
           onClick={onSettingsClick}
           aria-label="Trending settings"
         >

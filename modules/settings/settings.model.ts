@@ -40,7 +40,11 @@ const notificationSchema = new mongoose.Schema<INotificationSettings>(
 
 const appearanceSchema = new mongoose.Schema<IAppearanceSettings>(
   {
-    theme: { type: String, enum: ["system", "dark", "light"], default: "system" },
+    theme: {
+      type: String,
+      enum: ["system", "dark", "light"],
+      default: "system",
+    },
   },
   { _id: false }
 )

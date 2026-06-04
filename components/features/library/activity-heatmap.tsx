@@ -23,9 +23,7 @@ function getDaysAgo(dateStr: string): number {
   date.setHours(0, 0, 0, 0)
   const today = new Date()
   today.setHours(0, 0, 0, 0)
-  return Math.floor(
-    (today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
-  )
+  return Math.floor((today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24))
 }
 
 function getIntensity(count: number): string {

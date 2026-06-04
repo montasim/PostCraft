@@ -8,7 +8,17 @@ import { ValidationError } from "@/core/errors/app-error"
 import type { UserProfile, ProfileStats } from "@/types"
 
 export const profileService = {
-  async getProfile(userId: string, session: { user: { name?: string | null; email?: string | null; image?: string | null; createdAt?: Date | null } }) {
+  async getProfile(
+    userId: string,
+    session: {
+      user: {
+        name?: string | null
+        email?: string | null
+        image?: string | null
+        createdAt?: Date | null
+      }
+    }
+  ) {
     const doc = await profileRepository.findByUserId(userId)
 
     const profile: UserProfile = {
@@ -22,7 +32,8 @@ export const profileService = {
       twitterHandle: doc?.twitterHandle ?? "",
       linkedInSlug: doc?.linkedInSlug ?? "",
       avatarUrl: session.user.image ?? "",
-      joinedDate: session.user.createdAt?.toISOString() ?? new Date().toISOString(),
+      joinedDate:
+        session.user.createdAt?.toISOString() ?? new Date().toISOString(),
     }
 
     return profile
@@ -56,10 +67,12 @@ export const profileService = {
 
     if (parsed.data.fullName) {
       const { db } = getAuthDb()
-      await db.collection("user").updateOne(
-        { _id: new ObjectId(userId) },
-        { $set: { name: parsed.data.fullName } }
-      )
+      await db
+        .collection("user")
+        .updateOne(
+          { _id: new ObjectId(userId) },
+          { $set: { name: parsed.data.fullName } }
+        )
     }
 
     const profileData = { ...parsed.data }

@@ -256,9 +256,16 @@ export async function generatePostsFromTrends(
             ? config.targetAudience
             : ["Fellow Developers"],
         tones: ["Thought Leadership", "Storytelling"],
-        languages: config.language.length > 0
-          ? config.language.map((l) => l.toUpperCase() === "EN" ? "EN" : l.toUpperCase() === "BN" ? "BN" : "Banglish")
-          : ["EN"],
+        languages:
+          config.language.length > 0
+            ? config.language.map((l) =>
+                l.toUpperCase() === "EN"
+                  ? "EN"
+                  : l.toUpperCase() === "BN"
+                    ? "BN"
+                    : "Banglish"
+              )
+            : ["EN"],
         includeEmoji: true,
         postCount: 3,
         platforms: ["linkedin"],
@@ -302,7 +309,8 @@ export async function shortlistWithAI(
     audiences: config.targetAudience ?? [],
   }
 
-  const { system: systemPrompt, user: userPrompt } = buildShortlistPrompt(shortlistData)
+  const { system: systemPrompt, user: userPrompt } =
+    buildShortlistPrompt(shortlistData)
 
   try {
     const { text: raw } = await callWithTaskFallback("shortlist", {

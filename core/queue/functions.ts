@@ -326,9 +326,10 @@ export const scheduleLinkedInPost = inngest.createFunction(
     await step.run("post-to-linkedin", async () => {
       const { connectDB } = await import("@/core/config/database")
       const { getAuthDb } = await import("@/core/auth/auth-db")
-      const { LinkedinPost } = await import("@/modules/linkedin/linkedin.schema")
+      const { LinkedinPost } =
+        await import("@/modules/linkedin/linkedin.schema")
       const { ObjectId } = await import("mongodb")
-      
+
       await connectDB()
 
       let currentText = event.data.text as string
@@ -343,34 +344,35 @@ export const scheduleLinkedInPost = inngest.createFunction(
         currentHashtags = dbPost.hashtags || []
       }
       const { db } = getAuthDb()
-      
+
       let userObjectId
       try {
         userObjectId = new ObjectId(userId)
-      } catch(e) {}
-      
+      } catch (e) {}
+
       const query = {
         userId: userObjectId ? { $in: [userId, userObjectId] } : userId,
         providerId: "linkedin",
       }
-      
+
       const account = await db.collection("account").findOne(query)
-      if (!account || !account.accessToken) throw new Error("No LinkedIn token found")
-      
+      if (!account || !account.accessToken)
+        throw new Error("No LinkedIn token found")
+
       const token = account.accessToken
-      
+
       const profileRes = await fetch("https://api.linkedin.com/v2/userinfo", {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (!profileRes.ok) throw new Error("Failed to fetch LinkedIn profile")
-      
+
       const profile = await profileRes.json()
       const personUrn = `urn:li:person:${profile.sub}`
-      
+
       const postContent = currentHashtags?.length
-        ? `${currentText}\n\n${currentHashtags.map((h: string) => h.startsWith('#') ? h : `#${h}`).join(' ')}`
+        ? `${currentText}\n\n${currentHashtags.map((h: string) => (h.startsWith("#") ? h : `#${h}`)).join(" ")}`
         : currentText
-        
+
       const postRes = await fetch("https://api.linkedin.com/v2/ugcPosts", {
         method: "POST",
         headers: {
@@ -394,7 +396,7 @@ export const scheduleLinkedInPost = inngest.createFunction(
           },
         }),
       })
-      
+
       if (!postRes.ok) {
         const err = await postRes.text()
         if (postId) {
@@ -405,16 +407,16 @@ export const scheduleLinkedInPost = inngest.createFunction(
         }
         throw new Error(`LinkedIn API error: ${err}`)
       }
-      
+
       const urn = postRes.headers.get("x-restli-id") || ""
-      
+
       if (postId) {
         await LinkedinPost.findByIdAndUpdate(postId, {
           status: "published",
           urn,
         })
       }
-      
+
       return { success: true, urn }
     })
   }
@@ -439,9 +441,10 @@ export const scheduleFacebookPost = inngest.createFunction(
     await step.run("post-to-facebook", async () => {
       const { connectDB } = await import("@/core/config/database")
       const { getAuthDb } = await import("@/core/auth/auth-db")
-      const { FacebookPost } = await import("@/modules/facebook/facebook.schema")
+      const { FacebookPost } =
+        await import("@/modules/facebook/facebook.schema")
       const { ObjectId } = await import("mongodb")
-      
+
       await connectDB()
 
       let currentText = event.data.text as string
@@ -456,25 +459,28 @@ export const scheduleFacebookPost = inngest.createFunction(
         currentHashtags = dbPost.hashtags || []
       }
       const { db } = getAuthDb()
-      
+
       let userObjectId
       try {
         userObjectId = new ObjectId(userId)
-      } catch(e) {}
-      
+      } catch (e) {}
+
       const query = {
         userId: userObjectId ? { $in: [userId, userObjectId] } : userId,
         providerId: "facebook",
       }
-      
+
       const account = await db.collection("account").findOne(query)
-      if (!account || !account.accessToken) throw new Error("No Facebook token found")
-      
+      if (!account || !account.accessToken)
+        throw new Error("No Facebook token found")
+
       const token = account.accessToken
-      
-      const pagesRes = await fetch(`https://graph.facebook.com/v19.0/me/accounts?access_token=${token}`)
+
+      const pagesRes = await fetch(
+        `https://graph.facebook.com/v19.0/me/accounts?access_token=${token}`
+      )
       if (!pagesRes.ok) throw new Error("Failed to fetch Facebook pages")
-      
+
       const pagesData = await pagesRes.json()
       if (!pagesData.data || pagesData.data.length === 0) {
         throw new Error("No Facebook pages found for this account")
@@ -485,20 +491,23 @@ export const scheduleFacebookPost = inngest.createFunction(
       const pageToken = page.access_token
 
       const postContent = currentHashtags?.length
-        ? `${currentText}\n\n${currentHashtags.map((h: string) => h.startsWith('#') ? h : `#${h}`).join(' ')}`
+        ? `${currentText}\n\n${currentHashtags.map((h: string) => (h.startsWith("#") ? h : `#${h}`)).join(" ")}`
         : currentText
-        
-      const postRes = await fetch(`https://graph.facebook.com/v19.0/${pageId}/feed`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: postContent,
-          access_token: pageToken,
-        }),
-      })
-      
+
+      const postRes = await fetch(
+        `https://graph.facebook.com/v19.0/${pageId}/feed`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: postContent,
+            access_token: pageToken,
+          }),
+        }
+      )
+
       if (!postRes.ok) {
         const err = await postRes.text()
         if (postId) {
@@ -510,19 +519,22 @@ export const scheduleFacebookPost = inngest.createFunction(
         logger.error({ err, pageId, userId }, "Facebook scheduled post failed")
         throw new Error(`Facebook API error: ${err}`)
       }
-      
+
       const postData = await postRes.json()
       const returnedPostId = postData.id
-      
+
       if (postId) {
         await FacebookPost.findByIdAndUpdate(postId, {
           status: "published",
           postId: returnedPostId,
         })
       }
-      
-      logger.info({ postId: returnedPostId, userId, pageId }, "Successfully executed scheduled Facebook post")
-      
+
+      logger.info(
+        { postId: returnedPostId, userId, pageId },
+        "Successfully executed scheduled Facebook post"
+      )
+
       return { success: true, postId: returnedPostId }
     })
   }
@@ -549,7 +561,7 @@ export const scheduleTwitterPost = inngest.createFunction(
       const { getAuthDb } = await import("@/core/auth/auth-db")
       const { TwitterPost } = await import("@/modules/twitter/twitter.schema")
       const { ObjectId } = await import("mongodb")
-      
+
       await connectDB()
 
       let currentText = event.data.text as string
@@ -564,26 +576,27 @@ export const scheduleTwitterPost = inngest.createFunction(
         currentHashtags = dbPost.hashtags || []
       }
       const { db } = getAuthDb()
-      
+
       let userObjectId
       try {
         userObjectId = new ObjectId(userId)
-      } catch(e) {}
-      
+      } catch (e) {}
+
       const query = {
         userId: userObjectId ? { $in: [userId, userObjectId] } : userId,
         providerId: "twitter",
       }
-      
+
       const account = await db.collection("account").findOne(query)
-      if (!account || !account.accessToken) throw new Error("No Twitter token found")
-      
+      if (!account || !account.accessToken)
+        throw new Error("No Twitter token found")
+
       const token = account.accessToken
-      
+
       const postContent = currentHashtags?.length
-        ? `${currentText}\n\n${currentHashtags.map((h: string) => h.startsWith('#') ? h : `#${h}`).join(' ')}`
+        ? `${currentText}\n\n${currentHashtags.map((h: string) => (h.startsWith("#") ? h : `#${h}`)).join(" ")}`
         : currentText
-        
+
       const postRes = await fetch("https://api.twitter.com/2/tweets", {
         method: "POST",
         headers: {
@@ -594,7 +607,7 @@ export const scheduleTwitterPost = inngest.createFunction(
           text: postContent,
         }),
       })
-      
+
       if (!postRes.ok) {
         const err = await postRes.text()
         if (postId) {
@@ -607,20 +620,23 @@ export const scheduleTwitterPost = inngest.createFunction(
         logger.error({ err, userId }, "Twitter scheduled post failed")
         throw new Error(`Twitter API error: ${err}`)
       }
-      
+
       const postData = await postRes.json()
       const returnedTweetId = postData.data?.id
-      
+
       if (postId) {
         await TwitterPost.findByIdAndUpdate(postId, {
           status: "published",
           tweetId: returnedTweetId,
         })
       }
-      
+
       const { logger } = await import("@/core/logger")
-      logger.info({ tweetId: returnedTweetId, userId }, "Successfully executed scheduled Twitter post")
-      
+      logger.info(
+        { tweetId: returnedTweetId, userId },
+        "Successfully executed scheduled Twitter post"
+      )
+
       return { success: true, tweetId: returnedTweetId }
     })
   }

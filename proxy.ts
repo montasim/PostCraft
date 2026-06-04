@@ -9,9 +9,7 @@ const AUTH_ROUTES = [
   "/reset-password",
   "/verify-email",
 ]
-const PUBLIC_ROUTES = [
-  "/privacy",
-]
+const PUBLIC_ROUTES = ["/privacy"]
 const API_AUTH_PREFIX = API.AUTH_PREFIX
 const API_INNGEST_PREFIX = API.INNGEST_PREFIX
 
@@ -28,7 +26,9 @@ export async function proxy(request: NextRequest) {
   const sessionCookie = getSessionCookie(request)
   const isAuthenticated = !!sessionCookie
   const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route))
-  const isPublicRoute = PUBLIC_ROUTES.some((route) => pathname.startsWith(route))
+  const isPublicRoute = PUBLIC_ROUTES.some((route) =>
+    pathname.startsWith(route)
+  )
 
   if (isAuthenticated && isAuthRoute) {
     return NextResponse.redirect(new URL("/", request.url))

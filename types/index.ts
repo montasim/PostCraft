@@ -20,7 +20,11 @@ export interface NavItem {
   id: string
   label: string
   icon: ComponentType<{ className?: string }>
-  subItems?: { id: string; label: string; icon?: ComponentType<{ className?: string }> }[]
+  subItems?: {
+    id: string
+    label: string
+    icon?: ComponentType<{ className?: string }>
+  }[]
 }
 
 export type PostStatus = "published" | "draft" | "archived"

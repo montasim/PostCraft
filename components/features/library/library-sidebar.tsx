@@ -29,8 +29,12 @@ interface DateGroup {
 function groupByDate(entries: LibraryEntry[]): DateGroup[] {
   const now = new Date()
   const today = now.toISOString().slice(0, 10)
-  const yesterday = new Date(now.getTime() - 86400000).toISOString().slice(0, 10)
-  const weekAgo = new Date(now.getTime() - 7 * 86400000).toISOString().slice(0, 10)
+  const yesterday = new Date(now.getTime() - 86400000)
+    .toISOString()
+    .slice(0, 10)
+  const weekAgo = new Date(now.getTime() - 7 * 86400000)
+    .toISOString()
+    .slice(0, 10)
 
   const groups: DateGroup[] = [
     { label: "Today", entries: [] },
@@ -50,7 +54,11 @@ function groupByDate(entries: LibraryEntry[]): DateGroup[] {
   return groups.filter((g) => g.entries.length > 0)
 }
 
-function LibrarySidebar({ entries, selectedId, onSelect }: LibrarySidebarProps) {
+function LibrarySidebar({
+  entries,
+  selectedId,
+  onSelect,
+}: LibrarySidebarProps) {
   const [search, setSearch] = useState("")
 
   const filtered = useMemo(() => {
@@ -65,7 +73,7 @@ function LibrarySidebar({ entries, selectedId, onSelect }: LibrarySidebarProps) 
     <aside className="flex w-full shrink-0 flex-col">
       <div className="mb-4">
         <div className="relative">
-          <IconSearch className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <IconSearch className="absolute top-2.5 left-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Find a post you wrote..."
             value={search}
@@ -75,10 +83,10 @@ function LibrarySidebar({ entries, selectedId, onSelect }: LibrarySidebarProps) 
         </div>
       </div>
 
-      <div className="flex-1 -mx-1 px-1">
+      <div className="-mx-1 flex-1 px-1">
         {groups.map((group) => (
           <div key={group.label} className="mb-8">
-            <p className="mb-1 px-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <p className="mb-1 px-2 text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
               {group.label}
             </p>
             {group.entries.map((entry) => {
@@ -91,9 +99,7 @@ function LibrarySidebar({ entries, selectedId, onSelect }: LibrarySidebarProps) 
                   onClick={() => onSelect(entry.id)}
                   className={cn(
                     "w-full rounded-lg px-2.5 py-2 text-left transition",
-                    isSelected
-                      ? "bg-primary/10"
-                      : "hover:bg-muted/50"
+                    isSelected ? "bg-primary/10" : "hover:bg-muted/50"
                   )}
                 >
                   <div className="flex items-start gap-2">
@@ -103,7 +109,7 @@ function LibrarySidebar({ entries, selectedId, onSelect }: LibrarySidebarProps) 
                         STATUS_DOT[entry.status]
                       )}
                     />
-                    <p className="truncate text-xs font-medium leading-snug">
+                    <p className="truncate text-xs leading-snug font-medium">
                       {entry.topic}
                     </p>
                   </div>

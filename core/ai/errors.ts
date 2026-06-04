@@ -2,7 +2,7 @@
 // FILE: core/ai/errors.ts  (v2 — keyIndex added to error)
 // ─────────────────────────────────────────────────────────────
 
-import type { ProviderName } from "./models";
+import type { ProviderName } from "./models"
 
 export enum AiErrorType {
   /** 429 RPM — cooldown and retry same key */
@@ -30,10 +30,10 @@ export class AiProviderError extends Error {
     public readonly keyIndex: number,
     public readonly httpStatus?: number,
     public readonly retryAfterMs?: number,
-    message?: string,
+    message?: string
   ) {
-    super(message ?? `${type} on ${provider}/${modelId} [key#${keyIndex}]`);
-    this.name = "AiProviderError";
+    super(message ?? `${type} on ${provider}/${modelId} [key#${keyIndex}]`)
+    this.name = "AiProviderError"
   }
 }
 
@@ -44,12 +44,12 @@ export class AiProviderError extends Error {
 export function classifyError(
   provider: ProviderName,
   status: number,
-  body: unknown,
+  body: unknown
 ): AiErrorType {
-  if (status === 401 || status === 403) return AiErrorType.AUTH_ERROR;
+  if (status === 401 || status === 403) return AiErrorType.AUTH_ERROR
 
   if (status === 429) {
-    const text = JSON.stringify(body ?? "").toLowerCase();
+    const text = JSON.stringify(body ?? "").toLowerCase()
 
     // Gemini: "RESOURCE_EXHAUSTED", "quota exceeded", "daily limit"
     if (
@@ -58,24 +58,24 @@ export function classifyError(
       text.includes("quota") ||
       text.includes("exhausted")
     ) {
-      return AiErrorType.QUOTA_EXHAUSTED;
+      return AiErrorType.QUOTA_EXHAUSTED
     }
 
     // Groq: { error: { code: "rate_limit_exceeded", message: "... per day ..." } }
     if (text.includes("rate_limit_exceeded") && text.includes("day")) {
-      return AiErrorType.QUOTA_EXHAUSTED;
+      return AiErrorType.QUOTA_EXHAUSTED
     }
 
     // OpenRouter: { error: { message: "Daily limit reached" } }
     if (text.includes("daily limit") || text.includes("daily_limit")) {
-      return AiErrorType.QUOTA_EXHAUSTED;
+      return AiErrorType.QUOTA_EXHAUSTED
     }
 
     // Everything else is a per-minute rate limit
-    return AiErrorType.RATE_LIMITED;
+    return AiErrorType.RATE_LIMITED
   }
 
-  if (status >= 500) return AiErrorType.PROVIDER_ERROR;
+  if (status >= 500) return AiErrorType.PROVIDER_ERROR
 
-  return AiErrorType.PROVIDER_ERROR;
+  return AiErrorType.PROVIDER_ERROR
 }

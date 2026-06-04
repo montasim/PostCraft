@@ -1,7 +1,10 @@
 "use client"
 
 import { TrendingRunGroup } from "./trending-run-group"
-import type { ITrendingRun, TrendingGenerationPreview } from "@/modules/trending/trending.types"
+import type {
+  ITrendingRun,
+  TrendingGenerationPreview,
+} from "@/modules/trending/trending.types"
 
 interface TrendingRunsListProps {
   runs: ITrendingRun[]
@@ -17,7 +20,11 @@ function groupRunsByDate(runs: ITrendingRun[]): Map<string, ITrendingRun[]> {
   const sorted = [...runs].sort((a, b) => b.ranAt.getTime() - a.ranAt.getTime())
 
   for (const run of sorted) {
-    const runDate = new Date(run.ranAt.getFullYear(), run.ranAt.getMonth(), run.ranAt.getDate())
+    const runDate = new Date(
+      run.ranAt.getFullYear(),
+      run.ranAt.getMonth(),
+      run.ranAt.getDate()
+    )
     let label: string
 
     if (runDate.getTime() === today.getTime()) {
@@ -25,7 +32,11 @@ function groupRunsByDate(runs: ITrendingRun[]): Map<string, ITrendingRun[]> {
     } else if (runDate.getTime() === yesterday.getTime()) {
       label = "Yesterday"
     } else {
-      label = run.ranAt.toLocaleDateString("en-US", { day: "2-digit", month: "short", year: "numeric" })
+      label = run.ranAt.toLocaleDateString("en-US", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      })
     }
 
     const existing = groups.get(label) ?? []
@@ -39,9 +50,10 @@ function groupRunsByDate(runs: ITrendingRun[]): Map<string, ITrendingRun[]> {
 function TrendingRunsList({ runs, generations }: TrendingRunsListProps) {
   const groups = groupRunsByDate(runs)
   const entries = Array.from(groups.entries())
-  const latestRunId = runs.length > 0
-    ? [...runs].sort((a, b) => b.ranAt.getTime() - a.ranAt.getTime())[0]._id
-    : null
+  const latestRunId =
+    runs.length > 0
+      ? [...runs].sort((a, b) => b.ranAt.getTime() - a.ranAt.getTime())[0]._id
+      : null
 
   return (
     <div className="space-y-4">

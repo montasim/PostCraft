@@ -67,7 +67,8 @@ const workspaceSlice = createSlice({
   },
 })
 
-export const { updateWorkspace, resetWorkspace, setAiLimitError } = workspaceSlice.actions
+export const { updateWorkspace, resetWorkspace, setAiLimitError } =
+  workspaceSlice.actions
 export default workspaceSlice.reducer
 
 // Selectors

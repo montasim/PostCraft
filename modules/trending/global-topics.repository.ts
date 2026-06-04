@@ -2,7 +2,9 @@ import { connectDB } from "@/core/config/database"
 import { GlobalTrendingTopic } from "./global-topics.model"
 import type { ISourceItemDoc } from "./trending.model"
 
-export async function saveGlobalTopics(topics: ISourceItemDoc[]): Promise<void> {
+export async function saveGlobalTopics(
+  topics: ISourceItemDoc[]
+): Promise<void> {
   await connectDB()
   await GlobalTrendingTopic.create({
     topics,
@@ -27,8 +29,10 @@ export async function getLatestGlobalTopics(): Promise<{
   fetchedAt: Date
 } | null> {
   await connectDB()
-  const doc = await GlobalTrendingTopic
-    .findOne({ status: "completed", "topics.0": { $exists: true } })
+  const doc = await GlobalTrendingTopic.findOne({
+    status: "completed",
+    "topics.0": { $exists: true },
+  })
     .sort({ createdAt: -1 })
     .lean()
 

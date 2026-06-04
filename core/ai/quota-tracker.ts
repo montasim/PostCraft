@@ -9,76 +9,78 @@
 // don't interfere with the main app DB pool.
 // ─────────────────────────────────────────────────────────────
 
-import mongoose, { type Collection } from "mongoose";
-import type { ProviderName } from "./models";
-import { MODEL_REGISTRY } from "./models";
-import { getEnv } from "@/core/config/env";
-import { logger } from "@/core/logger";
+import mongoose, { type Collection } from "mongoose"
+import type { ProviderName } from "./models"
+import { MODEL_REGISTRY } from "./models"
+import { getEnv } from "@/core/config/env"
+import { logger } from "@/core/logger"
 
 // ── Types ─────────────────────────────────────────────────────
 
 export interface QuotaRecord {
-  provider: ProviderName;
-  modelId: string;
+  provider: ProviderName
+  modelId: string
   /** Which API key account this record tracks */
-  keyIndex: number;
+  keyIndex: number
   /** UTC date YYYY-MM-DD — records auto-expire after 48h */
-  date: string;
+  date: string
   /** Successful requests made today with this key */
-  requestCount: number;
+  requestCount: number
   /** True once confirmed exhausted via API response or RPD threshold hit */
-  exhausted: boolean;
+  exhausted: boolean
   /** ISO timestamp — this key+model is in RPM cooldown until here */
-  cooldownUntil: string | null;
+  cooldownUntil: string | null
   /** ISO timestamp of last update — useful for debugging */
-  updatedAt: string;
+  updatedAt: string
 }
 
 export interface KeyAvailability {
-  provider: ProviderName;
-  modelId: string;
-  keyIndex: number;
-  available: boolean;
-  reason: "ok" | "exhausted" | "cooldown" | "no_key";
-  cooldownUntil?: string;
-  requestCount?: number;
+  provider: ProviderName
+  modelId: string
+  keyIndex: number
+  available: boolean
+  reason: "ok" | "exhausted" | "cooldown" | "no_key"
+  cooldownUntil?: string
+  requestCount?: number
 }
 
 // ── MongoDB connection ─────────────────────────────────────────
 
-let _collection: Collection<QuotaRecord> | null = null;
+let _collection: Collection<QuotaRecord> | null = null
 
 async function getCollection(): Promise<Collection<QuotaRecord>> {
-  if (_collection) return _collection;
+  if (_collection) return _collection
 
-  const { MONGODB_URI } = getEnv();
+  const { MONGODB_URI } = getEnv()
 
   // Use a dedicated connection for quota tracking — isolated from main pool
-  const conn = await mongoose.createConnection(MONGODB_URI, {
-    maxPoolSize: 5,
-    serverSelectionTimeoutMS: 5000,
-  }).asPromise();
+  const conn = await mongoose
+    .createConnection(MONGODB_URI, {
+      maxPoolSize: 5,
+      serverSelectionTimeoutMS: 5000,
+    })
+    .asPromise()
 
-  _collection = conn.collection<QuotaRecord>("ai_quota_tracker_v2");
+  _collection = conn.collection<QuotaRecord>("ai_quota_tracker_v2")
 
   // Unique index per (provider, modelId, keyIndex, date)
   await _collection.createIndex(
     { provider: 1, modelId: 1, keyIndex: 1, date: 1 },
-    { unique: true },
-  );
+    { unique: true }
+  )
   // TTL: auto-delete records after 48 hours
   await _collection.createIndex(
     { updatedAt: 1 },
-    { expireAfterSeconds: 60 * 60 * 48 },
-  );
+    { expireAfterSeconds: 60 * 60 * 48 }
+  )
 
-  logger.info("Quota tracker collection initialized");
+  logger.info("Quota tracker collection initialized")
 
-  return _collection;
+  return _collection
 }
 
 function todayUtc(): string {
-  return new Date().toISOString().slice(0, 10);
+  return new Date().toISOString().slice(0, 10)
 }
 
 // ── QuotaTracker class ─────────────────────────────────────────
@@ -89,15 +91,15 @@ export class QuotaTracker {
   async getRecord(
     provider: ProviderName,
     modelId: string,
-    keyIndex: number,
+    keyIndex: number
   ): Promise<QuotaRecord> {
-    const col = await getCollection();
+    const col = await getCollection()
     const existing = await col.findOne({
       provider,
       modelId,
       keyIndex,
       date: todayUtc(),
-    });
+    })
 
     return (
       existing ?? {
@@ -110,7 +112,7 @@ export class QuotaTracker {
         cooldownUntil: null,
         updatedAt: new Date().toISOString(),
       }
-    );
+    )
   }
 
   /**
@@ -120,13 +122,19 @@ export class QuotaTracker {
   async isAvailable(
     provider: ProviderName,
     modelId: string,
-    keyIndex: number,
+    keyIndex: number
   ): Promise<KeyAvailability> {
-    const record = await this.getRecord(provider, modelId, keyIndex);
-    const now = new Date();
+    const record = await this.getRecord(provider, modelId, keyIndex)
+    const now = new Date()
 
     if (record.exhausted) {
-      return { provider, modelId, keyIndex, available: false, reason: "exhausted" };
+      return {
+        provider,
+        modelId,
+        keyIndex,
+        available: false,
+        reason: "exhausted",
+      }
     }
 
     if (record.cooldownUntil && new Date(record.cooldownUntil) > now) {
@@ -137,17 +145,23 @@ export class QuotaTracker {
         available: false,
         reason: "cooldown",
         cooldownUntil: record.cooldownUntil,
-      };
+      }
     }
 
     // Proactive RPD check against registry config
     const config = MODEL_REGISTRY.find(
-      (m) => m.providerId === provider && m.modelId === modelId,
-    );
+      (m) => m.providerId === provider && m.modelId === modelId
+    )
     if (config && config.rpd !== -1 && record.requestCount >= config.rpd) {
       // Proactively mark exhausted so future checks skip the DB read
-      await this.markExhausted(provider, modelId, keyIndex);
-      return { provider, modelId, keyIndex, available: false, reason: "exhausted" };
+      await this.markExhausted(provider, modelId, keyIndex)
+      return {
+        provider,
+        modelId,
+        keyIndex,
+        available: false,
+        reason: "exhausted",
+      }
     }
 
     return {
@@ -157,7 +171,7 @@ export class QuotaTracker {
       available: true,
       reason: "ok",
       requestCount: record.requestCount,
-    };
+    }
   }
 
   // ── Write ─────────────────────────────────────────────────
@@ -165,9 +179,9 @@ export class QuotaTracker {
   async recordRequest(
     provider: ProviderName,
     modelId: string,
-    keyIndex: number,
+    keyIndex: number
   ): Promise<void> {
-    const col = await getCollection();
+    const col = await getCollection()
     await col.updateOne(
       { provider, modelId, keyIndex, date: todayUtc() },
       {
@@ -175,24 +189,24 @@ export class QuotaTracker {
         $set: { updatedAt: new Date().toISOString() },
         $setOnInsert: { exhausted: false, cooldownUntil: null },
       },
-      { upsert: true },
-    );
+      { upsert: true }
+    )
   }
 
   async markExhausted(
     provider: ProviderName,
     modelId: string,
-    keyIndex: number,
+    keyIndex: number
   ): Promise<void> {
-    const col = await getCollection();
+    const col = await getCollection()
     await col.updateOne(
       { provider, modelId, keyIndex, date: todayUtc() },
       {
         $set: { exhausted: true, updatedAt: new Date().toISOString() },
         $setOnInsert: { requestCount: 0, cooldownUntil: null },
       },
-      { upsert: true },
-    );
+      { upsert: true }
+    )
   }
 
   /**
@@ -203,18 +217,18 @@ export class QuotaTracker {
     provider: ProviderName,
     modelId: string,
     keyIndex: number,
-    ms: number = 65_000,
+    ms: number = 65_000
   ): Promise<void> {
-    const col = await getCollection();
-    const cooldownUntil = new Date(Date.now() + ms).toISOString();
+    const col = await getCollection()
+    const cooldownUntil = new Date(Date.now() + ms).toISOString()
     await col.updateOne(
       { provider, modelId, keyIndex, date: todayUtc() },
       {
         $set: { cooldownUntil, updatedAt: new Date().toISOString() },
         $setOnInsert: { requestCount: 0, exhausted: false },
       },
-      { upsert: true },
-    );
+      { upsert: true }
+    )
   }
 
   // ── Dashboard / debug ─────────────────────────────────────
@@ -224,11 +238,11 @@ export class QuotaTracker {
    * and shows per-key availability inline.
    */
   async getStatus(): Promise<QuotaRecord[]> {
-    const col = await getCollection();
+    const col = await getCollection()
     return col
       .find({ date: todayUtc() })
       .sort({ provider: 1, modelId: 1, keyIndex: 1 })
-      .toArray();
+      .toArray()
   }
 
   /**
@@ -237,44 +251,50 @@ export class QuotaTracker {
    */
   async getSummary(): Promise<
     Array<{
-      provider: ProviderName;
-      modelId: string;
-      totalKeys: number;
-      availableKeys: number;
-      totalRequests: number;
+      provider: ProviderName
+      modelId: string
+      totalKeys: number
+      availableKeys: number
+      totalRequests: number
     }>
   > {
-    const records = await this.getStatus();
+    const records = await this.getStatus()
     const grouped = new Map<
       string,
       { provider: ProviderName; modelId: string; records: QuotaRecord[] }
-    >();
+    >()
 
     for (const r of records) {
-      const key = `${r.provider}::${r.modelId}`;
+      const key = `${r.provider}::${r.modelId}`
       if (!grouped.has(key)) {
-        grouped.set(key, { provider: r.provider, modelId: r.modelId, records: [] });
+        grouped.set(key, {
+          provider: r.provider,
+          modelId: r.modelId,
+          records: [],
+        })
       }
-      grouped.get(key)!.records.push(r);
+      grouped.get(key)!.records.push(r)
     }
 
-    const now = new Date();
-    return Array.from(grouped.values()).map(({ provider, modelId, records }) => {
-      const availableKeys = records.filter(
-        (r) =>
-          !r.exhausted &&
-          !(r.cooldownUntil && new Date(r.cooldownUntil) > now),
-      ).length;
+    const now = new Date()
+    return Array.from(grouped.values()).map(
+      ({ provider, modelId, records }) => {
+        const availableKeys = records.filter(
+          (r) =>
+            !r.exhausted &&
+            !(r.cooldownUntil && new Date(r.cooldownUntil) > now)
+        ).length
 
-      return {
-        provider,
-        modelId,
-        totalKeys: records.length,
-        availableKeys,
-        totalRequests: records.reduce((s, r) => s + r.requestCount, 0),
-      };
-    });
+        return {
+          provider,
+          modelId,
+          totalKeys: records.length,
+          availableKeys,
+          totalRequests: records.reduce((s, r) => s + r.requestCount, 0),
+        }
+      }
+    )
   }
 }
 
-export const quotaTracker = new QuotaTracker();
+export const quotaTracker = new QuotaTracker()

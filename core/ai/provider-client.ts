@@ -6,29 +6,29 @@
 // ChatResponse includes keyIndex for traceability.
 // ─────────────────────────────────────────────────────────────
 
-import type { ProviderName } from "./models";
-import { AiProviderError, AiErrorType, classifyError } from "./errors";
-import { getEnv } from "@/core/config/env";
+import type { ProviderName } from "./models"
+import { AiProviderError, AiErrorType, classifyError } from "./errors"
+import { getEnv } from "@/core/config/env"
 
 // ── Types ─────────────────────────────────────────────────────
 
 export interface ChatRequest {
-  system: string;
-  user: string;
+  system: string
+  user: string
   /** 0.0–1.0. Default 0.7 */
-  temperature?: number;
+  temperature?: number
   /** Max output tokens. Default 2048 */
-  maxTokens?: number;
+  maxTokens?: number
 }
 
 export interface ChatResponse {
-  text: string;
-  provider: ProviderName;
-  modelId: string;
+  text: string
+  provider: ProviderName
+  modelId: string
   /** Which key index (account) was used — for tracing */
-  keyIndex: number;
+  keyIndex: number
   /** Token usage if reported */
-  usage?: { inputTokens: number; outputTokens: number };
+  usage?: { inputTokens: number; outputTokens: number }
 }
 
 // ── Shared OpenAI-compatible caller ───────────────────────────
@@ -40,7 +40,7 @@ async function callOpenAICompatible(
   modelId: string,
   keyIndex: number,
   req: ChatRequest,
-  extraHeaders?: Record<string, string>,
+  extraHeaders?: Record<string, string>
 ): Promise<ChatResponse> {
   const res = await fetch(`${baseUrl}/chat/completions`, {
     method: "POST",
@@ -60,12 +60,12 @@ async function callOpenAICompatible(
       response_format: { type: "json_object" },
     }),
     signal: AbortSignal.timeout(30_000),
-  });
+  })
 
   if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    const errorType = classifyError(provider, res.status, body);
-    const retryAfterHeader = res.headers.get("retry-after");
+    const body = await res.json().catch(() => ({}))
+    const errorType = classifyError(provider, res.status, body)
+    const retryAfterHeader = res.headers.get("retry-after")
     throw new AiProviderError(
       errorType,
       provider,
@@ -73,12 +73,12 @@ async function callOpenAICompatible(
       keyIndex,
       res.status,
       retryAfterHeader ? parseInt(retryAfterHeader, 10) * 1000 : undefined,
-      JSON.stringify(body),
-    );
+      JSON.stringify(body)
+    )
   }
 
-  const data = await res.json();
-  const text: string = data.choices?.[0]?.message?.content ?? "";
+  const data = await res.json()
+  const text: string = data.choices?.[0]?.message?.content ?? ""
 
   return {
     text,
@@ -91,7 +91,7 @@ async function callOpenAICompatible(
           outputTokens: data.usage.completion_tokens ?? 0,
         }
       : undefined,
-  };
+  }
 }
 
 // ── Gemini REST caller ─────────────────────────────────────────
@@ -100,9 +100,9 @@ async function callGemini(
   apiKey: string,
   modelId: string,
   keyIndex: number,
-  req: ChatRequest,
+  req: ChatRequest
 ): Promise<ChatResponse> {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${apiKey}`
 
   const res = await fetch(url, {
     method: "POST",
@@ -117,11 +117,11 @@ async function callGemini(
       },
     }),
     signal: AbortSignal.timeout(30_000),
-  });
+  })
 
   if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    const errorType = classifyError("gemini", res.status, body);
+    const body = await res.json().catch(() => ({}))
+    const errorType = classifyError("gemini", res.status, body)
     throw new AiProviderError(
       errorType,
       "gemini",
@@ -129,12 +129,12 @@ async function callGemini(
       keyIndex,
       res.status,
       undefined,
-      JSON.stringify(body),
-    );
+      JSON.stringify(body)
+    )
   }
 
-  const data = await res.json();
-  const text: string = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+  const data = await res.json()
+  const text: string = data.candidates?.[0]?.content?.parts?.[0]?.text ?? ""
 
   return {
     text,
@@ -147,7 +147,7 @@ async function callGemini(
           outputTokens: data.usageMetadata.candidatesTokenCount ?? 0,
         }
       : undefined,
-  };
+  }
 }
 
 // ── Provider caller map ───────────────────────────────────────
@@ -160,8 +160,8 @@ type ProviderCallerFn = (
   apiKey: string,
   modelId: string,
   keyIndex: number,
-  req: ChatRequest,
-) => Promise<ChatResponse>;
+  req: ChatRequest
+) => Promise<ChatResponse>
 
 export const PROVIDER_CALLERS: Record<ProviderName, ProviderCallerFn> = {
   groq: (apiKey, modelId, keyIndex, req) =>
@@ -171,14 +171,14 @@ export const PROVIDER_CALLERS: Record<ProviderName, ProviderCallerFn> = {
       "groq",
       modelId,
       keyIndex,
-      req,
+      req
     ),
 
   gemini: (apiKey, modelId, keyIndex, req) =>
     callGemini(apiKey, modelId, keyIndex, req),
 
   openrouter: (apiKey, modelId, keyIndex, req) => {
-    const env = getEnv();
+    const env = getEnv()
     return callOpenAICompatible(
       "https://openrouter.ai/api/v1",
       apiKey,
@@ -190,8 +190,8 @@ export const PROVIDER_CALLERS: Record<ProviderName, ProviderCallerFn> = {
         // OpenRouter requires these for usage tracking
         "HTTP-Referer": env.APP_URL,
         "X-Title": env.OPENROUTER_SITE_NAME,
-      },
-    );
+      }
+    )
   },
 
   zhipu: (apiKey, modelId, keyIndex, req) =>
@@ -201,6 +201,6 @@ export const PROVIDER_CALLERS: Record<ProviderName, ProviderCallerFn> = {
       "zhipu",
       modelId,
       keyIndex,
-      req,
+      req
     ),
-};
+}

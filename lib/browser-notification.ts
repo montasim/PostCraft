@@ -6,8 +6,12 @@ export async function requestNotificationPermission(): Promise<boolean> {
   return result === "granted"
 }
 
-export function sendBrowserNotification(title: string, options?: NotificationOptions) {
-  if (!("Notification" in window) || Notification.permission !== "granted") return
+export function sendBrowserNotification(
+  title: string,
+  options?: NotificationOptions
+) {
+  if (!("Notification" in window) || Notification.permission !== "granted")
+    return
   new Notification(title, {
     icon: "/favicon.ico",
     ...options,

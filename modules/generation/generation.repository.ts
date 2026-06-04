@@ -31,7 +31,11 @@ export const generationRepository = {
     return doc
   },
 
-  async updateGuardrailIds(id: string, workspaceId: string, guardrailIds: string[]) {
+  async updateGuardrailIds(
+    id: string,
+    workspaceId: string,
+    guardrailIds: string[]
+  ) {
     await GenerationModel.updateOne(
       { _id: id, workspaceId },
       { $set: { guardrailIds } }

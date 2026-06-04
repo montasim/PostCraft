@@ -25,14 +25,16 @@ export async function POST(req: Request) {
 
     // Get the LinkedIn account for the user
     const { db } = getAuthDb()
-    
-    let userObjectId: ObjectId | undefined;
+
+    let userObjectId: ObjectId | undefined
     try {
-      userObjectId = new ObjectId(session.user.id);
-    } catch(e) {}
+      userObjectId = new ObjectId(session.user.id)
+    } catch (e) {}
 
     const query = {
-      userId: userObjectId ? { $in: [session.user.id, userObjectId] } : session.user.id,
+      userId: userObjectId
+        ? { $in: [session.user.id, userObjectId] }
+        : session.user.id,
       providerId: "linkedin",
     }
 
@@ -40,7 +42,10 @@ export async function POST(req: Request) {
 
     if (!account || !account.accessToken) {
       return NextResponse.json(
-        { error: "No LinkedIn account linked or missing access token. Please sign in with LinkedIn." },
+        {
+          error:
+            "No LinkedIn account linked or missing access token. Please sign in with LinkedIn.",
+        },
         { status: 403 }
       )
     }
@@ -62,7 +67,7 @@ export async function POST(req: Request) {
     const profile = await profileRes.json()
     const personUrn = `urn:li:person:${profile.sub}`
     const postContent = hashtags?.length
-      ? `${text}\n\n${hashtags.map((h: string) => h.startsWith('#') ? h : `#${h}`).join(' ')}`
+      ? `${text}\n\n${hashtags.map((h: string) => (h.startsWith("#") ? h : `#${h}`)).join(" ")}`
       : text
 
     // Post to LinkedIn
@@ -93,7 +98,10 @@ export async function POST(req: Request) {
     if (!postRes.ok) {
       const errorData = await postRes.text()
       console.error("LinkedIn API error:", errorData)
-      return NextResponse.json({ error: "Failed to post to LinkedIn" }, { status: 500 })
+      return NextResponse.json(
+        { error: "Failed to post to LinkedIn" },
+        { status: 500 }
+      )
     }
 
     const postUrn = postRes.headers.get("x-restli-id") || ""
@@ -107,9 +115,17 @@ export async function POST(req: Request) {
       urn: postUrn,
     })
 
-    return NextResponse.json({ success: true, message: "Successfully posted to LinkedIn", urn: postUrn, id: dbPost._id })
+    return NextResponse.json({
+      success: true,
+      message: "Successfully posted to LinkedIn",
+      urn: postUrn,
+      id: dbPost._id,
+    })
   } catch (error) {
     console.error("LinkedIn post error:", error)
-    return NextResponse.json({ error: "Failed to post to LinkedIn" }, { status: 500 })
+    return NextResponse.json(
+      { error: "Failed to post to LinkedIn" },
+      { status: 500 }
+    )
   }
 }

@@ -25,14 +25,16 @@ export async function POST(req: Request) {
     }
 
     const { db } = getAuthDb()
-    
-    let userObjectId: ObjectId | undefined;
+
+    let userObjectId: ObjectId | undefined
     try {
-      userObjectId = new ObjectId(session.user.id);
-    } catch(e) {}
+      userObjectId = new ObjectId(session.user.id)
+    } catch (e) {}
 
     const query = {
-      userId: userObjectId ? { $in: [session.user.id, userObjectId] } : session.user.id,
+      userId: userObjectId
+        ? { $in: [session.user.id, userObjectId] }
+        : session.user.id,
       providerId: "facebook",
     }
 
@@ -40,14 +42,19 @@ export async function POST(req: Request) {
 
     if (!account || !account.accessToken) {
       return NextResponse.json(
-        { error: "No Facebook account linked or missing access token. Please sign in with Facebook." },
+        {
+          error:
+            "No Facebook account linked or missing access token. Please sign in with Facebook.",
+        },
         { status: 403 }
       )
     }
 
     const token = account.accessToken
 
-    const pagesRes = await fetch(`https://graph.facebook.com/v19.0/me/accounts?access_token=${token}`)
+    const pagesRes = await fetch(
+      `https://graph.facebook.com/v19.0/me/accounts?access_token=${token}`
+    )
     if (!pagesRes.ok) {
       return NextResponse.json(
         { error: "Failed to fetch Facebook pages. Token may be expired." },
@@ -58,7 +65,10 @@ export async function POST(req: Request) {
     const pagesData = await pagesRes.json()
     if (!pagesData.data || pagesData.data.length === 0) {
       return NextResponse.json(
-        { error: "No Facebook pages found for this account. You must have a Facebook Page to post." },
+        {
+          error:
+            "No Facebook pages found for this account. You must have a Facebook Page to post.",
+        },
         { status: 400 }
       )
     }
@@ -68,24 +78,30 @@ export async function POST(req: Request) {
     const pageToken = page.access_token
 
     const postContent = hashtags?.length
-      ? `${text}\n\n${hashtags.map((h: string) => h.startsWith('#') ? h : `#${h}`).join(' ')}`
+      ? `${text}\n\n${hashtags.map((h: string) => (h.startsWith("#") ? h : `#${h}`)).join(" ")}`
       : text
 
-    const postRes = await fetch(`https://graph.facebook.com/v19.0/${pageId}/feed`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message: postContent,
-        access_token: pageToken,
-      }),
-    })
+    const postRes = await fetch(
+      `https://graph.facebook.com/v19.0/${pageId}/feed`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: postContent,
+          access_token: pageToken,
+        }),
+      }
+    )
 
     if (!postRes.ok) {
       const errorData = await postRes.text()
       logger.error({ errorData, pageId }, "Facebook API error")
-      return NextResponse.json({ error: "Failed to post to Facebook" }, { status: 500 })
+      return NextResponse.json(
+        { error: "Failed to post to Facebook" },
+        { status: 500 }
+      )
     }
 
     const postData = await postRes.json()
@@ -100,11 +116,25 @@ export async function POST(req: Request) {
       postId: postId,
     })
 
-    logger.info({ userId: session.user.id, pageId, postId, dbPostId: dbPost._id }, "Successfully posted to Facebook Page")
+    logger.info(
+      { userId: session.user.id, pageId, postId, dbPostId: dbPost._id },
+      "Successfully posted to Facebook Page"
+    )
 
-    return NextResponse.json({ success: true, message: "Successfully posted to Facebook", postId, id: dbPost._id })
+    return NextResponse.json({
+      success: true,
+      message: "Successfully posted to Facebook",
+      postId,
+      id: dbPost._id,
+    })
   } catch (error) {
-    logger.error({ err: error instanceof Error ? error.message : String(error) }, "Facebook post error")
-    return NextResponse.json({ error: "Failed to post to Facebook" }, { status: 500 })
+    logger.error(
+      { err: error instanceof Error ? error.message : String(error) },
+      "Facebook post error"
+    )
+    return NextResponse.json(
+      { error: "Failed to post to Facebook" },
+      { status: 500 }
+    )
   }
 }

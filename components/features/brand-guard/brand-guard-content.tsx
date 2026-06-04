@@ -587,7 +587,11 @@ function BrandGuardContent() {
                   {activeCount} of {totalCount} rules protecting your brand
                 </p>
               </div>
-              <Progress value={strengthPercent} className="h-2 w-24" aria-label="Brand shield strength" />
+              <Progress
+                value={strengthPercent}
+                className="h-2 w-24"
+                aria-label="Brand shield strength"
+              />
             </div>
           </div>
         </div>

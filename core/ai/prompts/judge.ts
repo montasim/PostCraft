@@ -8,13 +8,13 @@
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface JudgePromptData {
-  topic: string;
-  audiences: string[];
-  platform: string;
-  hook: string;
-  body: string;
-  cta: string;
-  hashtags: string[];
+  topic: string
+  audiences: string[]
+  platform: string
+  hook: string
+  body: string
+  cta: string
+  hashtags: string[]
 }
 
 // ─── Platform-specific scoring criteria ───────────────────────────────────────
@@ -44,16 +44,16 @@ const PLATFORM_CRITERIA: Record<string, string> = {
 - Story arc (20pts): Setup → tension → outcome, even if minimal. Bullet points are a penalty.
 - CTA (15pts): Does it invite personal experience sharing, not just opinions?
 - Human voice (10pts): Warm, slightly vulnerable, personal. Polished = penalty.`,
-};
+}
 
 // ─── Prompt builder ───────────────────────────────────────────────────────────
 
 export function buildJudgePrompt(data: JudgePromptData): {
-  system: string;
-  user: string;
+  system: string
+  user: string
 } {
   const criteria =
-    PLATFORM_CRITERIA[data.platform] ?? PLATFORM_CRITERIA["linkedin"];
+    PLATFORM_CRITERIA[data.platform] ?? PLATFORM_CRITERIA["linkedin"]
 
   const postText = [
     `Hook: ${data.hook}`,
@@ -62,7 +62,7 @@ export function buildJudgePrompt(data: JudgePromptData): {
     data.hashtags.join(" "),
   ]
     .filter(Boolean)
-    .join("\n");
+    .join("\n")
 
   const system = `You are a ${data.platform} engagement analyst. Score posts on actual engagement potential, not writing quality.
 A post that breaks grammar rules but sounds human outscores a grammatically perfect post that reads like a press release.
@@ -71,14 +71,14 @@ ${criteria}
 
 AI PENALTY: Deduct 15pts if the post uses any of: delve, tapestry, realm, game-changer, cutting-edge, robust, leverage, elevate, revolutionize, "in conclusion", "it's important to note", "In today's world", "not just X but Y" construction.
 
-OUTPUT: JSON only. {"score":number,"reasoning":"max 20 words explaining the main strength or weakness"}`;
+OUTPUT: JSON only. {"score":number,"reasoning":"max 20 words explaining the main strength or weakness"}`
 
   const user = `PLATFORM: ${data.platform}
 TOPIC: ${data.topic}
 AUDIENCES: ${data.audiences.join(", ")}
 
 POST:
-${postText}`;
+${postText}`
 
-  return { system, user };
+  return { system, user }
 }

@@ -55,7 +55,7 @@ function LibraryCard({ entry, expanded, onToggle }: LibraryCardProps) {
         onClick={onToggle}
       >
         <div className="flex items-start justify-between gap-2">
-          <p className="text-sm font-medium leading-snug">{entry.topic}</p>
+          <p className="text-sm leading-snug font-medium">{entry.topic}</p>
           <IconChevronDown
             className={cn(
               "h-4 w-4 shrink-0 text-muted-foreground transition-transform",
@@ -100,7 +100,11 @@ function LibraryCard({ entry, expanded, onToggle }: LibraryCardProps) {
   )
 }
 
-function VariantCardWrapper({ variant }: { variant: import("@/types").Variant }) {
+function VariantCardWrapper({
+  variant,
+}: {
+  variant: import("@/types").Variant
+}) {
   const [copied, setCopied] = useState(false)
   const persona = useAppSelector(selectPersona)
 
@@ -112,11 +116,11 @@ function VariantCardWrapper({ variant }: { variant: import("@/types").Variant })
   }
 
   return (
-    <VariantCard 
-      variant={variant} 
-      copied={copied} 
-      onCopy={handleCopy} 
-      customHashtags={persona?.customHashtags} 
+    <VariantCard
+      variant={variant}
+      copied={copied}
+      onCopy={handleCopy}
+      customHashtags={persona?.customHashtags}
       extraActions={
         <Button
           variant="outline"

@@ -242,7 +242,9 @@ function VariantCard({
               .filter(
                 (h) =>
                   !variant.hashtags.some(
-                    (t) => t.toLowerCase() === h.value.toLowerCase() || t.toLowerCase() === h.label.toLowerCase()
+                    (t) =>
+                      t.toLowerCase() === h.value.toLowerCase() ||
+                      t.toLowerCase() === h.label.toLowerCase()
                   )
               )
               .map((h) => h.label) || []),

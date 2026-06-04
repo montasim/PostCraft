@@ -1,7 +1,10 @@
 import type { ScoredVariant } from "@/modules/variant"
 
 /** Guarantee at least one variant per platform in the top N positions */
-function applyDiversityPass(ranked: ScoredVariant[], topN: number): ScoredVariant[] {
+function applyDiversityPass(
+  ranked: ScoredVariant[],
+  topN: number
+): ScoredVariant[] {
   const seen = new Set<string>()
   const result: ScoredVariant[] = []
   const remainder: ScoredVariant[] = []

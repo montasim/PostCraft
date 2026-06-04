@@ -14,7 +14,11 @@ const GlobalTrendingTopicSchema = new Schema<IGlobalTrendingTopicDoc>(
   {
     topics: { type: [SourceItemSchema], default: [] },
     fetchedAt: { type: Date, default: Date.now },
-    status: { type: String, enum: ["completed", "failed"], default: "completed" },
+    status: {
+      type: String,
+      enum: ["completed", "failed"],
+      default: "completed",
+    },
     error: { type: String, default: null },
   },
   { timestamps: true }
@@ -28,4 +32,7 @@ GlobalTrendingTopicSchema.index(
 
 export const GlobalTrendingTopic: Model<IGlobalTrendingTopicDoc> =
   (mongoose.models.GlobalTrendingTopic as Model<IGlobalTrendingTopicDoc>) ||
-  mongoose.model<IGlobalTrendingTopicDoc>("GlobalTrendingTopic", GlobalTrendingTopicSchema)
+  mongoose.model<IGlobalTrendingTopicDoc>(
+    "GlobalTrendingTopic",
+    GlobalTrendingTopicSchema
+  )

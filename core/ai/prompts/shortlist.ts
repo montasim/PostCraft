@@ -8,28 +8,31 @@
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface ShortlistItem {
-  title: string;
-  url?: string;
-  score?: number;
-  source?: string;
+  title: string
+  url?: string
+  score?: number
+  source?: string
 }
 
 export interface ShortlistPromptData {
-  items: ShortlistItem[];
-  selectCount: number;
-  platforms: string[];
-  audiences: string[];
+  items: ShortlistItem[]
+  selectCount: number
+  platforms: string[]
+  audiences: string[]
 }
 
 // ─── Prompt builder ───────────────────────────────────────────────────────────
 
 export function buildShortlistPrompt(data: ShortlistPromptData): {
-  system: string;
-  user: string;
+  system: string
+  user: string
 } {
   const itemList = data.items
-    .map((item, i) => `${i + 1}. ${item.title}${item.source ? ` [${item.source}]` : ""}`)
-    .join("\n");
+    .map(
+      (item, i) =>
+        `${i + 1}. ${item.title}${item.source ? ` [${item.source}]` : ""}`
+    )
+    .join("\n")
 
   const system = `You are a content strategist selecting trending topics for social posts.
 
@@ -41,12 +44,12 @@ SELECTION RULES (in priority order):
 
 REJECT if: topic is too niche to generate engagement, too broad to say anything specific, or requires technical expertise the average user lacks.
 
-OUTPUT: JSON only. {"selected":[{"title":"string","url":"string","selectionReason":"max 10 words"}]}`;
+OUTPUT: JSON only. {"selected":[{"title":"string","url":"string","selectionReason":"max 10 words"}]}`
 
   const user = `Select ${data.selectCount} topics from this list. Platforms: ${data.platforms.join(", ")}. Audiences: ${data.audiences.join(", ")}.
 
 TOPICS:
-${itemList}`;
+${itemList}`
 
-  return { system, user };
+  return { system, user }
 }

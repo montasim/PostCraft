@@ -17,7 +17,10 @@ import { NAV_MAIN, NAV_CONFIG, NAV_ACCOUNT, API } from "@/lib/constants"
 import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { setTrendingPrefs } from "@/store/slices/trending-prefs.slice"
-import { selectPersona, selectAiLimitError } from "@/store/slices/workspace.slice"
+import {
+  selectPersona,
+  selectAiLimitError,
+} from "@/store/slices/workspace.slice"
 import { toast } from "sonner"
 import type { SelectOption } from "@/components/shared/multi-select"
 
@@ -95,13 +98,23 @@ function Sidebar({
   return (
     <aside className="hidden w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar md:flex">
       <div className="flex h-14 items-center gap-2 border-b border-sidebar-border px-4">
-        <Image src="/logo.png" alt="PostCraft" width={28} height={28} className="rounded-lg shadow-sm" />
+        <Image
+          src="/logo.png"
+          alt="PostCraft"
+          width={28}
+          height={28}
+          className="rounded-lg shadow-sm"
+        />
         <span className="font-bold text-primary">PostCraft</span>
       </div>
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
         <NavGroup
           label="Main"
-          items={trendingPrefs?.enabled ? NAV_MAIN : NAV_MAIN.filter((item) => item.id !== "trending")}
+          items={
+            trendingPrefs?.enabled
+              ? NAV_MAIN
+              : NAV_MAIN.filter((item) => item.id !== "trending")
+          }
           active={active}
           onSelect={onSelect}
           badges={{ trending: trendingCount }}

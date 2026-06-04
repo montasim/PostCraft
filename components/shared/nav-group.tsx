@@ -36,7 +36,7 @@ function NavGroup({ label, items, active, onSelect, badges }: NavGroupProps) {
                 <Icon className="h-4 w-4" />
                 {item.label}
                 {badge != null && badge > 0 && (
-                  <span className="ml-auto text-[10px] font-semibold bg-primary text-primary-foreground rounded-full px-1.5 py-0.5 leading-none">
+                  <span className="ml-auto rounded-full bg-primary px-1.5 py-0.5 text-[10px] leading-none font-semibold text-primary-foreground">
                     {badge}
                   </span>
                 )}
@@ -44,7 +44,9 @@ function NavGroup({ label, items, active, onSelect, badges }: NavGroupProps) {
               {item.subItems && item.subItems.length > 0 && (
                 <ul className="mt-1 ml-4 space-y-1 border-l border-sidebar-border/50 pl-2">
                   {item.subItems.map((subItem) => {
-                    const isSubActive = active === `${item.id}/${subItem.id}` || active === subItem.id
+                    const isSubActive =
+                      active === `${item.id}/${subItem.id}` ||
+                      active === subItem.id
                     const SubIcon = subItem.icon
                     return (
                       <li key={subItem.id} className="pl-1">
@@ -53,8 +55,8 @@ function NavGroup({ label, items, active, onSelect, badges }: NavGroupProps) {
                           className={cn(
                             "flex w-full items-center gap-2.5 rounded-lg px-3 py-1.5 text-xs transition",
                             isSubActive
-                              ? "font-medium text-primary bg-sidebar-accent/50"
-                              : "text-muted-foreground hover:text-sidebar-foreground hover:bg-sidebar-accent/30"
+                              ? "bg-sidebar-accent/50 font-medium text-primary"
+                              : "text-muted-foreground hover:bg-sidebar-accent/30 hover:text-sidebar-foreground"
                           )}
                         >
                           {SubIcon && <SubIcon className="h-3.5 w-3.5" />}

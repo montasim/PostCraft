@@ -39,7 +39,7 @@ function LibraryFilters({
 }: LibraryFiltersProps) {
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <div className="relative flex-1 min-w-[200px]">
+      <div className="relative min-w-[200px] flex-1">
         <IconSearch className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           placeholder="Search posts..."
@@ -69,7 +69,8 @@ function LibraryFilters({
         <PopoverTrigger asChild>
           <Button variant="outline" size="sm" className="gap-1.5 text-xs">
             <IconScoreboard className="h-3.5 w-3.5" />
-            {SCORE_RANGES.find((r) => r.id === filters.scoreRange)?.label ?? "All scores"}
+            {SCORE_RANGES.find((r) => r.id === filters.scoreRange)?.label ??
+              "All scores"}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-48 p-2" align="start">
@@ -95,16 +96,15 @@ function LibraryFilters({
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="sm" className="gap-1.5 text-xs">
             <IconArrowsSort className="h-3.5 w-3.5" />
-            {SORT_OPTIONS.find((s) => s.id === filters.sort)?.label ?? "Newest first"}
+            {SORT_OPTIONS.find((s) => s.id === filters.sort)?.label ??
+              "Newest first"}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           {SORT_OPTIONS.map((option) => (
             <DropdownMenuItem
               key={option.id}
-              onClick={() =>
-                onFiltersChange({ ...filters, sort: option.id })
-              }
+              onClick={() => onFiltersChange({ ...filters, sort: option.id })}
               className="text-xs"
             >
               {option.label}

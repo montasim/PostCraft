@@ -1,7 +1,4 @@
-import {
-  buildJudgePrompt,
-  type JudgePromptData,
-} from "@/core/ai/prompts/judge"
+import { buildJudgePrompt, type JudgePromptData } from "@/core/ai/prompts/judge"
 import { callWithTaskFallback } from "@/core/ai/provider"
 import { logger } from "@/core/logger"
 import { z } from "zod"
@@ -41,7 +38,11 @@ function safeJsonParse(text: string): unknown {
       } catch {
         // Try fixing unquoted property names
         const fixed = match[0].replace(/(\w+)\s*:/g, '"$1":')
-        try { return JSON.parse(fixed) } catch { /* give up */ }
+        try {
+          return JSON.parse(fixed)
+        } catch {
+          /* give up */
+        }
       }
     }
     throw new SyntaxError("Failed to parse judge output")
@@ -49,7 +50,13 @@ function safeJsonParse(text: string): unknown {
 }
 
 export async function scoreWithJudge(
-  variant: { hook: string; body: string; cta: string; hashtags: string[]; platform?: string },
+  variant: {
+    hook: string
+    body: string
+    cta: string
+    hashtags: string[]
+    platform?: string
+  },
   audiences: string[],
   topic: string
 ): Promise<JudgeResult> {

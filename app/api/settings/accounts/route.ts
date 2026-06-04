@@ -15,15 +15,15 @@ export async function GET() {
     }
 
     const { db } = getAuthDb()
-    
-    let userObjectId: ObjectId | undefined;
-    try {
-      userObjectId = new ObjectId(session.user.id);
-    } catch(e) {}
 
-    const query = userObjectId 
+    let userObjectId: ObjectId | undefined
+    try {
+      userObjectId = new ObjectId(session.user.id)
+    } catch (e) {}
+
+    const query = userObjectId
       ? { userId: { $in: [session.user.id, userObjectId] } }
-      : { userId: session.user.id };
+      : { userId: session.user.id }
 
     const accounts = await db.collection("account").find(query).toArray()
 
@@ -37,7 +37,10 @@ export async function GET() {
     })
   } catch (error) {
     console.error("Failed to fetch accounts:", error)
-    return NextResponse.json({ error: "Failed to fetch accounts" }, { status: 500 })
+    return NextResponse.json(
+      { error: "Failed to fetch accounts" },
+      { status: 500 }
+    )
   }
 }
 
@@ -55,18 +58,23 @@ export async function DELETE(req: Request) {
     const providerId = searchParams.get("providerId")
 
     if (!providerId) {
-      return NextResponse.json({ error: "Provider ID is required" }, { status: 400 })
+      return NextResponse.json(
+        { error: "Provider ID is required" },
+        { status: 400 }
+      )
     }
 
     const { db } = getAuthDb()
-    
-    let userObjectId: ObjectId | undefined;
+
+    let userObjectId: ObjectId | undefined
     try {
-      userObjectId = new ObjectId(session.user.id);
-    } catch(e) {}
+      userObjectId = new ObjectId(session.user.id)
+    } catch (e) {}
 
     const query = {
-      userId: userObjectId ? { $in: [session.user.id, userObjectId] } : session.user.id,
+      userId: userObjectId
+        ? { $in: [session.user.id, userObjectId] }
+        : session.user.id,
       providerId: providerId,
     }
 
@@ -75,6 +83,9 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ success: true, message: "Account disconnected" })
   } catch (error) {
     console.error("Failed to disconnect account:", error)
-    return NextResponse.json({ error: "Failed to disconnect account" }, { status: 500 })
+    return NextResponse.json(
+      { error: "Failed to disconnect account" },
+      { status: 500 }
+    )
   }
 }

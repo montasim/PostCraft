@@ -14,8 +14,7 @@ export async function GET(request: NextRequest) {
     const filters: LibraryListFilters = {
       search: sp.get("search") || undefined,
       styles: sp.get("styles")?.split(",").filter(Boolean) || undefined,
-      languages:
-        sp.get("languages")?.split(",").filter(Boolean) || undefined,
+      languages: sp.get("languages")?.split(",").filter(Boolean) || undefined,
       scoreRange:
         sp.get("scoreMin") && sp.get("scoreMax")
           ? {
@@ -23,16 +22,12 @@ export async function GET(request: NextRequest) {
               max: Number(sp.get("scoreMax")),
             }
           : undefined,
-      sort:
-        (sp.get("sort") as LibraryListFilters["sort"]) || "newest",
+      sort: (sp.get("sort") as LibraryListFilters["sort"]) || "newest",
       page: Number(sp.get("page")) || 1,
       limit: Number(sp.get("limit")) || 6,
     }
 
-    const data = await libraryService.listEntries(
-      workspaceId,
-      filters
-    )
+    const data = await libraryService.listEntries(workspaceId, filters)
     return NextResponse.json({ success: true, data })
   } catch (error) {
     return handleApiError(error)
