@@ -233,7 +233,21 @@ function VariantCard({
         </div>
       </Card>
       <PostPreviewDialog
-        variant={variant}
+        variant={{
+          ...variant,
+          hashtags: [
+            ...variant.hashtags,
+            ...(customHashtags
+              ?.filter((h) => h.enabled)
+              .filter(
+                (h) =>
+                  !variant.hashtags.some(
+                    (t) => t.toLowerCase() === h.value.toLowerCase() || t.toLowerCase() === h.label.toLowerCase()
+                  )
+              )
+              .map((h) => h.label) || []),
+          ],
+        }}
         platform={previewPlatform}
         open={previewOpen}
         onOpenChange={setPreviewOpen}

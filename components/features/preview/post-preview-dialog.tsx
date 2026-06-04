@@ -3,8 +3,9 @@
 import { useState } from "react"
 import { Dialog, DialogContent, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { IconCalendar, IconSend, IconLoader2 } from "@tabler/icons-react"
+import { IconCalendar, IconSend, IconLoader2, IconInfoCircle } from "@tabler/icons-react"
 import { toast } from "sonner"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { LinkedInPreview } from "./linkedin-preview"
 import { TwitterPreview } from "./twitter-preview"
 import { FacebookPreview } from "./facebook-preview"
@@ -100,9 +101,20 @@ function PostPreviewDialog({
           <DialogFooter className="mt-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
             {showDatePicker ? (
               <div className="flex w-full items-center gap-2 sm:w-auto">
+                <TooltipProvider delayDuration={200}>
+                  <Tooltip>
+                    <TooltipTrigger type="button" className="focus:outline-none">
+                      <IconInfoCircle className="h-4 w-4 text-muted-foreground hover:text-foreground cursor-help shrink-0 transition-colors" />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-[260px] text-center p-3 leading-relaxed" side="top" sideOffset={8}>
+                      <p>We do not schedule posts directly on LinkedIn. Instead, PostCraft holds your post securely on our servers and automatically publishes it to your account at the scheduled time.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
                 <input
                   type="datetime-local"
-                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring sm:w-auto"
+                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring sm:w-auto dark:[color-scheme:dark]"
+                  style={{ accentColor: "hsl(var(--primary))" }}
                   value={scheduleDate}
                   onChange={(e) => setScheduleDate(e.target.value)}
                   min={new Date(Date.now() + 10 * 60000).toISOString().slice(0, 16)}

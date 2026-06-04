@@ -3,6 +3,8 @@ import { ObjectId } from "mongodb"
 import { auth } from "@/core/auth/auth"
 import { headers } from "next/headers"
 import { getAuthDb } from "@/core/auth/auth-db"
+import { connectDB } from "@/core/config/database"
+import { LinkedinPost } from "@/modules/linkedin/linkedin.schema"
 
 export async function POST(req: Request) {
   try {
@@ -94,7 +96,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Failed to post to LinkedIn" }, { status: 500 })
     }
 
-    return NextResponse.json({ success: true, message: "Successfully posted to LinkedIn" })
+    const postUrn = postRes.headers.get("x-restli-id") || ""
+
+    await connectDB()
+    const dbPost = await LinkedinPost.create({
+      userId: session.user.id,
+      text: text,
+      hashtags,
+      status: "published",
+      urn: postUrn,
+    })
+
+    return NextResponse.json({ success: true, message: "Successfully posted to LinkedIn", urn: postUrn, id: dbPost._id })
   } catch (error) {
     console.error("LinkedIn post error:", error)
     return NextResponse.json({ error: "Failed to post to LinkedIn" }, { status: 500 })
