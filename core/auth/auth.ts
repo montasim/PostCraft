@@ -163,7 +163,7 @@ function buildAuthConfig() {
     },
 
     logger: {
-      level: "debug",
+      level: "debug" as const,
     },
   }
 }
