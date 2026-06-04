@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { IconUserPlus, IconArrowLeft, IconBrandGoogle, IconBrandLinkedin } from "@tabler/icons-react"
+import { IconUserPlus, IconArrowLeft, IconBrandGoogle, IconBrandLinkedin, IconBrandFacebook } from "@tabler/icons-react"
 import { Separator } from "@/components/ui/separator"
 import { PasswordInput } from "@/components/shared/password-input"
 import { authClient } from "@/core/auth/auth-client"
@@ -60,6 +60,13 @@ function SignupForm() {
   async function handleLinkedin() {
     await authClient.signIn.social({
       provider: "linkedin",
+      callbackURL: callbackUrl,
+    })
+  }
+
+  async function handleFacebook() {
+    await authClient.signIn.social({
+      provider: "facebook",
       callbackURL: callbackUrl,
     })
   }
@@ -114,6 +121,15 @@ function SignupForm() {
         >
           <IconBrandLinkedin className="h-4 w-4 text-[#0a66c2]" />
           Continue with LinkedIn
+        </Button>
+        <Button
+          variant="outline"
+          className="w-full gap-2 mt-2"
+          onClick={handleFacebook}
+          type="button"
+        >
+          <IconBrandFacebook className="h-4 w-4 text-[#1877F2]" />
+          Continue with Facebook
         </Button>
 
         <div className="my-5 flex items-center">

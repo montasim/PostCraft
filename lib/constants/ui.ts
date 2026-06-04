@@ -8,6 +8,7 @@ import {
   IconSettings,
   IconTrendingUp,
   IconBrandLinkedin,
+  IconBrandFacebook,
 } from "@tabler/icons-react"
 import type { NavItem, SortOption, ScoreRange } from "@/types"
 import type { SelectOption } from "@/components/shared/multi-select"
@@ -21,7 +22,8 @@ export const NAV_MAIN: NavItem[] = [
     label: "Insights", 
     icon: IconChartBar,
     subItems: [
-      { id: "linkedin", label: "LinkedIn", icon: IconBrandLinkedin }
+      { id: "linkedin", label: "LinkedIn", icon: IconBrandLinkedin },
+      { id: "facebook", label: "Facebook", icon: IconBrandFacebook }
     ]
   },
 ]
