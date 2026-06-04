@@ -62,6 +62,24 @@ function LoginForm() {
         <CardTitle className="text-xl">Welcome back</CardTitle>
       </CardHeader>
       <CardContent>
+        <Button
+          variant="outline"
+          className="w-full gap-2"
+          onClick={handleGoogle}
+          type="button"
+        >
+          <IconBrandGoogle className="h-4 w-4" />
+          Continue with Google
+        </Button>
+
+        <div className="my-5 flex items-center">
+          <Separator className="flex-1" />
+          <span className="px-2 text-xs text-muted-foreground">
+            or continue with email
+          </span>
+          <Separator className="flex-1" />
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
@@ -102,22 +120,6 @@ function LoginForm() {
             {loading ? "Signing in..." : "Sign in"}
           </Button>
         </form>
-
-        <div className="relative my-4">
-          <Separator />
-          <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
-            or
-          </span>
-        </div>
-
-        <Button
-          variant="outline"
-          className="w-full gap-2"
-          onClick={handleGoogle}
-        >
-          <IconBrandGoogle className="h-4 w-4" />
-          Continue with Google
-        </Button>
       </CardContent>
       <CardFooter className="flex flex-col space-y-4 text-center">
         <p className="text-sm text-muted-foreground">
