@@ -28,6 +28,7 @@ const ROUTE_MAP: Record<string, string> = {
   trending: "/trending",
   library: "/library",
   insights: "/insights",
+  "insights/linkedin": "/insights/linkedin",
   "brand-guard": "/brand-guard",
   "brand-voice": "/brand-voice",
   profile: "/profile",
@@ -61,17 +62,19 @@ function AppShell({ children }: AppShellProps) {
       ? "trending"
       : pathname === "/library"
         ? "library"
-        : pathname === "/insights"
-          ? "insights"
-          : pathname === "/brand-guard"
-            ? "brand-guard"
-            : pathname === "/brand-voice"
-              ? "brand-voice"
-              : pathname === "/profile"
-                ? "profile"
-                : pathname === "/settings"
-                  ? "settings"
-                  : "generate"
+        : pathname === "/insights/linkedin"
+          ? "insights/linkedin"
+          : pathname === "/insights"
+            ? "insights"
+            : pathname === "/brand-guard"
+              ? "brand-guard"
+              : pathname === "/brand-voice"
+                ? "brand-voice"
+                : pathname === "/profile"
+                  ? "profile"
+                  : pathname === "/settings"
+                    ? "settings"
+                    : "generate"
 
   const handleSelect = (id: string) => {
     router.push(ROUTE_MAP[id] ?? "/")

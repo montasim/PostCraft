@@ -15,6 +15,7 @@ interface EmptyStateProps {
   features?: string[]
   variant?: "default" | "compact" | "centered"
   className?: string
+  children?: ReactNode
 }
 
 function EmptyState({
@@ -25,6 +26,7 @@ function EmptyState({
   features,
   variant = "default",
   className,
+  children,
 }: EmptyStateProps) {
   const variants = {
     default: "rounded-xl border border-dashed border-border/60 bg-muted/20 px-6 py-10",
@@ -91,6 +93,8 @@ function EmptyState({
           {action.label}
         </Button>
       )}
+
+      {children}
     </div>
   )
 }

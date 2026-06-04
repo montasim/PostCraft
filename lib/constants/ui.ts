@@ -7,6 +7,7 @@ import {
   IconUser,
   IconSettings,
   IconTrendingUp,
+  IconBrandLinkedin,
 } from "@tabler/icons-react"
 import type { NavItem, SortOption, ScoreRange } from "@/types"
 import type { SelectOption } from "@/components/shared/multi-select"
@@ -15,7 +16,14 @@ export const NAV_MAIN: NavItem[] = [
   { id: "generate", label: "New Post", icon: IconSparkles },
   { id: "trending", label: "Trending", icon: IconTrendingUp },
   { id: "library", label: "Library", icon: IconHistory },
-  { id: "insights", label: "Insights", icon: IconChartBar },
+  { 
+    id: "insights", 
+    label: "Insights", 
+    icon: IconChartBar,
+    subItems: [
+      { id: "linkedin", label: "LinkedIn", icon: IconBrandLinkedin }
+    ]
+  },
 ]
 
 export const NAV_CONFIG: NavItem[] = [

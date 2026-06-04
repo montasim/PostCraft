@@ -41,6 +41,30 @@ function NavGroup({ label, items, active, onSelect, badges }: NavGroupProps) {
                   </span>
                 )}
               </button>
+              {item.subItems && item.subItems.length > 0 && (
+                <ul className="mt-1 ml-4 space-y-1 border-l border-sidebar-border/50 pl-2">
+                  {item.subItems.map((subItem) => {
+                    const isSubActive = active === `${item.id}/${subItem.id}` || active === subItem.id
+                    const SubIcon = subItem.icon
+                    return (
+                      <li key={subItem.id} className="pl-1">
+                        <button
+                          onClick={() => onSelect(`${item.id}/${subItem.id}`)}
+                          className={cn(
+                            "flex w-full items-center gap-2.5 rounded-lg px-3 py-1.5 text-xs transition",
+                            isSubActive
+                              ? "font-medium text-primary bg-sidebar-accent/50"
+                              : "text-muted-foreground hover:text-sidebar-foreground hover:bg-sidebar-accent/30"
+                          )}
+                        >
+                          {SubIcon && <SubIcon className="h-3.5 w-3.5" />}
+                          {subItem.label}
+                        </button>
+                      </li>
+                    )
+                  })}
+                </ul>
+              )}
             </li>
           )
         })}
