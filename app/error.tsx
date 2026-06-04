@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { IconSparkles, IconAlertTriangle, IconRefresh, IconHome } from "@tabler/icons-react"
@@ -15,9 +16,7 @@ export default function GlobalError({
     <div className="flex min-h-screen flex-col bg-background">
       <header className="flex h-14 shrink-0 items-center justify-between border-b px-6 bg-card">
         <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-linear-to-br from-primary to-chart-2">
-            <IconSparkles className="h-4 w-4 text-primary-foreground" />
-          </div>
+          <Image src="/logo.png" alt="PostCraft" width={28} height={28} className="rounded-lg shadow-sm" />
           <span className="font-bold text-primary">PostCraft</span>
         </Link>
       </header>

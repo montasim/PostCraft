@@ -1,8 +1,15 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { IconAlertTriangle, IconHome, IconRefresh } from "@tabler/icons-react"
+import Image from "next/image"
 import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { IconAlertTriangle, IconRefresh, IconHome } from "@tabler/icons-react"
+import { Geist, Geist_Mono } from "next/font/google"
+import { cn } from "@/lib/utils"
+import "./globals.css" // Import globals to ensure styles work in fatal errors
+
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
+const fontMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" })
 
 export default function GlobalError({
   error,
@@ -12,34 +19,41 @@ export default function GlobalError({
   reset: () => void
 }) {
   return (
-    <html>
-      <body>
-        <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-background p-10">
-          <p className="text-7xl font-bold text-muted-foreground/30">500</p>
-          <IconAlertTriangle className="h-10 w-10 text-destructive" />
-          <div className="space-y-1 text-center">
-            <h2 className="text-lg font-semibold">Something went wrong</h2>
-            <p className="text-sm text-muted-foreground">
-              An unexpected error occurred. Our team has been notified.
-            </p>
-          </div>
-          <div className="flex gap-3">
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-1.5"
-              onClick={reset}
-            >
-              <IconRefresh className="h-3.5 w-3.5" />
-              Try again
-            </Button>
-            <Button size="sm" asChild>
-              <Link href="/">
+    <html lang="en" suppressHydrationWarning className={cn("antialiased font-sans", geist.variable, fontMono.variable)}>
+      <body className="bg-background text-foreground">
+        <div className="flex min-h-screen flex-col">
+          <header className="flex h-14 shrink-0 items-center justify-between border-b px-6 bg-card">
+            <Link href="/" className="flex items-center gap-2">
+              <Image src="/logo.png" alt="PostCraft" width={28} height={28} className="rounded-lg shadow-sm" />
+              <span className="font-bold text-primary">PostCraft</span>
+            </Link>
+          </header>
+
+          <main className="flex flex-1 flex-col items-center justify-center gap-6 p-10 text-center">
+            <div className="flex flex-col items-center justify-center">
+              <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-destructive/10 border border-destructive/20 shadow-sm">
+                <IconAlertTriangle className="h-12 w-12 text-destructive" />
+              </div>
+              <h2 className="text-2xl font-bold tracking-tight">Critical System Error</h2>
+              <p className="mt-3 text-sm text-muted-foreground max-w-[450px] rounded-md bg-muted/50 p-3 font-mono text-xs text-left overflow-x-auto border">
+                {error.message || "An unexpected system error occurred that prevented the page from loading."}
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-3 mt-2">
+              <Button variant="outline" size="sm" className="gap-2 px-6" onClick={() => window.location.href = '/'}>
                 <IconHome className="h-4 w-4" />
                 Dashboard
-              </Link>
-            </Button>
-          </div>
+              </Button>
+              <Button size="sm" className="gap-2 px-6 bg-linear-to-br from-primary to-chart-2 text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:scale-[1.02] hover:shadow-primary/40 active:scale-[0.98]" onClick={reset}>
+                <IconRefresh className="h-4 w-4" />
+                Try again
+              </Button>
+            </div>
+          </main>
+
+          <footer className="border-t py-6 text-center bg-card/50">
+            <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} PostCraft. All rights reserved.</p>
+          </footer>
         </div>
       </body>
     </html>

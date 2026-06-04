@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { useState } from "react"
 import {
   NavGroup,
@@ -11,7 +12,7 @@ import {
 } from "@/components/shared"
 import { TrendingSettingsPanel } from "@/components/features/trending/trending-settings-panel"
 import { Button } from "@/components/ui/button"
-import { IconSparkles, IconClock, IconSettings } from "@tabler/icons-react"
+import { IconClock, IconSettings } from "@tabler/icons-react"
 import { NAV_MAIN, NAV_CONFIG, NAV_ACCOUNT, API } from "@/lib/constants"
 import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
@@ -94,9 +95,7 @@ function Sidebar({
   return (
     <aside className="hidden w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar md:flex">
       <div className="flex h-14 items-center gap-2 border-b border-sidebar-border px-4">
-        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-linear-to-br from-primary to-chart-2">
-          <IconSparkles className="h-4 w-4 text-primary-foreground" />
-        </div>
+        <Image src="/logo.png" alt="PostCraft" width={28} height={28} className="rounded-lg shadow-sm" />
         <span className="font-bold text-primary">PostCraft</span>
       </div>
       <div className="flex-1 space-y-4 overflow-y-auto p-4">

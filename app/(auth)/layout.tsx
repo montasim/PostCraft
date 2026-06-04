@@ -1,4 +1,4 @@
-import { IconSparkles } from "@tabler/icons-react"
+import Image from "next/image"
 
 export default function AuthLayout({
   children,
@@ -8,9 +8,7 @@ export default function AuthLayout({
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background p-6">
       <div className="mb-8 flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-primary to-chart-2">
-          <IconSparkles className="h-4 w-4 text-primary-foreground" />
-        </div>
+        <Image src="/logo.png" alt="PostCraft" width={32} height={32} className="rounded-lg shadow-sm" />
         <span className="bg-linear-to-br from-primary to-chart-2 bg-clip-text text-transparent text-lg font-bold">PostCraft</span>
       </div>
       {children}

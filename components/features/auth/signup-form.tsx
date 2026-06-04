@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { IconUserPlus, IconArrowLeft, IconBrandGoogle } from "@tabler/icons-react"
+import { IconUserPlus, IconArrowLeft, IconBrandGoogle, IconBrandLinkedin } from "@tabler/icons-react"
 import { Separator } from "@/components/ui/separator"
 import { PasswordInput } from "@/components/shared/password-input"
 import { authClient } from "@/core/auth/auth-client"
@@ -53,6 +53,13 @@ function SignupForm() {
   async function handleGoogle() {
     await authClient.signIn.social({
       provider: "google",
+      callbackURL: callbackUrl,
+    })
+  }
+
+  async function handleLinkedin() {
+    await authClient.signIn.social({
+      provider: "linkedin",
       callbackURL: callbackUrl,
     })
   }
@@ -98,6 +105,15 @@ function SignupForm() {
         >
           <IconBrandGoogle className="h-4 w-4" />
           Continue with Google
+        </Button>
+        <Button
+          variant="outline"
+          className="w-full gap-2 mt-2"
+          onClick={handleLinkedin}
+          type="button"
+        >
+          <IconBrandLinkedin className="h-4 w-4 text-[#0a66c2]" />
+          Continue with LinkedIn
         </Button>
 
         <div className="my-5 flex items-center">

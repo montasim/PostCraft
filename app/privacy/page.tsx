@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Metadata } from "next"
 import Link from "next/link"
 import { IconArrowLeft, IconSparkles, IconShieldCheck, IconLock, IconEyeOff } from "@tabler/icons-react"
@@ -13,9 +14,7 @@ export default function PrivacyPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center justify-between border-b px-6 bg-background/80 backdrop-blur-md">
         <Link href="/" className="flex items-center gap-2 transition-transform hover:scale-105">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-primary to-chart-2 shadow-sm">
-            <IconSparkles className="h-4 w-4 text-primary-foreground" />
-          </div>
+          <Image src="/logo.png" alt="PostCraft" width={32} height={32} className="rounded-lg shadow-sm" />
           <span className="font-bold text-lg bg-clip-text text-transparent bg-linear-to-r from-primary to-chart-2">PostCraft</span>
         </Link>
         <Button variant="ghost" size="sm" asChild className="gap-2 text-muted-foreground hover:text-foreground">
