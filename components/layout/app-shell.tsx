@@ -30,6 +30,7 @@ const ROUTE_MAP: Record<string, string> = {
   insights: "/insights",
   "insights/linkedin": "/insights/linkedin",
   "insights/facebook": "/insights/facebook",
+  "insights/twitter": "/insights/twitter",
   "brand-guard": "/brand-guard",
   "brand-voice": "/brand-voice",
   profile: "/profile",
@@ -67,17 +68,19 @@ function AppShell({ children }: AppShellProps) {
           ? "insights/linkedin"
           : pathname === "/insights/facebook"
             ? "insights/facebook"
-            : pathname === "/insights"
-              ? "insights"
-              : pathname === "/brand-guard"
-                ? "brand-guard"
-                : pathname === "/brand-voice"
-                  ? "brand-voice"
-                  : pathname === "/profile"
-                    ? "profile"
-                    : pathname === "/settings"
-                      ? "settings"
-                      : "generate"
+            : pathname === "/insights/twitter"
+              ? "insights/twitter"
+              : pathname === "/insights"
+                ? "insights"
+                : pathname === "/brand-guard"
+                  ? "brand-guard"
+                  : pathname === "/brand-voice"
+                    ? "brand-voice"
+                    : pathname === "/profile"
+                      ? "profile"
+                      : pathname === "/settings"
+                        ? "settings"
+                        : "generate"
 
   const handleSelect = (id: string) => {
     router.push(ROUTE_MAP[id] ?? "/")

@@ -527,3 +527,101 @@ export const scheduleFacebookPost = inngest.createFunction(
     })
   }
 )
+
+export const scheduleTwitterPost = inngest.createFunction(
+  {
+    id: "schedule-twitter-post",
+    name: "Schedule Twitter Post",
+    retries: 2,
+    triggers: [{ event: "twitter/post-scheduled" }],
+  },
+  async ({ event, step }) => {
+    const { userId, scheduledTime, postId } = event.data as {
+      userId: string
+      scheduledTime: string
+      postId?: string
+    }
+
+    await step.sleepUntil("wait-for-schedule", new Date(scheduledTime))
+
+    await step.run("post-to-twitter", async () => {
+      const { connectDB } = await import("@/core/config/database")
+      const { getAuthDb } = await import("@/core/auth/auth-db")
+      const { TwitterPost } = await import("@/modules/twitter/twitter.schema")
+      const { ObjectId } = await import("mongodb")
+      
+      await connectDB()
+
+      let currentText = event.data.text as string
+      let currentHashtags = event.data.hashtags as string[]
+
+      if (postId) {
+        const dbPost = await TwitterPost.findById(postId)
+        if (!dbPost || dbPost.status !== "scheduled") {
+          return { skipped: true, reason: "post_deleted_or_not_scheduled" }
+        }
+        currentText = dbPost.text
+        currentHashtags = dbPost.hashtags || []
+      }
+      const { db } = getAuthDb()
+      
+      let userObjectId
+      try {
+        userObjectId = new ObjectId(userId)
+      } catch(e) {}
+      
+      const query = {
+        userId: userObjectId ? { $in: [userId, userObjectId] } : userId,
+        providerId: "twitter",
+      }
+      
+      const account = await db.collection("account").findOne(query)
+      if (!account || !account.accessToken) throw new Error("No Twitter token found")
+      
+      const token = account.accessToken
+      
+      const postContent = currentHashtags?.length
+        ? `${currentText}\n\n${currentHashtags.map((h: string) => h.startsWith('#') ? h : `#${h}`).join(' ')}`
+        : currentText
+        
+      const postRes = await fetch("https://api.twitter.com/2/tweets", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: postContent,
+        }),
+      })
+      
+      if (!postRes.ok) {
+        const err = await postRes.text()
+        if (postId) {
+          await TwitterPost.findByIdAndUpdate(postId, {
+            status: "failed",
+            error: err,
+          })
+        }
+        const { logger } = await import("@/core/logger")
+        logger.error({ err, userId }, "Twitter scheduled post failed")
+        throw new Error(`Twitter API error: ${err}`)
+      }
+      
+      const postData = await postRes.json()
+      const returnedTweetId = postData.data?.id
+      
+      if (postId) {
+        await TwitterPost.findByIdAndUpdate(postId, {
+          status: "published",
+          tweetId: returnedTweetId,
+        })
+      }
+      
+      const { logger } = await import("@/core/logger")
+      logger.info({ tweetId: returnedTweetId, userId }, "Successfully executed scheduled Twitter post")
+      
+      return { success: true, tweetId: returnedTweetId }
+    })
+  }
+)

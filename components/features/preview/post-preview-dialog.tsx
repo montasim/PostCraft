@@ -103,7 +103,7 @@ function PostPreviewDialog({
       >
         <DialogTitle className="sr-only">{platformName} Preview</DialogTitle>
         <PreviewComponent variant={variant} />
-        {(platform === "linkedin" || platform === "facebook") && (
+        {(platform === "linkedin" || platform === "facebook" || platform === "twitter") && (
           <DialogFooter className="mt-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
             {showDatePicker ? (
               <div className="flex w-full items-center gap-2 sm:w-auto">
@@ -153,7 +153,7 @@ function PostPreviewDialog({
                   Schedule Post
                 </Button>
                 <Button 
-                  className={`gap-2 ${platform === "facebook" ? "bg-[#1877F2] hover:bg-[#166fe5]" : "bg-[#0a66c2] hover:bg-[#004182]"} text-white`}
+                  className={`gap-2 ${platform === "facebook" ? "bg-[#1877F2] hover:bg-[#166fe5] text-white" : platform === "twitter" ? "bg-black hover:bg-gray-800 text-white dark:bg-white dark:hover:bg-gray-200 dark:text-black" : "bg-[#0a66c2] hover:bg-[#004182] text-white"}`}
                   onClick={handlePostNow}
                   disabled={isPosting}
                 >
