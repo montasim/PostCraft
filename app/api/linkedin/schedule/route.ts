@@ -1,7 +1,18 @@
 import { NextResponse } from "next/server"
+import { auth } from "@/core/auth/auth"
+import { headers } from "next/headers"
+import { inngest } from "@/core/queue/client"
 
 export async function POST(req: Request) {
   try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    })
+
+    if (!session || !session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
     const body = await req.json()
     const { text, hashtags, scheduledTime } = body
 
@@ -9,11 +20,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Text and scheduledTime are required" }, { status: 400 })
     }
 
-    // Mock successful scheduling for now
-    await new Promise((resolve) => setTimeout(resolve, 1500)) // Simulate network request
-
-    // Actual scheduling logic would typically involve a task queue (like Inngest, which is in your .env)
-    // or saving to the database and having a cron job pick it up to post to LinkedIn via OAuth token.
+    await inngest.send({
+      name: "linkedin/post-scheduled",
+      data: {
+        userId: session.user.id,
+        text,
+        hashtags,
+        scheduledTime,
+      }
+    })
     
     return NextResponse.json({ success: true, message: "Successfully scheduled LinkedIn post" })
   } catch (error) {

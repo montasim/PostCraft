@@ -306,3 +306,91 @@ export const recoverScheduledTrending = inngest.createFunction(
     return { recovered: enabledUsers.length }
   }
 )
+
+export const scheduleLinkedInPost = inngest.createFunction(
+  {
+    id: "schedule-linkedin-post",
+    name: "Schedule LinkedIn Post",
+    retries: 2,
+    triggers: [{ event: "linkedin/post-scheduled" }],
+  },
+  async ({ event, step }) => {
+    const { userId, text, hashtags, scheduledTime } = event.data as {
+      userId: string
+      text: string
+      hashtags: string[]
+      scheduledTime: string
+    }
+
+    await step.sleepUntil("wait-for-schedule", new Date(scheduledTime))
+
+    await step.run("post-to-linkedin", async () => {
+      // Inline the LinkedIn post logic or call an internal service
+      // We need to fetch the user's token and post to LinkedIn
+      const { connectDB } = await import("@/core/config/database")
+      const { getAuthDb } = await import("@/core/auth/auth-db")
+      const { ObjectId } = await import("mongodb")
+      
+      await connectDB()
+      const { db } = getAuthDb()
+      
+      let userObjectId
+      try {
+        userObjectId = new ObjectId(userId)
+      } catch(e) {}
+      
+      const query = {
+        userId: userObjectId ? { $in: [userId, userObjectId] } : userId,
+        providerId: "linkedin",
+      }
+      
+      const account = await db.collection("account").findOne(query)
+      if (!account || !account.accessToken) throw new Error("No LinkedIn token found")
+      
+      const token = account.accessToken
+      
+      const profileRes = await fetch("https://api.linkedin.com/v2/userinfo", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (!profileRes.ok) throw new Error("Failed to fetch LinkedIn profile")
+      
+      const profile = await profileRes.json()
+      const personUrn = `urn:li:person:${profile.sub}`
+      
+      const postContent = hashtags?.length
+        ? `${text}\n\n${hashtags.map((h: string) => h.startsWith('#') ? h : `#${h}`).join(' ')}`
+        : text
+        
+      const postRes = await fetch("https://api.linkedin.com/v2/ugcPosts", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "X-Restli-Protocol-Version": "2.0.0",
+        },
+        body: JSON.stringify({
+          author: personUrn,
+          lifecycleState: "PUBLISHED",
+          specificContent: {
+            "com.linkedin.ugc.ShareContent": {
+              shareCommentary: {
+                text: postContent,
+              },
+              shareMediaCategory: "NONE",
+            },
+          },
+          visibility: {
+            "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC",
+          },
+        }),
+      })
+      
+      if (!postRes.ok) {
+        const err = await postRes.text()
+        throw new Error(`LinkedIn API error: ${err}`)
+      }
+      
+      return { success: true }
+    })
+  }
+)

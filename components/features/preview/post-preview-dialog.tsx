@@ -33,6 +33,8 @@ function PostPreviewDialog({
 }: PostPreviewDialogProps) {
   const [isPosting, setIsPosting] = useState(false)
   const [isScheduling, setIsScheduling] = useState(false)
+  const [showDatePicker, setShowDatePicker] = useState(false)
+  const [scheduleDate, setScheduleDate] = useState("")
 
   if (!platform) return null
 
@@ -46,7 +48,7 @@ function PostPreviewDialog({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          text: variant.body,
+          text: `${variant.hook}\n\n${variant.body}\n\n${variant.cta}`,
           hashtags: variant.hashtags,
         }),
       })
@@ -69,9 +71,9 @@ function PostPreviewDialog({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          text: variant.body,
+          text: `${variant.hook}\n\n${variant.body}\n\n${variant.cta}`,
           hashtags: variant.hashtags,
-          scheduledTime: new Date(Date.now() + 86400000).toISOString(),
+          scheduledTime: new Date(scheduleDate).toISOString(),
         }),
       })
 
@@ -95,24 +97,53 @@ function PostPreviewDialog({
         <DialogTitle className="sr-only">{platformName} Preview</DialogTitle>
         <PreviewComponent variant={variant} />
         {platform === "linkedin" && (
-          <DialogFooter className="mt-4">
-            <Button 
-              variant="outline" 
-              className="gap-2"
-              onClick={handleSchedule}
-              disabled={isPosting || isScheduling}
-            >
-              {isScheduling ? <IconLoader2 className="h-4 w-4 animate-spin" /> : <IconCalendar className="h-4 w-4" />}
-              Schedule Post
-            </Button>
-            <Button 
-              className="gap-2 bg-[#0a66c2] text-white hover:bg-[#004182]"
-              onClick={handlePostNow}
-              disabled={isPosting || isScheduling}
-            >
-              {isPosting ? <IconLoader2 className="h-4 w-4 animate-spin" /> : <IconSend className="h-4 w-4" />}
-              Post Now
-            </Button>
+          <DialogFooter className="mt-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
+            {showDatePicker ? (
+              <div className="flex w-full items-center gap-2 sm:w-auto">
+                <input
+                  type="datetime-local"
+                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring sm:w-auto"
+                  value={scheduleDate}
+                  onChange={(e) => setScheduleDate(e.target.value)}
+                  min={new Date(Date.now() + 10 * 60000).toISOString().slice(0, 16)}
+                />
+                <Button
+                  variant="outline"
+                  onClick={() => setShowDatePicker(false)}
+                  disabled={isScheduling}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="gap-2"
+                  onClick={handleSchedule}
+                  disabled={isScheduling || !scheduleDate}
+                >
+                  {isScheduling ? <IconLoader2 className="h-4 w-4 animate-spin" /> : <IconCalendar className="h-4 w-4" />}
+                  Confirm
+                </Button>
+              </div>
+            ) : (
+              <>
+                <Button 
+                  variant="outline" 
+                  className="gap-2"
+                  onClick={() => setShowDatePicker(true)}
+                  disabled={isPosting}
+                >
+                  <IconCalendar className="h-4 w-4" />
+                  Schedule Post
+                </Button>
+                <Button 
+                  className="gap-2 bg-[#0a66c2] text-white hover:bg-[#004182]"
+                  onClick={handlePostNow}
+                  disabled={isPosting}
+                >
+                  {isPosting ? <IconLoader2 className="h-4 w-4 animate-spin" /> : <IconSend className="h-4 w-4" />}
+                  Post Now
+                </Button>
+              </>
+            )}
           </DialogFooter>
         )}
       </DialogContent>
