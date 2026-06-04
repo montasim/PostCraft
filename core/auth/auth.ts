@@ -131,6 +131,12 @@ function buildAuthConfig() {
         enabled: !!(env.LINKEDIN_CLIENT_ID && env.LINKEDIN_CLIENT_SECRET),
         scope: ["w_member_social"],
       },
+      facebook: {
+        clientId: env.FACEBOOK_CLIENT_ID ?? "",
+        clientSecret: env.FACEBOOK_CLIENT_SECRET ?? "",
+        enabled: !!(env.FACEBOOK_CLIENT_ID && env.FACEBOOK_CLIENT_SECRET),
+        scope: ["pages_manage_posts", "pages_read_engagement", "pages_show_list"],
+      },
     },
 
     session: {
@@ -139,6 +145,13 @@ function buildAuthConfig() {
       cookieCache: {
         enabled: true,
         maxAge: SESSION.COOKIE_CACHE_MAX_AGE,
+      },
+    },
+
+    account: {
+      accountLinking: {
+        enabled: true,
+        trustedProviders: ["google", "linkedin", "facebook"],
       },
     },
   }

@@ -30,6 +30,7 @@ import {
   IconShieldCheck,
   IconBrandGoogle,
   IconBrandLinkedin,
+  IconBrandFacebook,
   IconLink,
 } from "@tabler/icons-react"
 import { toast } from "sonner"
@@ -452,15 +453,20 @@ function ConnectedAccountsCard() {
   }
 
   const handleConnectGoogle = async () => {
-    await authClient.signIn.social({ provider: "google", callbackURL: "/settings" })
+    await authClient.linkSocial({ provider: "google", callbackURL: "/settings" })
   }
 
   const handleConnectLinkedin = async () => {
-    await authClient.signIn.social({ provider: "linkedin", callbackURL: "/settings" })
+    await authClient.linkSocial({ provider: "linkedin", callbackURL: "/settings" })
+  }
+
+  const handleConnectFacebook = async () => {
+    await authClient.linkSocial({ provider: "facebook", callbackURL: "/settings" })
   }
 
   const googleAccount = accounts.find((a) => a.providerId === "google")
   const linkedinAccount = accounts.find((a) => a.providerId === "linkedin")
+  const facebookAccount = accounts.find((a) => a.providerId === "facebook")
 
   return (
     <Card>
@@ -518,6 +524,26 @@ function ConnectedAccountsCard() {
                 onClick={() => linkedinAccount ? handleDisconnect("linkedin") : handleConnectLinkedin()}
               >
                 {linkedinAccount ? "Disconnect" : "Connect"}
+              </Button>
+            </div>
+
+            <div className="flex items-center justify-between rounded-lg border px-3 py-2">
+              <div className="flex items-center gap-3">
+                <IconBrandFacebook className="h-5 w-5 text-[#1877F2]" />
+                <div>
+                  <p className="text-xs font-medium">Facebook</p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {facebookAccount ? "Connected" : "Not connected"}
+                  </p>
+                </div>
+              </div>
+              <Button
+                variant={facebookAccount ? "outline" : "default"}
+                size="sm"
+                className={cn("h-7 text-xs", facebookAccount && "text-destructive hover:text-destructive hover:bg-destructive/10")}
+                onClick={() => facebookAccount ? handleDisconnect("facebook") : handleConnectFacebook()}
+              >
+                {facebookAccount ? "Disconnect" : "Connect"}
               </Button>
             </div>
           </>
