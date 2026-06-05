@@ -34,6 +34,7 @@ interface SidebarProps {
   weeklyProgress?: number
   trendingCount?: number
   trendingPrefs?: TrendingPrefs
+  connectedPlatforms?: string[]
 }
 
 function Sidebar({
@@ -46,11 +47,30 @@ function Sidebar({
   weeklyProgress = 0,
   trendingCount = 0,
   trendingPrefs,
+  connectedPlatforms = [],
 }: SidebarProps) {
   const dispatch = useAppDispatch()
   const persona = useAppSelector(selectPersona)
   const aiLimitError = useAppSelector(selectAiLimitError)
   const [settingsPanelOpen, setSettingsPanelOpen] = useState(false)
+
+  const filteredNavItems = NAV_MAIN
+    .filter((item) =>
+      item.id === "trending" ? trendingPrefs?.enabled : true
+    )
+    .map((item) =>
+      item.id === "insights"
+        ? {
+            ...item,
+            subItems: item.subItems?.filter((sub) =>
+              connectedPlatforms.includes(sub.id)
+            ),
+          }
+        : item
+    )
+    .filter(
+      (item) => item.id !== "insights" || (item.subItems && item.subItems.length > 0)
+    )
 
   const personaOptions: {
     audiences: SelectOption[]
@@ -110,11 +130,7 @@ function Sidebar({
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
         <NavGroup
           label="Main"
-          items={
-            trendingPrefs?.enabled
-              ? NAV_MAIN
-              : NAV_MAIN.filter((item) => item.id !== "trending")
-          }
+          items={filteredNavItems}
           active={active}
           onSelect={onSelect}
           badges={{ trending: trendingCount }}

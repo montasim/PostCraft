@@ -22,6 +22,10 @@ import {
 import { API } from "@/lib/constants"
 import { fetchProfile } from "@/store/slices/profile.slice"
 import { fetchPreviewPrefs } from "@/store/slices/preview-prefs.slice"
+import {
+  fetchConnectedPlatforms,
+  selectConnectedPlatforms,
+} from "@/store/slices/connected-platforms.slice"
 
 const ROUTE_MAP: Record<string, string> = {
   generate: "/",
@@ -51,36 +55,19 @@ function AppShell({ children }: AppShellProps) {
   const quotaLimit = useAppSelector(selectQuotaLimit)
   const trendingCount = useAppSelector(selectTrendingCount)
   const trendingPrefs = useAppSelector(selectTrendingPrefs)
+  const connectedPlatforms = useAppSelector(selectConnectedPlatforms)
 
   useEffect(() => {
     dispatch(fetchWorkspace())
     dispatch(fetchTrendingPrefs())
     dispatch(fetchProfile())
     dispatch(fetchPreviewPrefs())
+    dispatch(fetchConnectedPlatforms())
   }, [dispatch])
 
   const active =
-    pathname === "/trending"
-      ? "trending"
-      : pathname === "/library"
-        ? "library"
-        : pathname === "/insights/linkedin"
-          ? "insights/linkedin"
-          : pathname === "/insights/facebook"
-            ? "insights/facebook"
-            : pathname === "/insights/twitter"
-              ? "insights/twitter"
-              : pathname === "/insights"
-                ? "insights"
-                : pathname === "/brand-guard"
-                  ? "brand-guard"
-                  : pathname === "/brand-voice"
-                    ? "brand-voice"
-                    : pathname === "/profile"
-                      ? "profile"
-                      : pathname === "/settings"
-                        ? "settings"
-                        : "generate"
+    Object.entries(ROUTE_MAP).find(([, path]) => path === pathname)?.[0] ??
+    "generate"
 
   const handleSelect = (id: string) => {
     router.push(ROUTE_MAP[id] ?? "/")
@@ -108,6 +95,7 @@ function AppShell({ children }: AppShellProps) {
         weeklyProgress={3}
         trendingCount={trendingCount}
         trendingPrefs={trendingPrefs ?? undefined}
+        connectedPlatforms={connectedPlatforms}
       />
       <MobileSidebar
         open={mobileOpen}
@@ -115,6 +103,7 @@ function AppShell({ children }: AppShellProps) {
         active={active}
         onSelect={handleSelect}
         trendingPrefs={trendingPrefs ?? undefined}
+        connectedPlatforms={connectedPlatforms}
       />
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header onMobileMenuOpen={() => setMobileOpen(true)} />

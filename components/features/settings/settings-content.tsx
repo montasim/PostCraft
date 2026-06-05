@@ -39,6 +39,8 @@ import { requestNotificationPermission } from "@/lib/browser-notification"
 import { API } from "@/lib/constants"
 import { authClient } from "@/core/auth/auth-client"
 import { cn } from "@/lib/utils"
+import { useAppDispatch } from "@/store/hooks"
+import { fetchConnectedPlatforms } from "@/store/slices/connected-platforms.slice"
 import type { NotificationSettings, AccountSettings } from "@/types"
 
 // ─── Notification Settings Card ────────────────────────────────────
@@ -417,12 +419,16 @@ function DangerZoneCard({
 function ConnectedAccountsCard() {
   const [accounts, setAccounts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const dispatch = useAppDispatch()
 
   const fetchAccounts = async () => {
     try {
       const res = await fetch("/api/settings/accounts")
       const result = await res.json()
-      if (result.success) setAccounts(result.data)
+      if (result.success) {
+        setAccounts(result.data)
+        dispatch(fetchConnectedPlatforms())
+      }
     } catch (err) {
       console.error(err)
     } finally {
@@ -744,61 +750,89 @@ function SettingsContent() {
     return (
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="space-y-4">
-          <div className="rounded-xl border p-4">
-            <div className="mb-4 flex items-center gap-2">
-              <Skeleton className="h-5 w-5 rounded" />
-              <Skeleton className="h-4 w-24" />
-            </div>
-            <Skeleton className="mb-4 h-3 w-40" />
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="flex items-center justify-between py-2.5">
-                <div className="space-y-1">
-                  <Skeleton className="h-3 w-28" />
-                  <Skeleton className="h-2.5 w-36" />
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                <Skeleton className="h-4 w-4" />
+                <Skeleton className="h-4 w-24" />
+              </CardTitle>
+              <Skeleton className="h-3 w-40" />
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex items-center justify-between">
+                  <div className="space-y-1.5">
+                    <Skeleton className="h-3 w-28" />
+                    <Skeleton className="h-2.5 w-36" />
+                  </div>
+                  <Skeleton className="h-5 w-9 rounded-full" />
                 </div>
-                <Skeleton className="h-5 w-9 rounded-full" />
+              ))}
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                <Skeleton className="h-4 w-4" />
+                <Skeleton className="h-4 w-32" />
+              </CardTitle>
+              <Skeleton className="h-3 w-44" />
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="space-y-1.5">
+                  <Skeleton className="h-3 w-20" />
+                  <Skeleton className="h-2.5 w-32" />
+                </div>
+                <Skeleton className="h-7 w-20 rounded-md" />
               </div>
-            ))}
-          </div>
+            </CardContent>
+          </Card>
         </div>
         <div className="space-y-4">
-          <div className="rounded-xl border p-4">
-            <div className="mb-4 flex items-center gap-2">
-              <Skeleton className="h-5 w-5 rounded" />
-              <Skeleton className="h-4 w-32" />
-            </div>
-            <Skeleton className="mb-4 h-3 w-44" />
-            <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                <Skeleton className="h-4 w-4" />
+                <Skeleton className="h-4 w-36" />
+              </CardTitle>
+              <Skeleton className="h-3 w-48" />
+            </CardHeader>
+            <CardContent className="space-y-4">
               {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="flex items-center justify-between">
-                  <div className="space-y-1">
+                <div key={i} className="flex items-center justify-between rounded-lg border px-3 py-2">
+                  <div className="flex items-center gap-3">
+                    <Skeleton className="h-5 w-5 rounded-full" />
+                    <div className="space-y-1.5">
+                      <Skeleton className="h-3 w-16" />
+                      <Skeleton className="h-2.5 w-20" />
+                    </div>
+                  </div>
+                  <Skeleton className="h-7 w-20 rounded-md" />
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+          <Card className="border-destructive/30">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                <Skeleton className="h-4 w-4" />
+                <Skeleton className="h-4 w-24" />
+              </CardTitle>
+              <Skeleton className="h-3 w-48" />
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {Array.from({ length: 2 }).map((_, i) => (
+                <div key={i} className="flex items-center justify-between rounded-lg border border-destructive/20 px-3 py-2">
+                  <div className="space-y-1.5">
                     <Skeleton className="h-3 w-24" />
-                    <Skeleton className="h-2.5 w-36" />
+                    <Skeleton className="h-2.5 w-32" />
                   </div>
                   <Skeleton className="h-7 w-16 rounded-md" />
                 </div>
               ))}
-            </div>
-          </div>
-          <div className="rounded-xl border border-red-200 p-4">
-            <div className="mb-4 flex items-center gap-2">
-              <Skeleton className="h-5 w-5 rounded" />
-              <Skeleton className="h-4 w-24" />
-            </div>
-            <Skeleton className="mb-4 h-3 w-44" />
-            {Array.from({ length: 2 }).map((_, i) => (
-              <div
-                key={i}
-                className="mb-2 flex items-center justify-between rounded-lg border px-3 py-2"
-              >
-                <div className="space-y-1">
-                  <Skeleton className="h-3 w-24" />
-                  <Skeleton className="h-2.5 w-28" />
-                </div>
-                <Skeleton className="h-7 w-20 rounded-md" />
-              </div>
-            ))}
-          </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     )

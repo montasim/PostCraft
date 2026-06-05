@@ -16,6 +16,7 @@ interface MobileSidebarProps {
   active: string
   onSelect: (id: string) => void
   trendingPrefs?: import("@/modules/prefs/prefs.schema").TrendingPrefs
+  connectedPlatforms?: string[]
 }
 
 function MobileSidebar({
@@ -24,11 +25,30 @@ function MobileSidebar({
   active,
   onSelect,
   trendingPrefs,
+  connectedPlatforms = [],
 }: MobileSidebarProps) {
   const handleSelect = (id: string) => {
     onSelect(id)
     onOpenChange(false)
   }
+
+  const filteredNavItems = NAV_MAIN
+    .filter((item) =>
+      item.id === "trending" ? trendingPrefs?.enabled : true
+    )
+    .map((item) =>
+      item.id === "insights"
+        ? {
+            ...item,
+            subItems: item.subItems?.filter((sub) =>
+              connectedPlatforms.includes(sub.id)
+            ),
+          }
+        : item
+    )
+    .filter(
+      (item) => item.id !== "insights" || (item.subItems && item.subItems.length > 0)
+    )
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -46,11 +66,7 @@ function MobileSidebar({
         <div className="flex-1 space-y-4 p-4">
           <NavGroup
             label="Main"
-            items={
-              trendingPrefs?.enabled
-                ? NAV_MAIN
-                : NAV_MAIN.filter((item) => item.id !== "trending")
-            }
+            items={filteredNavItems}
             active={active}
             onSelect={handleSelect}
           />
