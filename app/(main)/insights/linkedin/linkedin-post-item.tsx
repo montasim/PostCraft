@@ -170,7 +170,9 @@ export function LinkedinPostItem({ post, user }: { post: any; user: any }) {
               )}
               {!isPublished && (
                 <DropdownMenuItem
-                  onClick={() => setIsEditDialogOpen(true)}
+                  onSelect={() => {
+                    setTimeout(() => setIsEditDialogOpen(true), 100)
+                  }}
                   className="cursor-pointer"
                 >
                   <IconEdit className="mr-2 h-4 w-4" />

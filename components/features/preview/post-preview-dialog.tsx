@@ -15,6 +15,8 @@ import {
   IconInfoCircle,
 } from "@tabler/icons-react"
 import { toast } from "sonner"
+import { useAppSelector } from "@/store/hooks"
+import { selectConnectedPlatforms } from "@/store/slices/connected-platforms.slice"
 import {
   Tooltip,
   TooltipContent,
@@ -51,11 +53,13 @@ function PostPreviewDialog({
   const [isScheduling, setIsScheduling] = useState(false)
   const [showDatePicker, setShowDatePicker] = useState(false)
   const [scheduleDate, setScheduleDate] = useState("")
+  const connectedPlatforms = useAppSelector(selectConnectedPlatforms)
 
   if (!platform) return null
 
   const PreviewComponent = PLATFORM_PREVIEWS[platform]
   const platformName = PLATFORM_DISPLAY_NAMES[platform]
+  const isPlatformConnected = connectedPlatforms.includes(platform)
 
   async function handlePostNow() {
     setIsPosting(true)
@@ -128,84 +132,94 @@ function PostPreviewDialog({
           platform === "facebook" ||
           platform === "twitter") && (
           <DialogFooter className="mt-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
-            {showDatePicker ? (
-              <div className="flex w-full items-center gap-2 sm:w-auto">
-                <TooltipProvider delayDuration={200}>
-                  <Tooltip>
-                    <TooltipTrigger
-                      type="button"
-                      className="focus:outline-none"
-                    >
-                      <IconInfoCircle className="h-4 w-4 shrink-0 cursor-help text-muted-foreground transition-colors hover:text-foreground" />
-                    </TooltipTrigger>
-                    <TooltipContent
-                      className="max-w-[260px] p-3 text-center leading-relaxed"
-                      side="top"
-                      sideOffset={8}
-                    >
-                      <p>
-                        We do not schedule posts directly on {platformName}.
-                        Instead, PostCraft holds your post securely on our
-                        servers and automatically publishes it to your account
-                        at the scheduled time.
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-                <input
-                  type="datetime-local"
-                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none sm:w-auto dark:[color-scheme:dark]"
-                  style={{ accentColor: "hsl(var(--primary))" }}
-                  value={scheduleDate}
-                  onChange={(e) => setScheduleDate(e.target.value)}
-                  min={new Date(Date.now() + 10 * 60000)
-                    .toISOString()
-                    .slice(0, 16)}
-                />
-                <Button
-                  variant="outline"
-                  onClick={() => setShowDatePicker(false)}
-                  disabled={isScheduling}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  className="gap-2"
-                  onClick={handleSchedule}
-                  disabled={isScheduling || !scheduleDate}
-                >
-                  {isScheduling ? (
-                    <IconLoader2 className="h-4 w-4 animate-spin" />
-                  ) : (
+            {isPlatformConnected ? (
+              showDatePicker ? (
+                <div className="flex w-full items-center gap-2 sm:w-auto">
+                  <TooltipProvider delayDuration={200}>
+                    <Tooltip>
+                      <TooltipTrigger
+                        type="button"
+                        className="focus:outline-none"
+                      >
+                        <IconInfoCircle className="h-4 w-4 shrink-0 cursor-help text-muted-foreground transition-colors hover:text-foreground" />
+                      </TooltipTrigger>
+                      <TooltipContent
+                        className="max-w-[260px] p-3 text-center leading-relaxed"
+                        side="top"
+                        sideOffset={8}
+                      >
+                        <p>
+                          We do not schedule posts directly on {platformName}.
+                          Instead, PostCraft holds your post securely on our
+                          servers and automatically publishes it to your account
+                          at the scheduled time.
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <input
+                    type="datetime-local"
+                    className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none sm:w-auto dark:[color-scheme:dark]"
+                    style={{ accentColor: "hsl(var(--primary))" }}
+                    value={scheduleDate}
+                    onChange={(e) => setScheduleDate(e.target.value)}
+                    min={new Date(Date.now() + 10 * 60000)
+                      .toISOString()
+                      .slice(0, 16)}
+                  />
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowDatePicker(false)}
+                    disabled={isScheduling}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className="gap-2"
+                    onClick={handleSchedule}
+                    disabled={isScheduling || !scheduleDate}
+                  >
+                    {isScheduling ? (
+                      <IconLoader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <IconCalendar className="h-4 w-4" />
+                    )}
+                    Confirm
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <Button
+                    variant="outline"
+                    className="gap-2"
+                    onClick={() => setShowDatePicker(true)}
+                    disabled={isPosting}
+                  >
                     <IconCalendar className="h-4 w-4" />
-                  )}
-                  Confirm
-                </Button>
-              </div>
+                    Schedule Post
+                  </Button>
+                  <Button
+                    className={`gap-2 ${platform === "facebook" ? "bg-[#1877F2] text-white hover:bg-[#166fe5]" : platform === "twitter" ? "bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200" : "bg-[#0a66c2] text-white hover:bg-[#004182]"}`}
+                    onClick={handlePostNow}
+                    disabled={isPosting}
+                  >
+                    {isPosting ? (
+                      <IconLoader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <IconSend className="h-4 w-4" />
+                    )}
+                    Post Now
+                  </Button>
+                </>
+              )
             ) : (
-              <>
-                <Button
-                  variant="outline"
-                  className="gap-2"
-                  onClick={() => setShowDatePicker(true)}
-                  disabled={isPosting}
-                >
-                  <IconCalendar className="h-4 w-4" />
-                  Schedule Post
-                </Button>
-                <Button
-                  className={`gap-2 ${platform === "facebook" ? "bg-[#1877F2] text-white hover:bg-[#166fe5]" : platform === "twitter" ? "bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200" : "bg-[#0a66c2] text-white hover:bg-[#004182]"}`}
-                  onClick={handlePostNow}
-                  disabled={isPosting}
-                >
-                  {isPosting ? (
-                    <IconLoader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <IconSend className="h-4 w-4" />
-                  )}
-                  Post Now
-                </Button>
-              </>
+              <p className="text-sm text-muted-foreground">
+                Connect your {platformName} account in{" "}
+                <a href="/settings" className="text-primary underline underline-offset-4 hover:text-primary/80">
+                  Settings
+                </a>{" "}
+                to post or schedule.
+              </p>
             )}
           </DialogFooter>
         )}
