@@ -1,11 +1,11 @@
 # Graph Report - PostCraft  (2026-06-05)
 
 ## Corpus Check
-- 319 files · ~86,472 words
+- 319 files · ~86,454 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1232 nodes · 3694 edges · 68 communities (59 shown, 9 thin omitted)
+- 1232 nodes · 3693 edges · 68 communities (59 shown, 9 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 41 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
