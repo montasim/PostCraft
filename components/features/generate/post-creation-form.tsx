@@ -61,6 +61,7 @@ interface PostCreationFormProps {
   }) => void
   isSubmitting?: boolean
   quotaExceeded?: boolean
+  aiLimitError?: boolean
   userName?: string
   initialPrefs?: GenerationPrefs
   initialRefine?: RefineData | null
@@ -74,6 +75,7 @@ function PostCreationFormInner({
   onGenerate,
   isSubmitting,
   quotaExceeded,
+  aiLimitError,
   userName,
   initialPrefs,
   initialRefine,
@@ -116,7 +118,7 @@ function PostCreationFormInner({
 
   const charCount = topic.length
   const isOverWarning = charCount > TOPIC_WARNING_THRESHOLD
-  const isDisabled = topic.trim().length === 0 || isSubmitting || quotaExceeded
+  const isDisabled = topic.trim().length === 0 || isSubmitting || quotaExceeded || aiLimitError
   const progressPercent = Math.min(
     (charCount / TOPIC_WARNING_THRESHOLD) * 100,
     100
@@ -499,7 +501,9 @@ function PostCreationFormInner({
             ? "Writing your posts..."
             : quotaExceeded
               ? "Daily Limit Reached"
-              : `Generate ${postCount} Post${postCount > 1 ? "s" : ""}`}
+              : aiLimitError
+                ? "High Demand - Paused"
+                : `Generate ${postCount} Post${postCount > 1 ? "s" : ""}`}
         </Button>
       </CardFooter>
     </Card>

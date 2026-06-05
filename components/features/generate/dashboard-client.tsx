@@ -22,6 +22,8 @@ import {
   fetchWorkspace,
   selectQuotaExceeded,
   selectPersona,
+  setAiLimitError,
+  selectAiLimitError,
 } from "@/store/slices/workspace.slice"
 import { selectUserName } from "@/store/slices/profile.slice"
 
@@ -59,6 +61,7 @@ function DashboardClient() {
   const quotaExceededFromStore = useAppSelector(selectQuotaExceeded)
   const persona = useAppSelector(selectPersona)
   const userName = useAppSelector(selectUserName)
+  const aiLimitError = useAppSelector(selectAiLimitError)
 
   const [quotaExceeded, setQuotaExceeded] = useState(quotaExceededFromStore)
   const [postCount, setPostCount] = useState(POST_COUNT_DEFAULT)
@@ -139,10 +142,23 @@ function DashboardClient() {
           setVariants(data.data.variants)
           stopPolling()
           dispatch(fetchWorkspace())
+          dispatch(setAiLimitError(null))
         } else if (generationStatus === "failed") {
-          setError(data.data.generation.errorMessage ?? "Generation failed")
+          const errMsg = data.data.generation.errorMessage ?? "Generation failed"
+          setError(errMsg)
           stopPolling()
           toast.error("Generation failed")
+
+          const lowerMsg = errMsg.toLowerCase()
+          if (
+            lowerMsg.includes("429") ||
+            lowerMsg.includes("503") ||
+            lowerMsg.includes("overloaded") ||
+            lowerMsg.includes("exhausted") ||
+            lowerMsg.includes("limit")
+          ) {
+            dispatch(setAiLimitError(errMsg))
+          }
         }
       } catch {
         setStatus("failed")
@@ -252,6 +268,7 @@ function DashboardClient() {
             onGenerate={handleGenerate}
             isSubmitting={status === "submitting"}
             quotaExceeded={quotaExceeded}
+            aiLimitError={!!aiLimitError}
             userName={userName}
             initialPrefs={generationPrefs}
             initialRefine={refineData}
