@@ -1,6 +1,19 @@
 {
   "name": "postcraft",
   "version": "0.0.1",
+  "description": "An AI-native social media manager that uses Gemini to generate, score, and schedule high-converting posts while enforcing strict brand guardrails.",
+  "keywords": [
+    "ai-social-manager",
+    "social-media-automation",
+    "post-generator",
+    "gemini-ai",
+    "nextjs",
+    "linkedin-automation",
+    "twitter-bot",
+    "facebook-posting",
+    "content-creation",
+    "brand-guardrails"
+  ],
   "type": "module",
   "private": true,
   "scripts": {
