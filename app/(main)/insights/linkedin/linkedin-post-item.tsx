@@ -278,6 +278,7 @@ export function LinkedinPostItem({ post, user }: { post: any; user: any }) {
                 onChange={(e) =>
                   setEditData((prev) => ({ ...prev, text: e.target.value }))
                 }
+                onPaste={(e) => e.stopPropagation()}
                 className="min-h-[200px] resize-none rounded-lg border-0 bg-muted/40 px-4 py-3 text-[15px] leading-relaxed text-foreground shadow-none placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-primary/50"
                 placeholder="What do you want to talk about?"
               />
