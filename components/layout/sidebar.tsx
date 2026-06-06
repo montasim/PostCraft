@@ -5,10 +5,12 @@ import { useState } from "react"
 import {
   NavGroup,
   PlanQuotaCard,
+  PlanQuotaCardSkeleton,
   StreakWidget,
   MotivationTip,
   HighDemandCard,
   TrendingScheduleCard,
+  TrendingScheduleCardSkeleton,
 } from "@/components/shared"
 import { TrendingSettingsPanel } from "@/components/features/trending/trending-settings-panel"
 import { Button } from "@/components/ui/button"
@@ -20,7 +22,9 @@ import { setTrendingPrefs } from "@/store/slices/trending-prefs.slice"
 import {
   selectPersona,
   selectAiLimitError,
+  selectWorkspaceStatus,
 } from "@/store/slices/workspace.slice"
+import { selectTrendingPrefsStatus } from "@/store/slices/trending-prefs.slice"
 import { toast } from "sonner"
 import type { SelectOption } from "@/components/shared/multi-select"
 
@@ -52,6 +56,8 @@ function Sidebar({
   const dispatch = useAppDispatch()
   const persona = useAppSelector(selectPersona)
   const aiLimitError = useAppSelector(selectAiLimitError)
+  const workspaceStatus = useAppSelector(selectWorkspaceStatus)
+  const trendingPrefsStatus = useAppSelector(selectTrendingPrefsStatus)
   const [settingsPanelOpen, setSettingsPanelOpen] = useState(false)
 
   const filteredNavItems = NAV_MAIN
@@ -150,13 +156,21 @@ function Sidebar({
       </div>
       <div className="space-y-4 p-4">
         {aiLimitError && <HighDemandCard />}
-        <PlanQuotaCard used={used} limit={limit} />
-        {trendingPrefs?.enabled && (
+        
+        {workspaceStatus === "loading" || workspaceStatus === "idle" ? (
+          <PlanQuotaCardSkeleton />
+        ) : (
+          <PlanQuotaCard used={used} limit={limit} />
+        )}
+
+        {trendingPrefsStatus === "loading" || trendingPrefsStatus === "idle" ? (
+          <TrendingScheduleCardSkeleton />
+        ) : trendingPrefs?.enabled ? (
           <TrendingScheduleCard
             prefs={trendingPrefs}
             onSettingsClick={() => setSettingsPanelOpen(true)}
           />
-        )}
+        ) : null}
       </div>
 
       {trendingPrefs && (

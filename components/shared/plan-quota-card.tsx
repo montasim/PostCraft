@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils"
 import { IconFlame, IconRefresh } from "@tabler/icons-react"
 import { PLAN_LIMIT } from "@/lib/constants"
 import { getQuotaMessage, getQuotaFooter } from "@/lib/quota-text"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface PlanQuotaCardProps {
   used?: number
@@ -68,4 +69,23 @@ function PlanQuotaCard({ used = 0, limit = PLAN_LIMIT }: PlanQuotaCardProps) {
   )
 }
 
-export { PlanQuotaCard }
+function PlanQuotaCardSkeleton() {
+  return (
+    <div className="rounded-xl border bg-card/40 p-3 border-sidebar-border">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <Skeleton className="h-8 w-8 rounded-lg" />
+          <Skeleton className="h-3 w-24" />
+        </div>
+      </div>
+      <div className="mt-3 flex gap-1">
+        {Array.from({ length: PLAN_LIMIT }).map((_, i) => (
+          <Skeleton key={i} className="h-1.5 flex-1 rounded-full" />
+        ))}
+      </div>
+      <Skeleton className="mt-2 h-2.5 w-32" />
+    </div>
+  )
+}
+
+export { PlanQuotaCard, PlanQuotaCardSkeleton }

@@ -6,6 +6,7 @@ import {
   formatNextRun,
 } from "@/modules/trending/trending-schedule"
 import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export interface TrendingScheduleCardProps {
   prefs: TrendingPrefs
@@ -51,6 +52,26 @@ export function TrendingScheduleCard({
           })
         )}
       </p>
+    </div>
+  )
+}
+
+export function TrendingScheduleCardSkeleton({ className }: { className?: string }) {
+  return (
+    <div
+      className={cn(
+        "rounded-xl border border-chart-4/20 bg-chart-5/5 p-3",
+        className
+      )}
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-4 w-4 rounded-sm" />
+          <Skeleton className="h-3 w-16" />
+        </div>
+        <Skeleton className="-mt-1.5 -mr-1.5 h-6 w-6 rounded-md" />
+      </div>
+      <Skeleton className="mt-2.5 h-2.5 w-32" />
     </div>
   )
 }
