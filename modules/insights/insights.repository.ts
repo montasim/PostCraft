@@ -81,7 +81,7 @@ export const insightsRepository = {
           totalPostsGenerated: {
             $sum: {
               $cond: [
-                { $eq: ["$status", "completed"] },
+                { $ne: ["$status", "failed"] },
                 { $ifNull: ["$postCount", 3] },
                 0,
               ],

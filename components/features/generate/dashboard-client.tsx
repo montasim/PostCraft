@@ -66,6 +66,10 @@ function DashboardClient() {
   const [quotaExceeded, setQuotaExceeded] = useState(quotaExceededFromStore)
   const [postCount, setPostCount] = useState(POST_COUNT_DEFAULT)
 
+  useEffect(() => {
+    setQuotaExceeded(quotaExceededFromStore)
+  }, [quotaExceededFromStore])
+
   const personaOptions: {
     audiences: SelectOption[]
     tones: SelectOption[]
@@ -159,6 +163,7 @@ function DashboardClient() {
           ) {
             dispatch(setAiLimitError(errMsg))
           }
+          dispatch(fetchWorkspace())
         }
       } catch {
         setStatus("failed")
@@ -244,6 +249,7 @@ function DashboardClient() {
         setGenerationId(data.data.generationId)
         setStatus("queued")
         toast.success(STATUS_LABELS.queued)
+        dispatch(fetchWorkspace())
       } catch {
         setStatus("failed")
         setError("Failed to submit. Please try again.")
