@@ -321,9 +321,8 @@ function PostCreationFormInner({
               onBlur={() => setIsFocused(false)}
               placeholder="What should your audience know? Drop your topic here."
               rows={6}
-              className={`max-h-[280px] min-h-[140px] resize-none overflow-y-auto border-2 transition-colors duration-200 ${
-                isFocused ? "border-primary/40" : "border-border"
-              } ${topic.trim().length > 0 ? "bg-primary/[0.02]" : ""}`}
+              className={`max-h-[280px] min-h-[140px] resize-none overflow-y-auto border-2 transition-colors duration-200 ${isFocused ? "border-primary/40" : "border-border"
+                } ${topic.trim().length > 0 ? "bg-primary/[0.02]" : ""}`}
             />
             {/* Character progress bar */}
             <div className="absolute right-2 bottom-2 flex items-center gap-2">
@@ -341,9 +340,8 @@ function PostCreationFormInner({
                 />
               </Progress>
               <span
-                className={`text-[10px] font-medium tabular-nums ${
-                  isOverWarning ? "text-destructive" : "text-muted-foreground"
-                }`}
+                className={`text-[10px] font-medium tabular-nums ${isOverWarning ? "text-destructive" : "text-muted-foreground"
+                  }`}
               >
                 {charCount}
               </span>
@@ -365,7 +363,7 @@ function PostCreationFormInner({
         {/* Configuration Section */}
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <p className="text-xs text-foreground">Fine-tune</p>
+            <p className="text-xs text-foreground">Quick generation</p>
             <p className="text-[10px] text-muted-foreground">
               Defaults are good enough
             </p>
