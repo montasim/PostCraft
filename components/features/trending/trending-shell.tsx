@@ -21,7 +21,7 @@ import type {
   TrendingGenerationPreview,
 } from "@/modules/trending/trending.types"
 import { type TrendingPrefs } from "@/modules/prefs/prefs.schema"
-import { IconArrowLeft, IconTrendingUp, IconLoader2 } from "@tabler/icons-react"
+import { IconArrowLeft, IconTrendingUp, IconLoader2, IconAlertCircle } from "@tabler/icons-react"
 import { QuotaAlert } from "@/components/shared/quota-alert"
 import { toast } from "sonner"
 import { API } from "@/lib/constants"
@@ -159,6 +159,11 @@ function TrendingShell() {
   const selectedGenerations = selectedRunId
     ? generations.filter((g) => g.runId === selectedRunId)
     : []
+
+  const hasValidVariants = selectedGenerations.some((g) => g.topVariant !== null)
+  const isOldRun = selectedRun
+    ? new Date().getTime() - new Date(selectedRun.ranAt).getTime() > 15 * 60 * 1000
+    : false
 
   const showDetail = selectedRunId && !isDesktop
   const showSidebar = !showDetail
@@ -310,16 +315,25 @@ function TrendingShell() {
             <p className="text-sm text-red-600">Error: {selectedRun.error}</p>
           </div>
         ) : selectedGenerations.length > 0 ? (
-          <VariantCarousel>
-            {selectedGenerations.map((gen) => (
-              <div
-                key={gen.generationId}
-                className="w-[85%] shrink-0 snap-start sm:w-100"
-              >
-                <TrendingVariant generation={gen} />
-              </div>
-            ))}
-          </VariantCarousel>
+          !hasValidVariants && isOldRun ? (
+            <EmptyState
+              variant="centered"
+              title="Posts Unavailable"
+              description="The posts generated from this scan are currently unavailable. Please try again later or start a new scan."
+              icon={<IconAlertCircle className="h-10 w-10 text-muted-foreground" />}
+            />
+          ) : (
+            <VariantCarousel>
+              {selectedGenerations.map((gen) => (
+                <div
+                  key={gen.generationId}
+                  className="w-[85%] shrink-0 snap-start sm:w-100"
+                >
+                  <TrendingVariant generation={gen} />
+                </div>
+              ))}
+            </VariantCarousel>
+          )
         ) : selectedRun?.status === "running" ? (
           <EmptyState
             variant="centered"
