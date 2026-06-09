@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Script from "next/script"
 import { useState } from "react"
 import {
   NavGroup,
@@ -157,6 +158,33 @@ function Sidebar({
       <div className="space-y-4 p-4">
         {aiLimitError && <HighDemandCard />}
         
+        <div ref={(el) => {
+          if (el && !document.querySelector('script[src*="supportkori.com"]')) {
+            const script = document.createElement('script')
+            script.src = "https://www.supportkori.com/widget.js"
+            script.setAttribute("data-id", "montasim")
+            script.setAttribute("data-message", "Support montasim")
+            script.setAttribute("data-color", "#FFDD00")
+            script.setAttribute("data-position", "right")
+            script.async = true
+            
+            const observer = new MutationObserver((mutations, obs) => {
+              const btn = document.querySelector('.sk-widget-btn')
+              if (btn) {
+                el.appendChild(btn)
+                const htmlBtn = btn as HTMLElement
+                htmlBtn.style.position = 'static'
+                htmlBtn.style.width = '100%'
+                htmlBtn.style.justifyContent = 'center'
+                obs.disconnect()
+              }
+            })
+            observer.observe(document.body, { childList: true, subtree: true })
+            
+            document.body.appendChild(script)
+          }
+        }} className="w-full flex justify-center pb-2" />
+
         {workspaceStatus === "loading" || workspaceStatus === "idle" ? (
           <PlanQuotaCardSkeleton />
         ) : (
