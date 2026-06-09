@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 import { VariantCarousel } from "@/components/shared"
 import {
   IconChevronDown,
@@ -195,8 +196,53 @@ function TrendingVariant({
   const [copied, setCopied] = useState(false)
   const router = useRouter()
   const persona = useAppSelector(selectPersona)
+  
+  if (generation.status === "failed") {
+    return (
+      <div className="rounded-xl border border-red-200 bg-red-50 p-4 h-full">
+        <div className="flex items-center gap-2 mb-2 text-red-600">
+          <IconAlertCircle className="h-5 w-5" />
+          <span className="text-sm font-semibold">Generation Failed</span>
+        </div>
+        <p className="text-xs text-red-600/80 line-clamp-3">
+          Failed to generate variant for topic: {generation.topic}
+        </p>
+      </div>
+    )
+  }
+
+  if (generation.status !== "completed") {
+    return (
+      <div className="rounded-xl border bg-card p-4 h-full flex flex-col">
+        <div className="mb-3 flex items-center justify-between">
+          <div className="flex items-center gap-2 w-full">
+            <Skeleton className="h-5 w-5 rounded-full" />
+            <span className="text-xs font-medium text-muted-foreground animate-pulse capitalize">
+              {generation.status}...
+            </span>
+          </div>
+        </div>
+        <Skeleton className="mb-2 h-4 w-full" />
+        <Skeleton className="mb-2 h-4 w-3/4" />
+        <div className="mb-3 space-y-1.5 mt-4">
+          <Skeleton className="h-3 w-full" />
+          <Skeleton className="h-3 w-11/12" />
+          <Skeleton className="h-3 w-4/5" />
+        </div>
+        <div className="mt-auto pt-4 flex gap-2">
+          <Skeleton className="h-6 w-20 rounded-full" />
+          <Skeleton className="h-6 w-20 rounded-full" />
+        </div>
+      </div>
+    )
+  }
+
   const mapped = toVariant(generation)
-  if (!mapped) return null
+  if (!mapped) return (
+    <div className="rounded-xl border p-4 flex items-center justify-center h-full">
+      <p className="text-sm text-muted-foreground">No variant available</p>
+    </div>
+  )
 
   const { variant, source } = mapped
   const v = generation.topVariant!
