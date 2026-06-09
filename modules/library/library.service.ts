@@ -7,6 +7,8 @@ import { variantService } from "@/modules/variant/variant.service"
 import { variantRepository } from "@/modules/variant/variant.repository"
 import { generationRepository } from "@/modules/generation/generation.repository"
 import { guardrailRepository } from "@/modules/guardrail"
+import { TrendingRun } from "@/modules/trending/trending.model"
+import type { ITrendingRun } from "@/modules/trending/trending.types"
 import type { LibraryEntry, Variant } from "@/types"
 
 export interface GuardrailDetail {
@@ -149,7 +151,7 @@ export const libraryService = {
   async getEntryDetail(
     generationId: string,
     workspaceId: string
-  ): Promise<LibraryEntry & { guardrails: GuardrailDetail[] }> {
+  ): Promise<LibraryEntry & { guardrails: GuardrailDetail[], trendingRun?: ITrendingRun }> {
     const generation = await generationService.getGenerationStatus(
       generationId,
       workspaceId
@@ -175,6 +177,8 @@ export const libraryService = {
         }))
     }
 
+    const run = await TrendingRun.findOne({ workspaceId, generationIds: generationId }).lean()
+
     return {
       id: generation.id,
       topic: generation.topic,
@@ -189,6 +193,7 @@ export const libraryService = {
       status: "published",
       variants,
       guardrails,
+      trendingRun: run as any || undefined,
     }
   },
 }
