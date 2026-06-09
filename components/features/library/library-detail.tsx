@@ -9,9 +9,11 @@ import { BrandGuardPanel } from "@/components/features/generate/brand-guard-pane
 import type { LibraryEntry } from "@/types"
 import { useAppSelector } from "@/store/hooks"
 import { selectPersona } from "@/store/slices/workspace.slice"
-import { IconTrophy, IconFileText, IconRefresh } from "@tabler/icons-react"
+import { IconTrophy, IconFileText, IconRefresh, IconRoute } from "@tabler/icons-react"
 import { Button } from "@/components/ui/button"
 import { setRefineData } from "@/lib/refine-store"
+import { TrendingTimeline } from "@/components/features/trending/trending-timeline"
+import type { ITrendingRun } from "@/modules/trending/trending.types"
 
 function formatVariantText(v: {
   hook: string
@@ -140,12 +142,35 @@ function LibraryDetail({
       rule: string
       isActive: boolean
     }[]
+    trendingRun?: ITrendingRun
   }
 }) {
+  const [showTimeline, setShowTimeline] = useState(false)
+
   return (
     <div className="space-y-4">
-      {/* Two-column: input card + brand guard */}
-      <div className="flex flex-col items-stretch gap-4 lg:flex-row">
+      {entry.trendingRun && (
+        <div className="flex justify-end mb-2">
+          <Button
+            variant={showTimeline ? "secondary" : "outline"}
+            size="sm"
+            className="h-7 gap-1.5 text-xs"
+            onClick={() => setShowTimeline(!showTimeline)}
+          >
+            <IconRoute className="h-3.5 w-3.5" />
+            {showTimeline ? "Hide Timeline" : "View Pipeline Timeline"}
+          </Button>
+        </div>
+      )}
+
+      {showTimeline && entry.trendingRun ? (
+        <div className="rounded-xl border bg-card/50 p-6">
+          <TrendingTimeline run={entry.trendingRun} generations={[]} hideFinalOutput />
+        </div>
+      ) : (
+        <>
+          {/* Two-column: input card + brand guard */}
+          <div className="flex flex-col items-stretch gap-4 lg:flex-row">
         <div className="flex min-w-0 flex-1">
           <OriginalInputCard entry={entry} />
         </div>
@@ -209,6 +234,8 @@ function LibraryDetail({
           ))}
         </VariantCarousel>
       </section>
+        </>
+      )}
     </div>
   )
 }

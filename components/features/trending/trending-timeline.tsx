@@ -11,9 +11,10 @@ import { cn } from "@/lib/utils"
 interface TrendingTimelineProps {
   run: ITrendingRun
   generations: TrendingGenerationPreview[]
+  hideFinalOutput?: boolean
 }
 
-export function TrendingTimeline({ run, generations }: TrendingTimelineProps) {
+export function TrendingTimeline({ run, generations, hideFinalOutput }: TrendingTimelineProps) {
   const [rawItems, setRawItems] = useState<ITrendingRawItem[]>([])
   const [isLoadingRaw, setIsLoadingRaw] = useState(false)
   const [showRaw, setShowRaw] = useState(false)
@@ -251,7 +252,7 @@ export function TrendingTimeline({ run, generations }: TrendingTimelineProps) {
       )}
 
       {/* STEP 5: FINAL OUTPUT */}
-      {run.status === "completed" && (
+      {run.status === "completed" && !hideFinalOutput && (
       <div className="relative">
         <div className="absolute -left-[38px] flex items-center justify-center rounded-full bg-background p-1 text-emerald-500 ring-1 ring-border">
           <IconCircleCheck className="h-5 w-5" />
