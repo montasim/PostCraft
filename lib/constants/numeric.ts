@@ -1,4 +1,4 @@
-export const PLAN_LIMIT = 3
+export const PLAN_LIMIT = 300
 export const PAGE_SIZE = 6
 
 export const TOPIC_MAX_LENGTH = 2000

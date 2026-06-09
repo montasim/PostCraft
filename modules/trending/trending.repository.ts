@@ -1,5 +1,5 @@
 import { connectDB } from "@/core/config/database"
-import { TrendingRun, type ITrendingRunDoc } from "./trending.model"
+import { TrendingRun, TrendingRawItem, type ITrendingRunDoc, type ITrendingRawItemDoc } from "./trending.model"
 import type { ISourceItemDoc } from "./trending.model"
 import { TRENDING_RUN_LIMIT } from "@/lib/constants"
 
@@ -8,6 +8,22 @@ export async function createRun(
 ): Promise<ITrendingRunDoc> {
   await connectDB()
   return TrendingRun.create(data)
+}
+
+export async function insertRawItems(
+  items: Partial<ITrendingRawItemDoc>[]
+): Promise<void> {
+  await connectDB()
+  if (items.length > 0) {
+    await TrendingRawItem.insertMany(items)
+  }
+}
+
+export async function getRawItemsByRunId(
+  runId: string
+): Promise<ITrendingRawItemDoc[]> {
+  await connectDB()
+  return TrendingRawItem.find({ runId }).lean()
 }
 
 export async function findRunsByWorkspace(
@@ -77,4 +93,40 @@ export async function countUndismissedRuns(
     dismissed: false,
     status: "completed",
   })
+}
+
+export async function updateRunMetadata(
+  runId: string,
+  updates: {
+    totalItemsFetched?: number
+    itemsShortlisted?: number
+    stepLatencies?: Record<string, number>
+  }
+): Promise<void> {
+  await connectDB()
+  const run = await TrendingRun.findById(runId)
+  if (!run) return
+
+  if (!run.metadata) {
+    run.metadata = {} as any
+  }
+
+  if (updates.totalItemsFetched !== undefined) {
+    run.metadata.totalItemsFetched = updates.totalItemsFetched
+  }
+  if (updates.itemsShortlisted !== undefined) {
+    run.metadata.itemsShortlisted = updates.itemsShortlisted
+  }
+  if (updates.stepLatencies) {
+    if (!run.metadata.stepLatencies) {
+      run.metadata.stepLatencies = {}
+    }
+    for (const [key, val] of Object.entries(updates.stepLatencies)) {
+      ;(run.metadata.stepLatencies as any)[key] = val
+    }
+  }
+  
+  // Mark modified just in case
+  run.markModified("metadata")
+  await run.save()
 }

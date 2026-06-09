@@ -136,7 +136,11 @@ export async function dismissAllRuns(workspaceId: string): Promise<void> {
   await repoDismissAllRuns(workspaceId)
 }
 
-export async function triggerRun(workspaceId: string, userId: string) {
+export async function triggerRun(
+  workspaceId: string,
+  userId: string,
+  triggerMode: "manual" | "scheduled" = "manual"
+) {
   const dailyUsage = await insightsRepository.getDailyUsage(workspaceId)
   if (dailyUsage.totalPostsGenerated >= PLAN_LIMIT) {
     throw new QuotaExceededError()
@@ -149,6 +153,13 @@ export async function triggerRun(workspaceId: string, userId: string) {
 
   const run = await createRun({
     workspaceId,
+    triggerMode,
+    metadata: {
+      platformsScanned: prefs.platforms,
+      totalItemsFetched: 0,
+      itemsShortlisted: 0,
+      stepLatencies: {} as Record<string, number>,
+    },
     configSnapshot: {
       platforms: prefs.platforms,
       topics: prefs.topics,

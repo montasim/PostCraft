@@ -36,6 +36,13 @@ export interface ITrendingRun {
   _id: string
   workspaceId: string
   configSnapshot: ITrendingConfig
+  triggerMode: "manual" | "scheduled"
+  metadata: {
+    platformsScanned: string[]
+    totalItemsFetched: number
+    itemsShortlisted: number
+    stepLatencies: Record<string, number>
+  }
   status: RunStatus
   ranAt: Date
   sourceItems: SourceItem[]
@@ -44,6 +51,20 @@ export interface ITrendingRun {
   error: string | null
   createdAt: Date
   updatedAt: Date
+}
+
+export interface ITrendingRawItem {
+  _id: string
+  runId: string
+  workspaceId: string
+  platform: string
+  author: string
+  title: string
+  url: string
+  engagementScore: number
+  status: "shortlisted" | "discarded"
+  selectionReasoning?: string
+  fetchedAt: Date
 }
 
 export interface VariantPreview {
@@ -70,4 +91,18 @@ export interface TrendingGenerationPreview {
   topic: string
   status: string
   topVariant: VariantPreview | null
+}
+
+export interface TrendingRawItem {
+  _id: string
+  runId: string
+  workspaceId: string
+  platform: string
+  author: string
+  title: string
+  url: string
+  engagementScore: number
+  status: "shortlisted" | "discarded"
+  selectionReasoning?: string
+  fetchedAt: Date
 }

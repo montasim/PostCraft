@@ -75,7 +75,11 @@ export const runTrendingPipeline = inngest.createFunction(
         return
       }
 
+      const t0 = Date.now()
       const rawItems = await fetchTrendingSources(config)
+      const fetchLatency = Date.now() - t0
+      
+      const t1 = Date.now()
       const rankedItems = rankSourceItems(rawItems)
       await updateRunSourceItems(runId, rankedItems)
 
@@ -84,12 +88,50 @@ export const runTrendingPipeline = inngest.createFunction(
         config,
         config.topPostsForAI ?? 5
       )
+      const shortlistLatency = Date.now() - t1
+      
+      const { insertRawItems, updateRunMetadata } = await import("@/modules/trending/trending.repository")
+      const { TrendingRun } = await import("@/modules/trending/trending.model")
+      
+      const shortlistedUrls = new Set(shortlisted.map((i) => i.url))
+      const rawItemDocs = rawItems.map((item) => {
+        const isShortlisted = shortlistedUrls.has(item.url)
+        const matched = isShortlisted ? shortlisted.find((s) => s.url === item.url) : null
+        return {
+          runId,
+          workspaceId,
+          platform: item.source,
+          author: "", // could be extracted if added to sourceItem
+          title: item.title,
+          url: item.url,
+          engagementScore: item.score,
+          status: isShortlisted ? "shortlisted" : "discarded",
+          selectionReasoning: matched?.selectionReason || "",
+        } as const
+      })
+      await insertRawItems(rawItemDocs)
+      
+      await updateRunMetadata(runId, {
+        totalItemsFetched: rawItems.length,
+        itemsShortlisted: shortlisted.length,
+        stepLatencies: {
+          fetch: fetchLatency,
+          shortlist: shortlistLatency,
+        }
+      })
+
+      const t2 = Date.now()
       const generationIds = await generatePostsFromTrends(
         shortlisted,
         config,
         workspaceId,
         userId
       )
+      const generateLatency = Date.now() - t2
+      
+      await updateRunMetadata(runId, {
+        stepLatencies: { generate: generateLatency }
+      })
 
       await updateRunGenerationIds(runId, generationIds)
       await updateRunStatus(runId, RUN_STATUS.COMPLETED)
@@ -223,6 +265,13 @@ export const scheduledTrendingRunner = inngest.createFunction(
       await step.run("execute", async () => {
         const run = await createRun({
           workspaceId,
+          triggerMode: "scheduled",
+          metadata: {
+            platformsScanned: prefs.platforms,
+            totalItemsFetched: 0,
+            itemsShortlisted: 0,
+            stepLatencies: {} as Record<string, number>,
+          },
           configSnapshot: {
             platforms: prefs.platforms,
             topics: prefs.topics,
