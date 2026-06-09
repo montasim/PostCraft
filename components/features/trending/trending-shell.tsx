@@ -8,6 +8,7 @@ import { TrendingEmptyState } from "./trending-empty-state"
 import { TrendingSidebar } from "./trending-sidebar"
 import { TrendingSettingsPanel } from "./trending-settings-panel"
 import { TrendingVariant } from "./trending-run-group"
+import { TrendingTimeline } from "./trending-timeline"
 import {
   EmptyState,
   VariantCarousel,
@@ -45,6 +46,7 @@ function TrendingShell() {
   const [isRunning, setIsRunning] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [selectedRunId, setSelectedRunId] = useState<string | null>(null)
+  const [showTimeline, setShowTimeline] = useState(false)
   const isDesktop = useMediaQuery("(min-width: 1024px)")
 
   const prefs = useAppSelector(selectTrendingPrefs)
@@ -305,63 +307,65 @@ function TrendingShell() {
             prefs={prefs!}
             isRunning={isRunning}
             quotaExceeded={quotaExceeded}
+            showTimeline={showTimeline}
+            onToggleTimeline={() => setShowTimeline(!showTimeline)}
             onOpenSettings={() => setSettingsPanelOpen(true)}
             onRunNow={handleRunNow}
           />
         </div>
 
-        {selectedRun && selectedRun.status === "failed" ? (
-          <div className="flex flex-col items-center justify-center gap-4 py-20">
-            <p className="text-sm text-red-600">Error: {selectedRun.error}</p>
-          </div>
-        ) : selectedGenerations.length > 0 ? (
-          !hasValidVariants && isOldRun ? (
+        {selectedRun ? (
+          showTimeline || selectedRun.status === "failed" ? (
+            <TrendingTimeline run={selectedRun} generations={selectedGenerations} />
+          ) : selectedGenerations.length > 0 ? (
+            !hasValidVariants && isOldRun ? (
+              <EmptyState
+                variant="centered"
+                title="Posts Unavailable"
+                description="The posts generated from this scan are currently unavailable. Please try again later or start a new scan."
+                icon={<IconAlertCircle className="h-10 w-10 text-muted-foreground" />}
+              />
+            ) : (
+              <VariantCarousel>
+                {selectedGenerations.map((gen) => (
+                  <div
+                    key={gen.generationId}
+                    className="w-[85%] shrink-0 snap-start sm:w-100"
+                  >
+                    <TrendingVariant generation={gen} />
+                  </div>
+                ))}
+              </VariantCarousel>
+            )
+          ) : selectedRun.status === "running" ? (
             <EmptyState
               variant="centered"
-              title="Posts Unavailable"
-              description="The posts generated from this scan are currently unavailable. Please try again later or start a new scan."
-              icon={<IconAlertCircle className="h-10 w-10 text-muted-foreground" />}
+              title="Scan in Progress"
+              description="We are currently scanning for trending topics and generating posts. Check back soon."
+              icon={
+                <IconLoader2 className="h-10 w-10 animate-spin text-muted-foreground" />
+              }
             />
           ) : (
-            <VariantCarousel>
-              {selectedGenerations.map((gen) => (
-                <div
-                  key={gen.generationId}
-                  className="w-[85%] shrink-0 snap-start sm:w-100"
-                >
-                  <TrendingVariant generation={gen} />
-                </div>
-              ))}
-            </VariantCarousel>
+            <EmptyState
+              variant="centered"
+              title={
+                selectedRun.generationIds.length > 0
+                  ? "Posts Unavailable"
+                  : "No Posts Generated"
+              }
+              description={
+                selectedRun.generationIds.length > 0
+                  ? "The posts generated during this scan are no longer available (they may have been deleted)."
+                  : quotaExceeded
+                    ? "This scan was skipped because your daily generation quota has been exceeded."
+                    : "This scan completed but no matching trending topics were found."
+              }
+              icon={
+                <IconTrendingUp className="h-10 w-10 text-muted-foreground" />
+              }
+            />
           )
-        ) : selectedRun?.status === "running" ? (
-          <EmptyState
-            variant="centered"
-            title="Scan in Progress"
-            description="We are currently scanning for trending topics and generating posts. Check back soon."
-            icon={
-              <IconLoader2 className="h-10 w-10 animate-spin text-muted-foreground" />
-            }
-          />
-        ) : selectedGenerations.length === 0 && selectedRun ? (
-          <EmptyState
-            variant="centered"
-            title={
-              selectedRun.generationIds.length > 0
-                ? "Posts Unavailable"
-                : "No Posts Generated"
-            }
-            description={
-              selectedRun.generationIds.length > 0
-                ? "The posts generated during this scan are no longer available (they may have been deleted)."
-                : quotaExceeded
-                  ? "This scan was skipped because your daily generation quota has been exceeded."
-                  : "This scan completed but no matching trending topics were found."
-            }
-            icon={
-              <IconTrendingUp className="h-10 w-10 text-muted-foreground" />
-            }
-          />
         ) : (
           <EmptyState
             variant="centered"
