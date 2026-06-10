@@ -59,7 +59,7 @@ function TrendingHeader({
             ) : (
               <IconPlayerPlay className="h-3.5 w-3.5" />
             )}
-            {quotaExceeded ? "Daily Limit Reached" : "Scan Now"}
+            {quotaExceeded ? "Daily Limit Reached" : "Run scheduler now"}
           </Button>
         )}
         <Button

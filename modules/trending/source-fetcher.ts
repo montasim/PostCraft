@@ -11,6 +11,7 @@ import {
   MILLISECONDS,
   GITHUB_FRESH_DAYS,
 } from "@/lib/constants"
+import Parser from "rss-parser"
 
 interface HNHit {
   title: string
@@ -191,6 +192,23 @@ export async function fetchReddit(
   }
 }
 
+export async function fetchRss(url: string, count: number): Promise<SourceItem[]> {
+  try {
+    const parser = new Parser()
+    const feed = await parser.parseURL(url)
+    return (feed.items ?? []).slice(0, count).map((item) => ({
+      source: "custom-rss" as const,
+      title: item.title ?? "Untitled",
+      url: item.link ?? url,
+      score: 0,
+      rank: 0,
+    }))
+  } catch (err) {
+    logger.warn({ err, url }, "fetchRss failed")
+    return []
+  }
+}
+
 export async function fetchTrendingSources(
   config: TrendingPrefs
 ): Promise<SourceItem[]> {
@@ -206,6 +224,12 @@ export async function fetchTrendingSources(
     fetchers.push(fetchGitHub(keywords, count))
   if (config.platforms.includes("reddit"))
     fetchers.push(fetchReddit(keywords, count))
+
+  // Any platform that starts with http is treated as an RSS feed
+  const rssUrls = config.platforms.filter((p) => p.startsWith("http"))
+  for (const rssUrl of rssUrls) {
+    fetchers.push(fetchRss(rssUrl, count))
+  }
 
   const results = await Promise.allSettled(fetchers)
   const all = results

@@ -90,6 +90,7 @@ interface TrendingSettingsPanelProps {
   languageOptions?: SelectOption[]
   topicOptions?: SelectOption[]
   industryOptions?: SelectOption[]
+  rssFeeds?: { id: string; title: string; url: string }[]
 }
 
 function TrendingSettingsPanel({
@@ -101,6 +102,7 @@ function TrendingSettingsPanel({
   languageOptions,
   topicOptions,
   industryOptions,
+  rssFeeds = [],
 }: TrendingSettingsPanelProps) {
   const [enabled, setEnabled] = useState(prefs.enabled)
   const [platforms, setPlatforms] = useState<TrendingPlatform[]>(
@@ -203,6 +205,43 @@ function TrendingSettingsPanel({
                     </Tooltip>
                   </div>
                 ))}
+
+                {rssFeeds.length > 0 && (
+                  <>
+                    <Separator className="my-2" />
+                    {rssFeeds.map((feed) => (
+                      <div key={feed.id} className="flex items-center gap-3">
+                        <Switch
+                          checked={platforms.includes(feed.url as TrendingPlatform)}
+                          onCheckedChange={() => togglePlatform(feed.url as TrendingPlatform)}
+                          className="scale-90"
+                        />
+                        <div className="min-w-0 flex-1">
+                          <span className="text-xs font-medium">{feed.title}</span>
+                          <span className="ml-2 text-[11px] text-muted-foreground">
+                            {feed.url}
+                          </span>
+                        </div>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <button
+                              type="button"
+                              className="text-muted-foreground hover:text-foreground"
+                            >
+                              <IconInfoCircle className="h-3.5 w-3.5" />
+                            </button>
+                          </TooltipTrigger>
+                          <TooltipContent
+                            side="left"
+                            className="max-w-[280px] text-xs whitespace-pre-line"
+                          >
+                            Custom RSS Feed
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
+                    ))}
+                  </>
+                )}
               </div>
             </div>
 

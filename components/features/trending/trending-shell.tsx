@@ -42,6 +42,8 @@ function TrendingShell() {
   const [generations, setGenerations] = useState<TrendingGenerationPreview[]>(
     []
   )
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
+  const [rssFeeds, setRssFeeds] = useState<{ id: string; title: string; url: string; connected: boolean }[]>([])
   const [settingsPanelOpen, setSettingsPanelOpen] = useState(false)
   const [isRunning, setIsRunning] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -115,6 +117,16 @@ function TrendingShell() {
 
   useEffect(() => {
     loadTrending()
+    
+    // Fetch RSS feeds from settings
+    fetch(API.SETTINGS)
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.success && result.data?.rssFeeds) {
+          setRssFeeds(result.data.rssFeeds)
+        }
+      })
+      .catch((err) => console.error("Failed to fetch RSS feeds", err))
   }, [loadTrending])
 
   async function handleRunNow() {
@@ -391,6 +403,7 @@ function TrendingShell() {
           languageOptions={personaOptions.languages}
           topicOptions={personaOptions.topics}
           industryOptions={personaOptions.industries}
+          rssFeeds={rssFeeds.filter((f) => f.connected)}
         />
       )}
     </div>

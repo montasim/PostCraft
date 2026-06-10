@@ -1,4 +1,4 @@
-export type TrendingPlatform = "hackernews" | "devto" | "github" | "reddit"
+export type TrendingPlatform = "hackernews" | "devto" | "github" | "reddit" | "custom-rss" | string
 export type TrendingLanguage = "english" | "bangla" | "banglish"
 export type ScheduleType = "hourly" | "daily" | "weekly"
 export type RunStatus = "running" | "completed" | "failed"
