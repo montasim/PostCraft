@@ -48,15 +48,9 @@ function LibraryContent() {
         return
       }
 
-      const existing = entries.find((e) => e.id === selectedId)
-      if (existing && existing.variants.length > 0) {
-        if (!cancelled) setDetailEntry(existing)
-        return
-      }
-
       if (!cancelled) setDetailLoading(true)
       try {
-        const res = await fetch(`${API.LIBRARY}/${selectedId}`)
+        const res = await fetch(`${API.LIBRARY}/${selectedId}`, { cache: "no-store" })
         const result = await res.json()
         if (!cancelled) {
           setDetailEntry(result.success ? result.data : null)
@@ -190,36 +184,51 @@ function LibraryContent() {
         <QuotaAlert />
         {detailLoading ? (
           <div className="space-y-4">
-            <div className="flex flex-col gap-4 lg:flex-row">
-              <div className="flex-1 rounded-xl border p-4">
-                <Skeleton className="mb-4 h-4 w-24" />
-                <Skeleton className="mb-2 h-3 w-10" />
-                <Skeleton className="mb-4 h-20 w-full rounded-lg" />
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  {Array.from({ length: 4 }).map((_, i) => (
-                    <div key={i} className="space-y-1.5">
-                      <Skeleton className="h-3 w-14" />
+            {/* Header: Badges & Action Buttons */}
+            <div className="flex items-center justify-between mb-12">
+              <div className="flex gap-1.5">
+                <Skeleton className="h-6 w-20 rounded-md" />
+                <Skeleton className="h-6 w-20 rounded-md" />
+                <Skeleton className="h-6 w-20 rounded-md" />
+              </div>
+              <div className="flex gap-2">
+                <Skeleton className="h-7 w-32 rounded-md" />
+                <Skeleton className="h-7 w-40 rounded-md" />
+              </div>
+            </div>
+
+            {/* Carousel Area */}
+            <div className="flex gap-4 overflow-hidden">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="w-[90%] shrink-0 md:w-[400px] lg:w-[410px]">
+                  <div className="rounded-xl border bg-card p-4 space-y-4">
+                    {/* Header info */}
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="space-y-2">
+                        <Skeleton className="h-5 w-16" />
+                        <Skeleton className="h-4 w-32" />
+                      </div>
                       <div className="flex gap-1">
-                        <Skeleton className="h-5 w-16 rounded-full" />
-                        <Skeleton className="h-5 w-14 rounded-full" />
+                        <Skeleton className="h-5 w-8 rounded-full" />
+                        <Skeleton className="h-5 w-8 rounded-full" />
                       </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-              <div className="hidden w-80 shrink-0 lg:block">
-                <div className="rounded-xl border p-4">
-                  <Skeleton className="mb-4 h-4 w-24" />
-                  <div className="space-y-2">
-                    {Array.from({ length: 6 }).map((_, i) => (
-                      <div key={i} className="flex items-start gap-2">
-                        <Skeleton className="mt-0.5 h-3.5 w-3.5 shrink-0 rounded-sm" />
-                        <Skeleton className="h-3 w-full" />
-                      </div>
-                    ))}
+                    {/* Content body */}
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-11/12" />
+                      <Skeleton className="h-4 w-4/5" />
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-3/4" />
+                    </div>
+                    {/* Tags */}
+                    <div className="flex gap-2 pt-4 mt-4 border-t">
+                      <Skeleton className="h-5 w-16 rounded-full" />
+                      <Skeleton className="h-5 w-20 rounded-full" />
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         ) : detailEntry ? (
