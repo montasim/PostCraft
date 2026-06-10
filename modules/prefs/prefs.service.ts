@@ -55,10 +55,14 @@ export const prefsService = {
       ? "trending/schedule-set"
       : "trending/schedule-cancel"
 
-    await inngest.send({
-      name: eventName,
-      data: { userId, workspaceId: `${WORKSPACE_ID_PREFIX}${userId}` },
-    })
+    try {
+      await inngest.send({
+        name: eventName,
+        data: { userId, workspaceId: `${WORKSPACE_ID_PREFIX}${userId}` },
+      })
+    } catch (err) {
+      console.warn("Failed to dispatch Inngest scheduling event, but settings were saved:", err)
+    }
 
     return updated.trending
   },

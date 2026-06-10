@@ -112,12 +112,15 @@ function Sidebar({
         body: JSON.stringify(newPrefs),
       })
       const result = await res.json()
-      if (result.success && result.data) {
+      if (!res.ok || !result.success) {
+        throw new Error(result.error || "Failed to save settings")
+      }
+      if (result.data) {
         dispatch(setTrendingPrefs(result.data))
         toast.success("Saved.")
       }
-    } catch {
-      toast.error("Failed to save settings")
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to save settings")
     }
     setSettingsPanelOpen(false)
   }
