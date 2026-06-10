@@ -126,6 +126,10 @@ function TrendingSettingsPanel({
   )
 
   function togglePlatform(p: TrendingPlatform) {
+    if (!platforms.includes(p) && platforms.length >= 3) {
+      toast.error("You can select up to 3 platforms at a time.")
+      return
+    }
     setPlatforms((prev) =>
       prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]
     )
@@ -170,8 +174,16 @@ function TrendingSettingsPanel({
           <div className="space-y-4 p-4">
             {/* Platforms */}
             <div>
-              <Label className="mb-2 block text-xs font-medium">
+              <Label className="mb-2 flex items-center gap-2 text-xs font-medium">
                 Platforms
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <IconInfoCircle className="h-4 w-4 text-muted-foreground" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>You can use max 3 platforms</p>
+                  </TooltipContent>
+                </Tooltip>
               </Label>
               <div className="space-y-2">
                 {PLATFORMS.map((p) => (

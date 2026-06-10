@@ -24,7 +24,7 @@ export const GENERATION_PREFS_DEFAULTS: GenerationPrefs = {
 
 export const trendingPrefsSchema = z.object({
   enabled: z.boolean().default(false),
-  platforms: z.array(z.string()).default([]),
+  platforms: z.array(z.string()).max(3).default([]),
   topics: z.array(z.string()).default([]),
   industry: z.array(z.string()).default([]),
   targetAudience: z.array(z.string()).default([]),
