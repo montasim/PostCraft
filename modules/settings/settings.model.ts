@@ -18,11 +18,19 @@ export interface IAccountSettings {
   dataExportFormat: "json" | "csv"
 }
 
+export interface IRssFeed {
+  id: string
+  url: string
+  title: string
+  connected: boolean
+}
+
 export interface ISettings extends Document {
   userId: string
   notifications: INotificationSettings
   appearance: IAppearanceSettings
   account: IAccountSettings
+  rssFeeds: IRssFeed[]
   createdAt: Date
   updatedAt: Date
 }
@@ -58,12 +66,23 @@ const accountSchema = new mongoose.Schema<IAccountSettings>(
   { _id: false }
 )
 
+const rssFeedSchema = new mongoose.Schema<IRssFeed>(
+  {
+    id: { type: String, required: true },
+    url: { type: String, required: true },
+    title: { type: String, required: true },
+    connected: { type: Boolean, default: true },
+  },
+  { _id: false }
+)
+
 const settingsSchema = new mongoose.Schema<ISettings>(
   {
     userId: { type: String, required: true, unique: true, index: true },
     notifications: { type: notificationSchema, default: () => ({}) },
     appearance: { type: appearanceSchema, default: () => ({}) },
     account: { type: accountSchema, default: () => ({}) },
+    rssFeeds: { type: [rssFeedSchema], default: () => [] },
   },
   { timestamps: true }
 )

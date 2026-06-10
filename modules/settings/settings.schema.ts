@@ -18,10 +18,18 @@ export const accountSettingsSchema = z.object({
   dataExportFormat: z.enum(["json", "csv"]),
 })
 
+export const rssFeedSchema = z.object({
+  id: z.string(),
+  url: z.string().url(),
+  title: z.string(),
+  connected: z.boolean().default(true),
+})
+
 export const updateSettingsSchema = z.object({
   notifications: notificationSettingsSchema.optional(),
   appearance: appearanceSettingsSchema.optional(),
   account: accountSettingsSchema.optional(),
+  rssFeeds: z.array(rssFeedSchema).max(2).optional(),
 })
 
 export type UpdateSettingsInput = z.infer<typeof updateSettingsSchema>

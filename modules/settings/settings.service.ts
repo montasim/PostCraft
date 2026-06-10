@@ -37,6 +37,7 @@ export const settingsService = {
       notifications: doc?.notifications ?? DEFAULT_NOTIFICATIONS,
       appearance: doc?.appearance ?? DEFAULT_APPEARANCE,
       account: doc?.account ?? DEFAULT_ACCOUNT,
+      rssFeeds: doc?.rssFeeds ?? [],
     }
   },
 
@@ -53,6 +54,7 @@ export const settingsService = {
       notifications: updated.notifications,
       appearance: updated.appearance,
       account: updated.account,
+      rssFeeds: updated.rssFeeds ?? [],
     }
   },
 }

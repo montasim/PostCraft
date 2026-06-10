@@ -168,3 +168,10 @@ export interface AccountSettings {
   sessionTimeout: number
   dataExportFormat: "json" | "csv"
 }
+
+export interface RssFeed {
+  id: string
+  url: string
+  title: string
+  connected: boolean
+}

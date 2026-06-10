@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog"
 import { ConfirmDialog } from "@/components/shared/confirm-dialog"
 import { PasswordInput } from "@/components/shared/password-input"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import {
   IconBell,
   IconShield,
@@ -32,16 +33,19 @@ import {
   IconBrandLinkedin,
   IconBrandFacebook,
   IconLink,
+  IconPlus,
+  IconRss,
+  IconInfoCircle,
 } from "@tabler/icons-react"
 import { toast } from "sonner"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { requestNotificationPermission } from "@/lib/browser-notification"
 import { API } from "@/lib/constants"
 import { authClient } from "@/core/auth/auth-client"
 import { cn } from "@/lib/utils"
 import { useAppDispatch } from "@/store/hooks"
 import { fetchConnectedPlatforms } from "@/store/slices/connected-platforms.slice"
-import type { NotificationSettings, AccountSettings } from "@/types"
+import type { NotificationSettings, AccountSettings, RssFeed } from "@/types"
 
 // ─── Notification Settings Card ────────────────────────────────────
 
@@ -529,7 +533,7 @@ function ConnectedAccountsCard() {
                 className={cn(
                   "h-7 text-xs",
                   googleAccount &&
-                    "text-destructive hover:bg-destructive/10 hover:text-destructive"
+                  "text-destructive hover:bg-destructive/10 hover:text-destructive"
                 )}
                 onClick={() =>
                   googleAccount
@@ -557,7 +561,7 @@ function ConnectedAccountsCard() {
                 className={cn(
                   "h-7 text-xs",
                   linkedinAccount &&
-                    "text-destructive hover:bg-destructive/10 hover:text-destructive"
+                  "text-destructive hover:bg-destructive/10 hover:text-destructive"
                 )}
                 onClick={() =>
                   linkedinAccount
@@ -585,7 +589,7 @@ function ConnectedAccountsCard() {
                 className={cn(
                   "h-7 text-xs",
                   facebookAccount &&
-                    "text-destructive hover:bg-destructive/10 hover:text-destructive"
+                  "text-destructive hover:bg-destructive/10 hover:text-destructive"
                 )}
                 onClick={() =>
                   facebookAccount
@@ -618,7 +622,7 @@ function ConnectedAccountsCard() {
                 className={cn(
                   "h-7 text-xs",
                   twitterAccount &&
-                    "text-destructive hover:bg-destructive/10 hover:text-destructive"
+                  "text-destructive hover:bg-destructive/10 hover:text-destructive"
                 )}
                 onClick={() =>
                   twitterAccount
@@ -636,17 +640,192 @@ function ConnectedAccountsCard() {
   )
 }
 
+// ─── Connected RSS Card ──────────────────────────────────────────────
+
+function ConnectedRssCard({
+  rssFeeds,
+  onUpdate,
+}: {
+  rssFeeds: RssFeed[]
+  onUpdate: (feeds: RssFeed[]) => void
+}) {
+  const [inputs, setInputs] = useState<
+    { id: string; url: string; connected: boolean; title: string }[]
+  >([])
+
+  useEffect(() => {
+    setInputs(
+      rssFeeds.map((f) => ({
+        id: f.id,
+        url: f.url,
+        title: f.title,
+        connected: f.connected ?? true,
+      }))
+    )
+  }, [rssFeeds])
+
+  const handleConnect = (index: number) => {
+    const input = inputs[index]
+    if (!input?.url) return
+
+    try {
+      new URL(input.url)
+    } catch {
+      toast.error("Invalid URL")
+      return
+    }
+
+    const updated = [...inputs]
+    updated[index].connected = true
+    updated[index].title = new URL(input.url).hostname || "RSS Feed"
+    setInputs(updated)
+
+    onUpdate(
+      updated.map((i) => ({ id: i.id, url: i.url, title: i.title, connected: i.connected }))
+    )
+  }
+
+  const handleDisconnect = (index: number) => {
+    const updated = [...inputs]
+    updated[index].connected = false
+    setInputs(updated)
+
+    onUpdate(
+      updated.map((i) => ({ id: i.id, url: i.url, title: i.title, connected: i.connected }))
+    )
+  }
+
+  const handleDelete = (index: number) => {
+    const updated = inputs.filter((_, i) => i !== index)
+    setInputs(updated)
+    onUpdate(
+      updated.map((i) => ({ id: i.id, url: i.url, title: i.title, connected: i.connected }))
+    )
+  }
+
+  const addNewRss = () => {
+    setInputs([
+      ...inputs,
+      { id: crypto.randomUUID(), url: "", connected: false, title: "" },
+    ])
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+          <IconRss className="h-4 w-4" />
+          Connected RSS
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <IconInfoCircle className="h-4 w-4 text-muted-foreground" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>You can add up to 2 RSS feeds.</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </CardTitle>
+        <p className="text-xs text-muted-foreground">
+          Connect your RSS feeds to generate trending posts from them.
+        </p>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {inputs.map((input, index) => (
+          <div
+            key={input.id}
+            className="flex items-center justify-between gap-3 rounded-lg border px-3 py-2"
+          >
+            <div className="flex flex-1 items-center gap-3">
+              <div className="flex-1">
+                <Input
+                  className="h-7 text-xs"
+                  placeholder="https://example.com/feed.xml"
+                  value={input.url}
+                  onChange={(e) => {
+                    const newInputs = [...inputs]
+                    newInputs[index].url = e.target.value
+                    if (newInputs[index].connected) {
+                      newInputs[index].connected = false
+                      onUpdate(
+                        newInputs.map((i) => ({ id: i.id, url: i.url, title: i.title, connected: i.connected }))
+                      )
+                    }
+                    setInputs(newInputs)
+                  }}
+                />
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                variant={input.connected ? "outline" : "default"}
+                size="sm"
+                className={cn(
+                  "h-7 shrink-0 text-xs",
+                  input.connected &&
+                  "text-destructive hover:bg-destructive/10 hover:text-destructive"
+                )}
+                onClick={() =>
+                  input.connected ? handleDisconnect(index) : handleConnect(index)
+                }
+              >
+                {input.connected ? "Disconnect" : "Connect"}
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                onClick={() => handleDelete(index)}
+              >
+                <IconTrash className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        ))}
+
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={addNewRss}
+          disabled={inputs.length >= 2}
+          className="w-full gap-2 text-xs"
+        >
+          <IconPlus className="h-4 w-4" />
+          {inputs.length >= 2 ? "Maximum 2 RSS Feeds Allowed" : "Add new RSS"}
+        </Button>
+      </CardContent>
+    </Card>
+  )
+}
+
 // ─── Orchestrator ──────────────────────────────────────────────────
 
 interface SettingsData {
   notifications: NotificationSettings
   account: AccountSettings
+  rssFeeds: RssFeed[]
 }
 
 function SettingsContent() {
   const [data, setData] = useState<SettingsData | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    const error = searchParams.get("error")
+    if (error === "account_already_linked_to_different_user") {
+      toast.error("Account Already Linked", {
+        description: "This social account is already linked to another user. Please remove it from that account first or use a different account.",
+        duration: 6000,
+      })
+      // Clear the error from the URL
+      const newUrl = new URL(window.location.href)
+      newUrl.searchParams.delete("error")
+      window.history.replaceState({}, "", newUrl.toString())
+    }
+  }, [searchParams])
 
   useEffect(() => {
     async function fetchSettings() {
@@ -850,12 +1029,16 @@ function SettingsContent() {
             settings={data.account}
             onUpdate={handleAccountUpdate}
           />
-        </div>
-        <div className="space-y-4">
-          <ConnectedAccountsCard />
           <DangerZoneCard
             onReset={handleReset}
             onDelete={handleDeleteWorkspace}
+          />
+        </div>
+        <div className="space-y-4">
+          <ConnectedAccountsCard />
+          <ConnectedRssCard
+            rssFeeds={data.rssFeeds}
+            onUpdate={(rssFeeds) => saveSettings({ rssFeeds })}
           />
         </div>
       </div>

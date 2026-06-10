@@ -15,6 +15,7 @@ export const settingsRepository = {
     if (data.notifications) update.notifications = data.notifications
     if (data.appearance) update.appearance = data.appearance
     if (data.account) update.account = data.account
+    if (data.rssFeeds) update.rssFeeds = data.rssFeeds
 
     return SettingsModel.findOneAndUpdate(
       { userId },
