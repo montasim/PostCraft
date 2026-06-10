@@ -967,6 +967,26 @@ function SettingsContent() {
               </div>
             </CardContent>
           </Card>
+          <Card className="border-destructive/30">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                <Skeleton className="h-4 w-4" />
+                <Skeleton className="h-4 w-24" />
+              </CardTitle>
+              <Skeleton className="h-3 w-48" />
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {Array.from({ length: 2 }).map((_, i) => (
+                <div key={i} className="flex items-center justify-between rounded-lg border border-destructive/20 px-3 py-2">
+                  <div className="space-y-1.5">
+                    <Skeleton className="h-3 w-24" />
+                    <Skeleton className="h-2.5 w-32" />
+                  </div>
+                  <Skeleton className="h-7 w-16 rounded-md" />
+                </div>
+              ))}
+            </CardContent>
+          </Card>
         </div>
         <div className="space-y-4">
           <Card>
@@ -992,24 +1012,25 @@ function SettingsContent() {
               ))}
             </CardContent>
           </Card>
-          <Card className="border-destructive/30">
+          <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-sm font-semibold">
                 <Skeleton className="h-4 w-4" />
                 <Skeleton className="h-4 w-24" />
               </CardTitle>
-              <Skeleton className="h-3 w-48" />
+              <Skeleton className="h-3 w-40" />
             </CardHeader>
             <CardContent className="space-y-4">
-              {Array.from({ length: 2 }).map((_, i) => (
-                <div key={i} className="flex items-center justify-between rounded-lg border border-destructive/20 px-3 py-2">
-                  <div className="space-y-1.5">
-                    <Skeleton className="h-3 w-24" />
-                    <Skeleton className="h-2.5 w-32" />
-                  </div>
-                  <Skeleton className="h-7 w-16 rounded-md" />
+              <div className="flex items-center justify-between gap-3 rounded-lg border px-3 py-2">
+                <div className="flex flex-1 items-center gap-3">
+                  <Skeleton className="h-7 w-full rounded-md" />
                 </div>
-              ))}
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-7 w-20 rounded-md" />
+                  <Skeleton className="h-7 w-7 rounded-md" />
+                </div>
+              </div>
+              <Skeleton className="h-7 w-full rounded-md" />
             </CardContent>
           </Card>
         </div>
