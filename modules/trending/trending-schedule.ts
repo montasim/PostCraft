@@ -14,6 +14,7 @@ export function computeNextRunAt(config: {
 
   if (config.scheduleType === "hourly") {
     const elapsed = now.getMinutes() + now.getSeconds() / 60
+    next.setHours(now.getHours())
     if (elapsed >= minutes) {
       next.setHours(now.getHours() + 1)
     }
@@ -37,8 +38,8 @@ export function computeNextRunAt(config: {
     ]
     const target = days.indexOf(config.scheduledDay)
     const current = next.getDay()
-    const diff = (target - current + 7) % 7 || 7
-    next.setDate(next.getDate() + diff - 1)
+    const diff = (target - current + 7) % 7
+    next.setDate(next.getDate() + diff)
   }
 
   return next
