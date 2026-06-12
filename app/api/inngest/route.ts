@@ -25,6 +25,9 @@ const handler = serve({
   ],
 })
 
+export const maxDuration = 300
+export const dynamic = "force-dynamic"
+
 export const GET = handler
 export const POST = handler
 export const PUT = handler

@@ -7,6 +7,7 @@ import {
   updateRunSourceItems,
   updateRunGenerationIds,
   updateRunStatus,
+  updateRunStage,
 } from "@/modules/trending/trending.repository"
 import {
   generatePostsFromTrends,
@@ -55,7 +56,7 @@ export const runTrendingPipeline = inngest.createFunction(
     retries: 2,
     triggers: [{ event: "trending/run-triggered" }],
   },
-  async ({ event }) => {
+  async ({ event, step }) => {
     const { workspaceId, userId, config, runId } = event.data as {
       workspaceId: string
       userId: string
@@ -64,91 +65,124 @@ export const runTrendingPipeline = inngest.createFunction(
     }
 
     try {
-      await connectDB()
-      const dailyUsage = await insightsRepository.getDailyUsage(workspaceId)
-      if (dailyUsage.totalPostsGenerated >= PLAN_LIMIT) {
-        await updateRunStatus(runId, RUN_STATUS.FAILED, "Quota exceeded")
-        logger.info(
-          { workspaceId, runId },
-          "Skipped — quota exhausted. Scheduling resumes on upgrade."
-        )
-        return
-      }
-
-      const t0 = Date.now()
-      const rawItems = await fetchTrendingSources(config)
-      const fetchLatency = Date.now() - t0
-      
-      const t1 = Date.now()
-      const rankedItems = rankSourceItems(rawItems)
-      await updateRunSourceItems(runId, rankedItems)
-
-      const shortlisted = await shortlistWithAI(
-        rankedItems,
-        config,
-        config.topPostsForAI ?? 5
-      )
-      const shortlistLatency = Date.now() - t1
-      
-      const { insertRawItems, updateRunMetadata } = await import("@/modules/trending/trending.repository")
-      const { TrendingRun } = await import("@/modules/trending/trending.model")
-      
-      const shortlistedUrls = new Set(shortlisted.map((i) => i.url))
-      const rawItemDocs = rawItems.map((item) => {
-        const isShortlisted = shortlistedUrls.has(item.url)
-        const matched = isShortlisted ? shortlisted.find((s) => s.url === item.url) : null
-        return {
-          runId,
-          workspaceId,
-          platform: item.source,
-          author: "", // could be extracted if added to sourceItem
-          title: item.title,
-          url: item.url,
-          engagementScore: item.score,
-          status: isShortlisted ? "shortlisted" : "discarded",
-          selectionReasoning: matched?.selectionReason || "",
-        } as const
-      })
-      await insertRawItems(rawItemDocs)
-      
-      await updateRunMetadata(runId, {
-        totalItemsFetched: rawItems.length,
-        itemsShortlisted: shortlisted.length,
-        stepLatencies: {
-          fetch: fetchLatency,
-          shortlist: shortlistLatency,
+      const quotaOk = await step.run("check-quota", async () => {
+        await connectDB()
+        await updateRunStage(runId, "Checking quota")
+        const dailyUsage = await insightsRepository.getDailyUsage(workspaceId)
+        if (dailyUsage.totalPostsGenerated >= PLAN_LIMIT) {
+          await updateRunStatus(runId, RUN_STATUS.FAILED, "Quota exceeded")
+          logger.info(
+            { workspaceId, runId },
+            "Skipped — quota exhausted. Scheduling resumes on upgrade."
+          )
+          return false
         }
+        return true
       })
 
-      const t2 = Date.now()
-      const generationIds = await generatePostsFromTrends(
-        shortlisted,
-        config,
-        workspaceId,
-        userId
-      )
-      const generateLatency = Date.now() - t2
+      if (!quotaOk) return
+
+      const { rawItems, fetchLatency } = await step.run("fetch-sources", async () => {
+        await connectDB()
+        await updateRunStage(runId, "Fetching trending sources")
+        const t0 = Date.now()
+        const items = await fetchTrendingSources(config)
+        return { rawItems: items, fetchLatency: Date.now() - t0 }
+      })
       
-      await updateRunMetadata(runId, {
-        stepLatencies: { generate: generateLatency }
+      const rankedItems = await step.run("rank-items", async () => {
+        await connectDB()
+        await updateRunStage(runId, "Ranking items by engagement")
+        const ranked = rankSourceItems(rawItems)
+        await updateRunSourceItems(runId, ranked)
+        return ranked
       })
 
-      await updateRunGenerationIds(runId, generationIds)
-      await updateRunStatus(runId, RUN_STATUS.COMPLETED)
-
-      await sendTrendingCompletionEmail(userId, runId).catch((err) => {
-        logger.warn(
-          { userId, runId, err: String(err) },
-          "Failed to send trending completion email"
+      const { shortlisted, shortlistLatency } = await step.run("shortlist-ai", async () => {
+        await connectDB()
+        await updateRunStage(runId, "Analyzing topics with AI")
+        const t1 = Date.now()
+        const items = await shortlistWithAI(
+          rankedItems,
+          config,
+          config.topPostsForAI ?? 5
         )
+        return { shortlisted: items, shortlistLatency: Date.now() - t1 }
+      })
+      
+      await step.run("save-metadata", async () => {
+        await connectDB()
+        const { insertRawItems, updateRunMetadata } = await import("@/modules/trending/trending.repository")
+        
+        const shortlistedUrls = new Set(shortlisted.map((i) => i.url))
+        const rawItemDocs = rawItems.map((item) => {
+          const isShortlisted = shortlistedUrls.has(item.url)
+          const matched = isShortlisted ? shortlisted.find((s) => s.url === item.url) : null
+          return {
+            runId,
+            workspaceId,
+            platform: item.source,
+            author: "",
+            title: item.title,
+            url: item.url,
+            engagementScore: item.score,
+            status: isShortlisted ? "shortlisted" : "discarded",
+            selectionReasoning: matched?.selectionReason || "",
+          } as const
+        })
+        await insertRawItems(rawItemDocs)
+        
+        await updateRunMetadata(runId, {
+          totalItemsFetched: rawItems.length,
+          itemsShortlisted: shortlisted.length,
+          stepLatencies: {
+            fetch: fetchLatency,
+            shortlist: shortlistLatency,
+          }
+        })
+      })
+
+      const { generationIds, generateLatency } = await step.run("generate-posts", async () => {
+        await connectDB()
+        await updateRunStage(runId, "Generating posts with AI")
+        const t2 = Date.now()
+        const ids = await generatePostsFromTrends(
+          shortlisted,
+          config,
+          workspaceId,
+          userId
+        )
+        return { generationIds: ids, generateLatency: Date.now() - t2 }
+      })
+      
+      await step.run("finalize-run", async () => {
+        await connectDB()
+        await updateRunStage(runId, "Saving final results")
+        const { updateRunMetadata } = await import("@/modules/trending/trending.repository")
+        await updateRunMetadata(runId, {
+          stepLatencies: { generate: generateLatency }
+        })
+
+        await updateRunGenerationIds(runId, generationIds)
+        await updateRunStatus(runId, RUN_STATUS.COMPLETED)
+
+        await sendTrendingCompletionEmail(userId, runId).catch((err) => {
+          logger.warn(
+            { userId, runId, err: String(err) },
+            "Failed to send trending completion email"
+          )
+        })
       })
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Unknown error"
-      logger.error(
-        { workspaceId, runId, err: message },
-        "Trending pipeline failed"
-      )
-      await updateRunStatus(runId, RUN_STATUS.FAILED, message)
+      await step.run("handle-error", async () => {
+        await connectDB()
+        const message = err instanceof Error ? err.message : "Unknown error"
+        logger.error(
+          { workspaceId, runId, err: message },
+          "Trending pipeline failed"
+        )
+        await updateRunStatus(runId, RUN_STATUS.FAILED, message)
+      })
       throw err
     }
   }
