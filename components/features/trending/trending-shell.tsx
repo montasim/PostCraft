@@ -129,6 +129,14 @@ function TrendingShell() {
       .catch((err) => console.error("Failed to fetch RSS feeds", err))
   }, [loadTrending])
 
+  // Poll for live stage updates if any run is currently processing
+  useEffect(() => {
+    if (runs.some((r) => r.status === "running")) {
+      const interval = setInterval(loadTrending, 3000)
+      return () => clearInterval(interval)
+    }
+  }, [runs, loadTrending])
+
   async function handleRunNow() {
     if (!prefs?.platforms || prefs.platforms.length === 0) {
       toast.error("Please select at least one platform in settings first.")
@@ -356,7 +364,11 @@ function TrendingShell() {
             <EmptyState
               variant="centered"
               title="Scan in Progress"
-              description="We are currently scanning for trending topics and generating posts. Check back soon."
+              description={
+                selectedRun.stage
+                  ? `Current Step: ${selectedRun.stage}...`
+                  : "We are currently scanning for trending topics and generating posts. Check back soon."
+              }
               icon={
                 <IconLoader2 className="h-10 w-10 animate-spin text-muted-foreground" />
               }

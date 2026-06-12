@@ -49,6 +49,14 @@ export async function updateRunStatus(
   )
 }
 
+export async function updateRunStage(
+  runId: string,
+  stage: string
+): Promise<void> {
+  await connectDB()
+  await TrendingRun.updateOne({ _id: runId }, { $set: { stage } })
+}
+
 export async function updateRunSourceItems(
   runId: string,
   sourceItems: ISourceItemDoc[]

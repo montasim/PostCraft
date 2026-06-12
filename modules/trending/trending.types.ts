@@ -44,6 +44,7 @@ export interface ITrendingRun {
     stepLatencies: Record<string, number>
   }
   status: RunStatus
+  stage: string
   ranAt: Date
   sourceItems: SourceItem[]
   generationIds: string[]

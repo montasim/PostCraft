@@ -25,6 +25,7 @@ export interface ITrendingRunDoc extends Document {
     scheduledDay: string | null
   }
   status: "running" | "completed" | "failed"
+  stage: string
   triggerMode: "manual" | "scheduled"
   metadata: {
     platformsScanned: string[]
@@ -86,6 +87,7 @@ const TrendingRunSchema = new Schema<ITrendingRunDoc>(
     workspaceId: { type: String, required: true },
     configSnapshot: { type: ConfigSnapshotSchema, required: true },
     status: { type: String, enum: RUN_STATUSES, default: "running" },
+    stage: { type: String, default: "initializing" },
     triggerMode: { type: String, enum: ["manual", "scheduled"], default: "manual" },
     metadata: { type: MetadataSchema, default: () => ({}) },
     ranAt: { type: Date, default: Date.now },
