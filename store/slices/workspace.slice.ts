@@ -77,9 +77,9 @@ export const selectWorkspace = (state: { workspace: WorkspaceState }) =>
 export const selectWorkspaceStatus = (state: { workspace: WorkspaceState }) =>
   state.workspace.status
 export const selectQuotaUsed = (state: { workspace: WorkspaceState }) =>
-  state.workspace.data?.usage.used ?? 0
+  state.workspace.data?.usage.used
 export const selectQuotaLimit = (state: { workspace: WorkspaceState }) =>
-  state.workspace.data?.usage.limit ?? 0
+  state.workspace.data?.usage.limit
 export const selectPersona = (state: { workspace: WorkspaceState }) =>
   state.workspace.data?.persona ?? null
 export const selectQuotaExceeded = (state: { workspace: WorkspaceState }) => {
