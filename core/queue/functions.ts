@@ -23,6 +23,7 @@ import { computeNextRunAt } from "@/modules/trending/trending-schedule"
 import type { TrendingPrefs } from "@/modules/prefs/prefs.schema"
 import { connectDB } from "@/core/config/database"
 import { insightsRepository } from "@/modules/insights/insights.repository"
+import { SettingsModel } from "@/modules/settings/settings.model"
 import {
   PLAN_LIMIT,
   GENERATION_EVENT,
@@ -282,11 +283,15 @@ export const scheduledTrendingRunner = inngest.createFunction(
     if (!prefs?.enabled) return { skipped: true, reason: "disabled" }
 
     const nextRunAt = await step.run("compute-next", async () => {
+      await connectDB()
+      const settingsDoc = await SettingsModel.findOne({ userId })
+      const globalTimezone = settingsDoc?.account?.timezone || "UTC"
+      
       const date = computeNextRunAt({
         scheduleType: prefs.scheduleType,
         scheduledTime: prefs.scheduledTime,
         scheduledDay: prefs.scheduledDay,
-        timezone: prefs.timezone,
+        timezone: globalTimezone,
       })
       return date.toISOString()
     })
@@ -301,6 +306,8 @@ export const scheduledTrendingRunner = inngest.createFunction(
 
     if (quotaCheck) {
       await step.run("execute", async () => {
+        await connectDB()
+        const settingsDoc = await SettingsModel.findOne({ userId })
         const run = await createRun({
           workspaceId,
           triggerMode: "scheduled",
@@ -322,7 +329,7 @@ export const scheduledTrendingRunner = inngest.createFunction(
             scheduleType: prefs.scheduleType,
             scheduledTime: prefs.scheduledTime,
             scheduledDay: prefs.scheduledDay,
-            timezone: prefs.timezone,
+            timezone: settingsDoc?.account?.timezone || "UTC",
           },
           status: "running",
           ranAt: new Date(),

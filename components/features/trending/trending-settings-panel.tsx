@@ -128,9 +128,6 @@ function TrendingSettingsPanel({
   const [scheduledDay, setScheduledDay] = useState<string | null>(
     prefs.scheduledDay
   )
-  const [timezone, setTimezone] = useState(
-    prefs.timezone ?? Intl.DateTimeFormat().resolvedOptions().timeZone
-  )
 
   function togglePlatform(p: TrendingPlatform) {
     if (!platforms.includes(p) && platforms.length >= 3) {
@@ -163,7 +160,7 @@ function TrendingSettingsPanel({
       scheduleType,
       scheduledTime,
       scheduledDay: scheduleType === "weekly" ? scheduledDay : null,
-      timezone,
+      timezone: prefs.timezone || "UTC",
     })
   }
 
