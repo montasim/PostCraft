@@ -278,9 +278,9 @@ export async function generatePostsFromTrends(
               )
             : ["EN"],
         includeEmoji: true,
-        postCount: 3,
-        platforms: ["linkedin"],
-        hashtagCount: 3,
+        postCount: config.postsToGenerate,
+        platforms: config.publishPlatforms ?? ["linkedin"],
+        hashtagCount: config.hashtagCount ?? 3,
       },
       workspaceId,
       userId

@@ -21,6 +21,8 @@ export interface ITrendingPrefsDoc {
   postsPerPlatform: number
   topPostsForAI: number
   postsToGenerate: number
+  hashtagCount: number
+  publishPlatforms: string[]
   scheduleType: "hourly" | "daily" | "weekly"
   scheduledTime: string
   scheduledDay: string | null
@@ -63,6 +65,8 @@ const trendingPrefsSubSchema = new mongoose.Schema<ITrendingPrefsDoc>(
     postsPerPlatform: { type: Number, default: 5 },
     topPostsForAI: { type: Number, default: 5 },
     postsToGenerate: { type: Number, default: 3 },
+    hashtagCount: { type: Number, default: 3 },
+    publishPlatforms: { type: [String], default: ["linkedin"] },
     scheduleType: {
       type: String,
       enum: ["hourly", "daily", "weekly"],

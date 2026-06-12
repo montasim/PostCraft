@@ -173,6 +173,8 @@ const GLOBAL_TRENDING_CONFIG = {
   postsPerPlatform: 5,
   topPostsForAI: 6,
   postsToGenerate: 6,
+  hashtagCount: 3,
+  publishPlatforms: ["linkedin"],
   scheduleType: "daily" as const,
   scheduledTime: "06:00",
   scheduledDay: null,

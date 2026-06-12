@@ -117,6 +117,10 @@ function TrendingSettingsPanel({
   )
   const [topPostsForAI, setTopPostsForAI] = useState(prefs.topPostsForAI)
   const [postsToGenerate, setPostsToGenerate] = useState(prefs.postsToGenerate)
+  const [hashtagCount, setHashtagCount] = useState(prefs.hashtagCount ?? 3)
+  const [publishPlatforms, setPublishPlatforms] = useState<string[]>(
+    prefs.publishPlatforms ?? ["linkedin"]
+  )
   const [scheduleType, setScheduleType] = useState<ScheduleType>(
     prefs.scheduleType as ScheduleType
   )
@@ -151,6 +155,8 @@ function TrendingSettingsPanel({
       postsPerPlatform,
       topPostsForAI,
       postsToGenerate,
+      hashtagCount,
+      publishPlatforms,
       scheduleType,
       scheduledTime,
       scheduledDay: scheduleType === "weekly" ? scheduledDay : null,
@@ -287,6 +293,13 @@ function TrendingSettingsPanel({
                     min: 1,
                     max: 3,
                   },
+                  {
+                    label: "Hashtags per post",
+                    value: hashtagCount,
+                    setter: setHashtagCount,
+                    min: 0,
+                    max: 10,
+                  },
                 ].map((field) => (
                   <div
                     key={field.label}
@@ -373,6 +386,22 @@ function TrendingSettingsPanel({
                   selected={language}
                   onChange={setLanguage}
                   placeholder="Select languages..."
+                  maxVisible={3}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="flex items-center gap-1 text-xs font-medium">
+                  Platforms to Publish
+                </Label>
+                <MultiSelect
+                  options={[
+                    { value: "linkedin", label: "LinkedIn" },
+                    { value: "twitter", label: "Twitter" },
+                    { value: "facebook", label: "Facebook" },
+                  ]}
+                  selected={publishPlatforms}
+                  onChange={setPublishPlatforms}
+                  placeholder="Select platforms..."
                   maxVisible={3}
                 />
               </div>
