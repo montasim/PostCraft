@@ -23,6 +23,7 @@ export interface ITrendingRunDoc extends Document {
     scheduleType: string
     scheduledTime: string
     scheduledDay: string | null
+    timezone: string
   }
   status: "running" | "completed" | "failed"
   stage: string
@@ -64,6 +65,7 @@ const ConfigSnapshotSchema = new Schema(
     scheduleType: String,
     scheduledTime: String,
     scheduledDay: { type: String, default: null },
+    timezone: { type: String, default: "UTC" },
   },
   { _id: false }
 )

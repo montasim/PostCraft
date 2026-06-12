@@ -26,6 +26,7 @@ export interface ITrendingPrefsDoc {
   scheduleType: "hourly" | "daily" | "weekly"
   scheduledTime: string
   scheduledDay: string | null
+  timezone: string
 }
 
 export interface IPreviewConfigDoc {
@@ -74,6 +75,7 @@ const trendingPrefsSubSchema = new mongoose.Schema<ITrendingPrefsDoc>(
     },
     scheduledTime: { type: String, default: "09:00" },
     scheduledDay: { type: String, default: null },
+    timezone: { type: String, default: "UTC" },
   },
   { _id: false }
 )

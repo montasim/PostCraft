@@ -212,6 +212,7 @@ const GLOBAL_TRENDING_CONFIG = {
   scheduleType: "daily" as const,
   scheduledTime: "06:00",
   scheduledDay: null,
+  timezone: "UTC",
 } satisfies TrendingPrefs
 
 export const fetchGlobalTrendingTopics = inngest.createFunction(
@@ -285,6 +286,7 @@ export const scheduledTrendingRunner = inngest.createFunction(
         scheduleType: prefs.scheduleType,
         scheduledTime: prefs.scheduledTime,
         scheduledDay: prefs.scheduledDay,
+        timezone: prefs.timezone,
       })
       return date.toISOString()
     })
@@ -320,6 +322,7 @@ export const scheduledTrendingRunner = inngest.createFunction(
             scheduleType: prefs.scheduleType,
             scheduledTime: prefs.scheduledTime,
             scheduledDay: prefs.scheduledDay,
+            timezone: prefs.timezone,
           },
           status: "running",
           ranAt: new Date(),

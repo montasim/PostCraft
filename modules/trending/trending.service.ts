@@ -172,6 +172,7 @@ export async function triggerRun(
       scheduleType: prefs.scheduleType,
       scheduledTime: prefs.scheduledTime,
       scheduledDay: prefs.scheduledDay,
+      timezone: prefs.timezone,
     },
     status: "running",
     ranAt: new Date(),

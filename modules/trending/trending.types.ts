@@ -18,6 +18,7 @@ export interface ITrendingConfig {
   scheduleType: ScheduleType
   scheduledTime: string
   scheduledDay: string | null
+  timezone: string
   lastRunAt: Date | null
   nextRunAt: Date | null
   createdAt: Date

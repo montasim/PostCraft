@@ -37,6 +37,7 @@ export const trendingPrefsSchema = z.object({
   scheduleType: z.enum(["hourly", "daily", "weekly"]).default("daily"),
   scheduledTime: z.string().default("09:00"),
   scheduledDay: z.string().nullable().default(null),
+  timezone: z.string().default("UTC"),
 })
 
 export type TrendingPrefs = z.infer<typeof trendingPrefsSchema>
@@ -66,4 +67,5 @@ export const TRENDING_PREFS_DEFAULTS: TrendingPrefs = {
   scheduleType: "daily",
   scheduledTime: "09:00",
   scheduledDay: null,
+  timezone: "UTC",
 }
