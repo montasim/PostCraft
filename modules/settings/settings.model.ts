@@ -16,6 +16,7 @@ export interface IAccountSettings {
   twoFactorEnabled: boolean
   sessionTimeout: number
   dataExportFormat: "json" | "csv"
+  timezone: string
 }
 
 export interface IRssFeed {
@@ -62,6 +63,7 @@ const accountSchema = new mongoose.Schema<IAccountSettings>(
     twoFactorEnabled: { type: Boolean, default: false },
     sessionTimeout: { type: Number, default: 30 },
     dataExportFormat: { type: String, enum: ["json", "csv"], default: "json" },
+    timezone: { type: String, default: "UTC" },
   },
   { _id: false }
 )

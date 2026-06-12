@@ -167,6 +167,7 @@ export interface AccountSettings {
   twoFactorEnabled: boolean
   sessionTimeout: number
   dataExportFormat: "json" | "csv"
+  timezone: string
 }
 
 export interface RssFeed {

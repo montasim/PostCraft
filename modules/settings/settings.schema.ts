@@ -16,6 +16,7 @@ export const accountSettingsSchema = z.object({
   twoFactorEnabled: z.boolean(),
   sessionTimeout: z.number(),
   dataExportFormat: z.enum(["json", "csv"]),
+  timezone: z.string(),
 })
 
 export const rssFeedSchema = z.object({

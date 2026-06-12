@@ -27,6 +27,7 @@ const DEFAULT_ACCOUNT: AccountSettings = {
   twoFactorEnabled: false,
   sessionTimeout: SESSION_TIMEOUT_DEFAULT,
   dataExportFormat: "json",
+  timezone: "UTC",
 }
 
 export const settingsService = {
