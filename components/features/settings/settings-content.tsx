@@ -18,6 +18,19 @@ import {
 } from "@/components/ui/dialog"
 import { ConfirmDialog } from "@/components/shared/confirm-dialog"
 import { PasswordInput } from "@/components/shared/password-input"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import {
+  Command,
+  CommandInput,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import {
   IconBell,
@@ -36,6 +49,9 @@ import {
   IconPlus,
   IconRss,
   IconInfoCircle,
+  IconWorld,
+  IconCheck,
+  IconSelector,
 } from "@tabler/icons-react"
 import { toast } from "sonner"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -333,6 +349,111 @@ function ChangePasswordRow() {
         </DialogContent>
       </Dialog>
     </div>
+  )
+}
+
+// ─── Timezone Settings Card ───────────────────────────────────────
+
+function TimezoneCard({
+  settings,
+  onUpdate,
+}: {
+  settings: AccountSettings
+  onUpdate: <K extends keyof AccountSettings>(
+    key: K,
+    value: AccountSettings[K]
+  ) => void
+}) {
+  const [open, setOpen] = useState(false)
+  const [timezones, setTimezones] = useState<{ value: string; label: string }[]>([])
+
+  useEffect(() => {
+    try {
+      const tzs = Intl.supportedValuesOf("timeZone").map((tz) => {
+        const date = new Date()
+        const formatter = new Intl.DateTimeFormat("en-US", {
+          timeZone: tz,
+          timeZoneName: "shortOffset",
+        })
+        const parts = formatter.formatToParts(date)
+        let offset = parts.find((p) => p.type === "timeZoneName")?.value || "GMT"
+        offset = offset.replace("GMT", "UTC")
+        if (offset === "UTC") offset = "UTC+0"
+        return {
+          value: tz,
+          label: `(${offset}) ${tz.replace(/_/g, " ")}`,
+        }
+      })
+      setTimezones(tzs)
+    } catch {
+      setTimezones([{ value: "UTC", label: "(UTC+0) UTC" }])
+    }
+  }, [])
+
+  const selectedTz = timezones.find((t) => t.value === (settings.timezone || "UTC"))
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+          <IconWorld className="h-4 w-4 text-primary" />
+          Timezone
+        </CardTitle>
+        <p className="text-xs text-muted-foreground">
+          Set your preferred timezone for scheduling
+        </p>
+      </CardHeader>
+      <CardContent>
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={open}
+              className="w-full justify-between text-xs font-normal"
+            >
+              <span className="truncate">
+                {selectedTz ? selectedTz.label : "Select timezone..."}
+              </span>
+              <IconSelector className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[380px] p-0" align="start">
+            <Command>
+              <CommandInput placeholder="Search timezone..." className="text-xs" />
+              <CommandList>
+                <CommandEmpty className="py-6 text-center text-xs">
+                  No timezone found.
+                </CommandEmpty>
+                <CommandGroup>
+                  {timezones.map((tz) => (
+                    <CommandItem
+                      key={tz.value}
+                      value={tz.label}
+                      onSelect={() => {
+                        onUpdate("timezone", tz.value)
+                        setOpen(false)
+                      }}
+                      className="text-xs"
+                    >
+                      <IconCheck
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          settings.timezone === tz.value
+                            ? "opacity-100"
+                            : "opacity-0"
+                        )}
+                      />
+                      {tz.label}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+      </CardContent>
+    </Card>
   )
 }
 
@@ -906,6 +1027,7 @@ function SettingsContent() {
         twoFactorEnabled: false,
         sessionTimeout: 30,
         dataExportFormat: "json",
+        timezone: "UTC",
       },
     })
   }
@@ -965,6 +1087,18 @@ function SettingsContent() {
                 </div>
                 <Skeleton className="h-7 w-20 rounded-md" />
               </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                <Skeleton className="h-4 w-4" />
+                <Skeleton className="h-4 w-24" />
+              </CardTitle>
+              <Skeleton className="h-3 w-44" />
+            </CardHeader>
+            <CardContent>
+              <Skeleton className="h-8 w-full rounded-md" />
             </CardContent>
           </Card>
           <Card className="border-destructive/30">
@@ -1047,6 +1181,10 @@ function SettingsContent() {
             onUpdate={handleNotificationUpdate}
           />
           <AccountSecurityCard
+            settings={data.account}
+            onUpdate={handleAccountUpdate}
+          />
+          <TimezoneCard
             settings={data.account}
             onUpdate={handleAccountUpdate}
           />
