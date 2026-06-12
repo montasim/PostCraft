@@ -1,16 +1,16 @@
-# Graph Report - PostCraft  (2026-06-12)
+# Graph Report - PostCraft  (2026-06-10)
 
 ## Corpus Check
-- 323 files · ~90,982 words
+- 323 files · ~90,774 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1258 nodes · 3793 edges · 67 communities (56 shown, 11 thin omitted)
+- 1258 nodes · 3793 edges · 66 communities (55 shown, 11 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 41 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `0859badb`
+- Built from commit: `42ebf211`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -78,7 +78,6 @@
 - [[_COMMUNITY_Inngest Route|Inngest Route]]
 - [[_COMMUNITY_Community 62|Community 62]]
 - [[_COMMUNITY_Community 63|Community 63]]
-- [[_COMMUNITY_Community 65|Community 65]]
 - [[_COMMUNITY_Community 67|Community 67]]
 
 ## God Nodes (most connected - your core abstractions)
@@ -108,7 +107,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (67 total, 11 thin omitted)
+## Communities (66 total, 11 thin omitted)
 
 ### Community 0 - "Groq Gemini"
 Cohesion: 0.10
@@ -135,8 +134,8 @@ Cohesion: 0.26
 Nodes (11): buildSourceKeywords(), DevToArticle, fetchDevTo(), fetchGitHub(), fetchHackerNews(), fetchReddit(), fetchRss(), fetchTrendingSources() (+3 more)
 
 ### Community 6 - "Preview Facebook"
-Cohesion: 0.18
-Nodes (12): STATUS_STYLES, VariantCardWrapper(), LibraryTimeline(), SOURCE_META, ScorePill(), PLATFORM_ICONS, VariantCard(), VariantCardProps (+4 more)
+Cohesion: 0.15
+Nodes (13): fontMono, geist, GlobalError(), STATUS_STYLES, ScorePill(), PLATFORM_ICONS, VariantCard(), VariantCardProps (+5 more)
 
 ### Community 7 - "Prompts Judge"
 Cohesion: 0.27
@@ -187,8 +186,8 @@ Cohesion: 0.14
 Nodes (15): DashboardClient(), VariantCardWrapper(), metadata, HighTrafficAlert(), QuotaAlert(), selectQuotaExceeded(), selectWorkspace(), useAppDispatch() (+7 more)
 
 ### Community 20 - "Constants Options"
-Cohesion: 0.17
-Nodes (11): API, BannedWordsGroupProps, BrandGuardPanel(), BrandGuardPanelProps, GuardRule, RuleGroupProps, GenerationStatus, STATUS_LABELS (+3 more)
+Cohesion: 0.12
+Nodes (17): API, BannedWordsGroupProps, BrandGuardPanel(), BrandGuardPanelProps, GuardRule, RuleGroupProps, CarouselNavigation(), CarouselNavigationProps (+9 more)
 
 ### Community 21 - "Trending Prompts"
 Cohesion: 0.17
@@ -271,8 +270,8 @@ Cohesion: 0.18
 Nodes (7): ApiGuardrail, Rule, RuleSectionProps, StreakWidgetProps, Progress(), Switch(), PLATFORM_ICONS
 
 ### Community 41 - "Community 41"
-Cohesion: 0.22
-Nodes (9): CarouselNavigation(), CarouselNavigationProps, PostVariantsCarousel(), STATUS_HEADERS, STATUS_MESSAGES, useCarousel(), useClipboard(), VariantCarousel() (+1 more)
+Cohesion: 0.27
+Nodes (6): useCarousel(), VariantCardWrapper(), LibraryTimeline(), SOURCE_META, VariantCarousel(), VariantCarouselProps
 
 ### Community 42 - "Community 42"
 Cohesion: 0.23
@@ -318,10 +317,6 @@ Nodes (6): IProfile, profileSchema, profileRepository, UpdateProfileInput, updat
 Cohesion: 0.25
 Nodes (7): DraftStatus, ITrendingConfig, RunStatus, ScheduleType, TrendingLanguage, TrendingRawItem, VariantPreview
 
-### Community 65 - "Community 65"
-Cohesion: 0.25
-Nodes (4): fontMono, geist, GlobalError(), Button()
-
 ### Community 67 - "Community 67"
 Cohesion: 0.20
 Nodes (10): AppShell(), formatNumber(), Header(), HeaderProps, MobileSidebar(), PageBreadcrumb(), Sidebar(), ThemeToggle() (+2 more)
@@ -334,7 +329,7 @@ Nodes (10): AppShell(), formatNumber(), Header(), HeaderProps, MobileSidebar(), 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `cn()` connect `Community 48` to `Errors Inngest`, `Generate Brand`, `Preview Facebook`, `Generate Constants`, `Library Card`, `Auth Form`, `Library Activity`, `Error Brand`, `Shared Useautocompletetimepicker`, `Trending Runs`, `Library App`, `Constants Options`, `Profile Content`, `Insights Index`, `Preview Slices`, `Brand Guard`, `Variant Schema`, `Trending Empty`, `App Layout`, `Ranking Service`, `Community 44`, `Community 65`?**
+- **Why does `cn()` connect `Community 48` to `Errors Inngest`, `Generate Brand`, `Preview Facebook`, `Generate Constants`, `Library Card`, `Auth Form`, `Library Activity`, `Error Brand`, `Shared Useautocompletetimepicker`, `Trending Runs`, `Library App`, `Constants Options`, `Profile Content`, `Insights Index`, `Preview Slices`, `Brand Guard`, `Variant Schema`, `Trending Empty`, `App Layout`, `Ranking Service`, `Community 41`, `Community 44`?**
   _High betweenness centrality (0.160) - this node is a cross-community bridge._
 - **Why does `connectDB()` connect `Library Repository` to `Trending Global`, `Community 42`, `Community 43`, `Generation Schema`, `Trending Prompts`, `Queue Functions`, `Preview Slices`, `Shared Trending`?**
   _High betweenness centrality (0.075) - this node is a cross-community bridge._
